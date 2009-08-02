@@ -22,7 +22,8 @@ import icalendar
 import zope.interface
 import asmmobile.interfaces
 import datetime
-import time
+
+import re
 
 import asmmobile.location
 import asmmobile.event
@@ -67,7 +68,15 @@ class AsmMobile(grok.Application, grok.Container):
         self['events'].updateEvents(updateEvents)
 
     def getCss(self):
-        return ""
+        fp = open("src/asmmobile/static/asmmobile.css", "r")
+        data = fp.read()
+        fp.close()
+        compressed = data
+        newlinesMatch = re.compile(r" *\n *")
+        compressed = newlinesMatch.sub("", compressed)
+        separatorMatch = re.compile(r" *([,:\{;]) *")
+        compressed = separatorMatch.sub(r"\1", compressed)
+        return compressed
 
 
     def getCurrentEvents(self, now):
@@ -106,6 +115,24 @@ class MobileView(object):
         return _(u"Current time: %s" % self.now.strftime(timeFormat))
 
 
+class DisplayEvent(object):
+    def __init__(self, name, url, timeString, locationName, locationUrl):
+        self.name = name
+        self.url = url
+        self.timeString = timeString
+        self.locationName = locationName
+        self.locationUrl = locationUrl
+
+def getTimeHourMinute(interval):
+    intervalMinutes = (interval.days*86400 + interval.seconds)/60
+    if intervalMinutes >= 60:
+        hours = intervalMinutes/60
+        minutes = intervalMinutes%60
+        return "%d h %d min" % (hours, minutes)
+    else:
+        return "%d min" % intervalMinutes
+
+
 class Index(grok.View, MobileView):
     title = _(u"Assembly mobile")
 
@@ -114,8 +141,23 @@ class Index(grok.View, MobileView):
 
         now = datetime.datetime(2009, 8, 7, 18, 3)
 
-        self.eventsNow = self.context.getCurrentEvents(now)
-        self.eventsNext = self.context.getNextEvents(now)
+        self.currentEvents = []
+        for event in self.context.getCurrentEvents(now):
+            self.currentEvents.append(
+                DisplayEvent(event.name,
+                             event.url,
+                             getTimeHourMinute(event.end - now),
+                             event.location.name,
+                             event.location.url))
+
+        self.nextEvents = []
+        for event in self.context.getNextEvents(now):
+            self.nextEvents.append(
+                DisplayEvent(event.name,
+                             event.url,
+                             getTimeHourMinute(event.start - now),
+                             event.location.name,
+                             event.location.url))
 
 
 class ScheduleTime(grok.View, MobileView):
