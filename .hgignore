@@ -1,0 +1,10 @@
+syntax: glob
+bin
+develop-eggs
+parts
+src/AsmMobile.egg-info
+eggs
+*.pyc
+*~
+\#*\#
+.installed.cfg

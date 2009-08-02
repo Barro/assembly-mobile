@@ -1,0 +1,2 @@
+<metal:block metal:use-macro="context/@@layout/macros/page">
+</metal:block >
