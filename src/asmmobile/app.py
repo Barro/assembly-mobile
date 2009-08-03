@@ -54,7 +54,6 @@ from zope.app.exception.systemerror import SystemErrorView
 #             print "REDIRECTFAILED %s" % e
 #         return "404"
 
-
 class NextEventFilter(object):
     def __init__(self, now):
         self.now = now
@@ -78,56 +77,75 @@ class NextEventFilter(object):
             return True
 
 
+def locationUrl(location):
+    return "%s/%s" % (AsmMobile.LOCATIONS, location.__name__)
+
+def eventUrl(event):
+    return "%s/%s" % (AsmMobile.EVENTS, event.__name__)
+
 class AsmMobile(grok.Application, grok.Container):
     zope.interface.implements(asmmobile.interfaces.IAsmMobile)
 
     otherLanguage = _(u"link|other_language", default=u'/')
 
+    EVENTS = 'event'
+    LOCATIONS = 'location'
+
     def __init__(self, **vars):
         super(AsmMobile, self).__init__(**vars)
 
-        self['locations'] = asmmobile.location.LocationContainer()
-        self['events'] = asmmobile.event.EventContainer()
+        self[self.LOCATIONS] = asmmobile.location.LocationContainer()
+        self[self.EVENTS] = asmmobile.event.EventContainer()
 
+    def getEvents(self):
+        return self[self.EVENTS]
+
+    events = property(getEvents)
+
+
+    def getLocations(self):
+        return self[self.LOCATIONS]
+
+    locations = property(getLocations)
 
     def addLocation(self, name, url, priority, hideUntil, majorLocationName):
         if majorLocationName is not None:
-            majorLocation = self['locations'].getLocation(majorLocationName)
+            majorLocation = self.locations.getLocation(majorLocationName)
         else:
             majorLocation = None
 
-        return self['locations'].addLocation(name,
-                                             url,
-                                             priority,
-                                             hideUntil,
-                                             majorLocation)
+        return self.locations.addLocation(name,
+                                          url,
+                                          priority,
+                                          hideUntil,
+                                          majorLocation)
 
     def updateEvents(self, events):
         updateEvents = {}
         for eventId, values in events.items():
-            location = self['locations'].getLocation(values['location'])
+            location = self.locations.getLocation(values['location'])
             updateEvents[eventId] = {'name': values['name'],
                                      'start': values['start'],
                                      'end': values['end'],
                                      'url': values['url'],
                                      'location': location}
 
-        self['events'].updateEvents(updateEvents)
+        self.events.updateEvents(updateEvents)
 
     def getCurrentEvents(self, now):
         eventFilter = lambda event : (event.start <= now and now < event.end)
-        return self['events'].getEvents(eventFilter)
+        return self.events.getEvents(eventFilter)
 
 
     def getNextEvents(self, now):
-        return self['events'].getEvents(NextEventFilter(now))
+        return self.events.getEvents(NextEventFilter(now))
 
     def getEvents(self):
-        return self['events'].getEvents(None)
+        return self.events.getEvents(None)
 
     def getLocationEvents(self, location):
         eventFilter = lambda event : (event.location == location)
-        return self['events'].getEvents(eventFilter)
+        return self.events.getEvents(eventFilter)
 
 
 class DisplayEvent(object):
@@ -152,13 +170,11 @@ def getEventList(events, timeGetter, locationAdder, outLocations):
     result = []
     for event in events:
         locationName = event.location.name
-        locationKey = event.location.__name__
-        locationUrl = "locations/%s" % locationKey
         displayEvent = DisplayEvent(event.name,
-                                    event.url,
+                                    eventUrl(event),
                                     getTimeHourMinute(timeGetter(event)),
                                     locationName,
-                                    locationUrl)
+                                    locationUrl(event.location))
         result.append(displayEvent)
         location = event.majorLocation
         if location not in outLocations:
@@ -201,30 +217,6 @@ class ScheduleTime(grok.View, MobileView):
     grok.context(AsmMobile)
 
     title = _(u"Full schedule")
-
-    zeroSeconds = datetime.timedelta(seconds=0)
-
-    def formatInterval(self, interval):
-        return getTimeHourMinute(interval)
-
-    def update(self):
-        self.mobileUpdate()
-
-        self.events = self.context.getEvents()
-        self.anchorEvent = None
-        previousEvent = None
-        for event in self.events:
-            if event.start >= self.now:
-                self.anchorEvent = previousEvent
-                break
-            previousEvent = event
-
-
-class ScheduleLocation(grok.View, MobileView):
-    grok.name("schedule-location")
-    grok.context(AsmMobile)
-
-    title = _(u"Schedule by location")
 
     zeroSeconds = datetime.timedelta(seconds=0)
 

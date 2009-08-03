@@ -29,6 +29,9 @@ import re
 locationKeyChars = (string.ascii_letters.decode('ascii') \
                         + string.digits.decode('ascii'))
 
+class EditDescription(grok.Permission):
+    grok.name('asmmobile.Edit')
+
 def convertNameToKey(name):
     return re.sub(ur'([^%s]+)' % locationKeyChars, ur'_',
                   name.lower()).strip("_")
@@ -154,7 +157,7 @@ class LocationIndex(grok.View, MobileView):
                 break
             previousEvent = event
 
-
 class Edit(grok.EditForm):
+    grok.require("asmmobile.Edit")
     grok.context(Location)
     form_fields = grok.AutoFields(Location)

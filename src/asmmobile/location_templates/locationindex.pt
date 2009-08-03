@@ -12,7 +12,11 @@
      tal:define="global lastStart python:None">
 <h2 tal:condition="python:lastStart!=event.start.day"
     tal:content="python:event.start.strftime('%A')">Dayname</h2>
-    <span tal:replace="python: '%s - %s' % (event.start.strftime('%H:%M'), event.name)" />
+
+    <span tal:replace="python:event.start.strftime('%H:%M')" />
+    <a tal:content="event/name"
+       tal:attributes="href python: '%s/%s' % (view.application_url('event'), event.__name__)">Event name</a>
+
     <span tal:condition="python: (event.end - event.start) > view.zeroSeconds"
           tal:replace="python: '(%s)' % view.formatInterval(event.end - event.start)" />
 

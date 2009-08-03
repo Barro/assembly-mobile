@@ -17,8 +17,11 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import datetime
 import grok
 import asmmobile.interfaces
+from mobile import MobileView
+from util import getTimeHourMinute
 
 def _sortByStartTime(first, second):
     return cmp(first.start, second.start)
@@ -62,16 +65,38 @@ class EventContainer(grok.Container):
 class Event(grok.Model):
     grok.implements(asmmobile.interfaces.IEvent)
 
-    def __init__(self, name, start, end, location, url):
+    def __init__(self, name, start, end, location, url, description=None):
         self.name = name
         self.start = start
         self.end = end
         self.location = location
         self.url = url
+        self.description = description
 
     def getMajorLocation(self):
         return self.location.majorLocation
 
     majorLocation = property(getMajorLocation)
 
+    def getLength(self):
+        return self.end - self.start
 
+    length = property(getLength)
+
+
+class EventIndex(grok.View, MobileView):
+    grok.name("index")
+    grok.context(Event)
+
+    zeroSeconds = datetime.timedelta(seconds=0)
+
+    def getTitle(self):
+        return self.context.name
+
+    title = property(getTitle)
+
+    def formatInterval(self, interval):
+        return getTimeHourMinute(interval)
+
+    def update(self):
+        self.mobileUpdate()
