@@ -1,34 +1,30 @@
 <metal:block metal:use-macro="context/@@layout/macros/page">
 <div metal:fill-slot='content'>
 <h2>Now</h2>
-<ul>
-  <li tal:repeat="event view/currentEvents">
-    <a tal:attributes="href event/url">
-      <h3 tal:content="event/name">Event</h3>
-    </a>
-    <span>
+<div class="li" tal:repeat="event view/currentEvents">
+  <a tal:attributes="href event/url">
+    <h3 tal:content="event/name">Event</h3>
+  </a>
+  <span>
     <span tal:replace="event/timeString">Content</span> left -
     <a tal:attributes="href event/locationUrl">
       <span tal:replace="event/locationName">Location</span>
     </a>
-    </span>
-  </li>
-</ul>
+  </span>
+</div>
 
 <h2>Next</h2>
-<ul>
-  <li tal:repeat="event view/nextEvents">
-    <a tal:attributes="href event/url">
-      <h3 tal:content="event/name">Event</h3>
-    </a>
-    <span>
+<div class="li" tal:repeat="event view/nextEvents">
+  <a tal:attributes="href event/url">
+    <h3 tal:content="event/name">Event</h3>
+  </a>
+  <span>
     in <span tal:replace="event/timeString">Content</span> -
     <a tal:attributes="href event/locationUrl">
       <span tal:replace="event/locationName">Location</span>
     </a>
-    </span>
-  </li>
-</ul>
+  </span>
+</div>
 
 </div>
 </metal:block >

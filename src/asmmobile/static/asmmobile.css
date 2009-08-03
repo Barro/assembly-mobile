@@ -1,7 +1,7 @@
 body {
   background: #ddd;
   color: #111;
-  font-family: "Helvetica Neue", Arial, sans-serif; margin:3%;
+  font-family: "Helvetica Neue", Arial, sans-serif; margin:2%;
 }
 
 h1 {
@@ -30,12 +30,14 @@ ul {
   list-style-type: none;
 }
 
-li {
+.li {
   background: white;
   padding: 10px 15px;
   margin: 8px 0;
   line-height: 1.1;
   border: 1px solid #bbb;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
 }
 
 span, span a {
@@ -54,4 +56,13 @@ hr {
 .h span {
   float: right;
   text-align:right;
+}
+
+.li a {
+  color: #6E8F10;
+  text-decoration: none;
+}
+
+.li span a {
+  color: #333;
 }
