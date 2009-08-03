@@ -3,11 +3,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" i18n:domain="AsmMobile">
 <head>
   <title tal:content="view/title">Web page</title>
-  <style type='text/css' tal:content="context/getCss"></style>
+  <style type='text/css' tal:content="view/getCss"></style>
 </head>
 <body>
 <metal:block define-slot="body">
-<div class="h">Overview | <a href="schedule-location">By Location</a> <span>Assembly Mobile</span></div>
+<div class="h" metal:define-macro="links">
+<a href="index">Overview</a> | <a href="schedule-time#now">Full schedule</a> <span>Assembly Mobile</span></div>
 <hr />
 <!-- <div class='lk'> -->
 <!--   <a tal:attributes="href context/otherLanguage" -->
@@ -30,7 +31,7 @@
 </metal:block>
 
 <hr />
-<div class="h">Overview | <a href="schedule-location">By Location</a> <span>Assembly Mobile</span>
+<div metal:use-macro="context/@@layout/macros/links">Links</div>
 <br /><a href="http://www.assembly.org/">Full Site</a>
 
 <!-- <hr /> -->

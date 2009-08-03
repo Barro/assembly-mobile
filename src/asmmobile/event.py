@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Assembly mobile - mobile content for visitors of Assembly computer festival.
-# Copyright (C) 2009  Jussi Judin
+# Copyright (C) 2009  Assembly Organizing
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -53,38 +53,10 @@ class EventContainer(grok.Container):
             event.location = eventValues['location']
             event.url = eventValues['url']
 
-    def getCurrentEvents(self, currentTime):
+    def getEvents(self, eventFilter):
         events = list(self.values())
         events.sort(_sortByStartTime)
-
-        result = []
-        for event in events:
-            if event.start <= currentTime and currentTime < event.end:
-                result.append(event)
-        return result
-
-
-    def getNextEvents(self, currentTime):
-        events = list(self.values())
-        events.sort(_sortByStartTime)
-
-        locationizedEvents = {}
-        result = []
-        for event in events:
-            if event.start <= currentTime:
-                continue
-
-            if currentTime + event.majorLocation.hideUntil < event.start:
-                continue
-
-            location = event.majorLocation
-            if location in locationizedEvents:
-                if event.start == locationizedEvents[location]:
-                    result.append(event)
-            else:
-                result.append(event)
-                locationizedEvents[location] = event
-        return result
+        return filter(eventFilter, events)
 
 
 class Event(grok.Model):

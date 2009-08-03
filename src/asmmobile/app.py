@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Assembly mobile - mobile content for visitors of Assembly computer festival.
-# Copyright (C) 2009  Jussi Judin
+# Copyright (C) 2009  Assembly Organizing
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -30,9 +30,55 @@ import asmmobile.event
 
 from asmmobile import AsmMobileMessageFactory as _
 
+from zope.publisher.interfaces import INotFound
+from zope.security.interfaces import IUnauthorized
+from zope.app.exception.systemerror import SystemErrorView
+
+class ErrorPage401(grok.View, SystemErrorView):
+    grok.context(IUnauthorized)
+    grok.name('index.html')
+
+    def render(self):
+        return "401"
+
+
+class ErrorPage404(grok.View, SystemErrorView):
+    grok.context(INotFound)
+    grok.name('index.html')
+
+    def render(self):
+        try:
+            self.redirect("index")
+        except ValueError, e:
+            print "REDIRECTFAILED %s" % e
+        return "404"
+
+
+class NextEventFilter(object):
+    def __init__(self, now):
+        self.now = now
+        self.locationizedEvents = {}
+
+    def __call__(self, event):
+        if event.start <= self.now:
+            return False
+
+        if self.now + event.majorLocation.hideUntil < event.start:
+            return False
+
+        location = event.majorLocation
+        if location in self.locationizedEvents:
+            if event.start == self.locationizedEvents[location]:
+                return True
+            else:
+                return False
+        else:
+            self.locationizedEvents[location] = event
+            return True
+
+
 class AsmMobile(grok.Application, grok.Container):
     zope.interface.implements(asmmobile.interfaces.IAsmMobile)
-
 
     otherLanguage = _(u"link|other_language", default=u'/')
 
@@ -67,52 +113,48 @@ class AsmMobile(grok.Application, grok.Container):
 
         self['events'].updateEvents(updateEvents)
 
-    def getCss(self):
-        fp = open("src/asmmobile/static/asmmobile.css", "r")
-        data = fp.read()
-        fp.close()
-        compressed = data
-        newlinesMatch = re.compile(r" *\n *")
-        compressed = newlinesMatch.sub("", compressed)
-        separatorMatch = re.compile(r" *([,:\{;]) *")
-        compressed = separatorMatch.sub(r"\1", compressed)
-        return compressed
-
-
     def getCurrentEvents(self, now):
-        return self['events'].getCurrentEvents(now)
+        eventFilter = lambda event : (event.start <= now and now < event.end)
+        return self['events'].getEvents(eventFilter)
 
 
     def getNextEvents(self, now):
-        return self['events'].getNextEvents(now)
+        return self['events'].getEvents(NextEventFilter(now))
+
+    def getEvents(self):
+        return self['events'].getEvents(None)
 
 
 _TIME_FACTORY = datetime.datetime(2000, 1, 1)
 
-
 class MobileView(object):
 
+    def mobileUpdate(self):
+        self.now = datetime.datetime(2009, 8, 7, 18, 3)
 
-    def setHeaders(self):
-        self.response.setHeader("Content-Type", "text/html; charset=UTF-8")
+        self.request.response.setHeader("Content-Type", "text/html; charset=UTF-8")
         nextMinute = _TIME_FACTORY.utcnow()
-        nextMinute += datetime.timedelta(seconds=(60 - nextMinute.second%60))
-        self.response.setHeader("Expires",
-                                nextMinute.strftime("%a, %d %b %Y %H:%M:%S +0000"))
-
-
-    def updateMobile(self):
-        self.setHeaders()
-
-#         requestTime = None
-#         if requestTime is None:
-# f            requestTime = timeFactory.now().strftime("%Y%m%d%H%M")
-        self.now = _TIME_FACTORY.now()
+        maxAge = 60 - nextMinute.second%60
+        nextMinute += datetime.timedelta(seconds=(maxAge))
+        self.request.response.setHeader(
+            "Expires", nextMinute.strftime("%a, %d %b %Y %H:%M:%S +0000"))
+        self.request.response.setHeader("Cache-Control", "max-age=%d" % maxAge)
 
 
     def getTime(self):
         timeFormat = "%Y-%m-%d %H:%M %z"
         return _(u"Current time: %s" % self.now.strftime(timeFormat))
+
+
+    def getCss(self):
+        fp = open("src/asmmobile/static/asmmobile.css", "r")
+        compressed = fp.read()
+        fp.close()
+        newlinesMatch = re.compile(r" *\n *")
+        compressed = newlinesMatch.sub("", compressed)
+        separatorMatch = re.compile(r" *([,:\{;]) *")
+        compressed = separatorMatch.sub(r"\1", compressed)
+        return compressed
 
 
 class DisplayEvent(object):
@@ -123,64 +165,130 @@ class DisplayEvent(object):
         self.locationName = locationName
         self.locationUrl = locationUrl
 
+
+class GroupingLocation(object):
+    def __init__(self, name, url, priority, currentEvents, nextEvents):
+        self.name = name
+        self.url = url
+        self.priority = priority
+        self.currentEvents = currentEvents
+        self.nextEvents = nextEvents
+
+
 def getTimeHourMinute(interval):
     intervalMinutes = (interval.days*86400 + interval.seconds)/60
-    if intervalMinutes >= 60:
-        hours = intervalMinutes/60
-        minutes = intervalMinutes%60
-        return "%d h %d min" % (hours, minutes)
-    else:
-        return "%d min" % intervalMinutes
+    hours = intervalMinutes/60
+    minutes = intervalMinutes%60
+    timeList = []
+    if hours > 0:
+        timeList.append("%d h" % hours)
+    if minutes > 0:
+        timeList.append("%d min" % minutes)
+    return " ".join(timeList)
+
+
+def getEventList(events, timeGetter, locationAdder, outLocations):
+    result = []
+    for event in events:
+        displayEvent = DisplayEvent(event.name,
+                                    event.url,
+                                    getTimeHourMinute(timeGetter(event)),
+                                    event.location.name,
+                                    event.location.url)
+        result.append(displayEvent)
+        location = event.majorLocation
+        if location not in outLocations:
+            outLocations[location] = GroupingLocation(event.location.name,
+                                                      event.location.url,
+                                                      event.location.priority,
+                                                      [],
+                                                      [])
+        locationAdder(displayEvent, location, outLocations)
+    return result
 
 
 class Index(grok.View, MobileView):
     title = _(u"Assembly mobile")
+    grok.context(AsmMobile)
 
     def update(self):
-        self.updateMobile()
+        self.mobileUpdate()
 
-        now = datetime.datetime(2009, 8, 7, 18, 3)
+        locations = {}
+        self.currentEvents = \
+            getEventList(self.context.getCurrentEvents(self.now),
+                         (lambda event: event.end - self.now),
+                         (lambda event, location, outLocations:
+                          outLocations[location].currentEvents.append(event)),
+                         locations)
 
-        self.currentEvents = []
-        for event in self.context.getCurrentEvents(now):
-            self.currentEvents.append(
-                DisplayEvent(event.name,
-                             event.url,
-                             getTimeHourMinute(event.end - now),
-                             event.location.name,
-                             event.location.url))
+        self.nextEvents = \
+            getEventList(self.context.getNextEvents(self.now),
+                         (lambda event: self.now - event.start),
+                         (lambda event, location, outLocations:
+                          outLocations[location].nextEvents.append(event)),
+                         locations)
 
-        self.nextEvents = []
-        for event in self.context.getNextEvents(now):
-            self.nextEvents.append(
-                DisplayEvent(event.name,
-                             event.url,
-                             getTimeHourMinute(event.start - now),
-                             event.location.name,
-                             event.location.url))
+        self.locations = locations.values()
 
 
 class ScheduleTime(grok.View, MobileView):
     grok.name("schedule-time")
+    grok.context(AsmMobile)
 
-    title = _(u"Schedule by time")
+    title = _(u"Full schedule")
+
+    zeroSeconds = datetime.timedelta(seconds=0)
+
+    def formatInterval(self, interval):
+        return getTimeHourMinute(interval)
 
     def update(self):
-        self.updateMobile()
+        self.mobileUpdate()
 
         self.events = self.context.getEvents()
+        self.anchorEvent = None
+        previousEvent = None
+        for event in self.events:
+            if event.start >= self.now:
+                self.anchorEvent = previousEvent
+                break
+            previousEvent = event
 
 
 class ScheduleLocation(grok.View, MobileView):
     grok.name("schedule-location")
+    grok.context(AsmMobile)
 
     title = _(u"Schedule by location")
 
+    zeroSeconds = datetime.timedelta(seconds=0)
+
+    def formatInterval(self, interval):
+        return getTimeHourMinute(interval)
+
     def update(self):
-        self.updateMobile()
+        self.mobileUpdate()
+
+        self.events = self.context.getEvents()
+        self.anchorEvent = None
+        previousEvent = None
+        for event in self.events:
+            if event.start >= self.now:
+                self.anchorEvent = previousEvent
+                break
+            previousEvent = event
 
 
 class Layout(grok.View):
-    """The view that contains the main view."""
+    """The view that contains the main layout."""
     grok.context(zope.interface.Interface)
 
+
+class Favicon(grok.View):
+    grok.context(zope.interface.Interface)
+
+    grok.name("favicon.ico")
+
+    def render(self):
+        return self.static.get("favicon.ico").GET()

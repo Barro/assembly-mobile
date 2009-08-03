@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Assembly mobile - mobile content for visitors of Assembly computer festival.
-# Copyright (C) 2009  Jussi Judin
+# Copyright (C) 2009  Assembly Organizing
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -42,16 +42,10 @@ class IEventContainer(zope.interface.Interface):
     def updateEvents(values):
         pass
 
-    def getCurrentEvents(currentTime):
-        """Returns all events that are currently going on.
+    def getEvents(eventFilter):
+        """Returns a list of events filtered through eventFilter function.
 
-        @param currentTime Time that represents current time.
-        """
-
-    def getNextEvents(currentTime):
-        """Returns all events that are going to happen next in some area.
-
-        @param currentTime Time that represents current time.
+        Events are given for filter function in ascending start time order.
         """
 
 class IEvent(zope.interface.Interface):
