@@ -13,6 +13,7 @@
           tal:replace="python: '(%s)' % view.formatInterval(event.end - event.start)" />
     <span tal:content="event/location/name"></span>
   </tal:block>
+  <hr />
 </a>
 
 <tal:block tal:condition="python: event != view.anchorEvent">
