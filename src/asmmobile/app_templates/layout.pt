@@ -32,7 +32,7 @@
 
 <hr />
 <div metal:use-macro="context/@@layout/macros/links">Links</div>
-<br /><a href="http://www.assembly.org/">Full Site</a>
+<div><a href="http://www.assembly.org/">Full Site</a></div>
 
 <!-- <hr /> -->
 <!-- <div class='lk'> -->
