@@ -24,6 +24,7 @@ setup(name='AsmMobile',
                         'z3c.testsetup',
                         'grokcore.startup',
                         # Add extra requirements here
+                        'icalendar',
                         ],
       entry_points = """
       [console_scripts]
