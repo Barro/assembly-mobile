@@ -9,7 +9,8 @@
   <span>
     <span tal:replace="event/timeString">Content</span> left -
     <a tal:attributes="href event/locationUrl">
-      <span tal:replace="event/locationName">Location</span>
+      <span tal:content="event/locationName"
+            class="loc">Location</span>
     </a>
   </span>
 </div>
@@ -23,7 +24,8 @@
   <span>
     in <span tal:replace="event/timeString">Content</span> -
     <a tal:attributes="href event/locationUrl">
-      <span tal:replace="event/locationName">Location</span>
+      <span tal:content="event/locationName"
+            class="loc">Location</span>
     </a>
   </span>
 </div>

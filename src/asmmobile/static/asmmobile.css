@@ -40,7 +40,7 @@ ul {
   -webkit-border-radius: 5px;
 }
 
-span, span a {
+.loc, .loc a {
   color: #666;
   font-size: 90%;
 }
@@ -65,4 +65,8 @@ hr {
 
 .li span a {
   color: #333;
+}
+
+.now {
+  background-color: #eee;
 }
