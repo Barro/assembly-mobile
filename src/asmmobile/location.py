@@ -87,6 +87,9 @@ class Index(grok.View, MobileView):
     def locations(self):
         return self.context.values()
 
+    def update(self):
+        self.mobileUpdate()
+
 
 class Location(grok.Model):
     grok.implements(asmmobile.interfaces.ILocation)
