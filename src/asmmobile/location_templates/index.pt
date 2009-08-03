@@ -1,0 +1,11 @@
+<metal:block metal:use-macro="context/application/@@layout/macros/page">
+<div metal:fill-slot='content'>
+
+<div tal:repeat="location view/locations">
+  <a tal:attributes="href location/__name__">
+    <span tal:replace="location/name" />
+  </a>
+</div>
+
+</div>
+</metal:block >

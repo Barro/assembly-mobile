@@ -21,9 +21,21 @@ import datetime
 
 import grok
 import asmmobile.interfaces
+from mobile import MobileView
+from util import getTimeHourMinute
+import string
+import re
+
+locationKeyChars = (string.ascii_letters.decode('ascii') \
+                        + string.digits.decode('ascii'))
+
+def convertNameToKey(name):
+    return re.sub(ur'([^%s]+)' % locationKeyChars, ur'_',
+                  name.lower()).strip("_")
 
 class LocationContainer(grok.Container):
     grok.implements(asmmobile.interfaces.ILocationContainer)
+
 
     def addLocation(self,
                     name,
@@ -31,7 +43,7 @@ class LocationContainer(grok.Container):
                     priority=None,
                     hideUntil=None,
                     majorLocation=None):
-        keyName = name.lower()
+        keyName = convertNameToKey(name)
 
         if keyName in self:
             location = self[keyName]
@@ -57,7 +69,20 @@ class LocationContainer(grok.Container):
 
 
     def getLocation(self, name):
-        return self[name.lower()]
+        return self[convertNameToKey(name)]
+
+    def application(self):
+        return self.__parent__
+
+
+class Index(grok.View, MobileView):
+    grok.context(LocationContainer)
+    grok.name("index")
+
+    title = u"Locations"
+
+    def locations(self):
+        return self.context.values()
 
 
 class Location(grok.Model):
@@ -69,11 +94,13 @@ class Location(grok.Model):
     def __init__(self,
                  name,
                  url,
+                 description=None,
                  priority=None,
                  hideUntil=None,
                  majorLocation=None):
         self.name = name
         self.url = url
+        self.description = description
 
         if priority is None:
             self.priority = Location.DEFAULT_PRIORITY
@@ -85,7 +112,7 @@ class Location(grok.Model):
         else:
             self.hideUntil = hideUntil
 
-        if not majorLocation:
+        if majorLocation is None:
             self.majorLocation = self
         else:
             self.majorLocation = majorLocation
@@ -93,3 +120,41 @@ class Location(grok.Model):
     def getHideUntil(self):
         # Get parent hiding time to be hiding time of this location.
         return self.majorLocation.hideUntil
+
+    def getEvents(self):
+        return self.application().getLocationEvents(self)
+
+    def application(self):
+        return self.__parent__.application()
+
+
+class LocationIndex(grok.View, MobileView):
+    grok.name("index")
+    grok.context(Location)
+
+    zeroSeconds = datetime.timedelta(seconds=0)
+
+    def getTitle(self):
+        return self.context.name
+
+    title = property(getTitle)
+
+    def formatInterval(self, interval):
+        return getTimeHourMinute(interval)
+
+    def update(self):
+        self.mobileUpdate()
+
+        self.events = self.context.getEvents()
+        self.anchorEvent = None
+        previousEvent = None
+        for event in self.events:
+            if event.start >= self.now:
+                self.anchorEvent = previousEvent
+                break
+            previousEvent = event
+
+
+class Edit(grok.EditForm):
+    grok.context(Location)
+    form_fields = grok.AutoFields(Location)

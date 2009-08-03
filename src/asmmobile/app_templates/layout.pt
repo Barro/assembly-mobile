@@ -8,24 +8,8 @@
 <body>
 <metal:block define-slot="body">
 <div class="h" metal:define-macro="links">
-<a href="index">Overview</a> | <a href="schedule-time#now">Full schedule</a> <span>Assembly Mobile</span></div>
+<a tal:attributes="href python:view.application_url('index')">Overview</a> | <a tal:attributes="href python:view.application_url('schedule-time')+'#now'">Full schedule</a> <span>Assembly Mobile</span></div>
 <hr />
-<!-- <div class='lk'> -->
-<!--   <a tal:attributes="href context/otherLanguage" -->
-<!--      i18n:translate="other_lang">OTHER LANG</a> -->
-<!-- <metal:block define-slot="schedule-now">| -->
-<!-- <a tal:attributes="href python:view.url('index')" -->
-<!--    i18n:translate="Overview">Overview</a> -->
-<!-- </metal:block> -->
-<!-- <metal:block define-slot="schedule-time">| -->
-<!-- <a tal:attributes="href python:view.url('schedule-time')" -->
-<!--    i18n:translate="Full schedule">Full schedule</a> -->
-<!-- </metal:block> -->
-<!-- <metal:block define-slot="schedule-location">| -->
-<!-- <a tal:attributes="href python:view.url('schedule-location')" -->
-<!--    i18n:translate="By location">By location</a> -->
-<!-- </metal:block> -->
-<!-- </div> -->
 <metal:block define-slot="content">
 
 </metal:block>

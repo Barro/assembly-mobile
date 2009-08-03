@@ -26,6 +26,8 @@ import re
 
 import asmmobile.location
 import asmmobile.event
+from mobile import MobileView
+from util import getTimeHourMinute
 
 from asmmobile import AsmMobileMessageFactory as _
 
@@ -33,24 +35,24 @@ from zope.publisher.interfaces import INotFound
 from zope.security.interfaces import IUnauthorized
 from zope.app.exception.systemerror import SystemErrorView
 
-class ErrorPage401(grok.View, SystemErrorView):
-    grok.context(IUnauthorized)
-    grok.name('index.html')
+# class ErrorPage401(grok.View, SystemErrorView):
+#     grok.context(IUnauthorized)
+#     grok.name('index.html')
 
-    def render(self):
-        return "401"
+#     def render(self):
+#         return "401"
 
 
-class ErrorPage404(grok.View, SystemErrorView):
-    grok.context(INotFound)
-    grok.name('index.html')
+# class ErrorPage404(grok.View, SystemErrorView):
+#     grok.context(INotFound)
+#     grok.name('index.html')
 
-    def render(self):
-        try:
-            self.redirect("index")
-        except ValueError, e:
-            print "REDIRECTFAILED %s" % e
-        return "404"
+#     def render(self):
+#         try:
+#             self.redirect("index")
+#         except ValueError, e:
+#             print "REDIRECTFAILED %s" % e
+#         return "404"
 
 
 class NextEventFilter(object):
@@ -123,37 +125,9 @@ class AsmMobile(grok.Application, grok.Container):
     def getEvents(self):
         return self['events'].getEvents(None)
 
-
-_TIME_FACTORY = datetime.datetime(2000, 1, 1)
-
-class MobileView(object):
-
-    def mobileUpdate(self):
-        self.now = datetime.datetime(2009, 8, 7, 18, 3)
-
-        self.request.response.setHeader("Content-Type", "text/html; charset=UTF-8")
-        nextMinute = _TIME_FACTORY.utcnow()
-        maxAge = 60 - nextMinute.second%60
-        nextMinute += datetime.timedelta(seconds=(maxAge))
-        self.request.response.setHeader(
-            "Expires", nextMinute.strftime("%a, %d %b %Y %H:%M:%S +0000"))
-        self.request.response.setHeader("Cache-Control", "max-age=%d" % maxAge)
-
-
-    def getTime(self):
-        timeFormat = "%Y-%m-%d %H:%M %z"
-        return _(u"Current time: %s" % self.now.strftime(timeFormat))
-
-
-    def getCss(self):
-        fp = open("src/asmmobile/static/asmmobile.css", "r")
-        compressed = fp.read()
-        fp.close()
-        newlinesMatch = re.compile(r" *\n *")
-        compressed = newlinesMatch.sub("", compressed)
-        separatorMatch = re.compile(r" *([,:\{;]) *")
-        compressed = separatorMatch.sub(r"\1", compressed)
-        return compressed
+    def getLocationEvents(self, location):
+        eventFilter = lambda event : (event.location == location)
+        return self['events'].getEvents(eventFilter)
 
 
 class DisplayEvent(object):
@@ -174,26 +148,17 @@ class GroupingLocation(object):
         self.nextEvents = nextEvents
 
 
-def getTimeHourMinute(interval):
-    intervalMinutes = (interval.days*86400 + interval.seconds)/60
-    hours = intervalMinutes/60
-    minutes = intervalMinutes%60
-    timeList = []
-    if hours > 0:
-        timeList.append("%d h" % hours)
-    if minutes > 0:
-        timeList.append("%d min" % minutes)
-    return " ".join(timeList)
-
-
 def getEventList(events, timeGetter, locationAdder, outLocations):
     result = []
     for event in events:
+        locationName = event.location.name
+        locationKey = event.location.__name__
+        locationUrl = "locations/%s" % locationKey
         displayEvent = DisplayEvent(event.name,
                                     event.url,
                                     getTimeHourMinute(timeGetter(event)),
-                                    event.location.name,
-                                    event.location.url)
+                                    locationName,
+                                    locationUrl)
         result.append(displayEvent)
         location = event.majorLocation
         if location not in outLocations:

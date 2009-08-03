@@ -18,6 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import zope.interface
+from zope import schema
 
 class IAsmMobile(zope.interface.Interface):
     """Marker interface for the application object."""
@@ -55,6 +56,8 @@ class IEvent(zope.interface.Interface):
     start = zope.interface.Attribute("")
     end = zope.interface.Attribute("")
 
+    description = schema.Text(title=u"Description")
+
     location = zope.interface.Attribute("")
     majorLocation = zope.interface.Attribute("")
 
@@ -71,6 +74,8 @@ class ILocation(zope.interface.Interface):
 
     name = zope.interface.Attribute("")
     url = zope.interface.Attribute("")
+
+    description = schema.Text(title=u"Description")
 
     majorLocation = zope.interface.Attribute("")
     priority = zope.interface.Attribute("")
