@@ -60,12 +60,19 @@ def parseCsv(filename, lang):
         locationName = entry['Location_' + lang]
         locationUrl = entry['Location_URL']
         locations[locationName] = locationUrl
-        eventId = entry['ID']
+        startTime = parseDate(entry['Start_Date']),
+        eventId = "asm%d_%s" % (startTime.year, entry['ID'])
+        categories = []
+        if entry['Major'] == 'Yes':
+            categories.append("Major_event")
+        if len(entry['Class']) > 0:
+            categories += entry['Class'].split(" ")
         events[eventId] = {'name': entry['Title_' + lang],
                            'url': entry['URL'],
-                           'start': parseDate(entry['Start_Date']),
+                           'start': startTime,
                            'end': parseDate(entry['Finish_Date']),
                            'location': locationName,
+                           'categories': categories,
                            }
     return (locations, events)
 

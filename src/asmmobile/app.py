@@ -201,6 +201,11 @@ class Layout(grok.View):
     grok.context(zope.interface.Interface)
 
 
+class ICalendar(grok.View):
+    """The view that contains the iCalendar events."""
+    grok.context(zope.interface.Interface)
+
+
 class Favicon(grok.View):
     grok.context(zope.interface.Interface)
 

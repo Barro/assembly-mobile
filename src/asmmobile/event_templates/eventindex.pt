@@ -3,6 +3,7 @@
 
 <h1>Event</h1>
 (<a tal:attributes="href context/url">url</a>)
+(<a tal:attributes="href python:view.url('event.ical')">Get event to your calendar</a>)
 <p tal:content="context/name">name</p>
 
 <tal:block tal:condition="context/description">
@@ -11,6 +12,7 @@
 </tal:block>
 
 <h1>Time</h1>
+<p>
 <span tal:replace="python:context.start.strftime('%A %H:%M')" /> -
 <tal:block tal:condition="python: context.start.day != context.end.day">
    <span tal:replace="python:context.end.strftime('%A')" />
@@ -18,9 +20,12 @@
    <span tal:replace="python:context.end.strftime('%H:%M')" />
 <span tal:condition="python: context.length > view.zeroSeconds"
       tal:replace="python: '(%s)' % view.formatInterval(context.length)" />
+</p>
+<h1>Location</h1>
+<p>
 <a tal:attributes="href python:'%s/%s' % (view.applicationRelativeUrl('location'), context.location.__name__)"
    tal:content="context/location/name">Location</a>
-
+</p>
 
 </div>
 </metal:block >

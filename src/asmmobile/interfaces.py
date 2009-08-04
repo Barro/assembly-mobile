@@ -56,6 +56,7 @@ class IEvent(zope.interface.Interface):
     start = zope.interface.Attribute("")
     end = zope.interface.Attribute("")
 
+    categories = zope.interface.Attribute("")
     description = schema.Text(title=u"Description")
 
     location = zope.interface.Attribute("")

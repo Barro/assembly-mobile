@@ -21,7 +21,7 @@ import datetime
 import grok
 import asmmobile.interfaces
 from mobile import MobileView
-from util import getTimeHourMinute
+from util import getTimeHourMinute, DisplayEvent
 
 def _sortByStartTime(first, second):
     return cmp(first.start, second.start)
@@ -65,13 +65,21 @@ class EventContainer(grok.Container):
 class Event(grok.Model):
     grok.implements(asmmobile.interfaces.IEvent)
 
-    def __init__(self, name, start, end, location, url, description=None):
+    def __init__(self,
+                 name,
+                 start,
+                 end,
+                 location,
+                 url,
+                 description=None,
+                 categories=[]):
         self.name = name
         self.start = start
         self.end = end
         self.location = location
         self.url = url
         self.description = description
+        self.categories = categories
 
     def getMajorLocation(self):
         return self.location.majorLocation
@@ -100,3 +108,13 @@ class EventIndex(grok.View, MobileView):
 
     def update(self):
         self.mobileUpdate()
+
+class EventIcal(grok.View, MobileView):
+    grok.name("event.ical")
+    grok.context(Event)
+
+    def update(self):
+        self.mobileUpdate()
+        self.response.setHeader('Content-Type', "text/calendar")
+
+        self.events = [DisplayEvent(self, self.context, "")]

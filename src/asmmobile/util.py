@@ -90,8 +90,13 @@ def getTimeHourMinute(interval):
 
 class DisplayEvent(object):
     def __init__(self, view, event, timeString):
+        self.id = event.__name__
         self.name = shortenName(event.name)
+        self.fullname = event.name
         self.url = eventUrl(view, event)
+        self.fullurl = "%s/%s" % (view.application_url(EVENTS), self.id)
+        self.description = event.description
+        self.categories = event.categories
 
         # Time string is either string that indicates how much is remaining of
         # an event, how long there is till next event or how long the event is

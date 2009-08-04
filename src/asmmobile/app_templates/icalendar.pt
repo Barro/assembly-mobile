@@ -1,0 +1,16 @@
+<metal:block define-macro="calendar">BEGIN:VCALENDAR
+VERSION:2.0
+CALSCALE:GREGORIAN
+PRODID:iCal-AsmMobile
+<tal:block tal:repeat="event view/events">BEGIN:VEVENT
+SUMMARY:<span tal:replace="event/fullname" />
+DTSTART:<span tal:replace="python:event.start.strftime('%Y%m%dT%H%M%S')" />
+DTEND:<span tal:replace="python:event.end.strftime('%Y%m%dT%H%M%S')" />
+DTSTAMP:<span tal:replace="python:view.now.strftime('%Y%m%dT%H%M%S')" />
+URL:<span tal:replace="event/fullurl" />
+UID:<span tal:replace="event/id" />
+DESCRIPTION:<span tal:replace="event/description" />
+CATEGORIES:<span tal:replace="python:' '.join(event.categories)" />
+LOCATION:<span tal:replace="event/locationName" />
+END:VEVENT</tal:block>
+END:VCALENDAR</metal:block>

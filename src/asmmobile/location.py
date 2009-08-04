@@ -164,7 +164,17 @@ class LocationIndex(grok.View, MobileView):
                 break
             previousEvent = event
 
+
 class Edit(grok.EditForm):
     grok.require("asmmobile.Edit")
     grok.context(Location)
     form_fields = grok.AutoFields(Location)
+
+
+class LocationIcal(LocationIndex):
+    grok.name("events.ical")
+    grok.context(Location)
+
+    def update(self):
+        super(LocationIcal, self).update()
+        self.response.setHeader('Content-Type', "text/calendar")

@@ -2,6 +2,7 @@
 <div metal:fill-slot='content'>
 <h1>Location</h1>
 (<a tal:attributes="href context/url">url</a>)
+(<a tal:attributes="href python:view.url('events.ical')">Get events to your calendar</a>)
 <p tal:content="context/name">name</p>
 <tal:block tal:condition="context/description">
 <h1>Description:</h1>
