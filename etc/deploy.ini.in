@@ -45,6 +45,10 @@ format = %(message)s
 use = egg:Paste#translogger
 setup_console_handler = False
 logger_name = wsgi
+filter-with = strip_whitespace
+
+[filter:strip_whitespace]
+paste.filter_factory = asmmobile.mobile:strip_filter_factory
 
 [app:main]
 use = egg:AsmMobile

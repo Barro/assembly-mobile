@@ -77,3 +77,67 @@ class MobileView(object):
             return urlparse.urlparse(targetUrl)[2]
 
 
+def strip_filter_factory(global_conf, **local_conf):
+    def filter(app):
+        return StripFilter(app)
+    return filter
+
+class StripFilter(object):
+    """This filter strips white space characters from resulting XHTML output
+    document.
+    """
+
+    def __init__(self, app, www_path=None):
+        self.app = app
+        self.www_path = www_path
+        self.status      = '200 OK'
+        self.exc_info    = None
+        self.headers_out = []
+
+
+    def start_response(self, status, headers_out, exc_info=None):
+        """Intercept the response start from the filtered app."""
+        self.status      = status
+        self.headers_out = headers_out
+        self.exc_info    = exc_info
+
+    def __call__(self, env, start_response):
+        self.env = env
+        self.real_start = start_response
+        return self.__iter__()
+
+    def getHeader(self, headerName):
+        for key,value in self.headers_out:
+            if key.lower() == headerName:
+                return value
+        return None
+
+
+    def __iter__(self):
+        result = self.app(self.env, self.start_response)
+        resultIter  = result.__iter__()
+
+        filterContent = True
+        contentType = self.getHeader('content-type')
+        # If result is not text/html, return immediately
+        if (contentType is None \
+                or not contentType.lower().startswith("text/html")):
+            self.real_start(self.status, self.headers_out, self.exc_info)
+            return resultIter
+
+        resultStr = "".join(resultIter)
+
+        # Filter out white space and comments.
+        resultStr = re.sub("<!--.*?-->", "", resultStr)
+        resultStr = re.sub("( *\n *)+", " ", resultStr)
+        resultStr = re.sub(" +/>", "/>", resultStr)
+
+        headers_out = []
+        for key,value in self.headers_out:
+            if key.lower() == 'content-length':
+                value = len(resultStr)
+            headers_out.append((key,value))
+
+        self.real_start(self.status, headers_out, self.exc_info)
+
+        return [resultStr].__iter__()
