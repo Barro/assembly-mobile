@@ -49,6 +49,14 @@ filter-with = strip_whitespace
 
 [filter:strip_whitespace]
 paste.filter_factory = asmmobile.mobile:strip_filter_factory
+filter-with = gzipper
+
+[filter:gzipper]
+paste.filter_factory=zif.gzipper.gzipper:filter_factory
+compress_level=6
+exclude=localimages
+nocompress=jp gz zip png
+tempfile=1048576
 
 [app:main]
 use = egg:AsmMobile

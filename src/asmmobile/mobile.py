@@ -66,29 +66,63 @@ def strip_filter_factory(global_conf, **local_conf):
         return StripFilter(app)
     return filter
 
+class StripWhitespaceResponse(object):
+
+    def __init__(self, start_response):
+        self.doProcessing = False
+        self.start_response = start_response
+
+    def initial_decisions(self, status, headers, exc_info=None):
+        contentType = None
+
+        out_headers = []
+
+        for name,value in headers:
+            keyName = name.lower()
+            if keyName == 'content-type':
+                contentType = value
+            elif keyName == 'content-length':
+                # Ignore content length header for server recalculation.
+                continue
+            out_headers.append((name, value))
+
+        self.doProcessing = False
+        if (contentType is not None
+            and contentType.lower().startswith("text/html")):
+            self.doProcessing = True
+
+        if self.doProcessing:
+            headers = out_headers
+        return self.start_response(status, headers, exc_info)
+
+    def finish_response(self, app_iter):
+        if not app_iter:
+            return app_iter
+
+        resultStr = "".join(app_iter)
+        # Filter out white space and comments.
+        resultStr = re.sub("<!--.*?-->", "", resultStr)
+        resultStr = re.sub("( *\n *)+", " ", resultStr)
+        resultStr = re.sub(" +/>", "/>", resultStr)
+
+        return [resultStr].__iter__()
+
 class StripFilter(object):
     """This filter strips white space characters from resulting XHTML output
     document.
     """
 
-    def __init__(self, app, www_path=None):
-        self.app = app
-        self.www_path = www_path
-        self.status      = '200 OK'
-        self.exc_info    = None
-        self.headers_out = []
+    def __init__(self, application):
+        self.application = application
 
 
-    def start_response(self, status, headers_out, exc_info=None):
-        """Intercept the response start from the filtered app."""
-        self.status      = status
-        self.headers_out = headers_out
-        self.exc_info    = exc_info
+    def __call__(self, environ, start_response):
+        response = StripWhitespaceResponse(start_response)
+        app_iter = self.application(environ, response.initial_decisions)
+        if response.doProcessing:
+            app_iter = response.finish_response(app_iter)
+        return app_iter
 
-    def __call__(self, env, start_response):
-        self.env = env
-        self.real_start = start_response
-        return self.__iter__()
 
     def getHeader(self, headerName):
         for key,value in self.headers_out:

@@ -25,6 +25,7 @@ setup(name='AsmMobile',
                         'grokcore.startup',
                         # Add extra requirements here
                         'icalendar',
+                        'zif.gzipper',
                         ],
       entry_points = """
       [console_scripts]
