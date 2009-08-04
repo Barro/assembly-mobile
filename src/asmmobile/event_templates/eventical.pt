@@ -1,1 +1,0 @@
-<metal:block metal:use-macro="context/@@icalendar/macros/calendar"></metal:block>

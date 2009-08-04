@@ -60,7 +60,9 @@ def applicationRelativeUrl(view, name):
     while (maxCommon < minLength
            and targetUrl[maxCommon] == myUrl[maxCommon]):
         maxCommon += 1
-    if "/" not in myUrl[maxCommon:]:
+    if maxCommon == len(myUrl):
+        return myUrl.split("/")[-1]
+    elif "/" not in myUrl[maxCommon:]:
         return targetUrl[maxCommon:]
     else:
         return urlparse.urlparse(targetUrl)[2]

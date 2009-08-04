@@ -24,7 +24,7 @@ import re
 import grok
 
 import asmmobile.interfaces
-from mobile import MobileView
+from mobile import MobileView, ICalendar
 from util import getTimeHourMinute, getEventList
 
 locationKeyChars = (string.ascii_letters.decode('ascii') \
@@ -79,7 +79,7 @@ class LocationContainer(grok.Container):
         return self.__parent__
 
 
-class Index(grok.View, MobileView):
+class Index(MobileView):
     grok.context(LocationContainer)
     grok.name("index")
 
@@ -135,7 +135,7 @@ class Location(grok.Model):
         return self.__parent__.application()
 
 
-class LocationIndex(grok.View, MobileView):
+class LocationIndex(MobileView):
     grok.name("index")
     grok.context(Location)
 
@@ -171,8 +171,8 @@ class Edit(grok.EditForm):
     form_fields = grok.AutoFields(Location)
 
 
-class LocationIcal(LocationIndex):
-    grok.name("events.ical")
+class LocationIcal(ICalendar):
+    grok.name("events.ics")
     grok.context(Location)
 
     def update(self):

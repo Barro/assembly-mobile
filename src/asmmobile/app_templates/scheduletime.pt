@@ -1,5 +1,11 @@
 <metal:block metal:use-macro="context/@@layout/macros/page">
 <div metal:fill-slot='content'>
+<tal:block metal:define-macro="next-previous">
+  <a tal:condition="view/showPrevious"
+     tal:attributes="href python:'%s?s=%s' % (view.url(), view.previousCenter)">Previous 24 hours</a>
+  <a tal:condition="view/showNext"
+     tal:attributes="href python:'%s?s=%s' % (view.url(), view.nextCenter)">Next 24 hours</a>
+</tal:block>
 
 <div tal:repeat="event view/events"
      tal:define="global lastStart python:None">
@@ -26,10 +32,18 @@
           tal:replace="structure python: '</div>'" />
 
   </tal:block>
+<tal:block tal:condition="python: event == view.anchorEvent">
+<div>
+  <span tal:content="python: view.now.strftime('Current time: %H:%M')"
+        class="loc">Current time</span>
+</div>
+</tal:block>
 
 <span tal:condition="python: False"
       tal:define="global lastStart python:event.start.day" />
 </div>
 
+<tal:block metal:use-macro="view/macros/next-previous">
+</tal:block>
 </div>
 </metal:block >

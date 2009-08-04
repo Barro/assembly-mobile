@@ -3,7 +3,7 @@
 
 <h1>Event</h1>
 (<a tal:attributes="href context/url">url</a>)
-(<a tal:attributes="href python:view.url('event.ical')">Get event to your calendar</a>)
+(<a tal:attributes="href python:view.url('event.ics')">Get this event to your calendar</a>)
 <p tal:content="context/name">name</p>
 
 <tal:block tal:condition="context/description">

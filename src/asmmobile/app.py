@@ -36,24 +36,6 @@ from zope.publisher.interfaces import INotFound
 from zope.security.interfaces import IUnauthorized
 from zope.app.exception.systemerror import SystemErrorView
 
-# class ErrorPage401(grok.View, SystemErrorView):
-#     grok.context(IUnauthorized)
-#     grok.name('index.html')
-
-#     def render(self):
-#         return "401"
-
-
-# class ErrorPage404(grok.View, SystemErrorView):
-#     grok.context(INotFound)
-#     grok.name('index.html')
-
-#     def render(self):
-#         try:
-#             self.redirect("index")
-#         except ValueError, e:
-#             print "REDIRECTFAILED %s" % e
-#         return "404"
 
 class NextEventFilter(object):
     def __init__(self, now):
@@ -132,15 +114,15 @@ class AsmMobile(grok.Application, grok.Container):
     def getNextEvents(self, now):
         return self.events.getEvents(NextEventFilter(now))
 
-    def getEvents(self):
-        return self.events.getEvents(None)
+    def getEvents(self, eventFilter=None):
+        return self.events.getEvents(eventFilter)
 
     def getLocationEvents(self, location):
         eventFilter = lambda event : (event.location == location)
         return self.events.getEvents(eventFilter)
 
 
-class Index(grok.View, MobileView):
+class Index(MobileView):
     title = _(u"Assembly mobile")
     grok.context(AsmMobile)
 
@@ -167,7 +149,7 @@ class Index(grok.View, MobileView):
         self.locations = locations.values()
 
 
-class ScheduleTime(grok.View, MobileView):
+class ScheduleTime(MobileView):
     grok.name("schedule-time")
     grok.context(AsmMobile)
 
@@ -175,13 +157,55 @@ class ScheduleTime(grok.View, MobileView):
 
     zeroSeconds = datetime.timedelta(seconds=0)
 
+    startDifference = datetime.timedelta(hours=4)
+    endDifference = datetime.timedelta(hours=20)
+
+    dateFormat = "%Y-%m-%d-%H"
+    dateValidate = re.compile(r"\d\d\d\d-\d\d-\d\d-\d\d")
+
     def formatInterval(self, interval):
         return getTimeHourMinute(interval)
 
-    def update(self):
+    def update(self, s=None):
         self.mobileUpdate()
 
-        events = self.context.getEvents()
+        if s is not None and self.dateValidate.match(s):
+            (year, month, day, hour) = (int(x) for x in s.split("-"))
+            displayCenter = datetime.datetime(year=year,
+                                              month=month,
+                                              day=day,
+                                              hour=hour)
+        else:
+            displayCenter = self.now
+
+        # We round to next full hour.
+        secondsTillNextHour = \
+            (3600 - (displayCenter.second + displayCenter.minute * 60))%3600
+        displayCenter += datetime.timedelta(seconds=secondsTillNextHour)
+
+        displayStart = displayCenter - self.startDifference
+        displayEnd = displayCenter + self.endDifference
+
+        self.previousCenter = \
+            (displayStart - self.endDifference).strftime(self.dateFormat)
+        self.nextCenter = \
+            (displayEnd + self.startDifference).strftime(self.dateFormat)
+
+        allEvents = self.context.getEvents()
+        events = self.context.getEvents(
+            (lambda event: displayStart < event.end \
+                 and event.start <= displayEnd))
+
+        if len(events) > 0 and events[0] != allEvents[0]:
+            self.showPrevious = True
+        else:
+            self.showPrevious = False
+
+        if len(events) > 0 and events[-1] != allEvents[-1]:
+            self.showNext = True
+        else:
+            self.showNext = False
+
         self.events = getEventList(self,
                                    events,
                                    (lambda event: event.length),
@@ -198,11 +222,6 @@ class ScheduleTime(grok.View, MobileView):
 
 class Layout(grok.View):
     """The view that contains the main layout."""
-    grok.context(zope.interface.Interface)
-
-
-class ICalendar(grok.View):
-    """The view that contains the iCalendar events."""
     grok.context(zope.interface.Interface)
 
 

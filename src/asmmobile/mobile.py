@@ -20,11 +20,15 @@
 import datetime
 import re
 
+import grok
+import zope.interface
+
 import asmmobile.util
 
 _TIME_FACTORY = datetime.datetime(2000, 1, 1)
 
-class MobileView(object):
+class MobileView(grok.View):
+    grok.context(zope.interface.Interface)
 
     def mobileUpdate(self):
         self.now = datetime.datetime(2009, 8, 7, 18, 3)
@@ -121,3 +125,25 @@ class StripFilter(object):
         self.real_start(self.status, headers_out, self.exc_info)
 
         return [resultStr].__iter__()
+
+
+class ICalendarWrapper(grok.View):
+    """The view that contains the iCalendar events."""
+    grok.context(zope.interface.Interface)
+
+
+class ICalendar(MobileView):
+    """The view that contains the iCalendar events."""
+    grok.context(zope.interface.Interface)
+
+    def update(self):
+        self.mobileUpdate()
+        self.response.setHeader('Content-Type', "text/calendar")
+
+    def render(self):
+        page = ICalendarWrapper(self.context, self.request)
+        page.events = self.events
+        page.now = self.now
+        return page().replace("\n", "\r\n")
+
+
