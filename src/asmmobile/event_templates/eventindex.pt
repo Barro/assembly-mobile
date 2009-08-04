@@ -18,7 +18,7 @@
    <span tal:replace="python:context.end.strftime('%H:%M')" />
 <span tal:condition="python: context.length > view.zeroSeconds"
       tal:replace="python: '(%s)' % view.formatInterval(context.length)" />
-<a tal:attributes="href python:'%s/%s' % (view.application_url('location'), context.location.__name__)"
+<a tal:attributes="href python:'%s/%s' % (view.applicationRelativeUrl('location'), context.location.__name__)"
    tal:content="context/location/name">Location</a>
 
 

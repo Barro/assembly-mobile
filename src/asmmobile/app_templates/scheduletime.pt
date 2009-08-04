@@ -13,13 +13,13 @@
           tal:replace="structure python: '<div class=\'now\'>'" />
     <span tal:replace="python:event.start.strftime('%H:%M')" />
     <a tal:content="event/name"
-       tal:attributes="href python: '%s/%s' % (view.application_url('event'), event.__name__)">Event name</a>
+       tal:attributes="href event/url">Event name</a>
 
     <span tal:condition="python: event.length > view.zeroSeconds"
-          tal:replace="python: '(%s)' % view.formatInterval(event.length)" />
+          tal:replace="event/timeString" />
 
-    <a class="loc" tal:content="event/location/name"
-       tal:attributes="href python: 'location/%s' % event.location.__name__">Location name</a>
+    <a class="loc" tal:content="event/locationName"
+       tal:attributes="href event/locationUrl">Location name</a>
     <span tal:condition="python: event.start <= view.now and view.now < event.end"
           tal:replace="structure python: '</div>'" />
 

@@ -8,7 +8,7 @@
 <body>
 <metal:block define-slot="body">
 <div class="h" metal:define-macro="links">
-<a tal:attributes="href python:view.application_url('index')">Overview</a> | <a tal:attributes="href python:view.application_url('schedule-time')+'#now'">Full schedule</a> <span>Assembly Mobile</span></div>
+<a tal:attributes="href python:view.applicationRelativeUrl('index')">Overview</a> | <a tal:attributes="href python:view.applicationRelativeUrl('schedule-time')+'#now'">Full schedule</a> <span>Assembly Mobile</span></div>
 <hr />
 <metal:block define-slot="content">
 

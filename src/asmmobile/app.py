@@ -28,6 +28,7 @@ import asmmobile.location
 import asmmobile.event
 from mobile import MobileView
 from util import getTimeHourMinute
+import asmmobile.mobile
 
 from asmmobile import AsmMobileMessageFactory as _
 
@@ -149,12 +150,21 @@ class AsmMobile(grok.Application, grok.Container):
 
 
 class DisplayEvent(object):
-    def __init__(self, name, url, timeString, locationName, locationUrl):
-        self.name = name
-        self.url = url
+    def __init__(self, event, timeString):
+        self.name = asmmobile.mobile.shortenName(event.name)
+        self.url = eventUrl(event)
+
+        # Time string is either string that indicates how much is remaining of
+        # an event, how long there is till next event or how long the event is
+        # depending on event type and view.
         self.timeString = timeString
-        self.locationName = locationName
-        self.locationUrl = locationUrl
+
+        self.locationName = event.location.name
+        self.locationUrl = locationUrl(event.location)
+
+        self.start = event.start
+        self.end = event.end
+        self.length = event.length
 
 
 class GroupingLocation(object):
@@ -170,11 +180,7 @@ def getEventList(events, timeGetter, locationAdder, outLocations):
     result = []
     for event in events:
         locationName = event.location.name
-        displayEvent = DisplayEvent(event.name,
-                                    eventUrl(event),
-                                    getTimeHourMinute(timeGetter(event)),
-                                    locationName,
-                                    locationUrl(event.location))
+        displayEvent = DisplayEvent(event, getTimeHourMinute(timeGetter(event)))
         result.append(displayEvent)
         location = event.majorLocation
         if location not in outLocations:
@@ -226,7 +232,12 @@ class ScheduleTime(grok.View, MobileView):
     def update(self):
         self.mobileUpdate()
 
-        self.events = self.context.getEvents()
+        outLocations = {}
+        events = self.context.getEvents()
+        self.events = getEventList(events,
+                                   (lambda event: event.length),
+                                   (lambda event, location, outLocations: True),
+                                   outLocations)
         self.anchorEvent = None
         previousEvent = None
         for event in self.events:
