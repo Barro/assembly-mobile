@@ -14,7 +14,7 @@
 <h1 tal:condition="python:lastStart!=event.start.day"
     tal:content="python:event.start.strftime('%A')">Dayname</h1>
 
-<a name="now"
+<a id="now"
    tal:condition="python: event == view.anchorEvent"></a>
   <tal:block metal:define-macro="eventContainer">
     <span tal:condition="python: event.start <= view.now and view.now < event.end"
