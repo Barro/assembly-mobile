@@ -3,8 +3,10 @@
 <tal:block metal:define-macro="next-previous">
   <a tal:condition="view/showPrevious"
      tal:attributes="href python:'%s?s=%s' % (view.url(), view.previousCenter)">Previous 24 hours</a>
+  <span tal:condition="python:view.showPrevious == False" title="There are no more earlier events.">Previous 24 hours</span>
   <a tal:condition="view/showNext"
      tal:attributes="href python:'%s?s=%s' % (view.url(), view.nextCenter)">Next 24 hours</a>
+  <span tal:condition="python:view.showNext == False" title="There are no more further events.">Next 24 hours</span>
 </tal:block>
 
 <div tal:repeat="event view/events"
