@@ -27,7 +27,7 @@ import re
 import asmmobile.location
 import asmmobile.event
 from mobile import MobileView
-from util import getTimeHourMinute
+from util import getTimeHourMinute, getEventList, LOCATIONS, EVENTS
 import asmmobile.mobile
 
 from asmmobile import AsmMobileMessageFactory as _
@@ -78,34 +78,25 @@ class NextEventFilter(object):
             return True
 
 
-def locationUrl(location):
-    return "%s/%s" % (AsmMobile.LOCATIONS, location.__name__)
-
-def eventUrl(event):
-    return "%s/%s" % (AsmMobile.EVENTS, event.__name__)
-
 class AsmMobile(grok.Application, grok.Container):
     zope.interface.implements(asmmobile.interfaces.IAsmMobile)
 
     otherLanguage = _(u"link|other_language", default=u'/')
 
-    EVENTS = 'event'
-    LOCATIONS = 'location'
-
     def __init__(self, **vars):
         super(AsmMobile, self).__init__(**vars)
 
-        self[self.LOCATIONS] = asmmobile.location.LocationContainer()
-        self[self.EVENTS] = asmmobile.event.EventContainer()
+        self[LOCATIONS] = asmmobile.location.LocationContainer()
+        self[EVENTS] = asmmobile.event.EventContainer()
 
     def getEvents(self):
-        return self[self.EVENTS]
+        return self[EVENTS]
 
     events = property(getEvents)
 
 
     def getLocations(self):
-        return self[self.LOCATIONS]
+        return self[LOCATIONS]
 
     locations = property(getLocations)
 
@@ -149,50 +140,6 @@ class AsmMobile(grok.Application, grok.Container):
         return self.events.getEvents(eventFilter)
 
 
-class DisplayEvent(object):
-    def __init__(self, event, timeString):
-        self.name = asmmobile.mobile.shortenName(event.name)
-        self.url = eventUrl(event)
-
-        # Time string is either string that indicates how much is remaining of
-        # an event, how long there is till next event or how long the event is
-        # depending on event type and view.
-        self.timeString = timeString
-
-        self.locationName = event.location.name
-        self.locationUrl = locationUrl(event.location)
-
-        self.start = event.start
-        self.end = event.end
-        self.length = event.length
-
-
-class GroupingLocation(object):
-    def __init__(self, name, url, priority, currentEvents, nextEvents):
-        self.name = name
-        self.url = url
-        self.priority = priority
-        self.currentEvents = currentEvents
-        self.nextEvents = nextEvents
-
-
-def getEventList(events, timeGetter, locationAdder, outLocations):
-    result = []
-    for event in events:
-        locationName = event.location.name
-        displayEvent = DisplayEvent(event, getTimeHourMinute(timeGetter(event)))
-        result.append(displayEvent)
-        location = event.majorLocation
-        if location not in outLocations:
-            outLocations[location] = GroupingLocation(event.location.name,
-                                                      event.location.url,
-                                                      event.location.priority,
-                                                      [],
-                                                      [])
-        locationAdder(displayEvent, location, outLocations)
-    return result
-
-
 class Index(grok.View, MobileView):
     title = _(u"Assembly mobile")
     grok.context(AsmMobile)
@@ -202,14 +149,16 @@ class Index(grok.View, MobileView):
 
         locations = {}
         self.currentEvents = \
-            getEventList(self.context.getCurrentEvents(self.now),
+            getEventList(self,
+                         self.context.getCurrentEvents(self.now),
                          (lambda event: event.end - self.now),
                          (lambda event, location, outLocations:
                           outLocations[location].currentEvents.append(event)),
                          locations)
 
         self.nextEvents = \
-            getEventList(self.context.getNextEvents(self.now),
+            getEventList(self,
+                         self.context.getNextEvents(self.now),
                          (lambda event: self.now - event.start),
                          (lambda event, location, outLocations:
                           outLocations[location].nextEvents.append(event)),
@@ -232,12 +181,12 @@ class ScheduleTime(grok.View, MobileView):
     def update(self):
         self.mobileUpdate()
 
-        outLocations = {}
         events = self.context.getEvents()
-        self.events = getEventList(events,
+        self.events = getEventList(self,
+                                   events,
                                    (lambda event: event.length),
                                    (lambda event, location, outLocations: True),
-                                   outLocations)
+                                   {})
         self.anchorEvent = None
         previousEvent = None
         for event in self.events:

@@ -8,17 +8,18 @@
 <p tal:content="context/description">description</p>
 </tal:block>
 <h1>Events</h1>
-<div tal:repeat="event context/getEvents"
+<div tal:repeat="event view/events"
      tal:define="global lastStart python:None">
 <h2 tal:condition="python:lastStart!=event.start.day"
     tal:content="python:event.start.strftime('%A')">Dayname</h2>
 
     <span tal:replace="python:event.start.strftime('%H:%M')" />
     <a tal:content="event/name"
-       tal:attributes="href python: '%s/%s' % (view.applicationRelativeUrl('event'), event.__name__)">Event name</a>
+       tal:attributes="href event/url">Event name</a>
 
-    <span tal:condition="python: (event.end - event.start) > view.zeroSeconds"
-          tal:replace="python: '(%s)' % view.formatInterval(event.end - event.start)" />
+    <tal:block tal:condition="python: event.length > view.zeroSeconds">
+      (<span tal:replace="event/timeString" />)
+    </tal:block>
 
 
 <span tal:condition="python: False"

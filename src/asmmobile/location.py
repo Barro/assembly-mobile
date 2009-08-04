@@ -18,13 +18,14 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import datetime
-
-import grok
-import asmmobile.interfaces
-from mobile import MobileView
-from util import getTimeHourMinute
 import string
 import re
+
+import grok
+
+import asmmobile.interfaces
+from mobile import MobileView
+from util import getTimeHourMinute, getEventList
 
 locationKeyChars = (string.ascii_letters.decode('ascii') \
                         + string.digits.decode('ascii'))
@@ -145,13 +146,16 @@ class LocationIndex(grok.View, MobileView):
 
     title = property(getTitle)
 
-    def formatInterval(self, interval):
-        return getTimeHourMinute(interval)
-
     def update(self):
         self.mobileUpdate()
 
-        self.events = self.context.getEvents()
+        events = self.context.getEvents()
+        self.events = getEventList(self,
+                                   events,
+                                   (lambda event: event.length),
+                                   (lambda event, location, outLocations: True),
+                                   {})
+
         self.anchorEvent = None
         previousEvent = None
         for event in self.events:
