@@ -50,6 +50,7 @@ class IEventContainer(zope.interface.Interface):
         """
 
 class IEvent(zope.interface.Interface):
+    id = zope.interface.Attribute("")
 
     name = zope.interface.Attribute("")
     url = zope.interface.Attribute("")

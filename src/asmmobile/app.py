@@ -122,6 +122,15 @@ class AsmMobile(grok.Application, grok.Container):
         return self.events.getEvents(eventFilter)
 
 
+def _reverseOrderByMajorLocation(first, second):
+    result = cmp(second.majorLocation.priority,
+                 first.majorLocation.priority)
+    # If events are of equal priority, order by their ID
+    if result == 0:
+        return cmp(first.id, second.id)
+    return result
+
+
 class Index(MobileView):
     title = _(u"Assembly mobile")
     grok.context(AsmMobile)
@@ -130,17 +139,21 @@ class Index(MobileView):
         self.mobileUpdate()
 
         locations = {}
+        currentEvents = self.context.getCurrentEvents(self.now)
+        currentEvents.sort(_reverseOrderByMajorLocation)
         self.currentEvents = \
             getEventList(self,
-                         self.context.getCurrentEvents(self.now),
+                         currentEvents,
                          (lambda event: event.end - self.now),
                          (lambda event, location, outLocations:
                           outLocations[location].currentEvents.append(event)),
                          locations)
 
+        nextEvents = self.context.getNextEvents(self.now)
+        nextEvents.sort(_reverseOrderByMajorLocation)
         self.nextEvents = \
             getEventList(self,
-                         self.context.getNextEvents(self.now),
+                         nextEvents,
                          (lambda event: self.now - event.start),
                          (lambda event, location, outLocations:
                           outLocations[location].nextEvents.append(event)),
@@ -178,7 +191,7 @@ class ScheduleTime(MobileView):
         else:
             displayCenter = self.now
 
-        # We round to next full hour.
+        # Round to next full hour.
         secondsTillNextHour = \
             (3600 - (displayCenter.second + displayCenter.minute * 60))%3600
         displayCenter += datetime.timedelta(seconds=secondsTillNextHour)
@@ -191,16 +204,22 @@ class ScheduleTime(MobileView):
         self.nextCenter = \
             (displayEnd + self.startDifference).strftime(self.dateFormat)
 
-        allEvents = self.context.getEvents()
         events = self.context.getEvents(
             (lambda event: displayStart < event.end \
                  and event.start <= displayEnd))
 
+        # If the first displayable event is the same as the first event out of
+        # all events, we don't have any more events in past and disable the
+        # "previous 24 hours" link.
+        allEvents = self.context.getEvents()
         if len(events) > 0 and events[0] != allEvents[0]:
             self.showPrevious = True
         else:
             self.showPrevious = False
 
+        # If the first displayable event is the same as the last event out of
+        # all events, we don't have any more events in future and disable the
+        # "next 24 hours" link.
         if len(events) > 0 and events[-1] != allEvents[-1]:
             self.showNext = True
         else:

@@ -1,7 +1,7 @@
 <metal:block define-macro="calendar">BEGIN:VCALENDAR
 VERSION:2.0
 CALSCALE:GREGORIAN
-PRODID:iCal-AsmMobile
+PRODID:-//Assembly Mobile export//iCal-AsmMobile//
 <tal:block tal:repeat="event view/events">BEGIN:VEVENT
 SUMMARY:<span tal:replace="event/name" />
 DTSTART:<span tal:replace="python:event.start.strftime('%Y%m%dT%H%M%S')" />

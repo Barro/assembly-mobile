@@ -97,6 +97,11 @@ class Event(grok.Model):
 
     length = property(getLength)
 
+    def getId(self):
+        return self.__name__
+
+    id = property(getId)
+
 
 class EventIndex(MobileView):
     grok.name("index")
