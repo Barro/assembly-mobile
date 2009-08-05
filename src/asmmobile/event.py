@@ -50,7 +50,9 @@ class EventContainer(grok.Container):
                               start=eventValues['start'],
                               end=eventValues['end'],
                               location=eventValues['location'],
-                              url=eventValues['url'])
+                              url=eventValues['url'],
+                              categories=eventValues['categories'],
+                              )
 
         updateKeys = newKeys.intersection(currentKeys)
         for key in updateKeys:
@@ -61,6 +63,7 @@ class EventContainer(grok.Container):
             event.end = eventValues['end']
             event.location = eventValues['location']
             event.url = eventValues['url']
+            event.categories = eventValues['categories']
 
     def getEvents(self, eventFilter):
         events = list(self.values())

@@ -102,7 +102,9 @@ class AsmMobile(grok.Application, grok.Container):
                                      'start': values['start'],
                                      'end': values['end'],
                                      'url': values['url'],
-                                     'location': location}
+                                     'location': location,
+                                     'categories': values['categories'],
+                                     }
 
         self.events.updateEvents(updateEvents)
 

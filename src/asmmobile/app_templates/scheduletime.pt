@@ -17,6 +17,10 @@
 <a id="now"
    tal:condition="python: event == view.anchorEvent"></a>
   <tal:block metal:define-macro="eventContainer">
+
+    <span tal:condition="python: 'Major_event' in event.categories"
+          tal:replace="structure python: '<strong>'" />
+
     <span tal:condition="python: event.start <= view.now and view.now < event.end"
           tal:replace="structure python: '<div class=\'now\'>'" />
     <span tal:replace="python:event.start.strftime('%H:%M')" />
@@ -26,6 +30,9 @@
     <tal:block tal:condition="python: event.length > view.zeroSeconds">
       (<span tal:replace="event/timeString" />)
     </tal:block>
+
+    <span tal:condition="python: 'Major_event' in event.categories"
+          tal:replace="structure python: '</strong>'" />
 
     <a class="loc"
        tal:content="event/locationName"
