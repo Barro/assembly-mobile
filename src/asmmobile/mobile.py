@@ -61,16 +61,17 @@ class MobileView(grok.View):
         return asmmobile.util.applicationRelativeUrl(self, name)
 
 
-def strip_filter_factory(global_conf, **local_conf):
+def strip_filter_factory(global_conf, strip_types=''):
     def filter(app):
-        return StripFilter(app)
+        return StripFilter(app, strip_types=strip_types)
     return filter
 
 class StripWhitespaceResponse(object):
 
-    def __init__(self, start_response):
+    def __init__(self, start_response, stripTypes):
         self.doProcessing = False
         self.start_response = start_response
+        self.stripTypes = stripTypes
 
     def initial_decisions(self, status, headers, exc_info=None):
         contentType = None
@@ -80,15 +81,14 @@ class StripWhitespaceResponse(object):
         for name,value in headers:
             keyName = name.lower()
             if keyName == 'content-type':
-                contentType = value
+                contentType = value.split(";")[0].lower()
             elif keyName == 'content-length':
                 # Ignore content length header for server recalculation.
                 continue
             out_headers.append((name, value))
 
         self.doProcessing = False
-        if (contentType is not None
-            and contentType.lower().startswith("text/html")):
+        if contentType in self.stripTypes:
             self.doProcessing = True
 
         if self.doProcessing:
@@ -112,12 +112,13 @@ class StripFilter(object):
     document.
     """
 
-    def __init__(self, application):
+    def __init__(self, application, strip_types=''):
         self.application = application
-
+        self.stripTypes = strip_types.split()
 
     def __call__(self, environ, start_response):
-        response = StripWhitespaceResponse(start_response)
+        response = StripWhitespaceResponse(start_response,
+                                           self.stripTypes)
         app_iter = self.application(environ, response.initial_decisions)
         if response.doProcessing:
             app_iter = response.finish_response(app_iter)

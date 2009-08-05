@@ -49,6 +49,7 @@ filter-with = strip_whitespace
 
 [filter:strip_whitespace]
 paste.filter_factory = asmmobile.mobile:strip_filter_factory
+strip_types = text/html application/xhtml+xml
 filter-with = gzipper
 
 [filter:gzipper]

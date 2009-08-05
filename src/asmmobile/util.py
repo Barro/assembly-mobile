@@ -93,10 +93,10 @@ def getTimeHourMinute(interval):
 class DisplayEvent(object):
     def __init__(self, view, event, timeString):
         self.id = event.__name__
-        self.name = shortenName(event.name)
-        self.fullname = event.name
-        self.url = eventUrl(view, event)
-        self.fullurl = "%s/%s" % (view.application_url(EVENTS), self.id)
+        self.shortname = shortenName(event.name)
+        self.name = event.name
+        self.url = "%s/%s" % (view.application_url(EVENTS), self.id)
+        self.shorturl = eventUrl(view, event)
         self.description = event.description
         self.categories = event.categories
 

@@ -16,7 +16,7 @@
 
     <span tal:replace="python:event.start.strftime('%H:%M')" />
     <a tal:content="event/name"
-       tal:attributes="href event/url">Event name</a>
+       tal:attributes="href event/shorturl">Event name</a>
 
     <tal:block tal:condition="python: event.length > view.zeroSeconds">
       (<span tal:replace="event/timeString" />)
