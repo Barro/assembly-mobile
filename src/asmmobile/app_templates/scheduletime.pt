@@ -1,31 +1,39 @@
 <metal:block metal:use-macro="context/@@layout/macros/page">
-<div metal:fill-slot='content'>
+<div id="fs" metal:fill-slot='content'>
 <tal:block metal:define-macro="next-previous">
   <a tal:condition="view/showPrevious"
-     tal:attributes="href python:'%s?s=%s' % (view.url(), view.previousCenter)">Previous 24 hours</a>
-  <span tal:condition="python:view.showPrevious == False" title="There are no more earlier events.">Previous 24 hours</span>
+     tal:attributes="href python:'%s?s=%s' % (view.url(), view.previousCenter)">Previous 24 hours</a> &#8226;
   <a tal:condition="view/showNext"
      tal:attributes="href python:'%s?s=%s' % (view.url(), view.nextCenter)">Next 24 hours</a>
-  <span tal:condition="python:view.showNext == False" title="There are no more further events.">Next 24 hours</span>
 </tal:block>
 
-<div tal:repeat="event view/events"
+<tal:block tal:repeat="event view/events"
      tal:define="global lastStart python:None">
-<h1 tal:condition="python:lastStart!=event.start.day"
-    tal:content="python:event.start.strftime('%A')">Dayname</h1>
 
+
+<span tal:replace="structure python: '</div>'"
+      tal:condition="python:lastStart is not None and lastStart!=event.start.day" />
+
+
+<h2 tal:condition="python:lastStart!=event.start.day"
+    tal:content="python:event.start.strftime('%A')">Dayname</h2>
+
+<span tal:replace="structure python: '<div class=\'event\'>'"
+      tal:condition="python:lastStart!=event.start.day" />
+<div>
 <a id="now"
    tal:condition="python: event == view.anchorEvent"></a>
   <tal:block metal:define-macro="eventContainer">
 
+    <span tal:condition="python: event.start <= view.now and view.now < event.end"
+          tal:replace="structure python: '<div class=\'now\'>'" />
+
     <span tal:condition="python: 'Major_event' in event.categories"
           tal:replace="structure python: '<strong>'" />
 
-    <span tal:condition="python: event.start <= view.now and view.now < event.end"
-          tal:replace="structure python: '<div class=\'now\'>'" />
     <span tal:replace="python:event.start.strftime('%H:%M')" />
-    <a tal:content="event/shortname"
-       tal:attributes="href event/shorturl">Event name</a>
+    <a tal:content="event/name"
+       tal:attributes="href event/url">Event name</a>
 
     <tal:block tal:condition="python: event.length > view.zeroSeconds">
       (<span tal:replace="event/timeString" />)
@@ -42,15 +50,17 @@
 
   </tal:block>
 <tal:block tal:condition="python: event == view.anchorEvent">
-<div>
+<span tal:replace="structure python: '</div><div>'" />
   <span tal:content="python: view.now.strftime('Current time: %H:%M')"
-        class="loc">Current time</span>
-</div>
+        class="cur">Current time</span>
 </tal:block>
 
+</div>
 <span tal:condition="python: False"
       tal:define="global lastStart python:event.start.day" />
-</div>
+</tal:block>
+
+<span tal:replace="structure python: '</div>'" />
 
 <tal:block metal:use-macro="view/macros/next-previous">
 </tal:block>

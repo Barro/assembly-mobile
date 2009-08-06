@@ -33,7 +33,8 @@ class MobileView(grok.View):
     def mobileUpdate(self):
         self.now = datetime.datetime(2009, 8, 7, 18, 3)
 
-        self.request.response.setHeader("Content-Type", "text/html; charset=UTF-8")
+#         self.request.response.setHeader("Content-Type", "text/html; charset=UTF-8")
+        self.request.response.setHeader("Content-Type", "application/xhtml+xml; charset=UTF-8")
         nextMinute = _TIME_FACTORY.utcnow()
         maxAge = 60 - nextMinute.second%60
         nextMinute += datetime.timedelta(seconds=(maxAge))

@@ -1,17 +1,16 @@
 <metal:block metal:use-macro="context/@@layout/macros/page">
-<div metal:fill-slot='content'>
+<div class="event" metal:fill-slot='content'>
 
-<h1>Event</h1>
-(<a tal:attributes="href context/url">url</a>)
-(<a tal:attributes="href python:view.url('event.ics')">Get this event to your calendar</a>)
-<p tal:content="context/name">name</p>
+<h1 tal:content="context/name">name</h1>
+<a tal:attributes="href python:view.url('event.ics')">iCal (event)</a> &#8226;
+<a tal:attributes="href context/url">View on Assembly.org</a>
 
 <tal:block tal:condition="context/description">
   <h1>Description:</h1>
   <p tal:content="context/description">description</p>
 </tal:block>
 
-<h1>Time</h1>
+<h2>Time</h2>
 <p>
 <span tal:replace="python:context.start.strftime('%A %H:%M')" /> -
 <tal:block tal:condition="python: context.start.day != context.end.day">
@@ -21,7 +20,7 @@
 <span tal:condition="python: context.length > view.zeroSeconds"
       tal:replace="python: '(%s)' % view.formatInterval(context.length)" />
 </p>
-<h1>Location</h1>
+<h2>Location</h2>
 <p>
 <a tal:attributes="href python:'%s/%s' % (view.applicationRelativeUrl('location'), context.location.__name__)"
    tal:content="context/location/name">Location</a>
