@@ -19,6 +19,7 @@
 
 import urlparse
 import re
+import datetime
 
 EVENTS = 'event'
 LOCATIONS = 'location'
@@ -78,7 +79,26 @@ def eventUrl(view, event):
                       event.__name__)
 
 
+INTERVAL_ZERO_SECONDS = datetime.timedelta(seconds=0)
+INTERVAL_ONE_MINUTE = datetime.timedelta(minutes=1)
+
 def getTimeHourMinute(interval):
+    """Returns time interval in human readable format.
+
+    Examples:
+    1 h 23 min
+    23 min
+
+    If interval is zero seconds, then this returns an empty string.
+
+    @param interval Object with same interface as datetime.timedelta.
+    """
+    if interval == INTERVAL_ZERO_SECONDS:
+        return ""
+    # Ceiling to next minute.
+    if interval.seconds + interval.microseconds/1000000.0 > 0:
+        # Adding one minute. Next call will floor the time to exact minute.
+        interval += INTERVAL_ONE_MINUTE
     intervalMinutes = (interval.days*86400 + interval.seconds)/60
     hours = intervalMinutes/60
     minutes = intervalMinutes%60

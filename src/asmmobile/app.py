@@ -156,7 +156,7 @@ class Index(MobileView):
         self.nextEvents = \
             getEventList(self,
                          nextEvents,
-                         (lambda event: self.now - event.start),
+                         (lambda event: event.start - self.now),
                          (lambda event, location, outLocations:
                           outLocations[location].nextEvents.append(event)),
                          locations)
