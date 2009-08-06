@@ -1,8 +1,9 @@
 <metal:block metal:use-macro="context/@@layout/macros/page">
 <div metal:fill-slot='content'>
 <h2 tal:content="context/name">name</h2>
-<a tal:attributes="href python:view.url('events.ics')">iCal (events)</a> &#8226; 
-<a tal:attributes="href context/url">View on Assembly.org</a>
+<a tal:attributes="href python:view.url('events.ics')">iCal (events)</a> &#8226;
+<a tal:condition="context/url"
+   tal:attributes="href context/url">View on Assembly.org</a>
 <tal:block tal:condition="context/description">
 <h2>Description:</h2>
 <p tal:content="context/description">description</p>

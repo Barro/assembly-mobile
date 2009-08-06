@@ -39,7 +39,8 @@ def importIcalEvents(filename, locationMap={}):
         start = event.decoded('DTSTART')
         end = event.decoded('DTEND')
         categories = event.decoded('CATEGORIES').split(" ")
-        url = event.decoded('URL')
+#         url = event.decoded('URL')
+        url = u''
         name = event.decoded('SUMMARY')
 
         location = event.decoded('LOCATION')

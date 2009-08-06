@@ -172,6 +172,8 @@ class ICalendar(MobileView):
     """The view that contains the iCalendar events."""
     grok.context(zope.interface.Interface)
 
+    template = None
+
     def update(self):
         self.mobileUpdate()
         self.response.setHeader('Content-Type', "text/calendar")

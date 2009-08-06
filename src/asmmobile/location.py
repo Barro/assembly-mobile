@@ -177,4 +177,9 @@ class LocationIcal(ICalendar):
 
     def update(self):
         super(LocationIcal, self).update()
+        self.events = getEventList(self,
+                                   self.context.getEvents(),
+                                   (lambda event: event.length),
+                                   (lambda event, location, outLocations: True),
+                                   {})
         self.response.setHeader('Content-Type', "text/calendar")

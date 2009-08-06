@@ -2,8 +2,11 @@
 <div class="event" metal:fill-slot='content'>
 
 <h1 tal:content="context/name">name</h1>
-<a tal:attributes="href python:view.url('event.ics')">iCal (event)</a> &#8226;
+<a tal:attributes="href python:view.url('event.ics')">iCal (event)</a>
+<tal:block tal:condition="context/url">
+&#8226;
 <a tal:attributes="href context/url">View on Assembly.org</a>
+</tal:block>
 
 <tal:block tal:condition="context/description">
   <h1>Description:</h1>
