@@ -2,9 +2,9 @@
 <div id="fs" metal:fill-slot='content'>
 <tal:block metal:define-macro="next-previous">
   <a tal:condition="view/showPrevious"
-     tal:attributes="href python:'%s?s=%s' % (view.url(), view.previousCenter)">Previous 24 hours</a> &#8226;
+     tal:attributes="href python:'%s?s=%s' % (view.url(), view.previousCenter)">Previous 12 hours</a> &#8226;
   <a tal:condition="view/showNext"
-     tal:attributes="href python:'%s?s=%s' % (view.url(), view.nextCenter)">Next 24 hours</a>
+     tal:attributes="href python:'%s?s=%s' % (view.url(), view.nextCenter)">Next 12 hours</a>
 </tal:block>
 
 <tal:block tal:repeat="event view/events"

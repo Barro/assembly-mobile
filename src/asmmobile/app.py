@@ -165,15 +165,15 @@ class Index(MobileView):
 
 
 class ScheduleTime(MobileView):
-    grok.name("schedule-time")
+    grok.name("full-schedule")
     grok.context(AsmMobile)
 
     title = _(u"Full schedule")
 
     zeroSeconds = datetime.timedelta(seconds=0)
 
-    startDifference = datetime.timedelta(hours=4)
-    endDifference = datetime.timedelta(hours=20)
+    startDifference = datetime.timedelta(hours=2)
+    endDifference = datetime.timedelta(hours=10)
 
     dateFormat = "%Y-%m-%d-%H"
     dateValidate = re.compile(r"\d\d\d\d-\d\d-\d\d-\d\d")
