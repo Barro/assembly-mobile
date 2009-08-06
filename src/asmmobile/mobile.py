@@ -31,9 +31,7 @@ class MobileView(grok.View):
     grok.context(zope.interface.Interface)
 
     def mobileUpdate(self):
-        self.now = datetime.datetime(2009, 8, 7, 18, 3)
-
-#         self.request.response.setHeader("Content-Type", "text/html; charset=UTF-8")
+        self.now = _TIME_FACTORY.now()
         self.request.response.setHeader("Content-Type", "application/xhtml+xml; charset=UTF-8")
         nextMinute = _TIME_FACTORY.utcnow()
         maxAge = 60 - nextMinute.second%60
