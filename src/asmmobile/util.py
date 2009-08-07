@@ -97,7 +97,7 @@ def getTimeHourMinute(interval):
     if interval == INTERVAL_ZERO_SECONDS:
         return ""
     # Ceiling to next minute.
-    if interval.seconds + interval.microseconds/1000000.0 > 0:
+    if interval.seconds % 60 != 0:
         # Adding one minute. Next call will floor the time to exact minute.
         interval += INTERVAL_ONE_MINUTE
     intervalMinutes = (interval.days*86400 + interval.seconds)/60
