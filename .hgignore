@@ -10,3 +10,4 @@ eggs
 .installed.cfg
 .\#*
 src/asmmobile/static/favicon.ico
+python
