@@ -20,7 +20,7 @@
 import datetime
 import grok
 import asmmobile.interfaces
-from mobile import MobileView, ICalendar
+from mobile import MobileView, ICalendar, VCalendar
 from util import getTimeHourMinute, DisplayEvent
 
 def _sortByStartTime(first, second):
@@ -123,11 +123,22 @@ class EventIndex(MobileView):
     def update(self):
         self.mobileUpdate()
 
+
 class EventIcal(ICalendar):
     grok.name("event.ics")
     grok.context(Event)
 
     def update(self):
         super(EventIcal, self).update()
+
+        self.events = [DisplayEvent(self, self.context, "")]
+
+
+class EventVcal(VCalendar):
+    grok.name("event.vcs")
+    grok.context(Event)
+
+    def update(self):
+        super(EventVcal, self).update()
 
         self.events = [DisplayEvent(self, self.context, "")]

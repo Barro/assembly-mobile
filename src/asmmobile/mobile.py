@@ -183,3 +183,7 @@ class ICalendar(MobileView):
         return page().replace("\n", "\r\n")
 
 
+class VCalendar(ICalendar):
+    def update(self):
+        self.mobileUpdate()
+        self.response.setHeader('Content-Type', "text/x-vCalendar")

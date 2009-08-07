@@ -24,7 +24,7 @@ import re
 import grok
 
 import asmmobile.interfaces
-from mobile import MobileView, ICalendar
+from mobile import MobileView, ICalendar, VCalendar
 from util import getTimeHourMinute, getEventList
 
 locationKeyChars = (string.ascii_letters.decode('ascii') \
@@ -182,4 +182,17 @@ class LocationIcal(ICalendar):
                                    (lambda event: event.length),
                                    (lambda event, location, outLocations: True),
                                    {})
-        self.response.setHeader('Content-Type', "text/calendar")
+
+
+
+class LocationVcal(VCalendar):
+    grok.name("events.vcs")
+    grok.context(Location)
+
+    def update(self):
+        super(LocationVcal, self).update()
+        self.events = getEventList(self,
+                                   self.context.getEvents(),
+                                   (lambda event: event.length),
+                                   (lambda event, location, outLocations: True),
+                                   {})

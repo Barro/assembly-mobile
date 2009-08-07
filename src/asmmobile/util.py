@@ -53,6 +53,7 @@ def shortenName(name):
         shortName = newShortName + CUT_POSTFIX
     return shortName
 
+
 def applicationRelativeUrl(view, name):
     targetUrl = view.application_url(name)
     myUrl = view.url()
@@ -163,3 +164,5 @@ def getEventList(view,
                                                       [])
         locationAdder(displayEvent, location, outLocations)
     return result
+
+
