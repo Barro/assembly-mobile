@@ -16,6 +16,10 @@
 </div>
 
 <h2>Next</h2>
+<div tal:condition="python:len(view.nextEvents)==0"
+     class="li">
+No new scheduled events are starting in next two hours. See
+<a tal:attributes="href python:view.applicationRelativeUrl('full-schedule')+'#now'">full schedule</a> for further events.</div>
 <div class="li" tal:repeat="event view/nextEvents">
   <h3>
     <a tal:attributes="href event/shorturl"
