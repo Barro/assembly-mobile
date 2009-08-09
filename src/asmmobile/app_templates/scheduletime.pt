@@ -60,7 +60,8 @@
       tal:define="global lastStart python:event.start.day" />
 </tal:block>
 
-<span tal:replace="structure python: '</div>'" />
+<span tal:replace="structure python: '</div>'"
+      tal:condition="python:lastStart is not None" />
 
 <tal:block metal:use-macro="view/macros/next-previous">
 </tal:block>
