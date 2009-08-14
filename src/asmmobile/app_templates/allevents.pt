@@ -1,0 +1,42 @@
+<metal:block metal:use-macro="context/@@layout/macros/page">
+<div metal:fill-slot='content'>
+<h1><span tal:replace="context/partyName" /> schedule</h1>
+<p>
+Party time: <span tal:replace="python: view.events[0].start.strftime('%A %Y-%m-%d %H:%M')" /> -
+<span tal:replace="python: view.events[-1].end.strftime('%A %Y-%m-%d %H:%M')" />. Length:
+<span tal:replace="python: '%d days %d hours' % (view.length.days, view.length.seconds/3600)" />.
+</p>
+<tal:block tal:repeat="event view/events"
+     tal:define="global lastStart python:None">
+
+
+<span tal:replace="structure string:</div>"
+      tal:condition="python:lastStart is not None and lastStart!=event.start.day" />
+
+
+<h2 tal:condition="python:lastStart!=event.start.day"
+    tal:content="event/start/@@dayname">Dayname</h2>
+
+<span tal:replace="structure string:<div class='event'>"
+      tal:condition="python:lastStart!=event.start.day" />
+<div>
+  <tal:block metal:define-macro="eventContainer">
+
+    <span tal:replace="structure event/@@scheduledevent" />
+
+    <a class="loc"
+       tal:content="event/locationName"
+       tal:attributes="href event/locationUrl">Location name</a>
+
+  </tal:block>
+
+</div>
+<span tal:condition="python: False"
+      tal:define="global lastStart python:event.start.day" />
+</tal:block>
+
+<span tal:replace="structure string:</div>"
+      tal:condition="python:lastStart is not None" />
+
+</div>
+</metal:block>

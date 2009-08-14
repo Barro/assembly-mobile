@@ -1,6 +1,6 @@
 <metal:block metal:use-macro="context/@@layout/macros/page">
 <div metal:fill-slot='content'>
-<h2 tal:content="context/name">name</h2>
+<h2 tal:content="context/name">Location name</h2>
 <a tal:attributes="href python:view.url('events.vcs')">vCal (events)</a> &#8226;
 <a tal:condition="context/url"
    tal:attributes="href context/url">View on Assembly.org</a>
@@ -11,26 +11,16 @@
 
 <tal:block tal:repeat="event view/events"
      tal:define="global lastStart python:None">
-     
+
      <span tal:replace="structure python: '</div>'"
       tal:condition="python:lastStart is not None and lastStart!=event.start.day" />
 
 <h2 tal:condition="python:lastStart!=event.start.day"
-    tal:content="python:event.start.strftime('%A')">Dayname</h2>
-    <span tal:replace="structure python: '<div class=\'event\'>'"
-      tal:condition="python:lastStart!=event.start.day" />
+    tal:content="event/start/@@dayname">Dayname</h2>
+    <span tal:replace="structure string:<div class='event'>"
+          tal:condition="python:lastStart!=event.start.day" />
 <div>
-    <span tal:condition="python: 'Major_event' in event.categories"
-          tal:replace="structure python: '<strong>'" />
-    <span tal:replace="python:event.start.strftime('%H:%M')" />
-    <a tal:content="event/shortname"
-       tal:attributes="href event/shorturl">Event name</a>
-
-    <tal:block tal:condition="python: event.length > view.zeroSeconds">
-      (<span tal:replace="event/timeString" />)
-    </tal:block>
-    <span tal:condition="python: 'Major_event' in event.categories"
-          tal:replace="structure python: '</strong>'" />
+    <span tal:replace="structure event/@@scheduledevent" />
 </div>
 
 
@@ -38,7 +28,7 @@
       tal:define="global lastStart python:event.start.day" />
 </tal:block>
 
-<span tal:replace="structure python: '</div>'" />
+<span tal:replace="structure string:</div>" />
 
 </div>
 </metal:block >

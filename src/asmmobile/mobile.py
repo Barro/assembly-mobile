@@ -27,6 +27,10 @@ import asmmobile.util
 
 _TIME_FACTORY = datetime.datetime(2000, 1, 1)
 
+
+grok.View.applicationRelativeUrl = asmmobile.util.applicationRelativeUrl
+
+
 class MobileView(grok.View):
     grok.context(zope.interface.Interface)
 
@@ -55,9 +59,6 @@ class MobileView(grok.View):
         separatorMatch = re.compile(r" *([,:\{;]) *")
         compressed = separatorMatch.sub(r"\1", compressed)
         return compressed
-
-    def applicationRelativeUrl(self, name):
-        return asmmobile.util.applicationRelativeUrl(self, name)
 
 
 def strip_filter_factory(global_conf, strip_types=''):

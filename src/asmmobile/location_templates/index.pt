@@ -2,9 +2,8 @@
 <div metal:fill-slot='content'>
 
 <div tal:repeat="location view/locations">
-  <a tal:attributes="href location/__name__">
-    <span tal:replace="location/name" />
-  </a>
+  <a tal:attributes="href location/@@url"
+     tal:content="location/name">Location</a>
 </div>
 
 </div>

@@ -25,7 +25,7 @@ import grok
 
 import asmmobile.interfaces
 from mobile import MobileView, ICalendar, VCalendar
-from util import getTimeHourMinute, getEventList
+from util import getEventList
 
 locationKeyChars = (string.ascii_letters.decode('ascii') \
                         + string.digits.decode('ascii'))
@@ -196,3 +196,11 @@ class LocationVcal(VCalendar):
                                    (lambda event: event.length),
                                    (lambda event, location, outLocations: True),
                                    {})
+
+class ViewUrl(grok.View):
+    grok.name("url")
+    grok.context(Location)
+
+    def render(self):
+        return '%s/%s' % (self.applicationRelativeUrl('location'),
+                          self.context.__name__)

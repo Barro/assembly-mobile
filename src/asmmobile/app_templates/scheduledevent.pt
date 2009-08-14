@@ -1,0 +1,12 @@
+<span tal:condition="context/isMajor"
+      tal:replace="structure string:<strong>" />
+
+<span tal:replace="context/start/@@hourminute" />
+
+<a tal:content="context/shortname"
+   tal:attributes="href context/shorturl">Event name</a>
+
+<span tal:replace="context/length/@@hourminuteparenthesis" />
+
+<span tal:condition="context/isMajor"
+          tal:replace="structure string:</strong>" />

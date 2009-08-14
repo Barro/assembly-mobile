@@ -15,18 +15,19 @@
 
 <h2>Time</h2>
 <p>
-<span tal:replace="python:context.start.strftime('%A %H:%M')" /> -
-<tal:block tal:condition="python: context.start.day != context.end.day">
-   <span tal:replace="python:context.end.strftime('%A')" />
-</tal:block>
-   <span tal:replace="python:context.end.strftime('%H:%M')" />
-<span tal:condition="python: context.length > view.zeroSeconds"
-      tal:replace="python: '(%s)' % view.formatInterval(context.length)" />
+  <span tal:replace="context/start/@@dayname" />
+  <span tal:replace="context/start/@@hourminute" /> -
+
+  <span tal:condition="python: context.start.day != context.end.day"
+        tal:replace="context/end/@@dayname" />
+  <span tal:replace="context/end/@@hourminute" />
+
+  <span tal:replace="context/length/@@hourminuteparenthesis" />
 </p>
 <h2>Location</h2>
 <p>
-<a tal:attributes="href python:'%s/%s' % (view.applicationRelativeUrl('location'), context.location.__name__)"
-   tal:content="context/location/name">Location</a>
+  <a tal:attributes="href context/location/@@url"
+     tal:content="context/location/name">Location</a>
 </p>
 
 </div>

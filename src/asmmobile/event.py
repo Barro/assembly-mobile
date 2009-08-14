@@ -21,7 +21,7 @@ import datetime
 import grok
 import asmmobile.interfaces
 from mobile import MobileView, ICalendar, VCalendar
-from util import getTimeHourMinute, DisplayEvent
+from util import DisplayEvent
 
 def _sortByStartTime(first, second):
     startCmp = cmp(first.start, second.start)
@@ -116,9 +116,6 @@ class EventIndex(MobileView):
         return self.context.name
 
     title = property(getTitle)
-
-    def formatInterval(self, interval):
-        return getTimeHourMinute(interval)
 
     def update(self):
         self.mobileUpdate()

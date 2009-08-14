@@ -5,6 +5,7 @@
 <head>
   <title tal:content="view/title">Web page</title>
   <style type='text/css' tal:content="view/getCss"></style>
+  <meta name="source-code" content="http://bitbucket.org/barro/assembly-mobile/" />
 </head>
 <body>
 <h1 id="t">Assembly Mobile</h1>
@@ -24,14 +25,6 @@
 </tal:block>
 &#8226; <a href="http://www.assembly.org/">View Full Site</a>
 </div>
-
-<!-- <hr /> -->
-<!-- <div class='lk'> -->
-<!--   <a href='http://www.assembly.org/' -->
-<!--      i18n:translate="Main website">Main website</a> -->
-<!-- </div> -->
-<!-- <div class='lm' tal:content="view/getTime">Now</div> -->
-
 </metal:block>
 </body>
 </html>

@@ -20,6 +20,7 @@
 import urlparse
 import re
 import datetime
+import grok
 
 EVENTS = 'event'
 LOCATIONS = 'location'
@@ -83,36 +84,69 @@ def eventUrl(view, event):
 INTERVAL_ZERO_SECONDS = datetime.timedelta(seconds=0)
 INTERVAL_ONE_MINUTE = datetime.timedelta(minutes=1)
 
-def getTimeHourMinute(interval):
+class IntervalHourMinute(grok.View):
     """Returns time interval in human readable format.
 
     Examples:
-    1 h 23 min
-    23 min
+    (1 h 23 min)
+    (23 min)
 
     If interval is zero seconds, then this returns an empty string.
 
     @param interval Object with same interface as datetime.timedelta.
     """
-    if interval == INTERVAL_ZERO_SECONDS:
-        return ""
-    # Ceiling to next minute.
-    if interval.seconds % 60 != 0:
-        # Adding one minute. Next call will floor the time to exact minute.
-        interval += INTERVAL_ONE_MINUTE
-    intervalMinutes = (interval.days*86400 + interval.seconds)/60
-    hours = intervalMinutes/60
-    minutes = intervalMinutes%60
-    timeList = []
-    if hours > 0:
-        timeList.append("%d h" % hours)
-    if minutes > 0:
-        timeList.append("%d min" % minutes)
-    return " ".join(timeList)
+
+    grok.context(datetime.timedelta)
+    grok.name("hourminute")
+
+    def render(self):
+        if self.context == INTERVAL_ZERO_SECONDS:
+            return u""
+        interval = self.context
+        # Ceiling to next minute.
+        if interval.seconds % 60 != 0:
+            # Adding one minute. Next call will floor the time to exact minute.
+            interval += INTERVAL_ONE_MINUTE
+        intervalMinutes = (interval.days*86400 + interval.seconds)/60
+        hours = intervalMinutes/60
+        minutes = intervalMinutes%60
+        timeList = []
+        if hours > 0:
+            timeList.append(u"%d h" % hours)
+        if minutes > 0:
+            timeList.append(u"%d min" % minutes)
+        return u" ".join(timeList)
+
+
+class IntervalHourMinuteParenthesis(IntervalHourMinute):
+    grok.name("hourminuteparenthesis")
+
+    def render(self):
+        result = super(IntervalHourMinuteParenthesis, self).render()
+        if len(result):
+            return u"(%s)" % result
+        else:
+            return result
+
+
+class TimeHourMinute(grok.View):
+    grok.context(datetime.datetime)
+    grok.name("hourminute")
+
+    def render(self):
+        return self.context.strftime("%H:%M")
+
+
+class TimeDayname(grok.View):
+    grok.context(datetime.datetime)
+    grok.name("dayname")
+
+    def render(self):
+        return self.context.strftime("%A")
 
 
 class DisplayEvent(object):
-    def __init__(self, view, event, timeString):
+    def __init__(self, view, event, timeTillChangePoint):
         self.id = event.__name__
         self.shortname = shortenName(event.name)
         self.name = event.name
@@ -121,17 +155,18 @@ class DisplayEvent(object):
         self.description = event.description
         self.categories = event.categories
 
-        # Time string is either string that indicates how much is remaining of
-        # an event, how long there is till next event or how long the event is
-        # depending on event type and view.
-        self.timeString = timeString
-
         self.locationName = event.location.name
         self.locationUrl = locationUrl(view, event.location)
+
+        self.timeTillChangePoint = timeTillChangePoint
 
         self.start = event.start
         self.end = event.end
         self.length = event.length
+
+    @property
+    def isMajor(self):
+        return 'Major_event' in self.categories
 
 
 class GroupingLocation(object):
@@ -153,7 +188,7 @@ def getEventList(view,
         locationName = event.location.name
         displayEvent = DisplayEvent(view,
                                     event,
-                                    getTimeHourMinute(timeGetter(event)))
+                                    timeGetter(event))
         result.append(displayEvent)
         location = event.majorLocation
         if location not in outLocations:

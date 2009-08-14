@@ -27,7 +27,7 @@ import re
 import asmmobile.location
 import asmmobile.event
 from mobile import MobileView
-from util import getTimeHourMinute, getEventList, LOCATIONS, EVENTS
+from util import getEventList, LOCATIONS, EVENTS, DisplayEvent
 import asmmobile.mobile
 
 from asmmobile import AsmMobileMessageFactory as _
@@ -64,6 +64,8 @@ class AsmMobile(grok.Application, grok.Container):
     zope.interface.implements(asmmobile.interfaces.IAsmMobile)
 
     otherLanguage = _(u"link|other_language", default=u'/')
+
+    partyName = u"Assembly Summer 2009"
 
     def __init__(self, **vars):
         super(AsmMobile, self).__init__(**vars)
@@ -134,34 +136,55 @@ def _reverseOrderByMajorLocation(first, second):
 
 
 class Index(MobileView):
-    title = _(u"Assembly mobile")
+    title = _(u"Assembly Mobile")
     grok.context(AsmMobile)
 
-    def update(self):
-        self.mobileUpdate()
-
+    def _getCurrentNextEvents(self, now):
         locations = {}
-        currentEvents = self.context.getCurrentEvents(self.now)
+        currentEvents = self.context.getCurrentEvents(now)
         currentEvents.sort(_reverseOrderByMajorLocation)
         self.currentEvents = \
             getEventList(self,
                          currentEvents,
-                         (lambda event: event.end - self.now),
+                         (lambda event: event.end - now),
                          (lambda event, location, outLocations:
                           outLocations[location].currentEvents.append(event)),
                          locations)
 
-        nextEvents = self.context.getNextEvents(self.now)
+        nextEvents = self.context.getNextEvents(now)
         nextEvents.sort(_reverseOrderByMajorLocation)
         self.nextEvents = \
             getEventList(self,
                          nextEvents,
-                         (lambda event: event.start - self.now),
+                         (lambda event: event.start - now),
                          (lambda event, location, outLocations:
                           outLocations[location].nextEvents.append(event)),
                          locations)
 
         self.locations = locations.values()
+
+
+    def _getPartyStatus(self, now, nextEvents):
+        allEvents = self.context.getEvents()
+        hasUpcomingEvents = len(nextEvents) > 0
+        haveEvents = len(allEvents) > 0
+        self.partyHasStarted = haveEvents and allEvents[0].start <= now
+        self.partyHasEnded = haveEvents and allEvents[-1].end < now
+        partyIsOngoing = (haveEvents and \
+                              self.partyHasStarted and not self.partyHasEnded)
+        # Event might be starting in a while so we event can be ongoing even
+        # though no event has started yet.
+        if hasUpcomingEvents or partyIsOngoing:
+            self.partyIsOngoing = True
+        else:
+            self.partyIsOngoing = False
+
+
+    def update(self):
+        self.mobileUpdate()
+        self._getCurrentNextEvents(self.now)
+        self._getPartyStatus(self.now, self.nextEvents)
+
 
 
 class ScheduleTime(MobileView):
@@ -170,16 +193,11 @@ class ScheduleTime(MobileView):
 
     title = _(u"Full schedule")
 
-    zeroSeconds = datetime.timedelta(seconds=0)
-
     startDifference = datetime.timedelta(hours=2)
     endDifference = datetime.timedelta(hours=10)
 
     dateFormat = "%Y-%m-%d-%H"
     dateValidate = re.compile(r"\d\d\d\d-\d\d-\d\d-\d\d")
-
-    def formatInterval(self, interval):
-        return getTimeHourMinute(interval)
 
     def update(self, s=None):
         self.mobileUpdate()
@@ -253,3 +271,25 @@ class Favicon(grok.View):
 
     def render(self):
         return self.static.get("favicon.ico").GET()
+
+
+class ScheduledEvent(grok.View):
+    grok.context(DisplayEvent)
+
+
+class AllEvents(MobileView):
+    grok.name("all-events")
+    grok.context(AsmMobile)
+
+    title = _(u"All events")
+
+    def update(self):
+        self.mobileUpdate()
+
+        self.events = getEventList(self,
+                                   self.context.getEvents(),
+                                   (lambda event: event.length),
+                                   (lambda event, location, outLocations: True),
+                                   {})
+
+        self.length = self.events[-1].end - self.events[0].start
