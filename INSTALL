@@ -1,4 +1,20 @@
-Run:
+This needs original Python 2.4 or 2.5, easy install from setuptools
+and and zc.buildout.
 
-easy_install zc.buildout
-buildout
+Note that by using your system's default Python this application will
+not work as Zope needs Python not to be broken! And system's default
+Python installations usually are.
+
+To get stand-alone installation of this application that includes
+Python interpreter, run following commands under this directory:
+
+./setup.sh
+
+This will install all dependencies under python/ directory.
+
+Run this program by running:
+bin/zeoserver start
+bin/asmmobile-ctl fg
+
+And by default this will listen to http://localhost:8080/ with admin
+user/password being admin/admin.
