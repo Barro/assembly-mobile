@@ -18,6 +18,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import grok
+
+import grokcore.component
+import grokcore.view.components
+import grokcore.view.interfaces
+
 import zope.interface
 import asmmobile.interfaces
 import datetime
@@ -58,6 +63,21 @@ class NextEventFilter(object):
         else:
             self.locationizedEvents[location] = event
             return True
+
+
+class MobileTemplate(grokcore.view.components.PageTemplate):
+    charset = "utf-8"
+
+    def render(self, view):
+        return super(MobileTemplate, self).render(view).encode(self.charset)
+
+
+class MobileTemplateFactory(grok.GlobalUtility):
+    grok.implements(grokcore.view.interfaces.ITemplateFileFactory)
+    grok.name('ptm')
+
+    def __call__(self, filename, _prefix=None):
+        return MobileTemplate(filename=filename, _prefix=_prefix)
 
 
 class AsmMobile(grok.Application, grok.Container):
@@ -181,7 +201,6 @@ class Index(MobileView):
 
 
     def update(self):
-        self.mobileUpdate()
         self._getCurrentNextEvents(self.now)
         self._getPartyStatus(self.now, self.nextEvents)
 
@@ -200,7 +219,6 @@ class ScheduleTime(MobileView):
     dateValidate = re.compile(r"\d\d\d\d-\d\d-\d\d-\d\d")
 
     def update(self, s=None):
-        self.mobileUpdate()
 
         if s is not None and self.dateValidate.match(s):
             (year, month, day, hour) = (int(x) for x in s.split("-"))
@@ -259,7 +277,7 @@ class ScheduleTime(MobileView):
             previousEvent = event
 
 
-class Layout(grok.View):
+class Layout(MobileView):
     """The view that contains the main layout."""
     grok.context(zope.interface.Interface)
 
@@ -284,7 +302,6 @@ class AllEvents(MobileView):
     title = _(u"All events")
 
     def update(self):
-        self.mobileUpdate()
 
         self.events = getEventList(self,
                                    self.context.getEvents(),

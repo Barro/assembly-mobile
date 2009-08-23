@@ -88,9 +88,6 @@ class Index(MobileView):
     def locations(self):
         return self.context.values()
 
-    def update(self):
-        self.mobileUpdate()
-
 
 class Location(grok.Model):
     grok.implements(asmmobile.interfaces.ILocation)
@@ -147,8 +144,6 @@ class LocationIndex(MobileView):
     title = property(getTitle)
 
     def update(self):
-        self.mobileUpdate()
-
         events = self.context.getEvents()
         self.events = getEventList(self,
                                    events,

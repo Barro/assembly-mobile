@@ -117,9 +117,6 @@ class EventIndex(MobileView):
 
     title = property(getTitle)
 
-    def update(self):
-        self.mobileUpdate()
-
 
 class EventIcal(ICalendar):
     grok.name("event.ics")

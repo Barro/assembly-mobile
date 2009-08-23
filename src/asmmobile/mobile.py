@@ -34,15 +34,20 @@ grok.View.applicationRelativeUrl = asmmobile.util.applicationRelativeUrl
 class MobileView(grok.View):
     grok.context(zope.interface.Interface)
 
-    def mobileUpdate(self):
+    def __call__(self, *args, **kw):
         self.now = _TIME_FACTORY.now()
-        self.request.response.setHeader("Content-Type", "application/xhtml+xml; charset=UTF-8")
+        self.request.response.setHeader("Content-Type",
+                                        "application/xhtml+xml; charset=UTF-8")
+
         nextMinute = _TIME_FACTORY.utcnow()
         maxAge = 60 - nextMinute.second%60
         nextMinute += datetime.timedelta(seconds=(maxAge))
+
         self.request.response.setHeader(
             "Expires", nextMinute.strftime("%a, %d %b %Y %H:%M:%S +0000"))
         self.request.response.setHeader("Cache-Control", "max-age=%d" % maxAge)
+
+        return super(MobileView, self).__call__(*args, **kw)
 
 
     def getTime(self):
@@ -65,6 +70,7 @@ def strip_filter_factory(global_conf, strip_types=''):
     def filter(app):
         return StripFilter(app, strip_types=strip_types)
     return filter
+
 
 class StripWhitespaceResponse(object):
 
@@ -169,12 +175,12 @@ class ICalendarWrapper(grok.View):
 
 class ICalendar(MobileView):
     """The view that contains the iCalendar events."""
+
     grok.context(zope.interface.Interface)
 
     template = None
 
     def update(self):
-        self.mobileUpdate()
         self.response.setHeader('Content-Type', "text/calendar")
 
     def render(self):
@@ -185,6 +191,6 @@ class ICalendar(MobileView):
 
 
 class VCalendar(ICalendar):
+
     def update(self):
-        self.mobileUpdate()
         self.response.setHeader('Content-Type', "text/x-vCalendar")
