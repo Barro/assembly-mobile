@@ -31,21 +31,46 @@ _TIME_FACTORY = datetime.datetime(2000, 1, 1)
 grok.View.applicationRelativeUrl = asmmobile.util.applicationRelativeUrl
 
 
+def expireNextMinute(self, utcnow):
+    maxAge = 60 - utcnow.second%60
+    return datetime.timedelta(seconds=(maxAge))
+
+
 class MobileView(grok.View):
     grok.context(zope.interface.Interface)
 
-    def __call__(self, *args, **kw):
-        self.now = _TIME_FACTORY.now()
-        self.request.response.setHeader("Content-Type",
-                                        "application/xhtml+xml; charset=UTF-8")
+    cacheTime = expireNextMinute
 
-        nextMinute = _TIME_FACTORY.utcnow()
-        maxAge = 60 - nextMinute.second%60
-        nextMinute += datetime.timedelta(seconds=(maxAge))
+    contentType = "application/xhtml+xml; charset=UTF-8"
+
+    cssDirectory = "src/asmmobile/static"
+    cssFiles = ["asmmobile.css"]
+
+    def __call__(self, *args, **kw):
+        self.request.response.setHeader(
+            "Content-Type",
+            self.contentType
+            )
+
+        self.now = _TIME_FACTORY.now()
+
+        utcnow = _TIME_FACTORY.utcnow()
+        cacheTime = self.cacheTime(utcnow)
+
+        expiresAt = utcnow + cacheTime
 
         self.request.response.setHeader(
-            "Expires", nextMinute.strftime("%a, %d %b %Y %H:%M:%S +0000"))
-        self.request.response.setHeader("Cache-Control", "max-age=%d" % maxAge)
+            "Expires",
+            expiresAt.strftime("%a, %d %b %Y %H:%M:%S GMT")
+            )
+        self.request.response.setHeader(
+            "Cache-Control",
+            "max-age=%d, public" % (cacheTime.seconds + cacheTime.days * 86400)
+            )
+        self.request.response.setHeader(
+            'Vary',
+            "Accept-Encoding"
+            )
 
         return super(MobileView, self).__call__(*args, **kw)
 
@@ -56,9 +81,13 @@ class MobileView(grok.View):
 
 
     def getCss(self):
-        fp = open("src/asmmobile/static/asmmobile.css", "r")
-        compressed = fp.read()
-        fp.close()
+        cssData = ""
+        for filename in self.cssFiles:
+            fp = open("%s/%s" % (self.cssDirectory , filename), "r")
+            cssData += fp.read()
+            fp.close()
+
+        compressed = cssData
         newlinesMatch = re.compile(r" *\n *")
         compressed = newlinesMatch.sub("", compressed)
         separatorMatch = re.compile(r" *([,:\{;]) *")
@@ -194,3 +223,4 @@ class VCalendar(ICalendar):
 
     def update(self):
         self.response.setHeader('Content-Type', "text/x-vCalendar")
+
