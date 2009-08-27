@@ -21,6 +21,9 @@ import urlparse
 import re
 import datetime
 import grok
+import string
+
+import interfaces
 
 EVENTS = 'event'
 LOCATIONS = 'location'
@@ -29,6 +32,18 @@ NAME_MAX_LENGTH = 60
 NAME_SHORTEN_TO = 55
 NON_WORD_CHARACTERS = "-#:,. "
 CUT_POSTFIX = "..."
+
+class KeyNormalize(grok.View):
+    grok.context(unicode)
+    grok.name("keynormalize")
+
+    locationKeyChars = (string.ascii_letters.decode('ascii') \
+                            + string.digits.decode('ascii'))
+
+    def render(self):
+        return re.sub(ur'([^%s]+)' % self.locationKeyChars, ur'_',
+                      self.context.lower()).strip("_")
+
 
 def shortenName(name):
     shortName = re.sub("ARTtech seminars - ", "", name)
@@ -55,9 +70,15 @@ def shortenName(name):
     return shortName
 
 
-def applicationRelativeUrl(view, name):
-    targetUrl = view.application_url(name)
+def applicationRelativeUrl(view, obj=None):
+    targetUrl = view.application_url(obj)
     myUrl = view.url()
+
+    if not (view.request.environment['PATH_INFO'].endswith("/")
+            or view.request.environment['PATH_INFO'].endswith(view.__name__)):
+        pass
+        #myUrl += "/"
+
     maxCommon = 0
     minLength = min(len(targetUrl), len(myUrl))
     while (maxCommon < minLength

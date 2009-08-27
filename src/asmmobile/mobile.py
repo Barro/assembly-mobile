@@ -28,9 +28,6 @@ import asmmobile.util
 _TIME_FACTORY = datetime.datetime(2000, 1, 1)
 
 
-grok.View.applicationRelativeUrl = asmmobile.util.applicationRelativeUrl
-
-
 class MobileView(grok.View):
     grok.context(zope.interface.Interface)
 
@@ -88,6 +85,13 @@ class MobileView(grok.View):
         separatorMatch = re.compile(r" *([,:\{;]) *")
         compressed = separatorMatch.sub(r"\1", compressed)
         return compressed
+
+
+    def urlR(self, target=None):
+        return asmmobile.util.applicationRelativeUrl(self, target)
+
+    def application_urlR(self, target="."):
+        return asmmobile.util.applicationRelativeUrl(self, target)
 
 
 def strip_filter_factory(global_conf, strip_types=''):
@@ -190,32 +194,3 @@ class StripFilter(object):
         self.real_start(self.status, headers_out, self.exc_info)
 
         return [resultStr].__iter__()
-
-
-class ICalendarWrapper(grok.View):
-    """The view that contains the iCalendar events."""
-    grok.context(zope.interface.Interface)
-
-
-class ICalendar(MobileView):
-    """The view that contains the iCalendar events."""
-
-    grok.context(zope.interface.Interface)
-
-    template = None
-
-    def update(self):
-        self.response.setHeader('Content-Type', "text/calendar")
-
-    def render(self):
-        page = ICalendarWrapper(self.context, self.request)
-        page.events = self.events
-        page.now = self.now
-        return page().replace("\n", "\r\n")
-
-
-class VCalendar(ICalendar):
-
-    def update(self):
-        self.response.setHeader('Content-Type', "text/x-vCalendar")
-

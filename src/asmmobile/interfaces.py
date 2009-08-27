@@ -38,6 +38,9 @@ class IAsmMobile(zope.interface.Interface):
         @param currentTime Time that represents current time.
         """
 
+class IEventOwner(zope.interface.Interface):
+    events = zope.interface.Attribute("")
+
 
 class IEventContainer(zope.interface.Interface):
     def updateEvents(values):

@@ -24,7 +24,7 @@ import grokcore.view.components
 import grokcore.view.interfaces
 
 import zope.interface
-import asmmobile.interfaces
+import interfaces
 import datetime
 
 import re
@@ -81,11 +81,9 @@ class MobileTemplateFactory(grok.GlobalUtility):
 
 
 class AsmMobile(grok.Application, grok.Container):
-    zope.interface.implements(asmmobile.interfaces.IAsmMobile)
+    zope.interface.implements(interfaces.IAsmMobile, interfaces.IEventOwner)
 
-    otherLanguage = _(u"link|other_language", default=u'/')
-
-    partyName = u"Assembly Summer 2009"
+    partyName = u"Assembly summer 2009"
 
     def __init__(self, **vars):
         super(AsmMobile, self).__init__(**vars)
@@ -93,16 +91,16 @@ class AsmMobile(grok.Application, grok.Container):
         self[LOCATIONS] = asmmobile.location.LocationContainer()
         self[EVENTS] = asmmobile.event.EventContainer()
 
-    def getEvents(self):
+
+    @property
+    def EVENTS(self):
         return self[EVENTS]
 
-    events = property(getEvents)
 
-
-    def getLocations(self):
+    @property
+    def LOCATIONS(self):
         return self[LOCATIONS]
 
-    locations = property(getLocations)
 
     def addLocation(self, name, url, priority, hideUntil, majorLocationName):
         if majorLocationName is not None:
@@ -128,22 +126,24 @@ class AsmMobile(grok.Application, grok.Container):
                                      'categories': values['categories'],
                                      }
 
-        self.events.updateEvents(updateEvents)
+        self.EVENTS.updateEvents(updateEvents)
 
     def getCurrentEvents(self, now):
         eventFilter = lambda event : (event.start <= now and now < event.end)
-        return self.events.getEvents(eventFilter)
+        return self.EVENTS.getEvents(eventFilter)
 
 
     def getNextEvents(self, now):
-        return self.events.getEvents(NextEventFilter(now))
+        return self.EVENTS.getEvents(NextEventFilter(now))
 
     def getEvents(self, eventFilter=None):
-        return self.events.getEvents(eventFilter)
+        return self.EVENTS.getEvents(eventFilter)
+
+    events = property(getEvents)
 
     def getLocationEvents(self, location):
         eventFilter = lambda event : (event.location == location)
-        return self.events.getEvents(eventFilter)
+        return self.EVENTS.getEvents(eventFilter)
 
 
 def _reverseOrderByMajorLocation(first, second):
@@ -156,7 +156,6 @@ def _reverseOrderByMajorLocation(first, second):
 
 
 class Index(MobileView):
-    title = _(u"Assembly Mobile")
     grok.context(AsmMobile)
 
     def _getCurrentNextEvents(self, now):
@@ -209,8 +208,6 @@ class Index(MobileView):
 class ScheduleTime(MobileView):
     grok.name("full-schedule")
     grok.context(AsmMobile)
-
-    title = _(u"Full schedule")
 
     startDifference = datetime.timedelta(hours=2)
     endDifference = datetime.timedelta(hours=10)
@@ -299,8 +296,6 @@ class AllEvents(MobileView):
     grok.name("all-events")
     grok.context(AsmMobile)
 
-    title = _(u"All events")
-
     cacheTime = asmmobile.util.AddTime(datetime.timedelta(minutes=15))
 
     def update(self):
@@ -312,3 +307,4 @@ class AllEvents(MobileView):
                                    {})
 
         self.length = self.events[-1].end - self.events[0].start
+

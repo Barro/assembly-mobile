@@ -1,21 +1,29 @@
 body {
   background: #d8eaef;
-  color:#659cab;
+  color: #659cab;
   font-family: sans-serif;
   margin:1%;
 }
 
-a {text-decoration:none; color:#033442; }
-a:hover {text-decoration:underline;}
+a {
+  text-decoration: none;
+  color: #033442;
+}
+
+a:hover {
+  text-decoration: underline;
+}
 
 h1 {
   font-size: 100%;
   margin: 0;
   padding: 0;
-  color:#333;
+  color: #333;
 }
 
-h1#t {color:#659cab;}
+#t, #t a {
+  color: #659cab;
+}
 
 h2 {
   margin: 0;

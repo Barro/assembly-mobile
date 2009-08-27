@@ -19,8 +19,8 @@
 
 import datetime
 import grok
-import asmmobile.interfaces
-from mobile import MobileView, ICalendar, VCalendar
+import interfaces
+from mobile import MobileView
 from util import DisplayEvent
 
 def _sortByStartTime(first, second):
@@ -33,7 +33,7 @@ def _sortByStartTime(first, second):
         return startCmp
 
 class EventContainer(grok.Container):
-    grok.implements(asmmobile.interfaces.IEventContainer)
+    grok.implements(interfaces.IEventContainer)
 
     def updateEvents(self, values):
         currentKeys = set(self.keys())
@@ -72,7 +72,7 @@ class EventContainer(grok.Container):
 
 
 class Event(grok.Model):
-    grok.implements(asmmobile.interfaces.IEvent)
+    grok.implements(interfaces.IEvent, interfaces.IEventOwner)
 
     def __init__(self,
                  name,
@@ -90,20 +90,21 @@ class Event(grok.Model):
         self.description = description
         self.categories = categories
 
-    def getMajorLocation(self):
+    @property
+    def majorLocation(self):
         return self.location.majorLocation
 
-    majorLocation = property(getMajorLocation)
-
-    def getLength(self):
+    @property
+    def length(self):
         return self.end - self.start
 
-    length = property(getLength)
-
-    def getId(self):
+    @property
+    def id(self):
         return self.__name__
 
-    id = property(getId)
+    @property
+    def events(self):
+        return [self]
 
 
 class EventIndex(MobileView):
@@ -112,27 +113,7 @@ class EventIndex(MobileView):
 
     zeroSeconds = datetime.timedelta(seconds=0)
 
-    def getTitle(self):
+    @property
+    def title(self):
         return self.context.name
 
-    title = property(getTitle)
-
-
-class EventIcal(ICalendar):
-    grok.name("event.ics")
-    grok.context(Event)
-
-    def update(self):
-        super(EventIcal, self).update()
-
-        self.events = [DisplayEvent(self, self.context, "")]
-
-
-class EventVcal(VCalendar):
-    grok.name("event.vcs")
-    grok.context(Event)
-
-    def update(self):
-        super(EventVcal, self).update()
-
-        self.events = [DisplayEvent(self, self.context, "")]

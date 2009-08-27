@@ -1,4 +1,5 @@
 <metal:block metal:use-macro="context/@@layout/macros/page">
+<metal:block metal:fill-slot='page-title'>Current events</metal:block>
 <div metal:fill-slot='content'>
 
 <tal:block tal:condition="view/partyIsOngoing">
@@ -21,7 +22,7 @@
 <div tal:condition="python:len(view.nextEvents)==0"
      class="li">
 No new scheduled events are starting in next two hours. See
-<a tal:attributes="href python:view.applicationRelativeUrl('full-schedule')+'#now'">full schedule</a> for further events.</div>
+<a tal:attributes="href python:view.urlR('full-schedule')+'#now'">full schedule</a> for further events.</div>
 <div class="li" tal:repeat="event view/nextEvents">
   <h3>
     <a tal:attributes="href event/shorturl"
@@ -37,7 +38,7 @@ No new scheduled events are starting in next two hours. See
 </tal:block>
 
 <p tal:condition="not:view/partyHasStarted">
-<span tal:replace="context/partyName" /> has not started yet. See <a tal:attributes="href python:view.applicationRelativeUrl('all-events')">full party schedule</a> for the whole program.
+<span tal:replace="context/partyName" /> has not started yet. See <a tal:attributes="href python:view.urlR('all-events')">full party schedule</a> for the whole program.
 </p>
 <p tal:condition="view/partyHasEnded">
 <span tal:replace="context/partyName" /> has ended. Welcome again next year!

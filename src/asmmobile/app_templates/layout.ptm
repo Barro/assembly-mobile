@@ -3,18 +3,18 @@
     "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" i18n:domain="AsmMobile">
 <head>
-  <title tal:content="view/title">Web page</title>
+  <title><metal:block define-slot='page-title'></metal:block> - Assembly Mobile</title>
   <style type='text/css' tal:content="view/getCss"></style>
   <meta name="source-code" content="http://bitbucket.org/barro/assembly-mobile/" />
 </head>
 <body>
-<h1 id="t">Assembly Mobile</h1>
+<h1 id="t"><a tal:attributes="href view/application_urlR">Assembly Mobile</a></h1>
 <metal:block define-slot="body">
 <div class="h">
 <tal:block metal:define-macro='links'>
-<a tal:attributes="href python:view.applicationRelativeUrl('index')">Overview</a>
+<a tal:attributes="href view/application_urlR">Overview</a>
 &#8226;
-<a tal:attributes="href python:view.applicationRelativeUrl('full-schedule')+'#now'">Full schedule</a>
+<a tal:attributes="href python:view.urlR('full-schedule')+'#now'">Full schedule</a>
 </tal:block>
 </div>
 <metal:block define-slot="content">

@@ -23,8 +23,9 @@ import re
 
 import grok
 
-import asmmobile.interfaces
-from mobile import MobileView, ICalendar, VCalendar
+import util
+import interfaces
+from mobile import MobileView
 from util import getEventList
 
 locationKeyChars = (string.ascii_letters.decode('ascii') \
@@ -33,12 +34,13 @@ locationKeyChars = (string.ascii_letters.decode('ascii') \
 class EditDescription(grok.Permission):
     grok.name('asmmobile.Edit')
 
+
 def convertNameToKey(name):
     return re.sub(ur'([^%s]+)' % locationKeyChars, ur'_',
                   name.lower()).strip("_")
 
 class LocationContainer(grok.Container):
-    grok.implements(asmmobile.interfaces.ILocationContainer)
+    grok.implements(interfaces.ILocationContainer)
 
 
     def addLocation(self,
@@ -90,7 +92,7 @@ class Index(MobileView):
 
 
 class Location(grok.Model):
-    grok.implements(asmmobile.interfaces.ILocation)
+    grok.implements(interfaces.ILocation, interfaces.IEventOwner)
 
     DEFAULT_PRIORITY = 0
     DEFAULT_HIDE_TIME = datetime.timedelta(hours=2)
@@ -131,6 +133,10 @@ class Location(grok.Model):
     def application(self):
         return self.__parent__.application()
 
+    @property
+    def events(self):
+        return self.getEvents()
+
 
 class LocationIndex(MobileView):
     grok.name("index")
@@ -166,36 +172,10 @@ class Edit(grok.EditForm):
     form_fields = grok.AutoFields(Location)
 
 
-class LocationIcal(ICalendar):
-    grok.name("events.ics")
-    grok.context(Location)
-
-    def update(self):
-        super(LocationIcal, self).update()
-        self.events = getEventList(self,
-                                   self.context.getEvents(),
-                                   (lambda event: event.length),
-                                   (lambda event, location, outLocations: True),
-                                   {})
-
-
-
-class LocationVcal(VCalendar):
-    grok.name("events.vcs")
-    grok.context(Location)
-
-    def update(self):
-        super(LocationVcal, self).update()
-        self.events = getEventList(self,
-                                   self.context.getEvents(),
-                                   (lambda event: event.length),
-                                   (lambda event, location, outLocations: True),
-                                   {})
-
 class ViewUrl(grok.View):
     grok.name("url")
     grok.context(Location)
 
     def render(self):
-        return '%s/%s' % (self.applicationRelativeUrl('location'),
+        return "%s/%s" % (util.applicationRelativeUrl(self, 'location'),
                           self.context.__name__)
