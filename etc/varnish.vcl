@@ -13,7 +13,7 @@ acl purge {
 }
 
 sub vcl_recv {
-        set req.grace = 120s;
+        set req.grace = 5s;
 	set req.backend = backend_0;
 	
 	if (req.request == "PURGE") {

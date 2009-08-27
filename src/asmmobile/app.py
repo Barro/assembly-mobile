@@ -301,6 +301,8 @@ class AllEvents(MobileView):
 
     title = _(u"All events")
 
+    cacheTime = asmmobile.util.AddTime(datetime.timedelta(minutes=15))
+
     def update(self):
 
         self.events = getEventList(self,

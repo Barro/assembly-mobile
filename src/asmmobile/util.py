@@ -201,3 +201,15 @@ def getEventList(view,
     return result
 
 
+
+def ceilToNextMinute(self, utcnow):
+    maxAge = 60 - utcnow.second%60
+    return datetime.timedelta(seconds=(maxAge))
+
+
+class AddTime(object):
+    def __init__(self, addAmount):
+        self.addAmount = addAmount
+
+    def __call__(self, utcnow):
+        return self.addAmount

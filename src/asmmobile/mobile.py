@@ -31,15 +31,10 @@ _TIME_FACTORY = datetime.datetime(2000, 1, 1)
 grok.View.applicationRelativeUrl = asmmobile.util.applicationRelativeUrl
 
 
-def expireNextMinute(self, utcnow):
-    maxAge = 60 - utcnow.second%60
-    return datetime.timedelta(seconds=(maxAge))
-
-
 class MobileView(grok.View):
     grok.context(zope.interface.Interface)
 
-    cacheTime = expireNextMinute
+    cacheTime = asmmobile.util.ceilToNextMinute
 
     contentType = "application/xhtml+xml; charset=UTF-8"
 
