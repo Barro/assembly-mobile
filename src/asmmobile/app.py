@@ -88,7 +88,7 @@ class StylesheetTemplateFactory(grok.GlobalUtility):
 class AsmMobile(grok.Application, grok.Container):
     zope.interface.implements(interfaces.IAsmMobile, interfaces.IEventOwner)
 
-    partyName = u"Assembly summer 2009"
+    partyName = config.partyName
 
     def __init__(self, **vars):
         super(AsmMobile, self).__init__(**vars)

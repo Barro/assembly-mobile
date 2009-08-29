@@ -37,6 +37,10 @@ site-definition ${site_zcml:output}
 #  </logfile>
 </eventlog>
 
+<product-config assembly-mobile>
+ party-name "Assembly"
+</product-config>
+
 # Comment this line to disable developer mode.  This should be done in
 # production
 devmode on
