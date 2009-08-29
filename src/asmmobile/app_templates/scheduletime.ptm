@@ -43,10 +43,8 @@
 
   </tal:block>
 <tal:block tal:condition="python: event == view.anchorEvent">
-<span tal:replace="structure string:</div><div>" />
-<span class="cur">Current time:
-  <span tal:replace="view/now/@@hourminute" />
-</span>
+<span tal:replace="structure string:</div><div class='cur'>" />
+Current time: <span tal:replace="view/now/@@hourminute" />
 </tal:block>
 
 </div>
