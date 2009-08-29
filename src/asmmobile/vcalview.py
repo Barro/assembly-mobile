@@ -3,6 +3,7 @@ import grok
 
 from asmmobile.components import MobileView
 import asmmobile.interfaces as interfaces
+import asmmobile.util as util
 
 class EventOwnerWrapper(object):
     def __init__(self, contentType, events):
@@ -21,7 +22,7 @@ class ICalendar(MobileView):
     grok.context(EventOwnerWrapper)
     grok.name("index.html")
 
-    template = None
+    cacheTime = util.AddTime(datetime.timedelta(minutes=15))
 
     def update(self):
         self.response.setHeader('Content-Type', self.context.contentType)

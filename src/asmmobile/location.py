@@ -141,6 +141,8 @@ class LocationIndex(MobileView):
     grok.name("index")
     grok.context(Location)
 
+    cacheTime = util.AddTime(datetime.timedelta(minutes=15))
+
     zeroSeconds = datetime.timedelta(seconds=0)
 
     def getTitle(self):

@@ -70,36 +70,40 @@ def shortenName(name):
     return shortName
 
 
-def applicationRelativeUrl(view, obj=None):
-    targetUrl = view.application_url(obj)
-    myUrl = view.url()
+def applicationRelativeUrl(view, path):
+    appPath = urlparse.urlparse(view.application_url())[2]
 
-    if not (view.request.environment['PATH_INFO'].endswith("/")
-            or view.request.environment['PATH_INFO'].endswith(view.__name__)):
-        pass
-        #myUrl += "/"
+    if path == "":
+        return appPath
 
-    maxCommon = 0
-    minLength = min(len(targetUrl), len(myUrl))
-    while (maxCommon < minLength
-           and targetUrl[maxCommon] == myUrl[maxCommon]):
-        maxCommon += 1
-    if maxCommon == len(myUrl):
-        return myUrl.split("/")[-1]
-    elif "/" not in myUrl[maxCommon:]:
-        return targetUrl[maxCommon:]
-    else:
-        return urlparse.urlparse(targetUrl)[2]
+    viewUrl = view.request.environment['PATH_INFO']
+    slashedAppPath = appPath + "/"
+    if not viewUrl.startswith(slashedAppPath):
+        return "%s/%s" % (appPath, path)
+
+    viewUnderApp = viewUrl[len(slashedAppPath):]
+
+    viewDirectory = "/".join(viewUnderApp.split("/")[:-1])
+    pathDirectory = "/".join(path.split("/")[:-1])
+
+    if pathDirectory.startswith(viewDirectory):
+        return path[len(viewDirectory):]
+
+    return "%s/%s" % (appPath, path)
 
 
 def locationUrl(view, location):
-    return "%s/%s" % (applicationRelativeUrl(view, LOCATIONS),
-                      location.__name__)
+    return applicationRelativeUrl(
+        view,
+        "%s/%s" % (LOCATIONS, location.__name__)
+        )
 
 
 def eventUrl(view, event):
-    return "%s/%s" % (applicationRelativeUrl(view, EVENTS),
-                      event.__name__)
+    return applicationRelativeUrl(
+        view,
+        "%s/%s" % (EVENTS, event.__name__)
+        )
 
 
 INTERVAL_ZERO_SECONDS = datetime.timedelta(seconds=0)

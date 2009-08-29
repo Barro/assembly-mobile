@@ -18,6 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import re
+import urlparse
 
 from zope.interface import Interface
 
@@ -65,16 +66,17 @@ class MobileView(grok.View):
         return super(MobileView, self).__call__(*args, **kw)
 
 
-    def getTime(self):
-        timeFormat = "%Y-%m-%d %H:%M %z"
-        return _(u"Current time: %s" % self.now.strftime(timeFormat))
+    def urlR(self, target=""):
+        requestPath = self.request.environment['PATH_INFO']
+        contextPath = urlparse.urlparse(self.url(self.context))[2]
+
+        if requestPath == contextPath:
+            return "%s/%s" % (self.context.__name__, target)
+        else:
+            return target
 
 
-    def urlR(self, target=None):
-        return util.applicationRelativeUrl(self, target)
-
-
-    def application_urlR(self, target="."):
+    def application_urlR(self, target=""):
         return util.applicationRelativeUrl(self, target)
 
 

@@ -14,7 +14,7 @@
 <tal:block metal:define-macro='links'>
 <a tal:attributes="href view/application_urlR">Overview</a>
 &#8226;
-<a tal:attributes="href python:view.urlR('full-schedule')+'#now'">Full schedule</a>
+<a tal:attributes="href python:view.application_urlR('full-schedule#now')">Full schedule</a>
 </tal:block>
 </div>
 <metal:block define-slot="content">

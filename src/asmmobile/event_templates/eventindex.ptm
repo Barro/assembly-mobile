@@ -5,7 +5,7 @@
 <div class="event" metal:fill-slot='content'>
 
 <h1 tal:content="context/name">name</h1>
-<a tal:attributes="href string:${view/urlR}/event/${context/__name__}/${context/__name__}.vcs">vCal (event)</a>
+<a tal:attributes="href python:view.urlR('%s.vcs' % context.__name__)">vCal (event)</a>
 <tal:block tal:condition="context/url">
 &#8226;
 <a tal:attributes="href context/url">View on Assembly.org</a>
@@ -19,11 +19,14 @@
 <h2>Time</h2>
 <p>
   <span tal:replace="context/start/@@dayname" />
-  <span tal:replace="context/start/@@hourminute" /> -
+  <span tal:replace="context/start/@@hourminute" />
 
-  <span tal:condition="python: context.start.day != context.end.day"
-        tal:replace="context/end/@@dayname" />
-  <span tal:replace="context/end/@@hourminute" />
+  <tal:block tal:condition="python: context.start != context.end">
+    -
+    <span tal:condition="python: context.start.day != context.end.day"
+          tal:replace="context/end/@@dayname" />
+    <span tal:replace="context/end/@@hourminute" />
+  </tal:block>
 
   <span tal:replace="context/length/@@hourminuteparenthesis" />
 </p>

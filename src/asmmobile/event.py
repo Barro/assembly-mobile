@@ -19,9 +19,10 @@
 
 import datetime
 import grok
+
 import asmmobile.interfaces as interfaces
 from asmmobile.components import MobileView
-from asmmobile.util import DisplayEvent
+import asmmobile.util as util
 
 
 def _sortByStartTime(first, second):
@@ -127,3 +128,6 @@ class Event(grok.Model):
 class EventIndex(MobileView):
     grok.name("index")
     grok.context(Event)
+
+    cacheTime = util.AddTime(datetime.timedelta(minutes=15))
+
