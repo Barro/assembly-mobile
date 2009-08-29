@@ -10,10 +10,6 @@ a {
   color: #033442;
 }
 
-a:hover {
-  text-decoration: underline;
-}
-
 h1 {
   font-size: 100%;
   margin: 0;
@@ -26,7 +22,6 @@ h1 {
 }
 
 h2 {
-  margin: 0;
   padding: 0;
   font-size: 105%;
   color: #333;
@@ -51,8 +46,6 @@ ul {
   margin: 0 0 6px 0;
   line-height: 1.1;
   border: 1px solid #bbb;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
   color:#222;
 }
 
@@ -65,21 +58,28 @@ ul {
   font-size:100%;
 }
 
-.cur {margin:2px 0; padding:4px; display:block; border-top:1px solid #ddd; border-bottom:1px solid #ddd; }
-.cur span {background:#fff;}
+.cur {
+  margin:2px 0;
+  padding: 4px;
+  display: block;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+
+}
+.cur span {
+  background: #fff;
+}
 
 .h, .f {
-  color:#659cab;
-  border-bottom:2px solid #b0cfd8;
-  padding:4px 0;
-  margin-bottom:5px;
+  color: #659cab;
+  padding: 4px 0;
+  border-bottom: 2px solid #b0cfd8;
+  margin-bottom: 5px;
 }
 
 .f {
-  border:0;
-  border-top:2px solid #b0cfd8;
-  border-bottom: 2px solid #b0cfd8;
-  margin:5px 0;
+  border-top: 2px solid #b0cfd8;
+  margin-top: 5px;
 }
 
 .li h3 a {
@@ -92,10 +92,12 @@ ul {
 }
 
 div.now, .now a {
-  background:#eee;
-  padding:0;
-  color:#3a5e0b;
+  background: #eee;
+  padding: 0;
+  color: #3a5e0b;
 }
 
-p {margin-top:5px; color:#333;}
-
+p {
+  margin-top: 5px;
+  color: #333;
+}
