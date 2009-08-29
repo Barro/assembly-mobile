@@ -17,82 +17,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import datetime
 import re
-
-import grok
-import zope.interface
-
-import asmmobile.util
-
-_TIME_FACTORY = datetime.datetime(2000, 1, 1)
-
-
-class MobileView(grok.View):
-    grok.context(zope.interface.Interface)
-
-    cacheTime = asmmobile.util.ceilToNextMinute
-
-    contentType = "application/xhtml+xml; charset=UTF-8"
-
-    cssDirectory = "src/asmmobile/static"
-    cssFiles = ["asmmobile.css"]
-
-    def __call__(self, *args, **kw):
-        self.request.response.setHeader(
-            "Content-Type",
-            self.contentType
-            )
-
-        self.now = _TIME_FACTORY.now()
-
-        utcnow = _TIME_FACTORY.utcnow()
-        cacheTime = self.cacheTime(utcnow)
-
-        expiresAt = utcnow + cacheTime
-
-        self.request.response.setHeader(
-            "Expires",
-            expiresAt.strftime("%a, %d %b %Y %H:%M:%S GMT")
-            )
-        self.request.response.setHeader(
-            "Cache-Control",
-            "max-age=%d, public" % (cacheTime.seconds + cacheTime.days * 86400)
-            )
-        self.request.response.setHeader(
-            'Vary',
-            "Accept-Encoding"
-            )
-
-        return super(MobileView, self).__call__(*args, **kw)
-
-
-    def getTime(self):
-        timeFormat = "%Y-%m-%d %H:%M %z"
-        return _(u"Current time: %s" % self.now.strftime(timeFormat))
-
-
-    def getCss(self):
-        cssData = ""
-        for filename in self.cssFiles:
-            fp = open("%s/%s" % (self.cssDirectory , filename), "r")
-            cssData += fp.read()
-            fp.close()
-
-        compressed = cssData
-        newlinesMatch = re.compile(r" *\n *")
-        compressed = newlinesMatch.sub("", compressed)
-        separatorMatch = re.compile(r" *([,:\{;]) *")
-        compressed = separatorMatch.sub(r"\1", compressed)
-        return compressed
-
-
-    def urlR(self, target=None):
-        return asmmobile.util.applicationRelativeUrl(self, target)
-
-    def application_urlR(self, target="."):
-        return asmmobile.util.applicationRelativeUrl(self, target)
-
 
 def strip_filter_factory(global_conf, strip_types=''):
     def filter(app):
@@ -151,8 +76,7 @@ class StripFilter(object):
         self.stripTypes = strip_types.split()
 
     def __call__(self, environ, start_response):
-        response = StripWhitespaceResponse(start_response,
-                                           self.stripTypes)
+        response = StripWhitespaceResponse(start_response, self.stripTypes)
         app_iter = self.application(environ, response.initial_decisions)
         if response.doProcessing:
             app_iter = response.finish_response(app_iter)

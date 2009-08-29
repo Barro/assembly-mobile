@@ -43,6 +43,10 @@ class IEventOwner(zope.interface.Interface):
 
 
 class IEventContainer(zope.interface.Interface):
+    lastModified = zope.interface.Attribute(
+        u"When any event has last been modified"
+        )
+
     def updateEvents(values):
         pass
 
@@ -53,6 +57,10 @@ class IEventContainer(zope.interface.Interface):
         """
 
 class IEvent(zope.interface.Interface):
+    lastModified = zope.interface.Attribute(
+        u"When this event has last been modified"
+        )
+
     id = zope.interface.Attribute("")
 
     name = zope.interface.Attribute("")

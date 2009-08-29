@@ -24,16 +24,17 @@ import grokcore.view.components
 import grokcore.view.interfaces
 
 import zope.interface
-import interfaces
 import datetime
 
 import re
 
+import asmmobile.interfaces as interfaces
 import asmmobile.location
 import asmmobile.event
-from mobile import MobileView
-from util import getEventList, LOCATIONS, EVENTS, DisplayEvent
+from asmmobile.components import MobileView, StylesheetManager, MobileTemplate
+from asmmobile.util import getEventList, DisplayEvent
 import asmmobile.mobile
+import asmmobile.config as config
 
 from asmmobile import AsmMobileMessageFactory as _
 
@@ -65,19 +66,23 @@ class NextEventFilter(object):
             return True
 
 
-class MobileTemplate(grokcore.view.components.PageTemplate):
-    charset = "utf-8"
-
-    def render(self, view):
-        return super(MobileTemplate, self).render(view).encode(self.charset)
-
-
 class MobileTemplateFactory(grok.GlobalUtility):
     grok.implements(grokcore.view.interfaces.ITemplateFileFactory)
     grok.name('ptm')
 
     def __call__(self, filename, _prefix=None):
         return MobileTemplate(filename=filename, _prefix=_prefix)
+
+
+class StylesheetTemplateFactory(grok.GlobalUtility):
+    grok.implements(grokcore.view.interfaces.ITemplateFileFactory)
+    grok.name('css')
+
+    def __call__(self, filename, _prefix=None):
+        return grokcore.view.components.PageTemplate(
+            filename=filename,
+            _prefix=_prefix
+            )
 
 
 class AsmMobile(grok.Application, grok.Container):
@@ -88,27 +93,27 @@ class AsmMobile(grok.Application, grok.Container):
     def __init__(self, **vars):
         super(AsmMobile, self).__init__(**vars)
 
-        self[LOCATIONS] = asmmobile.location.LocationContainer()
-        self[EVENTS] = asmmobile.event.EventContainer()
+        self[config.locations] = asmmobile.location.LocationContainer()
+        self[config.events] = asmmobile.event.EventContainer()
 
 
     @property
     def EVENTS(self):
-        return self[EVENTS]
+        return self[config.events]
 
 
     @property
     def LOCATIONS(self):
-        return self[LOCATIONS]
+        return self[config.locations]
 
 
     def addLocation(self, name, url, priority, hideUntil, majorLocationName):
         if majorLocationName is not None:
-            majorLocation = self.locations.getLocation(majorLocationName)
+            majorLocation = self.LOCATIONS.getLocation(majorLocationName)
         else:
             majorLocation = None
 
-        return self.locations.addLocation(name,
+        return self.LOCATIONS.addLocation(name,
                                           url,
                                           priority,
                                           hideUntil,
@@ -117,7 +122,7 @@ class AsmMobile(grok.Application, grok.Container):
     def updateEvents(self, events):
         updateEvents = {}
         for eventId, values in events.items():
-            location = self.locations.getLocation(values['location'])
+            location = self.LOCATIONS.getLocation(values['location'])
             updateEvents[eventId] = {'name': values['name'],
                                      'start': values['start'],
                                      'end': values['end'],
@@ -180,7 +185,7 @@ class Index(MobileView):
                           outLocations[location].nextEvents.append(event)),
                          locations)
 
-        self.locations = locations.values()
+        self.LOCATIONS = locations.values()
 
 
     def _getPartyStatus(self, now, nextEvents):
@@ -308,3 +313,7 @@ class AllEvents(MobileView):
 
         self.length = self.events[-1].end - self.events[0].start
 
+
+class LayoutStyle(grok.Viewlet):
+    grok.viewletmanager(StylesheetManager)
+    grok.context(zope.interface.Interface)

@@ -2,19 +2,27 @@
 # man page for details on VCL syntax and semantics.
 
 backend backend_0 {
-	.host = "127.0.0.1";
-	.port = "8080";
-	.first_byte_timeout = 300s;
+        .host = "127.0.0.1";
+        .port = "8080";
+        .first_byte_timeout = 300s;
+
+        .probe = {
+                .url = "/probe";
+                .timeout = 100 ms;
+                .interval = 1s;
+                .window = 4;
+                .threshold = 3;
+        }
 }
 
 
 acl purge {
-	"localhost";
+    "localhost";
 }
 
 sub vcl_recv {
-        set req.grace = 5s;
-	set req.backend = backend_0;
+        set req.grace = 30s;
+        set req.backend = backend_0;
 	
 	if (req.request == "PURGE") {
 		if (!client.ip ~ purge) {
@@ -88,7 +96,7 @@ sub vcl_miss {
 }
 
 sub vcl_fetch {
-        set obj.grace = 120s;
+        set obj.grace = 30s;
 	if (!obj.cacheable) {
 		pass;
 	}

@@ -1,7 +1,8 @@
-import grok
-from mobile import MobileView
-import interfaces
 import datetime
+import grok
+
+from asmmobile.components import MobileView
+import asmmobile.interfaces as interfaces
 
 class EventOwnerWrapper(object):
     def __init__(self, contentType, events):

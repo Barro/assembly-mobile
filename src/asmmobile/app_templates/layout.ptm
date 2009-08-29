@@ -1,10 +1,10 @@
 <metal:block define-macro="page"><?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN"
-    "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN"
+    "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" i18n:domain="AsmMobile">
 <head>
   <title><metal:block define-slot='page-title'></metal:block> - Assembly Mobile</title>
-  <style type='text/css' tal:content="view/getCss"></style>
+  <style type='text/css' tal:content="structure provider:stylesheets"></style>
   <meta name="source-code" content="http://bitbucket.org/barro/assembly-mobile/" />
 </head>
 <body>

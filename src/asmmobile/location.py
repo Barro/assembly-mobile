@@ -23,10 +23,10 @@ import re
 
 import grok
 
-import util
-import interfaces
-from mobile import MobileView
-from util import getEventList
+import asmmobile.util as util
+import asmmobile.interfaces as interfaces
+from asmmobile.components import MobileView
+from asmmobile.util import getEventList
 
 locationKeyChars = (string.ascii_letters.decode('ascii') \
                         + string.digits.decode('ascii'))
@@ -41,7 +41,6 @@ def convertNameToKey(name):
 
 class LocationContainer(grok.Container):
     grok.implements(interfaces.ILocationContainer)
-
 
     def addLocation(self,
                     name,

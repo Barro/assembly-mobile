@@ -19,21 +19,36 @@
 
 import datetime
 import grok
-import interfaces
-from mobile import MobileView
-from util import DisplayEvent
+import asmmobile.interfaces as interfaces
+from asmmobile.components import MobileView
+from asmmobile.util import DisplayEvent
+
 
 def _sortByStartTime(first, second):
     startCmp = cmp(first.start, second.start)
     if startCmp == 0:
-        # In case we have same start time, compare by ID to get always correct
+        # In case we have same start time, compare by ID to always get correct
         # sort order.
         return cmp(first.__name__, second.__name__)
     else:
         return startCmp
 
+
+@grok.subscribe(interfaces.IEventContainer, grok.IContainerModifiedEvent)
+def notify_eventCountChanged(container, event):
+    container.lastModified = config.clock()
+
+
+@grok.subscribe(interfaces.IEvent, grok.IObjectModifiedEvent)
+def notify_eventModified(event, modifiedEvent):
+    container = event.__parent__
+    container.lastModified = config.clock()
+
+
 class EventContainer(grok.Container):
     grok.implements(interfaces.IEventContainer)
+
+    lastModified = None
 
     def updateEvents(self, values):
         currentKeys = set(self.keys())
@@ -74,6 +89,8 @@ class EventContainer(grok.Container):
 class Event(grok.Model):
     grok.implements(interfaces.IEvent, interfaces.IEventOwner)
 
+    lastModified = None
+
     def __init__(self,
                  name,
                  start,
@@ -110,10 +127,3 @@ class Event(grok.Model):
 class EventIndex(MobileView):
     grok.name("index")
     grok.context(Event)
-
-    zeroSeconds = datetime.timedelta(seconds=0)
-
-    @property
-    def title(self):
-        return self.context.name
-
