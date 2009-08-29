@@ -33,7 +33,6 @@ import asmmobile.location
 import asmmobile.event
 from asmmobile.components import MobileView, StylesheetManager, MobileTemplate
 from asmmobile.util import getEventList, DisplayEvent
-import asmmobile.mobile
 import asmmobile.config as config
 
 from asmmobile import AsmMobileMessageFactory as _
