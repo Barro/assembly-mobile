@@ -67,16 +67,14 @@ class MobileView(grok.View):
 
 
     def urlR(self, target=""):
-        requestPath = self.request.environment['PATH_INFO']
-        contextPath = urlparse.urlparse(self.url(self.context))[2]
-
-        if requestPath == contextPath:
+        if not self.request._endswithslash and self.__name__ == 'index':
             return "%s/%s" % (self.context.__name__, target)
         else:
             return target
 
 
     def application_urlR(self, target=""):
+
         return util.applicationRelativeUrl(self, target)
 
 
