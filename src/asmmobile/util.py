@@ -71,24 +71,7 @@ def shortenName(name):
 
 
 def applicationRelativeUrl(view, path):
-    appPath = urlparse.urlparse(view.application_url())[2]
-
-    if path == "":
-        return appPath
-
-    viewUrl = view.request.environment['PATH_INFO']
-    slashedAppPath = appPath + "/"
-    if not viewUrl.startswith(slashedAppPath):
-        return "%s/%s" % (appPath, path)
-
-    viewUnderApp = viewUrl[len(slashedAppPath):]
-
-    viewDirectory = "/".join(viewUnderApp.split("/")[:-1])
-    pathDirectory = "/".join(path.split("/")[:-1])
-
-    if pathDirectory.startswith(viewDirectory):
-        return path[len(viewDirectory):]
-
+    appPath = urlparse.urlparse(view.application_url()).path
     return "%s/%s" % (appPath, path)
 
 

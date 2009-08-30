@@ -74,7 +74,6 @@ class MobileView(grok.View):
 
 
     def application_urlR(self, target=""):
-
         return util.applicationRelativeUrl(self, target)
 
 
