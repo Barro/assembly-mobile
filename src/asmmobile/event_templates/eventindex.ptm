@@ -7,7 +7,7 @@
 <h1 tal:content="context/name">name</h1>
 <a tal:attributes="href python:view.urlR('%s.vcs' % context.__name__)">vCal (event)</a>
 <tal:block tal:condition="context/url">
-&#8226;
+<!---->&#8226;<!---->
 <a tal:attributes="href context/url">View on Assembly.org</a>
 </tal:block>
 

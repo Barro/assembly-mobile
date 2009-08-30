@@ -60,9 +60,13 @@ class StripWhitespaceResponse(object):
 
         resultStr = "".join(app_iter)
         # Filter out white space and comments.
-        resultStr = re.sub("<!--.*?-->", "", resultStr)
+        resultStr = re.sub("<!--[^-].*?-->", "", resultStr)
         resultStr = re.sub("( *\n *)+", " ", resultStr)
+        resultStr = re.sub("> +", ">", resultStr)
+        resultStr = re.sub(" +<", "<", resultStr)
         resultStr = re.sub(" +/>", "/>", resultStr)
+        # Add spaces.
+        resultStr = re.sub("<!---->", " ", resultStr)
 
         return [resultStr].__iter__()
 

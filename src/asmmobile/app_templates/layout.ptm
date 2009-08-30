@@ -13,7 +13,7 @@
 <div class="h">
 <tal:block metal:define-macro='links'>
 <a tal:attributes="href view/application_urlR">Overview</a>
-&#8226;
+<!---->&#8226;<!---->
 <a tal:attributes="href python:view.application_urlR('full-schedule#now')">Full schedule</a>
 </tal:block>
 </div>
@@ -23,7 +23,7 @@
 <div class="f">
 <tal:block metal:use-macro='context/@@layout/macros/links'>
 </tal:block>
-&#8226; <a href="http://www.assembly.org/">View Full Site</a>
+<!---->&#8226;<!----><a href="http://www.assembly.org/">View Full Site</a>
 </div>
 </metal:block>
 </body>
