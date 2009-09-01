@@ -19,6 +19,8 @@ class ICalendarWrapper(grok.View):
 class ICalendar(MobileView):
     """The view that contains the iCalendar events."""
 
+    template = None
+
     grok.context(EventOwnerWrapper)
     grok.name("index.html")
 
