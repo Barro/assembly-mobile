@@ -287,6 +287,7 @@ class Favicon(MobileView):
     grok.context(zope.interface.Interface)
 
     grok.name("favicon.ico")
+    template = None
 
     cacheTime = asmmobile.util.AddTime(datetime.timedelta(minutes=15))
 
