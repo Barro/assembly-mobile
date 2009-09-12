@@ -208,13 +208,14 @@ class Index(MobileView):
         self._getPartyStatus(self.now, self.nextEvents)
 
 
-
 class ScheduleTime(MobileView):
-    grok.name("full-schedule")
+    grok.name("next-events")
     grok.context(AsmMobile)
 
-    startDifference = datetime.timedelta(hours=2)
-    endDifference = datetime.timedelta(hours=10)
+    startDifference = datetime.timedelta(hours=config.nextEventsEndHours)
+    endDifference = datetime.timedelta(hours=config.nextEventsStartHours)
+
+    differenceHours = config.nextEventsStartHours + config.nextEventsEndHours
 
     dateFormat = "%Y-%m-%d-%H"
     dateValidate = re.compile(r"\d\d\d\d-\d\d-\d\d-\d\d")
