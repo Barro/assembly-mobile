@@ -19,6 +19,8 @@ def importer(filename, prefix):
                       'end': end,
                       'location': location,
                       'description': description,
+                      'url': '',
+                      'categories': [],
                       }
         locations[location] = ""
 

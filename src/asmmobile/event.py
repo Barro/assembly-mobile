@@ -23,6 +23,7 @@ import grok
 import asmmobile.interfaces as interfaces
 from asmmobile.components import MobileView
 import asmmobile.util as util
+import config
 
 
 def _sortByStartTime(first, second):
