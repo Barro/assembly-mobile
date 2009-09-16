@@ -38,13 +38,13 @@ def _sortByStartTime(first, second):
 
 @grok.subscribe(interfaces.IEventContainer, grok.IContainerModifiedEvent)
 def notify_eventCountChanged(container, event):
-    container.lastModified = config.clock()
+    container.lastModified = config.clock.utcnow()
 
 
 @grok.subscribe(interfaces.IEvent, grok.IObjectModifiedEvent)
 def notify_eventModified(event, modifiedEvent):
     container = event.__parent__
-    container.lastModified = config.clock()
+    container.lastModified = config.clock.utcnow()
 
 
 class EventContainer(grok.Container):
