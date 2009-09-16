@@ -26,6 +26,7 @@ setup(name='AsmMobile',
                         # Add extra requirements here
                         'icalendar',
                         'zif.gzipper',
+                        'python-dateutil',
                         ],
       entry_points = """
       [console_scripts]

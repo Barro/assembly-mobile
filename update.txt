@@ -1,0 +1,3 @@
+from asmmobile.tools.update_schedule import updateSchedule
+config = __import__("asmmobile.tools.import-config")
+updateSchedule(root['asmmobile'], config)
