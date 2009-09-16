@@ -19,6 +19,7 @@
 
 import datetime
 import grok
+import dateutil.tz
 
 import asmmobile.interfaces as interfaces
 from asmmobile.components import MobileView
@@ -38,13 +39,13 @@ def _sortByStartTime(first, second):
 
 @grok.subscribe(interfaces.IEventContainer, grok.IContainerModifiedEvent)
 def notify_eventCountChanged(container, event):
-    container.lastModified = config.clock.utcnow()
+    container.lastModified = config.clock.now(dateutil.tz.tzutc())
 
 
 @grok.subscribe(interfaces.IEvent, grok.IObjectModifiedEvent)
 def notify_eventModified(event, modifiedEvent):
     container = event.__parent__
-    container.lastModified = config.clock.utcnow()
+    container.lastModified = config.clock.now(dateutil.tz.tzutc())
 
 
 class EventContainer(grok.Container):

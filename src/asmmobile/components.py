@@ -19,6 +19,7 @@
 
 import re
 import urlparse
+import dateutil.tz
 
 from zope.interface import Interface
 
@@ -43,9 +44,9 @@ class MobileView(grok.View):
             self.contentType
             )
 
-        self.now = config.clock.now()
+        self.now = config.clock.now(dateutil.tz.tzlocal())
 
-        utcnow = config.clock.utcnow()
+        utcnow = config.clock.now(dateutil.tz.tzutc())
         cacheTime = self.cacheTime(utcnow)
 
         expiresAt = utcnow + cacheTime
