@@ -37,7 +37,7 @@ No new scheduled events are starting in next two hours. See <!----> <a tal:attri
 </tal:block>
 
 <p tal:condition="not:view/partyHasStarted">
-<span tal:replace="context/partyName" /> has not started yet. See <a tal:attributes="href python:view.urlR('all-events')">full party schedule</a> for the whole program.
+<span tal:replace="context/partyName" /> has not started yet. See <!----> <a tal:attributes="href python:view.urlR('all-events')">full party schedule</a> <!----> for the whole program.
 </p>
 <p tal:condition="view/partyHasEnded">
 <span tal:replace="context/partyName" /> has ended. Welcome again next year!
