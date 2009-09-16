@@ -314,7 +314,10 @@ class AllEvents(MobileView):
                                    (lambda event, location, outLocations: True),
                                    {})
 
-        self.length = self.events[-1].end - self.events[0].start
+        if len(self.events):
+            self.length = self.events[-1].end - self.events[0].start
+        else:
+            self.length = datetime.timedelta(seconds=0)
 
 
 class LayoutStyle(grok.Viewlet):
