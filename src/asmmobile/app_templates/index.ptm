@@ -12,7 +12,7 @@
   </h3>
   <span>
     <span tal:replace="event/timeTillChangePoint/@@hourminute">
-      Content</span> left -
+      1 h 5 min</span> left - <!---->
     <a tal:attributes="href event/locationUrl;
                        class shorten:location"
        tal:content="event/locationName">Location</a>
@@ -31,6 +31,7 @@ No new scheduled events are starting in next two hours. See <!----> <a tal:attri
   </h3>
   <span>
     in <span tal:replace="event/timeTillChangePoint/@@hourminute" /> -
+    <!---->
     <a tal:attributes="href event/locationUrl;
                        class shorten:location"
        tal:content="event/locationName">Location</a>
