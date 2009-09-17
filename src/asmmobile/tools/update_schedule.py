@@ -25,7 +25,9 @@ import transaction
 def updateSchedule(app, config):
     importFuncs = {}
     for importer,arguments in config.IMPORTERS.items():
-        importFunc = __import__(importer, globals(), locals(), [], -1).importer
+        importerModule = "import-%s" % importer
+        importFunc = \
+            __import__(importerModule, globals(), locals(), [], -1).importer
         importFuncs[importFunc] = arguments
 
     locations = {}

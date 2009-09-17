@@ -18,11 +18,23 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import re
+import asmmobile.config as config
 
-def strip_filter_factory(global_conf, strip_types=''):
+def strip_whitespace_filter_factory(global_conf, strip_types=''):
     def filter(app):
-        return StripFilter(app, strip_types=strip_types)
+        return StripWhitespaceFilter(app, strip_types=strip_types)
     return filter
+
+
+def nothing_filter_factory(global_conf):
+    return NothingFilter
+
+
+def mobile_filter_factory(global_conf, filter_types=''):
+    if config.mobileMode:
+        return strip_whitespace_filter_factory(global_conf, filter_types)
+    else:
+        return nothing_filter_factory(global_conf)
 
 
 class StripWhitespaceResponse(object):
@@ -70,7 +82,7 @@ class StripWhitespaceResponse(object):
 
         return [resultStr].__iter__()
 
-class StripFilter(object):
+class StripWhitespaceFilter(object):
     """This filter strips white space characters from resulting XHTML output
     document.
     """
@@ -122,3 +134,11 @@ class StripFilter(object):
         self.real_start(self.status, headers_out, self.exc_info)
 
         return [resultStr].__iter__()
+
+
+class NothingFilter(object):
+    def __init__(self, app):
+        self.app = app
+
+    def __call__(self, environ, start_response):
+        return self.app(environ, start_response)

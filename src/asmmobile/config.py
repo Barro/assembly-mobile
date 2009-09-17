@@ -14,3 +14,5 @@ events = config.get('events', u"event")
 
 nextEventsEndHours = int(config.get('next-events-show-end-hours', 2))
 nextEventsStartHours = int(config.get('next-events-show-start-hours', 10))
+
+mobileMode = config.get('mobile-mode', True)

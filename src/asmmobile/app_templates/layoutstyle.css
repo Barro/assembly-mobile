@@ -17,7 +17,7 @@ h1 {
   color: #333;
 }
 
-#t, #t a {
+#title, #title a {
   color: #659cab;
 }
 
@@ -53,30 +53,30 @@ ul {
 
 .event div {padding:2px 0;}
 
-.li span.loc, .event a.loc {
+.li span.location, .event a.location {
   color: #666;
-  font-size:100%;
+  font-size: 100%;
 }
 
-.cur {
+.current-time {
   margin:2px 0;
   padding: 4px;
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
-
 }
-.cur span {
+
+.current-time span {
   background: #fff;
 }
 
-.h, .f {
+.header, .footer {
   color: #659cab;
   padding: 4px 0;
   border-bottom: 2px solid #b0cfd8;
   margin-bottom: 5px;
 }
 
-.f {
+.footer {
   border-top: 2px solid #b0cfd8;
   margin-top: 5px;
 }

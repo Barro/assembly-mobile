@@ -2,7 +2,7 @@
 <metal:block
     metal:fill-slot='page-title'
     tal:content="string:${context/name} (event)">Event name</metal:block>
-<div class="event" metal:fill-slot='content'>
+<div tal:attributes="class shorten:event" metal:fill-slot='content'>
 
 <h1 tal:content="context/name">name</h1>
 <a tal:attributes="href python:view.urlR('%s.vcs' % context.__name__)">vCal (event)</a>

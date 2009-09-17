@@ -21,6 +21,8 @@ import re
 import urlparse
 import dateutil.tz
 
+import zope.app.pagetemplate.engine
+from zope.tales.interfaces import ITALESExpression
 from zope.interface import Interface
 
 from grokcore.view.components import PageTemplate
@@ -79,18 +81,83 @@ class MobileView(grok.View):
 
 
 class MobileTemplate(PageTemplate):
+
     def render(self, view):
         return super(MobileTemplate, self).render(view).encode(view.charset)
+
+
+if config.mobileMode:
+    SHORTENER = util.NameShortener()
+else:
+    SHORTENER = util.AsIsName()
+
+class ShortenExpr(object):
+    grok.implements(ITALESExpression)
+
+    def __init__(self, name, expr, engine):
+        self._s = expr
+        self._short = SHORTENER.shorten(self._s)
+
+    def __call__(self, econtext):
+        return self._short
+
+    def __str__(self):
+        return 'shortened expression (%s)' % `self._s`
+
+    def __repr__(self):
+        return '<ShortenExpr %s>' % `self._s`
+
+
+# Registering handler for "shorten" type.
+zope.app.pagetemplate.engine.TrustedEngine.registerType("shorten", ShortenExpr)
 
 
 class StylesheetManager(grok.ViewletManager):
     grok.name('stylesheets')
     grok.context(Interface)
 
-    def render(self):
-        compressed = super(StylesheetManager, self).render()
-        newlinesMatch = re.compile(r" *\n *")
-        compressed = newlinesMatch.sub("", compressed)
-        separatorMatch = re.compile(r" *([,:\{;]) *")
-        compressed = separatorMatch.sub(r"\1", compressed)
+    newlinesMatch = re.compile(r" *\n *")
+    separatorMatch = re.compile(r" *([,:\{;]) *")
+    semicolonMatch = re.compile(r";\}")
+
+    def minifySelector(self, selectorString):
+        selectors = selectorString.split(",")
+        result = []
+        for selector in selectors:
+            parts = selector.split(" ")
+            selectorResult = []
+            for part in parts:
+                if "." in part:
+                    left, right = part.split(".", 1)
+                    right = SHORTENER.shorten(right)
+                    part = "%s.%s" % (left, right)
+                elif "#" in part:
+                    left, right = part.split("#", 1)
+                    right = SHORTENER.shorten(right)
+                    part = "%s#%s" % (left, right)
+                selectorResult.append(part)
+            result.append(" ".join(selectorResult))
+        return ",".join(result)
+
+    def removeExtraContent(self, content):
+        compressed = content
+        compressed = self.newlinesMatch.sub("", compressed)
+        compressed = self.separatorMatch.sub(r"\1", compressed)
+        compressed = self.semicolonMatch.sub("}", compressed)
         return compressed
+
+
+    def render(self):
+        content = super(StylesheetManager, self).render()
+
+        if not config.mobileMode:
+            return content
+
+        compressed = self.removeExtraContent(content)
+        selectors = compressed.split("{")
+        outputSelectors = []
+        for selector in selectors:
+            selectorData = selector.split("}")
+            selectorData[-1] = self.minifySelector(selectorData[-1])
+            outputSelectors.append("}".join(selectorData))
+        return "{".join(outputSelectors)

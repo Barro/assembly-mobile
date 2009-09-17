@@ -8,9 +8,9 @@
   <meta name="source-code" content="http://bitbucket.org/barro/assembly-mobile/" />
 </head>
 <body>
-<h1 id="t"><a tal:attributes="href view/application_urlR">Assembly Mobile</a></h1>
+<h1 tal:attributes="id shorten:title"><a tal:attributes="href view/application_urlR">Assembly Mobile</a></h1>
 <metal:block define-slot="body">
-<div class="h">
+  <div tal:attributes="class shorten:header">
 <tal:block metal:define-macro='links'>
 <a tal:attributes="href view/application_urlR">Overview</a>
 <!---->&#8226;<!---->
@@ -20,10 +20,11 @@
 <metal:block define-slot="content">
 
 </metal:block>
-<div class="f">
+<div tal:attributes="class shorten:footer">
 <tal:block metal:use-macro='context/@@layout/macros/links'>
 </tal:block>
-<!---->&#8226;<!----><a href="http://www.assembly.org/">View Full Site</a>
+<!---->&#8226;<!---->
+<a href="http://www.assembly.org/">View Full Site</a>
 </div>
 </metal:block>
 </body>

@@ -221,3 +221,43 @@ class AddTime(object):
 
     def __call__(self, utcnow):
         return self.addAmount
+
+
+class NameShortener(object):
+    """Holds a database of shortened names and returns shortened name for given
+    string.
+
+    Shortened names are useful to map long CSS class or ID names to shorter
+    forms that do not need manual class name conversion.
+    """
+
+    OUT_CHARS = unicode(string.ascii_lowercase + string.digits)
+
+    def __init__(self):
+        self.id = 0
+        self.base = len(self.OUT_CHARS)
+        self.shortened = {}
+
+    def shorten(self, name):
+        if name in self.shortened:
+            return self.shortened[name]
+
+        thisId = self.id
+        self.id += 1
+        letter = thisId % self.base
+        result = self.OUT_CHARS[letter]
+        thisId -= letter
+        thisId /= self.base
+        while thisId != 0:
+            letter = thisId % self.base
+            result = self.OUT_CHARS[letter] + result
+            thisId -= letter
+            thisId /= self.base
+
+        self.shortened[name] = result
+        return result
+
+
+class AsIsName(object):
+    def shorten(self, name):
+        return name

@@ -45,11 +45,11 @@ format = %(message)s
 use = egg:Paste#translogger
 setup_console_handler = False
 logger_name = wsgi
-filter-with = strip_whitespace
+filter-with = mobile_filter
 
-[filter:strip_whitespace]
-paste.filter_factory = asmmobile.filters:strip_filter_factory
-strip_types = text/html application/xhtml+xml
+[filter:mobile_filter]
+paste.filter_factory = asmmobile.filters:mobile_filter_factory
+filter_types = text/html application/xhtml+xml
 filter-with = gzipper
 
 [filter:gzipper]

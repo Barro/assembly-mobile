@@ -1,5 +1,6 @@
 import csv
 import datetime
+import dateutil.tz
 
 def parseCsvDate(dateString):
     # Date is in format:
@@ -7,7 +8,14 @@ def parseCsvDate(dateString):
     dayName, date, time = dateString.split(" ")
     day, month, year = (int(x) for x in date.split("."))
     hour, minute = (int(x) for x in time.split(":"))
-    return datetime.datetime(2000 + year, month, day, hour, minute)
+    return datetime.datetime(
+        year=(2000 + year),
+        month=month,
+        day=day,
+        hour=hour,
+        minute=minute,
+        tzinfo=dateutil.tz.tzlocal()
+        )
 
 
 def importer(filename, prefix, language):
