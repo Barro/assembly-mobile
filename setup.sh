@@ -1,14 +1,11 @@
 #!/bin/sh
 
-if test -z "`which curl`"; then
-    echo "curl is needed!"
-    exit 1
-fi
-
-if test -z "`which gcc`"; then
-    echo "gcc is needed!"
-    exit 1
-fi
+for prog in curl gcc make tar gzip bzip2; do
+    if test -z "`which $prog`"; then
+        echo "$prog is needed!"
+        exit 1
+    fi
+done
 
 PYTHON_VERSION="2.5.4"
 SETUPTOOLS_VERSION="0.6c9"
