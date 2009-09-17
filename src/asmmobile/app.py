@@ -25,6 +25,7 @@ import grokcore.view.interfaces
 
 import zope.interface
 import datetime
+import dateutil.tz
 
 import re
 
@@ -224,10 +225,13 @@ class ScheduleTime(MobileView):
 
         if s is not None and self.dateValidate.match(s):
             (year, month, day, hour) = (int(x) for x in s.split("-"))
-            displayCenter = datetime.datetime(year=year,
-                                              month=month,
-                                              day=day,
-                                              hour=hour)
+            displayCenter = datetime.datetime(
+                year=year,
+                month=month,
+                day=day,
+                hour=hour,
+                tzinfo=dateutil.tz.tzlocal()
+                )
         else:
             displayCenter = self.now
 
