@@ -3,11 +3,12 @@
 <div id="fs" metal:fill-slot='content'>
 <div metal:define-macro="next-previous">
   <tal:block tal:condition="view/showPrevious">
-    <a tal:attributes="href python:'%s?s=%s' % (view.urlR(), view.previousCenter)">Previous <tal:block tal:replace="view/differenceHours"/> hours</a> &#8226;
+    <a tal:attributes="href python:'%s?s=%s' % (view.urlR(), view.previousCenter)">Previous <tal:block tal:replace="view/differenceHours"/> hours</a>
+    <!---->&#8226;<!---->
   </tal:block>
   <a tal:attributes="href python:view.urlR('all-events')">All events</a>
   <tal:block tal:condition="view/showNext">
-     &#8226;
+    <!---->&#8226;<!---->
      <a tal:attributes="href python:'%s?s=%s' % (view.urlR(), view.nextCenter)">Next <tal:block tal:replace="view/differenceHours"/> hours</a>
   </tal:block>
 </div>
