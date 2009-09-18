@@ -116,7 +116,7 @@ class StylesheetManager(grok.ViewletManager):
     grok.name('stylesheets')
     grok.context(Interface)
 
-    commentMatch = re.compile(r"/\*.*?\*/")
+    commentMatch = re.compile(r"/\*.*?\*/", re.MULTILINE)
     newlinesMatch = re.compile(r" *\n *")
     separatorMatch = re.compile(r" *([,:\{;]) *")
     semicolonMatch = re.compile(r";\}")
