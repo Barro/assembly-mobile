@@ -116,6 +116,7 @@ class StylesheetManager(grok.ViewletManager):
     grok.name('stylesheets')
     grok.context(Interface)
 
+    commentMatch = re.compile(r"/\*.*?\*/")
     newlinesMatch = re.compile(r" *\n *")
     separatorMatch = re.compile(r" *([,:\{;]) *")
     semicolonMatch = re.compile(r";\}")
@@ -141,11 +142,11 @@ class StylesheetManager(grok.ViewletManager):
 
     def removeExtraContent(self, content):
         compressed = content
+        compressed = self.commentMatch.sub("", compressed)
         compressed = self.newlinesMatch.sub("", compressed)
         compressed = self.separatorMatch.sub(r"\1", compressed)
         compressed = self.semicolonMatch.sub("}", compressed)
         return compressed
-
 
     def render(self):
         content = super(StylesheetManager, self).render()

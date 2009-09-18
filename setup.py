@@ -27,6 +27,7 @@ setup(name='AsmMobile',
                         'icalendar',
                         'zif.gzipper',
                         'python-dateutil',
+                        'repoze.profile',
                         ],
       entry_points = """
       [console_scripts]

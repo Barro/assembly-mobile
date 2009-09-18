@@ -48,7 +48,7 @@ def notify_eventModified(event, modifiedEvent):
     container.lastModified = config.clock.now(dateutil.tz.tzutc())
 
 
-class EventContainer(grok.Container):
+class EventContainer(grok.OrderedContainer):
     grok.implements(interfaces.IEventContainer)
 
     lastModified = None
@@ -64,13 +64,15 @@ class EventContainer(grok.Container):
         addKeys = newKeys.difference(currentKeys)
         for key in addKeys:
             eventValues = values[key]
-            self[key] = Event(name=eventValues['name'],
-                              start=eventValues['start'],
-                              end=eventValues['end'],
-                              location=eventValues['location'],
-                              url=eventValues['url'],
-                              categories=eventValues['categories'],
-                              )
+            self[key] = Event(
+                name=eventValues['name'],
+                start=eventValues['start'],
+                end=eventValues['end'],
+                location=eventValues['location'],
+                url=eventValues.get('url', None),
+                categories=eventValues.get('categories', None),
+                description=eventValues.get('description', None),
+                )
 
         updateKeys = newKeys.intersection(currentKeys)
         for key in updateKeys:
@@ -80,13 +82,17 @@ class EventContainer(grok.Container):
             event.start = eventValues['start']
             event.end = eventValues['end']
             event.location = eventValues['location']
-            event.url = eventValues['url']
-            event.categories = eventValues['categories']
+            event.url = eventValues.get('url', None)
+            event.categories = eventValues.get('categories', None)
+            event.description = eventValues.get('description', None)
+
+        # Order events by start time.
+        values = list(self.values())
+        values.sort(_sortByStartTime)
+        self.updateOrder(order=[key.__name__ for key in values])
 
     def getEvents(self, eventFilter):
-        events = list(self.values())
-        events.sort(_sortByStartTime)
-        return filter(eventFilter, events)
+        return filter(eventFilter, self.values())
 
 
 class Event(grok.Model):
@@ -94,14 +100,16 @@ class Event(grok.Model):
 
     lastModified = None
 
-    def __init__(self,
-                 name,
-                 start,
-                 end,
-                 location,
-                 url,
-                 description=None,
-                 categories=[]):
+    def __init__(
+        self,
+        name,
+        start,
+        end,
+        location=None,
+        url=None,
+        description=None,
+        categories=[]
+        ):
         self.name = name
         self.start = start
         self.end = end

@@ -182,7 +182,7 @@ class Index(MobileView):
         self._getPartyStatus(self.now, self.nextEvents)
 
 
-class ScheduleTime(MobileView):
+class NextEvents(MobileView):
     grok.name("next-events")
     grok.context(AsmMobile)
 
@@ -256,6 +256,12 @@ class ScheduleTime(MobileView):
             previousEvent = event
 
 
+class NextEventsStyle(grok.Viewlet):
+    grok.viewletmanager(StylesheetManager)
+    grok.context(AsmMobile)
+    grok.view(NextEvents)
+
+
 class Layout(MobileView):
     """The view that contains the main layout."""
     grok.context(zope.interface.Interface)
@@ -263,6 +269,11 @@ class Layout(MobileView):
     sourceUrl = config.sourceUrl
     siteName = config.siteName
     mainSiteUrl = config.mainSiteUrl
+
+
+class LayoutStyle(grok.Viewlet):
+    grok.viewletmanager(StylesheetManager)
+    grok.context(zope.interface.Interface)
 
 
 class Favicon(MobileView):
@@ -299,11 +310,6 @@ class AllEvents(MobileView):
             self.length = self.events[-1].end - self.events[0].start
         else:
             self.length = datetime.timedelta(seconds=0)
-
-
-class LayoutStyle(grok.Viewlet):
-    grok.viewletmanager(StylesheetManager)
-    grok.context(zope.interface.Interface)
 
 
 class Error404NotFound(MobileView, SystemErrorView):

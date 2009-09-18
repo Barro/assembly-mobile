@@ -1,6 +1,8 @@
+/* General layout */
+
 body {
   background: #d8eaef;
-  color: #659cab;
+  color: #333;
   font-family: sans-serif;
   margin: 1%;
 }
@@ -14,21 +16,16 @@ a:hover {
   text-decoration: underline;
 }
 
-h1 {
+h1, h1 a {
   font-size: 100%;
   margin: 0;
   padding: 0;
-  color: #333;
-}
-
-#title, #title a {
   color: #659cab;
 }
 
 h2 {
   padding: 0;
   font-size: 105%;
-  color: #333;
   margin: 10px 0 0 0;
 }
 
@@ -36,45 +33,6 @@ h3 {
   margin: 0;
   padding: 0;
   font-size: 100%;
-}
-
-ul {
-  margin: 0 0 20px 0;
-  padding: 0;
-  list-style-type: none;
-}
-
-.li, .event {
-  background: white;
-  padding: 8px 10px;
-  margin: 0 0 6px 0;
-  line-height: 1.1;
-  border: 1px solid #bbb;
-  color: #222;
-}
-
-.event a, .li h3 a {
-  color: #62a60a;
-}
-
-.event div {
-  padding: 2px 0;
-}
-
-.li span.location, .event a.location {
-  color: #666;
-  font-size: 100%;
-}
-
-.current-time {
-  margin:2px 0;
-  padding: 4px;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-}
-
-.current-time span {
-  background: #fff;
 }
 
 .header, .footer {
@@ -89,17 +47,34 @@ ul {
   margin-top: 5px;
 }
 
-.li span a {
-  color: #333;
-}
-
-div.now, .now a {
-  background: #eee;
-  padding: 0;
-  color: #3a5e0b;
+.links {
+  color: #659cab;
 }
 
 p {
   margin-top: 5px;
-  color: #333;
+}
+
+/* Event layout */
+
+.event {
+  background: white;
+  padding: 8px 10px;
+  margin: 0 0 6px 0;
+  line-height: 1.1;
+  border: 1px solid #bbb;
+  color: #222;
+}
+
+.event a {
+  color: #62a60a;
+}
+
+.event div {
+  padding: 2px 0;
+}
+
+a.location {
+  color: #666;
+  font-size: 100%;
 }

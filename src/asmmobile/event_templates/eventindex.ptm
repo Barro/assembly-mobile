@@ -4,15 +4,17 @@
     tal:content="string:${context/name} (event)">Event name</metal:block>
 <div tal:attributes="class shorten:event" metal:fill-slot='content'>
 
-<h1 tal:content="context/name">Event name</h1>
-<a tal:attributes="href python:view.urlR('%s.vcs' % context.__name__)">vCal (event)</a>
-<tal:block tal:condition="context/url">
-<!---->&#8226;<!---->
-<a tal:attributes="href context/url">View on external page</a>
-</tal:block>
+<h2 tal:content="context/name">Event name</h2>
+<div tal:attributes="class shorten:links">
+  <a tal:attributes="href python:view.urlR('%s.vcs' % context.__name__)">vCal (event)</a>
+  <tal:block tal:condition="context/url">
+    <!---->&#8226;<!---->
+    <a tal:attributes="href context/url">View on external page</a>
+  </tal:block>
+</div>
 
 <tal:block tal:condition="context/description">
-  <h1>Description:</h1>
+  <h2>Description</h2>
   <p tal:content="context/description">description</p>
 </tal:block>
 
@@ -30,6 +32,7 @@
 
   <span tal:replace="context/length/@@hourminuteparenthesis" />
 </p>
+
 <h2>Location</h2>
 <p>
   <a tal:attributes="href context/location/@@url"

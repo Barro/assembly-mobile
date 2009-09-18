@@ -3,34 +3,36 @@
     metal:fill-slot='page-title'
     tal:content="string:${context/name} (location)">Location name</metal:block>
 <div metal:fill-slot='content'>
+
 <h2 tal:content="context/name">Location name</h2>
-<a tal:attributes="href python:view.urlR('%s.vcs' % context.__name__)">vCal (events)</a>
-<tal:block tal:condition="context/url">
-<!---->&#8226;<!---->
-<a tal:attributes="href context/url">View on external page</a>
-</tal:block>
+<div tal:attributes="class shorten:links">
+  <a tal:attributes="href python:view.urlR('%s.vcs' % context.__name__)">vCal (events)</a>
+  <tal:block tal:condition="context/url">
+    <!---->&#8226;<!---->
+    <a tal:attributes="href context/url">View on external page</a>
+  </tal:block>
+</div>
+
 <tal:block tal:condition="context/description">
-<h2>Description:</h2>
-<p tal:content="context/description">description</p>
+  <h2>Description</h2>
+  <p tal:content="context/description">description</p>
 </tal:block>
 
 <tal:block tal:repeat="event view/events"
-     tal:define="global lastStart python:None">
+           tal:define="global lastStart python:None">
 
-     <span tal:replace="structure python: '</div>'"
-      tal:condition="python:lastStart is not None and lastStart!=event.start.day" />
-
-<h2 tal:condition="python:lastStart!=event.start.day"
-    tal:content="event/start/@@dayname">Dayname</h2>
-    <span tal:replace="structure python:'<div class=\'%s\'>' % shorten('event')"
-          tal:condition="python:lastStart!=event.start.day" />
-<div>
+  <span tal:replace="structure python: '</div>'"
+        tal:condition="python:lastStart is not None and lastStart!=event.start.day" />
+  <h2 tal:condition="python:lastStart!=event.start.day"
+      tal:content="event/start/@@dayname">Dayname</h2>
+  <span tal:replace="structure python:'<div class=\'%s\'>' % shorten('event')"
+        tal:condition="python:lastStart!=event.start.day" />
+  <div>
     <span tal:replace="structure event/@@scheduledevent" />
-</div>
+  </div>
 
-
-<span tal:condition="python: False"
-      tal:define="global lastStart python:event.start.day" />
+  <span tal:condition="python: False"
+        tal:define="global lastStart python:event.start.day" />
 </tal:block>
 
 <span tal:replace="structure string:</div>" />

@@ -4,7 +4,7 @@
 
 <tal:block tal:condition="view/partyIsOngoing">
 <h2>Now</h2>
-<div tal:attributes="class shorten:li"
+<div tal:attributes="class shorten:event"
      tal:repeat="event view/currentEvents">
   <h3>
     <a tal:attributes="href event/shorturl"
@@ -21,9 +21,9 @@
 
 <h2>Next</h2>
 <div tal:condition="python:len(view.nextEvents)==0"
-     tal:attributes="class shorten:li">
+     tal:attributes="class shorten:event">
 No new scheduled events are starting in next two hours. See <!----> <a tal:attributes="href python:view.urlR('full-schedule')+'#now'">full schedule</a> <!----> for further events.</div>
-<div tal:attributes="class shorten:li"
+<div tal:attributes="class shorten:event"
      tal:repeat="event view/nextEvents">
   <h3>
     <a tal:attributes="href event/shorturl"
