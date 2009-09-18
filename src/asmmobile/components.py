@@ -48,9 +48,7 @@ class MobileView(grok.View):
             self.contentType
             )
 
-#         self.now = config.clock.now(dateutil.tz.tzlocal())
-        import datetime
-        self.now = datetime.datetime(2009, 8, 8, 18, tzinfo=dateutil.tz.tzlocal())
+        self.now = config.clock.now(dateutil.tz.tzlocal())
 
         utcnow = config.clock.now(dateutil.tz.tzutc())
         cacheTime = self.cacheTime(utcnow)
