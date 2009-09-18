@@ -3,9 +3,9 @@
     "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" i18n:domain="AsmMobile">
 <head>
-  <title><metal:block define-slot='page-title'></metal:block> - Assembly Mobile</title>
+  <title><metal:block define-slot='page-title'></metal:block> - <span tal:replace="context/@@layout/siteName">Assembly Mobile</span></title>
   <style type='text/css' tal:content="structure provider:stylesheets"></style>
-  <meta name="source-code" tal:attributes="content view/sourceUrl" />
+  <meta name="source-code" tal:attributes="content context/@@layout/sourceUrl" />
 </head>
 <body>
 <h1 tal:attributes="id shorten:title"><a tal:attributes="href view/application_urlR">Assembly Mobile</a></h1>
@@ -24,7 +24,9 @@
 <tal:block metal:use-macro='context/@@layout/macros/links'>
 </tal:block>
 <!---->&#8226;<!---->
-<a href="http://www.assembly.org/">View Full Site</a>
+<a tal:attributes="href python:view.application_urlR('all-events')">All events</a>
+<!---->&#8226;<!---->
+<a tal:attributes="href context/@@layout/mainSiteUrl">View main site</a>
 </div>
 </metal:block>
 </body>

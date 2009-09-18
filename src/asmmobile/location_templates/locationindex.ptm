@@ -4,9 +4,11 @@
     tal:content="string:${context/name} (location)">Location name</metal:block>
 <div metal:fill-slot='content'>
 <h2 tal:content="context/name">Location name</h2>
-<a tal:attributes="href python:view.urlR('%s.vcs' % context.__name__)">vCal (events)</a><!---->&#8226;<!---->
-<a tal:condition="context/url"
-   tal:attributes="href context/url">View on Assembly.org</a>
+<a tal:attributes="href python:view.urlR('%s.vcs' % context.__name__)">vCal (events)</a>
+<tal:block tal:condition="context/url">
+<!---->&#8226;<!---->
+<a tal:attributes="href context/url">View on external page</a>
+</tal:block>
 <tal:block tal:condition="context/description">
 <h2>Description:</h2>
 <p tal:content="context/description">description</p>

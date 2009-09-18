@@ -260,6 +260,10 @@ class Layout(MobileView):
     """The view that contains the main layout."""
     grok.context(zope.interface.Interface)
 
+    sourceUrl = config.sourceUrl
+    siteName = config.siteName
+    mainSiteUrl = config.mainSiteUrl
+
 
 class Favicon(MobileView):
     grok.context(zope.interface.Interface)

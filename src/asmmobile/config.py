@@ -11,6 +11,7 @@ clock = datetime.datetime(2009, 1, 1)
 siteName = config.get('site-name', u"Assembly Mobile")
 sourceUrl = config.get('source-url', u"http://bitbucket.org/barro/assembly-mobile/")
 partyName = config.get('party-name', u"Assembly")
+mainSiteUrl = config.get('main-site-url', u"http://www.assembly.org/")
 locations = config.get('locations', u"location")
 events = config.get('events', u"event")
 
