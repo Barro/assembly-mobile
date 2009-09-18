@@ -35,36 +35,14 @@ import asmmobile.event
 from asmmobile.components import MobileView, StylesheetManager, MobileTemplate
 from asmmobile.util import getEventList, DisplayEvent
 import asmmobile.config as config
+import asmmobile.selector as selector
+import asmmobile.orderby as orderby
 
 from asmmobile import AsmMobileMessageFactory as _
 
 from zope.publisher.interfaces import INotFound
 from zope.security.interfaces import IUnauthorized
 from zope.app.exception.systemerror import SystemErrorView
-
-
-class NextEventFilter(object):
-    def __init__(self, now):
-        self.now = now
-        self.locationizedEvents = {}
-
-    def __call__(self, event):
-        if event.start <= self.now:
-            return False
-
-        if self.now + event.majorLocation.hideUntil < event.start:
-            return False
-
-        location = event.majorLocation
-        if location in self.locationizedEvents:
-            if event.start == self.locationizedEvents[location]:
-                return True
-            else:
-                return False
-        else:
-            self.locationizedEvents[location] = event
-            return True
-
 
 class MobileTemplateFactory(grok.GlobalUtility):
     grok.implements(grokcore.view.interfaces.ITemplateFileFactory)
@@ -133,14 +111,6 @@ class AsmMobile(grok.Application, grok.Container):
 
         self.EVENTS.updateEvents(updateEvents)
 
-    def getCurrentEvents(self, now):
-        eventFilter = lambda event : (event.start <= now and now < event.end)
-        return self.EVENTS.getEvents(eventFilter)
-
-
-    def getNextEvents(self, now):
-        return self.EVENTS.getEvents(NextEventFilter(now))
-
     def getEvents(self, eventFilter=None):
         return self.EVENTS.getEvents(eventFilter)
 
@@ -151,39 +121,42 @@ class AsmMobile(grok.Application, grok.Container):
         return self.EVENTS.getEvents(eventFilter)
 
 
-def _reverseOrderByMajorLocation(first, second):
-    result = cmp(second.majorLocation.priority,
-                 first.majorLocation.priority)
-    # If events are of equal priority, order by their ID
-    if result == 0:
-        return cmp(first.id, second.id)
-    return result
-
-
 class Index(MobileView):
     grok.context(AsmMobile)
 
     def _getCurrentNextEvents(self, now):
         locations = {}
-        currentEvents = self.context.getCurrentEvents(now)
-        currentEvents.sort(_reverseOrderByMajorLocation)
-        self.currentEvents = \
-            getEventList(self,
-                         currentEvents,
-                         (lambda event: event.end - now),
-                         (lambda event, location, outLocations:
-                          outLocations[location].currentEvents.append(event)),
-                         locations)
 
-        nextEvents = self.context.getNextEvents(now)
-        nextEvents.sort(_reverseOrderByMajorLocation)
-        self.nextEvents = \
-            getEventList(self,
-                         nextEvents,
-                         (lambda event: event.start - now),
-                         (lambda event, location, outLocations:
-                          outLocations[location].nextEvents.append(event)),
-                         locations)
+        allEvents = self.context.getEvents(selector.AndSelector([
+                    selector.NotEndedEvents().setNow(now),
+                    selector.NotHiddenEvents().setNow(now),
+                    ]))
+
+        currentEvents = filter(selector.CurrentEvents().setNow(now), allEvents)
+        currentEvents.sort(orderby.locationPriority)
+
+        self.currentEvents = getEventList(
+            self,
+            currentEvents,
+            (lambda event: event.end - now),
+            (lambda event, location, outLocations:
+                 outLocations[location].currentEvents.append(event)),
+            locations
+            )
+
+        nextEvents = filter(selector.AndSelector([
+                    selector.FutureEvents().setNow(now),
+                    selector.LocationizedEvents(),
+                    ]), allEvents)
+        nextEvents.sort(orderby.locationPriority)
+        self.nextEvents = getEventList(
+            self,
+            nextEvents,
+            (lambda event: event.start - now),
+            (lambda event, location, outLocations:
+                 outLocations[location].nextEvents.append(event)),
+            locations
+            )
 
         self.LOCATIONS = locations.values()
 
