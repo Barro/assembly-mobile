@@ -7,6 +7,12 @@ body {
   margin: 1%;
 }
 
+/* #title must be before anchor selector because Nokia's S40 browser will
+   otherwise show wrong colours in links. */
+#title, #title a {
+  color: #659cab;
+}
+
 a {
   text-decoration: none;
   color: #033442;
@@ -16,11 +22,10 @@ a:hover {
   text-decoration: underline;
 }
 
-h1, h1 a {
+h1 {
   font-size: 100%;
   margin: 0;
   padding: 0;
-  color: #659cab;
 }
 
 h2 {

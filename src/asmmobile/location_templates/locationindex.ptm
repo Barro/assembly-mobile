@@ -4,7 +4,7 @@
     tal:content="string:${context/name} (location)">Location name</metal:block>
 <div metal:fill-slot='content'>
 
-<h2 tal:content="context/name">Location name</h2>
+<h1 tal:content="context/name">Location name</h1>
 <div tal:attributes="class shorten:links">
   <a tal:attributes="href python:view.urlR('%s.vcs' % context.__name__)">vCal (events)</a>
   <tal:block tal:condition="context/url">
