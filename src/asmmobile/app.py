@@ -318,5 +318,6 @@ class Error404NotFound(MobileView, SystemErrorView):
 
      def update(self):
          self.siteName = config.siteName
+         self.sourceUrl = config.sourceUrl
          self.siteUrl = self.url(grok.getSite())
          self.response.setStatus(404)
