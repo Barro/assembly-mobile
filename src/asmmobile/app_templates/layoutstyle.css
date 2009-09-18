@@ -2,7 +2,7 @@ body {
   background: #d8eaef;
   color: #659cab;
   font-family: sans-serif;
-  margin:1%;
+  margin: 1%;
 }
 
 a {
@@ -29,7 +29,7 @@ h2 {
   padding: 0;
   font-size: 105%;
   color: #333;
-  margin:10px 0 0 0;
+  margin: 10px 0 0 0;
 }
 
 h3 {
@@ -50,12 +50,16 @@ ul {
   margin: 0 0 6px 0;
   line-height: 1.1;
   border: 1px solid #bbb;
-  color:#222;
+  color: #222;
 }
 
-.event a {color: #62a60a;}
+.event a, .li h3 a {
+  color: #62a60a;
+}
 
-.event div {padding:2px 0;}
+.event div {
+  padding: 2px 0;
+}
 
 .li span.location, .event a.location {
   color: #666;
@@ -83,11 +87,6 @@ ul {
 .footer {
   border-top: 2px solid #b0cfd8;
   margin-top: 5px;
-}
-
-.li h3 a {
-  color: #62a60a;
-  text-decoration: none;
 }
 
 .li span a {
