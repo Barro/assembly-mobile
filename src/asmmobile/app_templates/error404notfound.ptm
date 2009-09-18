@@ -1,0 +1,17 @@
+<metal:block define-macro="page"><?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN"
+    "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" i18n:domain="AsmMobile">
+<head>
+  <title>Page not found - <span tal:replace="view/siteName" /></title>
+  <style type='text/css' tal:content="structure provider:stylesheets"></style>
+  <meta name="source-code" tal:attributes="content view/sourceUrl" />
+</head>
+<body>
+<h1 tal:attributes="id shorten:title"><a tal:attributes="href view/siteUrl" tal:content="view/siteName">Assembly Mobile</a></h1>
+<p>
+The page you requested does not exist.<!----> <a tal:attributes="href view/siteUrl">Go back to the front page of <span tal:replace="view/siteName" />.</a>
+</p>
+</body>
+</html>
+</metal:block>

@@ -327,3 +327,13 @@ class AllEvents(MobileView):
 class LayoutStyle(grok.Viewlet):
     grok.viewletmanager(StylesheetManager)
     grok.context(zope.interface.Interface)
+
+
+class Error404NotFound(MobileView, SystemErrorView):
+     grok.context(INotFound)
+     grok.name('index.html')
+
+     def update(self):
+         self.siteName = config.siteName
+         self.siteUrl = self.url(grok.getSite())
+         self.response.setStatus(404)

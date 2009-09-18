@@ -40,6 +40,8 @@ class MobileView(grok.View):
     charset = "UTF-8"
     contentType = "application/xhtml+xml; charset=%s" % charset
 
+    sourceUrl = config.sourceUrl
+
     def __call__(self, *args, **kw):
         self.request.response.setHeader(
             "Content-Type",

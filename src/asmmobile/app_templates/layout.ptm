@@ -5,7 +5,7 @@
 <head>
   <title><metal:block define-slot='page-title'></metal:block> - Assembly Mobile</title>
   <style type='text/css' tal:content="structure provider:stylesheets"></style>
-  <meta name="source-code" content="http://bitbucket.org/barro/assembly-mobile/" />
+  <meta name="source-code" tal:attributes="content view/sourceUrl" />
 </head>
 <body>
 <h1 tal:attributes="id shorten:title"><a tal:attributes="href view/application_urlR">Assembly Mobile</a></h1>
