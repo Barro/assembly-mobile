@@ -28,28 +28,20 @@ import asmmobile.interfaces as interfaces
 from asmmobile.components import MobileView
 from asmmobile.util import getEventList
 
-locationKeyChars = (string.ascii_letters.decode('ascii') \
-                        + string.digits.decode('ascii'))
-
 class EditDescription(grok.Permission):
     grok.name('asmmobile.Edit')
 
-
-def convertNameToKey(name):
-    return re.sub(ur'([^%s]+)' % locationKeyChars, ur'_',
-                  name.lower()).strip("_")
 
 class LocationContainer(grok.Container):
     grok.implements(interfaces.ILocationContainer)
 
     def addLocation(self,
+                    keyName,
                     name,
                     url=None,
                     priority=None,
                     hideUntil=None,
                     majorLocation=None):
-        keyName = convertNameToKey(name)
-
         if keyName in self:
             location = self[keyName]
             if name != location.name:
@@ -74,7 +66,7 @@ class LocationContainer(grok.Container):
 
 
     def getLocation(self, name):
-        return self[convertNameToKey(name)]
+        return self[util.convertNameToKey(name)]
 
     def application(self):
         return self.__parent__

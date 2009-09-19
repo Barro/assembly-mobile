@@ -55,25 +55,22 @@ else:
     clockutc = _staticTimeClock(config.time)
 
 
+KEY_CHARACTERS = (string.ascii_letters.decode('ascii')
+                  + string.digits.decode('ascii'))
+NORMALIZE_REGEX = re.compile(ur'([^%s]+)' % KEY_CHARACTERS)
+
+def convertNameToKey(name):
+    return NORMALIZE_REGEX.sub(ur'_', name.lower()).strip("_")
+
 class KeyNormalize(grok.View):
     grok.context(unicode)
     grok.name("keynormalize")
 
-    locationKeyChars = (string.ascii_letters.decode('ascii') \
-                            + string.digits.decode('ascii'))
-
     def render(self):
-        return re.sub(ur'([^%s]+)' % self.locationKeyChars, ur'_',
-                      self.context.lower()).strip("_")
+        return convertNameToKey(self.context)
 
 
-def shortenName(
-    name,
-    maximumLength,
-    shortenTo,
-    nonWordCharacters,
-    cutPostfix
-    ):
+def shortenName(name, maximumLength, shortenTo, nonWordCharacters, cutPostfix):
     shortName = name
     # Name is too long. Cut it so that the three dots (...) come directly after
     # the last full word.

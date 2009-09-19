@@ -33,6 +33,7 @@ import asmmobile.interfaces as interfaces
 import asmmobile.location
 import asmmobile.event
 from asmmobile.components import MobileView, StylesheetManager, MobileTemplate
+import asmmobile.util as util
 from asmmobile.util import getEventList, DisplayEvent
 import asmmobile.config as config
 import asmmobile.selector as selector
@@ -58,9 +59,7 @@ class StylesheetTemplateFactory(grok.GlobalUtility):
 
     def __call__(self, filename, _prefix=None):
         return grokcore.view.components.PageTemplate(
-            filename=filename,
-            _prefix=_prefix
-            )
+            filename=filename, _prefix=_prefix)
 
 
 class AsmMobile(grok.Application, grok.Container):
@@ -96,13 +95,11 @@ class AsmMobile(grok.Application, grok.Container):
         else:
             majorLocation = None
 
+        keyName = util.convertNameToKey(name)
+
         return self.LOCATIONS.addLocation(
-            name,
-            url,
-            priority,
-            hideUntil,
-            majorLocation
-            )
+            keyName, name, url, priority, hideUntil, majorLocation)
+
 
     def updateEvents(self, events):
         eventData = {}
@@ -118,10 +115,12 @@ class AsmMobile(grok.Application, grok.Container):
 
         self.EVENTS.updateEvents(eventData)
 
+
     def getEvents(self, eventFilter=None):
         return self.EVENTS.getEvents(eventFilter)
 
     events = property(getEvents)
+
 
     def getLocationEvents(self, location):
         eventFilter = lambda event : (event.location == location)
@@ -140,6 +139,7 @@ for selectString in config.selectNextEvents.split("&"):
 
 currentSort = orderby.types[config.sortCurrentEvents]
 nextSort = orderby.types[config.sortNextEvents]
+
 
 class Index(MobileView):
     grok.context(AsmMobile)
@@ -186,8 +186,8 @@ class Index(MobileView):
         haveEvents = len(allEvents) > 0
         self.partyHasStarted = haveEvents and allEvents[0].start <= now
         self.partyHasEnded = haveEvents and allEvents[-1].end < now
-        partyIsOngoing = (haveEvents and \
-                              self.partyHasStarted and not self.partyHasEnded)
+        partyIsOngoing = (
+            haveEvents and self.partyHasStarted and not self.partyHasEnded)
         # Event might be starting in a while so we event can be ongoing even
         # though no event has started yet.
         if hasUpcomingEvents or partyIsOngoing:
@@ -241,8 +241,8 @@ class NextEvents(MobileView):
             (displayEnd + self.startDifference).strftime(self.dateFormat)
 
         events = self.context.getEvents(
-            (lambda event: displayStart < event.end \
-                 and event.start <= displayEnd))
+            (lambda event: displayStart < event.end
+             and event.start <= displayEnd))
 
         # If the first displayable event is the same as the first event out of
         # all events, we don't have any more events in past and disable the
