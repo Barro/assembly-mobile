@@ -19,6 +19,7 @@
 
 import zope.interface
 from zope import schema
+import asmmobile.config as config
 
 class IAsmMobile(zope.interface.Interface):
     """Marker interface for the application object."""
@@ -63,15 +64,16 @@ class IEvent(zope.interface.Interface):
 
     id = zope.interface.Attribute("")
 
-    name = schema.TextLine(title=u"Short name")
-    url = zope.interface.Attribute("")
-    start = zope.interface.Attribute("")
-    end = zope.interface.Attribute("")
+    name = schema.TextLine(title=u"Name")
+    shortName = schema.TextLine(
+        title=u"Short name", max_length=config.shortNameMaximumLength)
+    start = schema.Datetime(title=u"Start time")
+    end = schema.Datetime(title=u"End time")
 
-    shortName = schema.TextLine(title=u"Short name")
+    url = schema.URI(title=u"External URL", required=False)
     isMajor = schema.Bool(title=u"Is major event")
     categories = zope.interface.Attribute("")
-    description = schema.Text(title=u"Description")
+    description = schema.Text(title=u"Description", required=False)
 
     location = zope.interface.Attribute("")
     majorLocation = zope.interface.Attribute("")
@@ -88,10 +90,10 @@ class ILocationContainer(zope.interface.Interface):
 class ILocation(zope.interface.Interface):
 
     name = schema.TextLine(title=u"Name")
-    url = schema.TextLine(title=u"URL")
+    url = schema.TextLine(title=u"URL", required=False)
 
     description = schema.Text(title=u"Description")
 
     majorLocation = zope.interface.Attribute("")
-    priority = zope.interface.Attribute("")
+    priority = schema.Int(title=u"Priority")
     hideUntil = zope.interface.Attribute("")

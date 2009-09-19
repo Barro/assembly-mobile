@@ -170,7 +170,10 @@ class LocationIndex(MobileView):
 class Edit(grok.EditForm):
     grok.require("asmmobile.Edit")
     grok.context(Location)
+
     form_fields = grok.AutoFields(Location)
+    form_fields['name'].custom_widget = util.LongTextWidget
+    form_fields['url'].custom_widget = util.LongTextWidget
 
 
 class ViewUrl(grok.View):

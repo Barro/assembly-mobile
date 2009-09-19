@@ -66,8 +66,8 @@ class EventContainer(grok.OrderedContainer):
             eventValues = values[key]
             self[key] = Event(
                 name=eventValues['name'],
-                start=eventValues['start'],
-                end=eventValues['end'],
+                start=eventValues['start'].astimezone(dateutil.tz.tzlocal()),
+                end=eventValues['end'].astimezone(dateutil.tz.tzlocal()),
                 location=eventValues['location'],
                 url=eventValues.get('url', None),
                 categories=eventValues.get('categories', []),
@@ -81,8 +81,8 @@ class EventContainer(grok.OrderedContainer):
             eventValues = values[key]
             event = self[key]
             event.name = eventValues['name']
-            event.start = eventValues['start']
-            event.end = eventValues['end']
+            event.start = eventValues['start'].astimezone(dateutil.tz.tzlocal())
+            event.end = eventValues['end'].astimezone(dateutil.tz.tzlocal())
             event.location = eventValues['location']
             event.url = eventValues.get('url', None)
             event.categories = eventValues.get('categories', [])
@@ -97,6 +97,17 @@ class EventContainer(grok.OrderedContainer):
 
     def getEvents(self, eventFilter):
         return filter(eventFilter, self.values())
+
+class EventContainerIndex(grok.View):
+    grok.context(EventContainer)
+    grok.name("index")
+
+    def update(self):
+        self.targetUrl = self.url(self.context.__parent__, "all-events")
+        self.redirect(self.targetUrl)
+
+    def render(self):
+        pass
 
 
 class Event(grok.Model):
@@ -150,3 +161,12 @@ class EventIndex(MobileView):
 
     cacheTime = util.AddTime(datetime.timedelta(minutes=15))
 
+
+class Edit(grok.EditForm):
+    grok.require("asmmobile.Edit")
+    grok.context(Event)
+    form_fields = grok.AutoFields(Event)
+
+    form_fields['name'].custom_widget = util.LongTextWidget
+    form_fields['shortName'].custom_widget = util.LongTextWidget
+    form_fields['url'].custom_widget = util.LongTextWidget

@@ -24,6 +24,8 @@ import grok
 import string
 import dateutil.tz
 
+from zope.app.form.browser.textwidgets import TextWidget
+
 import asmmobile.interfaces as interfaces
 import asmmobile.config as config
 
@@ -284,3 +286,7 @@ class NameShortener(object):
 class AsIsName(object):
     def shorten(self, name):
         return name
+
+
+class LongTextWidget(TextWidget):
+    displayWidth = config.shortNameMaximumLength

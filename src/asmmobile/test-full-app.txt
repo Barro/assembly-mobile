@@ -49,6 +49,15 @@ Check that locations got added correctly:
    >>> "HOME" in browser.contents
    True
 
+Check that all locations are listed in location index:
+
+   >>> browser.open('http://localhost/app/location')
+   >>> assertXml(browser)
+   >>> "HOME" in browser.contents
+   True
+   >>> "CAVE" in browser.contents
+   True
+
 Add some events to locations:
 
    >>> events = {
