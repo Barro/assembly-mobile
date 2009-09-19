@@ -88,7 +88,7 @@ class EventContainer(grok.OrderedContainer):
             event.categories = eventValues.get('categories', [])
             event.description = eventValues.get('description', None)
             event.shortName = eventValues.get('short-name', eventValues['name'])
-            event.isMajor = eventValues.get('is-major', False),
+            event.isMajor = eventValues.get('is-major', False)
 
         # Order events by start time.
         values = list(self.values())

@@ -21,7 +21,7 @@
 import icalendar
 import dateutil.tz
 
-def importer(filename, prefix='', locationMap={}):
+def importer(filename, prefix='', locationMap={}, majorCategory=None):
     calFp = open(filename, "r")
     cal = icalendar.Calendar.from_string(calFp.read())
     calFp.close()
@@ -42,12 +42,15 @@ def importer(filename, prefix='', locationMap={}):
 
         locations[location] = ""
 
+        isMajor = majorCategory in categories
+
         events[id] = {'name': name,
                       'start': start,
                       'end': end,
                       'url': url,
                       'location': location,
                       'categories': categories,
+                      'is-major': isMajor,
                       }
 
     return (locations, events)

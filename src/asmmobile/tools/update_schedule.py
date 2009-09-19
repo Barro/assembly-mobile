@@ -21,7 +21,7 @@
 import zope.app.component.hooks
 import zope.component
 import transaction
-import asmmobile.config as config
+import asmmobile.config
 import asmmobile.util
 
 def updateSchedule(app, config):
@@ -61,10 +61,10 @@ def updateSchedule(app, config):
         shortName = event.get('short-name', event['name'])
         shortName = asmmobile.util.shortenName(
             name=shortName,
-            maximumLength=config.shortNameMaximumLength,
-            shortenTo=shortNameShortenTo,
-            nonWordCharacters=shortNameNonWordCharacters,
-            cutPostfix=shortNameCutPostfix,
+            maximumLength=asmmobile.config.shortNameMaximumLength,
+            shortenTo=asmmobile.config.shortNameShortenTo,
+            nonWordCharacters=asmmobile.config.shortNameNonWordCharacters,
+            cutPostfix=asmmobile.config.shortNameCutPostfix,
             )
         event['short-name'] = shortName
 

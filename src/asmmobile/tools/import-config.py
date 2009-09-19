@@ -22,6 +22,7 @@ IMPORTERS = {
     'icalendar': {
         'filename': '/tmp/asmtv.ics',
         'locationMap': {'none': 'AssemblyTV'},
+        'majorCategory': 'Major_event',
         },
     'asmcsv': {
         'filename': '/tmp/schedule.csv',

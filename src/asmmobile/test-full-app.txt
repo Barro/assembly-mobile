@@ -178,3 +178,11 @@ Check that different calendar outputs have correct events:
    >>> getCalendarEvents(browser, 'http://localhost/app/event/cave_first/cave_first.vcs')
    [u'cave_first@localhost']
 
+Remove one event and check that it is removed from application events:
+
+   >>> del(events['cave_second'])
+   >>> 'cave_second' in app['event']
+   True
+   >>> app.updateEvents(events)
+   >>> 'cave_second' in app['event']
+   False

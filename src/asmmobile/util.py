@@ -72,6 +72,7 @@ def shortenName(
     nonWordCharacters,
     cutPostfix
     ):
+    shortName = name
     # Name is too long. Cut it so that the three dots (...) come directly after
     # the last full word.
     if len(shortName) > maximumLength:
