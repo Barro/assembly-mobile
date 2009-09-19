@@ -62,7 +62,9 @@ def importer(filename, prefix, language):
         startTime = parseCsvDate(entry['Start_Date'])
         eventId = "%s%d_%s" % (prefix, startTime.year, entry['ID'])
         categories = []
+        isMajor = False
         if entry['Major'] == 'Yes':
+            isMajor = True
             categories.append("Major_event")
         if len(entry['Class']) > 0:
             categories += entry['Class'].split(" ")
@@ -72,11 +74,13 @@ def importer(filename, prefix, language):
         if not url.startswith("http"):
             url = "http://www.assembly.org%s" % url
 
-        events[eventId] = {'name': entry['Title_' + language],
-                           'url': url,
-                           'start': startTime,
-                           'end': parseCsvDate(entry['Finish_Date']),
-                           'location': locationName,
-                           'categories': categories,
-                           }
+        events[eventId] = {
+            'name': entry['Title_' + language],
+            'url': url,
+            'start': startTime,
+            'end': parseCsvDate(entry['Finish_Date']),
+            'location': locationName,
+            'categories': categories,
+            'is-major': isMajor,
+            }
     return (locations, events)

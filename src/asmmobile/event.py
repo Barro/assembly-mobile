@@ -39,13 +39,13 @@ def _sortByStartTime(first, second):
 
 @grok.subscribe(interfaces.IEventContainer, grok.IContainerModifiedEvent)
 def notify_eventCountChanged(container, event):
-    container.lastModified = config.clock.now(dateutil.tz.tzutc())
+    container.lastModified = util.clock()
 
 
 @grok.subscribe(interfaces.IEvent, grok.IObjectModifiedEvent)
 def notify_eventModified(event, modifiedEvent):
     container = event.__parent__
-    container.lastModified = config.clock.now(dateutil.tz.tzutc())
+    container.lastModified = util.clock()
 
 
 class EventContainer(grok.OrderedContainer):
@@ -70,8 +70,10 @@ class EventContainer(grok.OrderedContainer):
                 end=eventValues['end'],
                 location=eventValues['location'],
                 url=eventValues.get('url', None),
-                categories=eventValues.get('categories', None),
+                categories=eventValues.get('categories', []),
                 description=eventValues.get('description', None),
+                shortName=eventValues.get('short-name', eventValues['name']),
+                isMajor=eventValues.get('is-major', False),
                 )
 
         updateKeys = newKeys.intersection(currentKeys)
@@ -83,8 +85,10 @@ class EventContainer(grok.OrderedContainer):
             event.end = eventValues['end']
             event.location = eventValues['location']
             event.url = eventValues.get('url', None)
-            event.categories = eventValues.get('categories', None)
+            event.categories = eventValues.get('categories', [])
             event.description = eventValues.get('description', None)
+            event.shortName = eventValues.get('short-name', eventValues['name'])
+            event.isMajor = eventValues.get('is-major', False),
 
         # Order events by start time.
         values = list(self.values())
@@ -98,8 +102,6 @@ class EventContainer(grok.OrderedContainer):
 class Event(grok.Model):
     grok.implements(interfaces.IEvent, interfaces.IEventOwner)
 
-    lastModified = None
-
     def __init__(
         self,
         name,
@@ -108,7 +110,9 @@ class Event(grok.Model):
         location=None,
         url=None,
         description=None,
-        categories=[]
+        categories=[],
+        isMajor=False,
+        shortName=None,
         ):
         self.name = name
         self.start = start
@@ -117,6 +121,11 @@ class Event(grok.Model):
         self.url = url
         self.description = description
         self.categories = categories
+        self.isMajor = isMajor
+        if shortName == None:
+            self.shortName = name
+        else:
+            self.shortName = shortName
 
     @property
     def majorLocation(self):

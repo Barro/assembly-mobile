@@ -1,9 +1,31 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+# Assembly mobile - mobile content for visitors of Assembly computer festival.
+# Copyright (C) 2009  Assembly Organizing
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, version 3 of the
+# License.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 import datetime
 import grok
+import urlparse
+import StringIO
 
 from asmmobile.components import MobileView
 import asmmobile.interfaces as interfaces
 import asmmobile.util as util
+import asmmobile.config as config
 
 class EventOwnerWrapper(object):
     def __init__(self, contentType, events):
@@ -24,7 +46,8 @@ class ICalendar(MobileView):
     grok.context(EventOwnerWrapper)
     grok.name("index.html")
 
-    cacheTime = util.AddTime(datetime.timedelta(minutes=15))
+    cacheTime = util.AddTime(
+        datetime.timedelta(minutes=config.calendarCacheMinutes))
 
     def update(self):
         self.response.setHeader('Content-Type', self.context.contentType)
@@ -33,6 +56,7 @@ class ICalendar(MobileView):
         page = ICalendarWrapper(self.context, self.request)
         page.events = self.context.events
         page.now = self.now
+        page.domain = urlparse.urlparse(self.application_url()).hostname
         return page().replace("\n", "\r\n")
 
 
@@ -51,4 +75,26 @@ class ICalTimeView(grok.View):
     grok.name("ical")
 
     def render(self):
+        # Render times in local time
         return self.context.strftime('%Y%m%dT%H%M%S')
+
+
+class ICalEncodedString(grok.View):
+    grok.context(unicode)
+    grok.name("ical")
+
+    escapeChars = {
+        "\\": u"\\\\",
+        ";": u"\\;",
+        ",": u"\\,",
+        "\n": u"\\n",
+        }
+
+    def render(self):
+        buffer = StringIO.StringIO()
+        for char in self.context:
+            if char in self.escapeChars:
+                buffer.write(self.escapeChars[char])
+            else:
+                buffer.write(char)
+        return buffer.getvalue()

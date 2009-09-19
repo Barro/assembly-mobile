@@ -1,0 +1,35 @@
+:Test-Layer: functional
+
+Create application and browser:
+
+   >>> from asmmobile.app import AsmMobile
+   >>> root = getRootFolder()
+   >>> root['app'] = AsmMobile()
+   >>> from zope.testbrowser.testing import Browser
+   >>> browser = Browser()
+   >>> browser.handleErrors = False
+
+This function will throw an exception if returned XML is invalid.
+
+   >>> import xml.etree.ElementTree as etree
+   >>> def assertXml(browser):
+   ...     etree.fromstring(browser.contents) and None
+
+Open all pages and verify that no errors are emitted:
+
+   >>> browser.open('http://localhost/app')
+   >>> browser.headers.get('Status').upper()
+   '200 OK'
+   >>> assertXml(browser)
+   >>> browser.open('http://localhost/app/all-events')
+   >>> browser.headers.get('Status').upper()
+   '200 OK'
+   >>> assertXml(browser)
+   >>> browser.open('http://localhost/app/next-events')
+   >>> browser.headers.get('Status').upper()
+   '200 OK'
+   >>> assertXml(browser)
+   >>> browser.open('http://localhost/app/next-events?s=2009-01-01-01')
+   >>> browser.headers.get('Status').upper()
+   '200 OK'
+   >>> assertXml(browser)

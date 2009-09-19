@@ -3,7 +3,7 @@
 
 <span tal:replace="context/start/@@hourminute" />
 <!---->
-<a tal:content="context/shortname"
+<a tal:content="context/shortName"
    tal:attributes="href context/shorturl">Event name</a>
 <!---->
 <span tal:replace="context/length/@@hourminuteparenthesis" />

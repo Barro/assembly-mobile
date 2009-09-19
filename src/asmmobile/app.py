@@ -86,30 +86,37 @@ class AsmMobile(grok.Application, grok.Container):
 
 
     def addLocation(self, name, url, priority, hideUntil, majorLocationName):
+        if isinstance(name, str):
+            name = unicode(name)
+        if isinstance(url, str):
+            url = unicode(url)
+
         if majorLocationName is not None:
             majorLocation = self.LOCATIONS.getLocation(majorLocationName)
         else:
             majorLocation = None
 
-        return self.LOCATIONS.addLocation(name,
-                                          url,
-                                          priority,
-                                          hideUntil,
-                                          majorLocation)
+        return self.LOCATIONS.addLocation(
+            name,
+            url,
+            priority,
+            hideUntil,
+            majorLocation
+            )
 
     def updateEvents(self, events):
-        updateEvents = {}
+        eventData = {}
         for eventId, values in events.items():
+            eventValues = {}
+            for key,value in values.items():
+                if isinstance(value, str):
+                    value = unicode(value)
+                eventValues[key] = value
             location = self.LOCATIONS.getLocation(values['location'])
-            updateEvents[eventId] = {'name': values['name'],
-                                     'start': values['start'],
-                                     'end': values['end'],
-                                     'url': values['url'],
-                                     'location': location,
-                                     'categories': values['categories'],
-                                     }
+            eventValues['location'] = location
+            eventData[eventId] = eventValues
 
-        self.EVENTS.updateEvents(updateEvents)
+        self.EVENTS.updateEvents(eventData)
 
     def getEvents(self, eventFilter=None):
         return self.EVENTS.getEvents(eventFilter)

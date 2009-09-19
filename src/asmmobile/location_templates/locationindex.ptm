@@ -35,7 +35,8 @@
         tal:define="global lastStart python:event.start.day" />
 </tal:block>
 
-<span tal:replace="structure string:</div>" />
+<span tal:condition="lastStart"
+      tal:replace="structure string:</div>" />
 
 </div>
 </metal:block >

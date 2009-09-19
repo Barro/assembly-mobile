@@ -63,11 +63,13 @@ class IEvent(zope.interface.Interface):
 
     id = zope.interface.Attribute("")
 
-    name = zope.interface.Attribute("")
+    name = schema.TextLine(title=u"Short name")
     url = zope.interface.Attribute("")
     start = zope.interface.Attribute("")
     end = zope.interface.Attribute("")
 
+    shortName = schema.TextLine(title=u"Short name")
+    isMajor = schema.Bool(title=u"Is major event")
     categories = zope.interface.Attribute("")
     description = schema.Text(title=u"Description")
 
@@ -85,8 +87,8 @@ class ILocationContainer(zope.interface.Interface):
 
 class ILocation(zope.interface.Interface):
 
-    name = zope.interface.Attribute("")
-    url = zope.interface.Attribute("")
+    name = schema.TextLine(title=u"Name")
+    url = schema.TextLine(title=u"URL")
 
     description = schema.Text(title=u"Description")
 

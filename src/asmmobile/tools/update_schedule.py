@@ -21,6 +21,8 @@
 import zope.app.component.hooks
 import zope.component
 import transaction
+import asmmobile.config as config
+import asmmobile.util
 
 def updateSchedule(app, config):
     importFuncs = {}
@@ -54,6 +56,17 @@ def updateSchedule(app, config):
     for name,url in locations.items():
         priority = config.PRIORITIES.get(name, None)
         app.addLocation(name, url, priority, None, None)
+
+    for event in events.values():
+        shortName = event.get('short-name', event['name'])
+        shortName = asmmobile.util.shortenName(
+            name=shortName,
+            maximumLength=config.shortNameMaximumLength,
+            shortenTo=shortNameShortenTo,
+            nonWordCharacters=shortNameNonWordCharacters,
+            cutPostfix=shortNameCutPostfix,
+            )
+        event['short-name'] = shortName
 
     app.updateEvents(events)
     transaction.commit()

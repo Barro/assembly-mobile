@@ -22,16 +22,36 @@ import re
 import datetime
 import grok
 import string
+import dateutil.tz
 
-import interfaces
+import asmmobile.interfaces as interfaces
+import asmmobile.config as config
 
 EVENTS = 'event'
 LOCATIONS = 'location'
 
-NAME_MAX_LENGTH = 60
-NAME_SHORTEN_TO = 55
-NON_WORD_CHARACTERS = "-#:,. "
-CUT_POSTFIX = "..."
+def _currentTimeClock(timezone):
+    dateFactory = datetime.datetime(2009, 1, 1)
+    def currentTime():
+        return dateFactory.now(timezone)
+    return currentTime
+
+def _staticTimeClock(timeString):
+    year, month, day, hour, minute = (int(x) for x in timeString.split("-"))
+    dateFactory = datetime.datetime(
+        year, month, day, hour, minute, tzinfo=dateutil.tz.tzlocal())
+    def staticTime():
+        return dateFactory
+    return staticTime
+
+# Choose either between real system time or static time for testing.
+if config.time == "now":
+    clock = _currentTimeClock(dateutil.tz.tzlocal())
+    clockutc = _currentTimeClock(dateutil.tz.tzutc())
+else:
+    clock = _staticTimeClock(config.time)
+    clockutc = _staticTimeClock(config.time)
+
 
 class KeyNormalize(grok.View):
     grok.context(unicode)
@@ -45,28 +65,33 @@ class KeyNormalize(grok.View):
                       self.context.lower()).strip("_")
 
 
-def shortenName(name):
-    shortName = re.sub("ARTtech seminars - ", "", name)
+def shortenName(
+    name,
+    maximumLength,
+    shortenTo,
+    nonWordCharacters,
+    cutPostfix
+    ):
     # Name is too long. Cut it so that the three dots (...) come directly after
     # the last full word.
-    if len(shortName) > NAME_MAX_LENGTH:
+    if len(shortName) > maximumLength:
         # Cut to maximum length of a name.
-        newShortName = shortName[:NAME_SHORTEN_TO]
+        newShortName = shortName[:shortenTo]
         # Reverse name to cut to last full word.
         reversedName = newShortName[::-1]
         firstNonAlpha = 0
         # Find the beginning of last partial word.
-        while reversedName[firstNonAlpha] not in NON_WORD_CHARACTERS:
+        while reversedName[firstNonAlpha] not in nonWordCharacters:
             firstNonAlpha += 1
         # Find the end of last full word
-        while reversedName[firstNonAlpha] in NON_WORD_CHARACTERS:
+        while reversedName[firstNonAlpha] in nonWordCharacters:
             firstNonAlpha += 1
         # Cut the not wanted characters from the end of the name.
         reversedName = reversedName[firstNonAlpha:]
         # Reverse the name
         newShortName = reversedName[::-1]
         # Add dots to cut name to indicate cutting.
-        shortName = newShortName + CUT_POSTFIX
+        shortName = newShortName + cutPostfix
     return shortName
 
 
@@ -156,11 +181,12 @@ class TimeDayname(grok.View):
 class DisplayEvent(object):
     def __init__(self, view, event, timeTillChangePoint):
         self.id = event.__name__
-        self.shortname = shortenName(event.name)
         self.name = event.name
+        self.shortName = event.shortName
         self.url = "%s/%s" % (view.application_url(EVENTS), self.id)
         self.shorturl = eventUrl(view, event)
         self.description = event.description
+        self.isMajor = event.isMajor
         self.categories = event.categories
 
         self.locationName = event.location.name
@@ -171,10 +197,6 @@ class DisplayEvent(object):
         self.start = event.start
         self.end = event.end
         self.length = event.length
-
-    @property
-    def isMajor(self):
-        return 'Major_event' in self.categories
 
 
 class GroupingLocation(object):

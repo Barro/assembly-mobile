@@ -1,0 +1,180 @@
+:Test-Layer: functional
+
+Create application and browser:
+
+   >>> from asmmobile.app import AsmMobile
+   >>> root = getRootFolder()
+   >>> app = AsmMobile()
+   >>> root['app'] = app
+   >>> from zope.testbrowser.testing import Browser
+   >>> browser = Browser()
+   >>> browser.handleErrors = False
+
+This function will throw an exception if returned XML is invalid.
+
+   >>> import xml.etree.ElementTree as etree
+   >>> def assertXml(browser):
+   ...     etree.fromstring(browser.contents) and None
+
+
+Change the clock to be some known time:
+
+   >>> import asmmobile.util
+   >>> oldClock = asmmobile.util.clock
+   >>> asmmobile.util.clock = asmmobile.util._staticTimeClock("2009-01-01-10-00")
+
+Date creation function:
+
+   >>> import datetime
+   >>> import dateutil.tz
+   >>> def createTime(timeStr):
+   ...     year, month, day, hour, minute = (int(x) for x in timeStr.split("-"))
+   ...     return datetime.datetime(
+   ...         year, month, day, hour, minute, tzinfo=dateutil.tz.tzlocal())
+
+Add some locations:
+
+   >>> import datetime
+   >>> cave = app.addLocation("CAVE", "http://cave/", 0, datetime.timedelta(seconds=60), None)
+   >>> home = app.addLocation("HOME", "http://home/", 10, datetime.timedelta(seconds=7200), None)
+
+Check that locations got added correctly:
+
+   >>> browser.open('http://localhost/app/location/cave')
+   >>> assertXml(browser)
+   >>> "CAVE" in browser.contents
+   True
+   >>> browser.open('http://localhost/app/location/home')
+   >>> assertXml(browser)
+   >>> "HOME" in browser.contents
+   True
+
+Add some events to locations:
+
+   >>> events = {
+   ...     'cave_first': {
+   ...         'name': 'EVFIRST',
+   ...         'url': 'http://cave/first',
+   ...         'start': createTime("2009-01-01-09-00"),
+   ...         'end': createTime("2009-01-01-11-00"),
+   ...         'location': "cave",
+   ...         },
+   ...     'cave_second': {
+   ...         'name': 'EVSECOND',
+   ...         'url': None,
+   ...         'start': createTime("2009-01-01-11-00"),
+   ...         'end': createTime("2009-01-01-12-00"),
+   ...         'location': "cave",
+   ...         'description': 'SECOND_DESCRIPTION\nSECOND_LINE',
+   ...         },
+   ...     'home_third': {
+   ...         'name': 'EVTHIRD',
+   ...         'url': 'http://home/third',
+   ...         'start': createTime("2009-01-01-10-30"),
+   ...         'end': createTime("2009-01-01-12-00"),
+   ...         'location': "home",
+   ...         },
+   ...     }
+   >>> app.updateEvents(events)
+
+Check that events are visible in their respective locations:
+
+   >>> browser.open('http://localhost/app/location/cave')
+   >>> assertXml(browser)
+   >>> "EVFIRST" in browser.contents
+   True
+   >>> "EVSECOND" in browser.contents
+   True
+   >>> browser.open('http://localhost/app/location/home')
+   >>> "EVTHIRD" in browser.contents
+   True
+
+Check that correct information is visible in events:
+
+   >>> browser.open('http://localhost/app/event/cave_first')
+   >>> assertXml(browser)
+   >>> "EVFIRST" in browser.contents
+   True
+   >>> 'http://cave/first' in browser.contents
+   True
+
+Check that location is visible:
+
+   >>> "CAVE" in browser.contents
+   True
+   >>> "location/cave" in browser.contents
+   True
+
+Check that description is visible:
+
+   >>> browser.open('http://localhost/app/event/cave_second')
+   >>> assertXml(browser)
+   >>> "SECOND_DESCRIPTION" in browser.contents
+   True
+
+Check that all events are visible in all-events page:
+
+   >>> browser.open('http://localhost/app/all-events')
+   >>> assertXml(browser)
+   >>> "EVFIRST" in browser.contents
+   True
+   >>> "EVSECOND" in browser.contents
+   True
+   >>> "EVTHIRD" in browser.contents
+   True
+
+Check that all events are visible in next-events page:
+
+   >>> browser.open('http://localhost/app/next-events')
+   >>> assertXml(browser)
+   >>> "EVFIRST" in browser.contents
+   True
+   >>> "EVSECOND" in browser.contents
+   True
+   >>> "EVTHIRD" in browser.contents
+   True
+
+Check that we can change the display time of next events to hide
+all events:
+
+   >>> browser.open('http://localhost/app/next-events?s=2007-01-01-01')
+   >>> assertXml(browser)
+   >>> "EVFIRST" in browser.contents
+   False
+
+Check that non-hidden events are visible in overview page:
+
+   >>> browser.open('http://localhost/app')
+   >>> assertXml(browser)
+   >>> "EVFIRST" in browser.contents
+   True
+   >>> "EVTHIRD" in browser.contents
+   True
+
+Second cave event is not starting in 1 hour and cave hide-until time is only
+one minute so we should not see it:
+
+   >>> "EVSECOND" in browser.contents
+   False
+
+Calendar functions:
+
+   >>> import icalendar
+   >>> def getCalendarEvents(browser, url):
+   ...     browser.open(url)
+   ...     cal = icalendar.Calendar.from_string(browser.contents)
+   ...     eventIds = [event.decoded('uid') for event in cal.walk('vevent')]
+   ...     eventIds.sort()
+   ...     return eventIds
+
+Check that different calendar outputs have correct events:
+
+   >>> getCalendarEvents(browser, 'http://localhost/app/all-events.vcs')
+   [u'cave_first@localhost', u'cave_second@localhost', u'home_third@localhost']
+   >>> getCalendarEvents(browser, 'http://localhost/app/location/cave/cave.vcs')
+   [u'cave_first@localhost', u'cave_second@localhost']
+   >>> getCalendarEvents(browser, 'http://localhost/app/location/home/home.vcs')
+   [u'home_third@localhost']
+   >>> getCalendarEvents(browser, 'http://localhost/app/event/cave_first/cave_first.vcs')
+   [u'cave_first@localhost']
+
