@@ -140,10 +140,8 @@ class Index(MobileView):
     def _getCurrentNextEvents(self, now):
         locations = {}
 
-        allEvents = self.context.getEvents(selector.AndSelector([
-                    selector.NotEndedEvents().setNow(now),
-                    selector.NotHiddenEvents().setNow(now),
-                    ]))
+        allEvents = self.context.getEvents(
+            selector.NotEndedEvents().setNow(now))
 
         currentEvents = filter(selector.CurrentEvents().setNow(now), allEvents)
         currentEvents.sort(currentSort)
@@ -158,7 +156,7 @@ class Index(MobileView):
             )
 
         for nextSelector in nextSelectors:
-            nextSelector.setNow(now)
+            nextSelector.reset(now)
         nextEvents = filter(
             selector.AndSelector(nextSelectors), allEvents)
         nextEvents.sort(nextSort)

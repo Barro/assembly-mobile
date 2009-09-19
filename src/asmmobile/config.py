@@ -28,7 +28,7 @@ sortNextEvents = config.get("sort-next-events", "start-time")
 #
 # one-per-location = one event per location
 # not-hidden = only events that are visible
-# maximum-amount = masimum number of events (maximum-count:4)
+# maximum-amount = masimum number of events (maximum-amount:4)
 #
 # Multiple selectors can be combined with "&" to filter themselves.
 selectNextEvents = config.get("select-next-events", "not-hidden&one-per-location")
