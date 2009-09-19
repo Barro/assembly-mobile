@@ -121,6 +121,19 @@ class AsmMobile(grok.Application, grok.Container):
         return self.EVENTS.getEvents(eventFilter)
 
 
+nextSelectors = [selector.FutureEvents()]
+for selectString in config.selectNextEvents.split("&"):
+    selectParts = selectString.split(":", 1)
+    selectName = selectParts[0]
+    if len(selectParts) != 2:
+        selectArgs = None
+    else:
+        selectArgs = selectParts[1]
+    nextSelectors.append(selector.types[selectName].construct(selectArgs))
+
+currentSort = orderby.types[config.sortCurrentEvents]
+nextSort = orderby.types[config.sortNextEvents]
+
 class Index(MobileView):
     grok.context(AsmMobile)
 
@@ -133,7 +146,7 @@ class Index(MobileView):
                     ]))
 
         currentEvents = filter(selector.CurrentEvents().setNow(now), allEvents)
-        currentEvents.sort(orderby.locationPriority)
+        currentEvents.sort(currentSort)
 
         self.currentEvents = getEventList(
             self,
@@ -144,11 +157,12 @@ class Index(MobileView):
             locations
             )
 
-        nextEvents = filter(selector.AndSelector([
-                    selector.FutureEvents().setNow(now),
-                    selector.LocationizedEvents(),
-                    ]), allEvents)
-        nextEvents.sort(orderby.locationPriority)
+        for nextSelector in nextSelectors:
+            nextSelector.setNow(now)
+        nextEvents = filter(
+            selector.AndSelector(nextSelectors), allEvents)
+        nextEvents.sort(nextSort)
+
         self.nextEvents = getEventList(
             self,
             nextEvents,

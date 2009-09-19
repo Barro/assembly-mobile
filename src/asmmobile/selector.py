@@ -22,6 +22,9 @@ import grok
 class EventSelector(object):
     now = None
 
+    def construct(self, arguments):
+        return type(self)()
+
     def setNow(self, now):
         self.now = now
         return self
@@ -48,7 +51,7 @@ class FutureEvents(EventSelector):
         return self.now < event.start
 
 
-class LocationizedEvents(EventSelector):
+class LocationEvents(EventSelector):
     def __init__(self):
         self.locationizedEvents = {}
 
@@ -82,6 +85,9 @@ class MaximumEvents(EventSelector):
         self.selected = 0
         self.lastSelected = None
 
+    def construct(self, arguments):
+        return type(self)(int(arguments))
+
     def __call__(self, event):
         if self.selected < self.maximumEvents:
             self.lastSelected = event
@@ -99,3 +105,10 @@ class MaximumEvents(EventSelector):
 class StartedEvents(EventSelector):
     def __call__(self, event):
         return event.start <= self.now
+
+
+types = {
+    "one-per-location": LocationEvents(),
+    "not-hidden": NotHiddenEvents(),
+    "maximum-amount": MaximumEvents(0),
+    }

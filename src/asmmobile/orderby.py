@@ -33,3 +33,9 @@ def locationPriority(first, second):
     if result == 0:
         return name(first, second)
     return result
+
+
+types = {
+    'start-time': startTime,
+    'location-priority': locationPriority,
+}

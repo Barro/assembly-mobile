@@ -61,7 +61,7 @@ Select events that have not yet started.
 
 Select one event perlocation.
 
-   >>> select(selector.LocationizedEvents(), 1, events)
+   >>> select(selector.LocationEvents(), 1, events)
    [<1-2 @ cave>, <1-2 @ home>]
 
 Select events that start time in future is less that current time +

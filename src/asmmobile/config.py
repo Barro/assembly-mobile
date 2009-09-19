@@ -19,3 +19,16 @@ nextEventsEndHours = int(config.get('next-events-show-end-hours', 2))
 nextEventsStartHours = int(config.get('next-events-show-start-hours', 10))
 
 mobileMode = config.get('mobile-mode', True)
+
+# Sort types: start-time, location-priority
+sortCurrentEvents = config.get("sort-current-events", "start-time")
+sortNextEvents = config.get("sort-next-events", "start-time")
+
+# Selector types for future events:
+#
+# one-per-location = one event per location
+# not-hidden = only events that are visible
+# maximum-amount = masimum number of events (maximum-count:4)
+#
+# Multiple selectors can be combined with "&" to filter themselves.
+selectNextEvents = config.get("select-next-events", "not-hidden&one-per-location")
