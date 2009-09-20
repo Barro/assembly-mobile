@@ -151,6 +151,17 @@ all events:
    >>> "EVFIRST" in browser.contents
    False
 
+Invalid time stamps should result in default behaviour:
+
+   >>> browser.open('http://localhost/app/next-events?s=abbabaabaa')
+   >>> assertXml(browser)
+   >>> "EVFIRST" in browser.contents
+   True
+   >>> browser.open('http://localhost/app/next-events?s=2007-02-31-01')
+   >>> assertXml(browser)
+   >>> "EVFIRST" in browser.contents
+   True
+
 Check that non-hidden events are visible in overview page:
 
    >>> browser.open('http://localhost/app')

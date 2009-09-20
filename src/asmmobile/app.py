@@ -214,18 +214,21 @@ class NextEvents(MobileView):
     dateValidate = re.compile(r"\d\d\d\d-\d\d-\d\d-\d\d")
 
     def update(self, s=None):
-
-        if s is not None and self.dateValidate.match(s):
-            (year, month, day, hour) = (int(x) for x in s.split("-"))
-            displayCenter = datetime.datetime(
-                year=year,
-                month=month,
-                day=day,
-                hour=hour,
-                tzinfo=dateutil.tz.tzlocal()
-                )
-        else:
-            displayCenter = self.now
+        displayCenter = self.now
+        try:
+            if s is not None and self.dateValidate.match(s):
+                year, month, day, hour = (int(x) for x in s.split("-"))
+                displayCenter = datetime.datetime(
+                    year=year,
+                    month=month,
+                    day=day,
+                    hour=hour,
+                    tzinfo=dateutil.tz.tzlocal()
+                    )
+        # ValueError happens when time matches validation regular expression
+        # but is evaluated as invalid date.
+        except ValueError, e:
+            pass
 
         # Round to next full hour.
         secondsTillNextHour = \
