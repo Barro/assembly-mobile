@@ -46,8 +46,7 @@ class ICalendar(MobileView):
     grok.context(EventOwnerWrapper)
     grok.name("index.html")
 
-    cacheTime = util.AddTime(
-        datetime.timedelta(minutes=config.eventCacheMinutes))
+    cacheTime = util.defaultCacheTime()
 
     def update(self):
         self.response.setHeader('Content-Type', self.context.contentType)

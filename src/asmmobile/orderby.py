@@ -31,7 +31,7 @@ def startTime(first, second):
 def locationPriority(first, second):
     result = cmp(second.majorLocation.priority, first.majorLocation.priority)
     if result == 0:
-        return name(first, second)
+        return startTime(first, second)
     return result
 
 

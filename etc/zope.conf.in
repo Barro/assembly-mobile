@@ -53,6 +53,4 @@ devmode on
 # instance productconf sections in here.
 ${zope_conf:extra}
 
-<product-config assembly-mobile>
- party-name "Assembly 2009"
-</product-config>
+${asmmobile:config}

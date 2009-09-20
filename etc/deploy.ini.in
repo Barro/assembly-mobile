@@ -50,11 +50,11 @@ filter-with = strip_headers
 [filter:strip_headers]
 paste.filter_factory = asmmobile.filters:strip_headers_filter_factory
 headers = x-powered-by
-filter-with = mobile_filter
+filter-with = strip_whitespace_filter
 
-[filter:mobile_filter]
-paste.filter_factory = asmmobile.filters:mobile_filter_factory
-filter_types = text/html application/xhtml+xml
+[filter:strip_whitespace_filter]
+paste.filter_factory = asmmobile.filters:strip_whitespace_filter_factory
+strip_types = text/html application/xhtml+xml
 filter-with = gzipper
 
 [filter:gzipper]
