@@ -49,5 +49,8 @@ shortNameNonWordCharacters = config.get("short-name-non-word-characters", "-#:,.
 # Cut postfix is added to the end of shortened names.
 shortNameCutPostfix = config.get("short-name-cut-postfix", "...")
 
-# Calendar cache times:
-calendarCacheMinutes = int(config.get("calendar-cache-minutes", "15"))
+# Time how long one event is considered to be valid.
+# This affects caching of all other pages than the overview schedule and next
+# events schedule, as those pages have data that is changed at least once
+# every minute.
+eventCacheMinutes = int(config.get("event-cache-minutes", "15"))

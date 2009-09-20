@@ -206,3 +206,7 @@ Remove one event and check that it is removed from application events:
    >>> app.updateEvents(events)
    >>> 'cave_second' in app['event']
    False
+
+Putting back the program clock not to mess with other tests:
+
+   >>> asmmobile.util.clock = oldClock

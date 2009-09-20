@@ -45,6 +45,11 @@ format = %(message)s
 use = egg:Paste#translogger
 setup_console_handler = False
 logger_name = wsgi
+filter-with = strip_headers
+
+[filter:strip_headers]
+paste.filter_factory = asmmobile.filters:strip_headers_filter_factory
+headers = x-powered-by
 filter-with = mobile_filter
 
 [filter:mobile_filter]

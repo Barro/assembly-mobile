@@ -304,7 +304,7 @@ class Favicon(MobileView):
     grok.name("favicon.ico")
     template = None
 
-    cacheTime = asmmobile.util.AddTime(datetime.timedelta(minutes=15))
+    cacheTime = util.defaultCacheTime()
 
     def render(self):
         return self.static.get("favicon.ico").GET()
@@ -318,7 +318,7 @@ class AllEvents(MobileView):
     grok.name("all-events")
     grok.context(AsmMobile)
 
-    cacheTime = asmmobile.util.AddTime(datetime.timedelta(minutes=15))
+    cacheTime = util.defaultCacheTime()
 
     def update(self):
 

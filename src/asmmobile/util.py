@@ -34,25 +34,23 @@ LOCATIONS = 'location'
 
 def _currentTimeClock(timezone):
     dateFactory = datetime.datetime(2009, 1, 1)
-    def currentTime():
-        return dateFactory.now(timezone)
+    def currentTime(tz=timezone):
+        return dateFactory.now(tz)
     return currentTime
 
 def _staticTimeClock(timeString):
     year, month, day, hour, minute = (int(x) for x in timeString.split("-"))
     dateFactory = datetime.datetime(
         year, month, day, hour, minute, tzinfo=dateutil.tz.tzlocal())
-    def staticTime():
+    def staticTime(tz=None):
         return dateFactory
     return staticTime
 
 # Choose either between real system time or static time for testing.
 if config.time == "now":
     clock = _currentTimeClock(dateutil.tz.tzlocal())
-    clockutc = _currentTimeClock(dateutil.tz.tzutc())
 else:
     clock = _staticTimeClock(config.time)
-    clockutc = _staticTimeClock(config.time)
 
 
 KEY_CHARACTERS = (string.ascii_letters.decode('ascii')
@@ -287,3 +285,7 @@ class AsIsName(object):
 
 class LongTextWidget(TextWidget):
     displayWidth = config.shortNameMaximumLength
+
+
+def defaultCacheTime():
+    return AddTime(datetime.timedelta(minutes=config.eventCacheMinutes))

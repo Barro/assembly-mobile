@@ -37,6 +37,14 @@ def mobile_filter_factory(global_conf, filter_types=''):
         return nothing_filter_factory(global_conf)
 
 
+def strip_headers_filter_factory(global_conf, headers=''):
+    headerList = [x.strip().lower() for x in headers.split(" ")]
+    headerList = filter(lambda x : len(x) > 0, headerList)
+    def header_filter(app):
+        return StripHeadersFilter(app, headers=headerList)
+    return header_filter
+
+
 class StripWhitespaceResponse(object):
 
     def __init__(self, start_response, stripTypes):
@@ -142,3 +150,19 @@ class NothingFilter(object):
 
     def __call__(self, environ, start_response):
         return self.app(environ, start_response)
+
+
+class StripHeadersFilter(object):
+    def __init__(self, app, headers):
+        self.app = app
+        self.headers = set(headers)
+
+    def __call__(self, environ, start_response):
+        def filterHeaders(status, headers, exc_info=None):
+            out_headers = []
+            for key, value in headers:
+                if key.lower() in self.headers:
+                    continue
+                out_headers.append((key, value))
+            return start_response(status, out_headers, exc_info)
+        return self.app(environ, filterHeaders)

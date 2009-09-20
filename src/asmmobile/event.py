@@ -159,7 +159,7 @@ class EventIndex(MobileView):
     grok.name("index")
     grok.context(Event)
 
-    cacheTime = util.AddTime(datetime.timedelta(minutes=15))
+    cacheTime = util.defaultCacheTime()
 
 
 class Edit(grok.EditForm):

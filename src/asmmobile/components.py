@@ -48,7 +48,7 @@ class MobileView(grok.View):
 
         self.now = util.clock()
 
-        utcnow = util.clockutc()
+        utcnow = self.now.astimezone(dateutil.tz.tzutc())
         cacheTime = self.cacheTime(utcnow)
 
         expiresAt = utcnow + cacheTime
