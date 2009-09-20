@@ -19,7 +19,7 @@
 </tal:block>
 
 <h2>Time</h2>
-<p>
+<div>
   <span tal:replace="context/start/@@dayname" />
   <span tal:replace="context/start/@@hourminute" />
 
@@ -31,13 +31,13 @@
   </tal:block>
 
   <span tal:replace="context/length/@@hourminuteparenthesis" />
-</p>
+</div>
 
 <h2>Location</h2>
-<p>
+<div>
   <a tal:attributes="href context/location/@@url"
      tal:content="context/location/name">Location</a>
-</p>
+</div>
 
 </div>
 </metal:block >
