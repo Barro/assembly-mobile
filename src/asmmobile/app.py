@@ -41,6 +41,7 @@ import asmmobile.orderby as orderby
 
 from asmmobile import AsmMobileMessageFactory as _
 
+from zope.interface.common.interfaces import IException
 from zope.publisher.interfaces import INotFound
 from zope.security.interfaces import IUnauthorized
 from zope.app.exception.systemerror import SystemErrorView
@@ -188,8 +189,7 @@ class Index(MobileView):
         self.partyHasEnded = haveEvents and allEvents[-1].end < now
         partyIsOngoing = (
             haveEvents and self.partyHasStarted and not self.partyHasEnded)
-        # Event might be starting in a while so we event can be ongoing even
-        # though no event has started yet.
+        # Some event might be starting in a while so we mark party as ongoing.
         if hasUpcomingEvents or partyIsOngoing:
             self.partyIsOngoing = True
         else:
@@ -321,7 +321,6 @@ class AllEvents(MobileView):
     cacheTime = util.defaultCacheTime()
 
     def update(self):
-
         self.events = getEventList(self,
                                    self.context.getEvents(),
                                    (lambda event: event.length),
@@ -334,12 +333,27 @@ class AllEvents(MobileView):
             self.length = datetime.timedelta(seconds=0)
 
 
+class ErrorLayout(MobileView):
+    """The view that contains the error layout."""
+    grok.context(zope.interface.Interface)
+
+    sourceUrl = config.sourceUrl
+    siteName = config.siteName
+
+
 class Error404NotFound(MobileView, SystemErrorView):
      grok.context(INotFound)
      grok.name('index.html')
 
      def update(self):
-         self.siteName = config.siteName
-         self.sourceUrl = config.sourceUrl
          self.siteUrl = self.url(grok.getSite())
          self.response.setStatus(404)
+
+
+class Error500InternalServerError(MobileView, SystemErrorView):
+     grok.context(IException)
+     grok.name('index.html')
+
+     def update(self):
+         self.siteUrl = self.url(grok.getSite())
+         self.response.setStatus(500)

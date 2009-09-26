@@ -1,0 +1,6 @@
+<metal:block metal:use-macro="context/@@errorlayout/macros/page">
+<metal:block metal:fill-slot='page-title'>Internal server error</metal:block>
+<p metal:fill-slot='body'>
+Internal server error happened. Our highly trained monkeys have been dispatched to investigate this.<!----><a tal:attributes="href view/siteUrl">Go back to the front page of <span tal:replace="context/@@layout/siteName" />.</a>
+</p>
+</metal:block>
