@@ -1,5 +1,5 @@
 <metal:block metal:use-macro="context/@@layout/macros/page">
-<metal:block metal:fill-slot='page-title'>Current events</metal:block>
+<metal:block metal:fill-slot='page-title'>Overview</metal:block>
 <div metal:fill-slot='content'>
 
 <tal:block tal:condition="view/partyIsOngoing">
