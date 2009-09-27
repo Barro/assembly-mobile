@@ -143,20 +143,7 @@ class LocationIndex(MobileView):
     title = property(getTitle)
 
     def update(self):
-        events = self.context.getEvents()
-        self.events = getEventList(self,
-                                   events,
-                                   (lambda event: event.length),
-                                   (lambda event, location, outLocations: True),
-                                   {})
-
-        self.anchorEvent = None
-        previousEvent = None
-        for event in self.events:
-            if event.start >= self.now:
-                self.anchorEvent = previousEvent
-                break
-            previousEvent = event
+        self.events = getEventList(self, self.context.getEvents())
 
 
 class Edit(grok.EditForm):

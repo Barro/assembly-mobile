@@ -177,11 +177,18 @@ class TimeDayname(grok.View):
 
 
 class DisplayEvent(object):
-    def __init__(self, view, event, timeTillChangePoint):
+    """This is a wrapper class for displayable events that holds data that is
+    known at view time.
+
+    Data known at view time includes URL to event and location view.
+    """
+    def __init__(self, view, event):
         self.id = event.__name__
         self.name = event.name
         self.shortName = event.shortName
+        # This is used by iCalendar views as absolute URL.
         self.url = "%s/%s" % (view.application_url(EVENTS), self.id)
+        # This is used by browser views as relative URL.
         self.shorturl = eventUrl(view, event)
         self.description = event.description
         self.isMajor = event.isMajor
@@ -189,8 +196,6 @@ class DisplayEvent(object):
 
         self.locationName = event.location.name
         self.locationUrl = locationUrl(view, event.location)
-
-        self.timeTillChangePoint = timeTillChangePoint
 
         self.start = event.start
         self.end = event.end
@@ -206,28 +211,8 @@ class GroupingLocation(object):
         self.nextEvents = nextEvents
 
 
-def getEventList(view,
-                 events,
-                 timeGetter,
-                 locationAdder,
-                 outLocations):
-    result = []
-    for event in events:
-        locationName = event.location.name
-        displayEvent = DisplayEvent(view,
-                                    event,
-                                    timeGetter(event))
-        result.append(displayEvent)
-        location = event.majorLocation
-        if location not in outLocations:
-            outLocations[location] = GroupingLocation(event.location.name,
-                                                      event.location.url,
-                                                      event.location.priority,
-                                                      [],
-                                                      [])
-        locationAdder(displayEvent, location, outLocations)
-    return result
-
+def getEventList(view, events):
+    return [DisplayEvent(view, event) for event in events]
 
 
 def ceilToNextMinute(self, utcnow):

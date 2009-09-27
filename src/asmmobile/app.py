@@ -146,22 +146,13 @@ class Index(MobileView):
     grok.context(AsmMobile)
 
     def _getCurrentNextEvents(self, now):
-        locations = {}
-
         allEvents = self.context.getEvents(
             selector.NotEndedEvents().setNow(now))
 
         currentEvents = filter(selector.CurrentEvents().setNow(now), allEvents)
         currentEvents.sort(currentSort)
 
-        self.currentEvents = getEventList(
-            self,
-            currentEvents,
-            (lambda event: event.end - now),
-            (lambda event, location, outLocations:
-                 outLocations[location].currentEvents.append(event)),
-            locations
-            )
+        self.currentEvents = getEventList(self, currentEvents)
 
         for nextSelector in nextSelectors:
             nextSelector.reset(now)
@@ -169,16 +160,7 @@ class Index(MobileView):
             selector.AndSelector(nextSelectors), allEvents)
         nextEvents.sort(nextSort)
 
-        self.nextEvents = getEventList(
-            self,
-            nextEvents,
-            (lambda event: event.start - now),
-            (lambda event, location, outLocations:
-                 outLocations[location].nextEvents.append(event)),
-            locations
-            )
-
-        self.LOCATIONS = locations.values()
+        self.nextEvents = getEventList(self, nextEvents)
 
 
     def _getPartyStatus(self, now, nextEvents):
@@ -264,11 +246,7 @@ class NextEvents(MobileView):
         else:
             self.showNext = False
 
-        self.events = getEventList(self,
-                                   events,
-                                   (lambda event: event.length),
-                                   (lambda event, location, outLocations: True),
-                                   {})
+        self.events = getEventList(self, events)
         self.anchorEvent = None
         previousEvent = None
         for event in self.events:
@@ -321,11 +299,7 @@ class AllEvents(MobileView):
     cacheTime = util.defaultCacheTime()
 
     def update(self):
-        self.events = getEventList(self,
-                                   self.context.getEvents(),
-                                   (lambda event: event.length),
-                                   (lambda event, location, outLocations: True),
-                                   {})
+        self.events = getEventList(self, self.context.getEvents())
 
         if len(self.events):
             self.length = self.events[-1].end - self.events[0].start
