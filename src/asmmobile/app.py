@@ -315,6 +315,16 @@ class ErrorLayout(MobileView):
     siteName = config.siteName
 
 
+class Error401Unauthorized(MobileView, SystemErrorView):
+     grok.context(IUnauthorized)
+     grok.name('index.html')
+
+     def update(self):
+         self.siteUrl = self.url(grok.getSite())
+         self.response.setStatus(401)
+         self.response.setHeader("WWW-Authenticate", 'basic realm="Zope"')
+
+
 class Error404NotFound(MobileView, SystemErrorView):
      grok.context(INotFound)
      grok.name('index.html')

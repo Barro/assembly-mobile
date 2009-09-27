@@ -45,23 +45,9 @@ format = %(message)s
 use = egg:Paste#translogger
 setup_console_handler = False
 logger_name = wsgi
-filter-with = strip_headers
 
-[filter:strip_headers]
-paste.filter_factory = asmmobile.filters:strip_headers_filter_factory
-headers = x-powered-by
-filter-with = strip_whitespace_filter
-
-[filter:strip_whitespace_filter]
-paste.filter_factory = asmmobile.filters:strip_whitespace_filter_factory
-strip_types = text/html application/xhtml+xml
-filter-with = gzipper
-
-[filter:gzipper]
-paste.filter_factory=zif.gzipper.gzipper:filter_factory
-compress_level=6
-nocompress=jp gz zip png
-tempfile=1048576
+# This includes definitions from base.cfg
+${asmmobile-cfg:paste-deploy-ini}
 
 [app:main]
 use = egg:AsmMobile
@@ -76,8 +62,8 @@ filter-with = translogger
 
 [server:main]
 use = egg:Paste#http
-host = 127.0.0.1
-port = 8080
+host = ${deploy_ini:server-host}
+port = ${deploy_ini:server-port}
 
 [DEFAULT]
 # set the name of the zope.conf file

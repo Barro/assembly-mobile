@@ -1,0 +1,25 @@
+[buildout]
+extends = versions.cfg
+
+[asmmobile-cfg]
+zope-conf =
+  # Comment this line to disable developer mode.  This should be done in
+  # production
+  devmode on
+zope-conf-product-config =
+  mobile-mode false
+# This is inserted immediately after translogger filter in etc/deploy.ini.in.
+paste-deploy-ini =
+site-zcml =
+  <!-- Password is admin/admin -->
+  <principal id="zope.manager"
+             title="Manager"
+             login="admin"
+             password_manager="SHA1"
+             password="b32cb717d033e22ae348aeb5660fc2140aec35850c4da997"
+             />
+  <role id="zope.Manager" title="Site Manager" />
+  <role id="zope.Member" title="Site Member" />
+  <grantAll role="zope.Manager" />
+  <grant role="zope.Manager"
+         principal="zope.manager" />

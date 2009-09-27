@@ -2,7 +2,7 @@
 # man page for details on VCL syntax and semantics.
 
 backend backend_0 {
-        .host = "127.0.0.1";
+        .host = "localhost.localdomain";
         .port = "8080";
         .first_byte_timeout = 300s;
 

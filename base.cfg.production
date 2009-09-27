@@ -1,0 +1,31 @@
+[buildout]
+extends = versions.cfg
+
+[asmmobile-cfg]
+zope-conf =
+  # Comment this line to disable developer mode.  This should be done in
+  # production
+  devmode off
+zope-conf-product-config =
+  mobile-mode true
+# This is inserted immediately after translogger filter in etc/deploy.ini.in.
+paste-deploy-ini =
+  filter-with = strip_headers
+
+  [filter:strip_headers]
+  paste.filter_factory = asmmobile.filters:strip_headers_filter_factory
+  headers = x-powered-by
+  filter-with = strip_whitespace_filter
+
+  [filter:strip_whitespace_filter]
+  paste.filter_factory = asmmobile.filters:strip_whitespace_filter_factory
+  strip_types = text/html application/xhtml+xml
+  filter-with = gzipper
+
+  [filter:gzipper]
+  paste.filter_factory=zif.gzipper.gzipper:filter_factory
+  compress_level=6
+  nocompress=jp gz zip png
+  tempfile=1048576
+# No admin/admin user in production.
+site-zcml =
