@@ -1,3 +1,6 @@
+Installation
+------------
+
 This needs original Python 2.4 or 2.5, easy install from setuptools
 and and zc.buildout.
 
@@ -6,15 +9,26 @@ not work as Zope needs Python not to be broken! And system's default
 Python installations usually are.
 
 To get stand-alone installation of this application that includes
-Python interpreter, run following commands under this directory:
+Python interpreter, run following commands under this directory::
 
-./setup.sh
+  ./setup.sh
 
 This will install all dependencies under python/ directory.
 
-Run this program by running:
-bin/zeoserver start
-bin/asmmobile-ctl fg
+Run this program by running::
+
+  bin/zeoserver start
+  bin/asmmobile-ctl fg
 
 And by default this will listen to http://localhost:8080/ with admin
-user/password being admin/admin.
+user/password being admin/admin if you choose the "devel" base config.
+
+Server settings
+---------------
+
+General server port and address changes can be done in buildout.cfg file in addition to base configuration file that is copied as base.cfg by setup.sh. Base configuration file base.cfg has two ready-made variations that can be chosen at setup time: base.cfg.devel and base.cfg.production. One of these file is supposed to be copied to base.cfg depending on your usage scenario.
+
+File base.cfg.devel includes settings that are useful when developing your own layouts and styles. Namely it disables white space removal and CSS identifier shortening that make pages harder for people to read. This also enables the admin user if you need to use the Zope @@inspect.html and ++etc++site views or want to create applications through Grok's user interface. Admin user also has possibility to modify location and event objects through edit view.
+
+Production configuration file base.cfg.production enables all features that reduce the transferred page data and removes admin user so that server and page data will not be accidentally modified.
+
