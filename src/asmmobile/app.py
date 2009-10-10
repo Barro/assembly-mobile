@@ -310,14 +310,14 @@ class AllEvents(MobileView):
         stringValue = u""
         if self.length.days != 0:
             if self.length.days == 1:
-                stringValue += u"%d day "
+                stringValue += u"%d day " % self.length.days
             else:
-                stringValue += u"%d days "
+                stringValue += u"%d days " % self.length.days
         hours = self.length.seconds/3600
         if hours == 1:
-            stringValue += u"%d hour"
+            stringValue += u"%d hour" % hours
         else:
-            stringValue += u"%d hours"
+            stringValue += u"%d hours" % hours
         return stringValue
 
 
