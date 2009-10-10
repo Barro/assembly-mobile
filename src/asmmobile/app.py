@@ -306,6 +306,20 @@ class AllEvents(MobileView):
         else:
             self.length = datetime.timedelta(seconds=0)
 
+    def lengthString(self):
+        stringValue = u""
+        if self.length.days != 0:
+            if self.length.days == 1:
+                stringValue += u"%d day "
+            else:
+                stringValue += u"%d days "
+        hours = self.length.seconds/3600
+        if hours == 1:
+            stringValue += u"%d hour"
+        else:
+            stringValue += u"%d hours"
+        return stringValue
+
 
 class ErrorLayout(MobileView):
     """The view that contains the error layout."""
