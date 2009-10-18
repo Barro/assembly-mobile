@@ -54,6 +54,8 @@ def updateSchedule(app, config):
 
     zope.app.component.hooks.setSite(app)
     for name,url in locations.items():
+        if name is None:
+            continue
         priority = config.PRIORITIES.get(name, None)
         app.addLocation(name, url, priority, None, None)
 

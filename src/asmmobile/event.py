@@ -140,6 +140,8 @@ class Event(grok.Model):
 
     @property
     def majorLocation(self):
+        print self.name
+        print self.location
         return self.location.majorLocation
 
     @property

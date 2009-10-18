@@ -14,9 +14,7 @@
     <span tal:define="timeRemaining python:event.end - view.now"
           tal:replace="timeRemaining/@@hourminute">
       1 h 5 min</span> left - <!---->
-    <a tal:attributes="href event/locationUrl;
-                       class shorten:location"
-       tal:content="event/locationName">Location</a>
+    <a tal:replace="structure event/location/@@link" />
   </span>
 </div>
 
@@ -34,9 +32,7 @@ No new scheduled events are starting in next two hours. See <!----> <a tal:attri
     in <span tal:define="timeTillStart python:event.start - view.now"
              tal:replace="timeTillStart/@@hourminute" /> -
     <!---->
-    <a tal:attributes="href event/locationUrl;
-                       class shorten:location"
-       tal:content="event/locationName">Location</a>
+    <a tal:replace="structure event/location/@@link" />
   </span>
 </div>
 </tal:block>

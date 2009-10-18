@@ -37,9 +37,7 @@
 
     <span tal:replace="structure event/@@scheduledevent" />
     <!---->
-    <a tal:content="event/locationName"
-       tal:attributes="href event/locationUrl;
-                       class shorten:location">Location name</a>
+    <a tal:replace="structure event/location/@@link" />
     <span tal:condition="python: event.start <= view.now and view.now < event.end"
           tal:replace="structure string:</div>" />
 

@@ -28,10 +28,7 @@
 
     <span tal:replace="structure event/@@scheduledevent" />
     <!---->
-    <a tal:content="event/locationName"
-       tal:attributes="href event/locationUrl;
-                       class shorten:location">Location name</a>
-
+    <a tal:replace="structure event/location/@@link" />
   </tal:block>
 
 </div>

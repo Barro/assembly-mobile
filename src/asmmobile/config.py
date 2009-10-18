@@ -86,6 +86,11 @@ sortNextEvents = stringValue("sort-next-events", "start-time")
 # of those.
 selectNextEvents = stringValue("select-next-events", "not-hidden&one-per-location")
 
+# Default priority for locations.
+defaultLocationPriority = integerValue("default-location-priority", 0)
+
+# Default time objects are hidden before they are shown in "next events".
+defaultHideTime = integerValue("default-hide-time", 7200)
 
 ########################################################################
 # Importing options

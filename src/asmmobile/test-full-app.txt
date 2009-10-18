@@ -83,6 +83,13 @@ Add some events to locations:
    ...         'end': createTime("2009-01-01-12-00"),
    ...         'location': "home",
    ...         },
+   ...     'none_fourth': {
+   ...         'name': 'NONEFOURTH',
+   ...         'url': 'http://none/FOURTH',
+   ...         'start': createTime("2009-01-01-09-00"),
+   ...         'end': createTime("2009-01-01-11-00"),
+   ...         'location': None,
+   ...         }
    ...     }
    >>> app.updateEvents(events)
 
@@ -190,7 +197,7 @@ Calendar functions:
 Check that different calendar outputs have correct events:
 
    >>> getCalendarEvents(browser, 'http://localhost/app/all-events.vcs')
-   [u'cave_first@localhost', u'cave_second@localhost', u'home_third@localhost']
+   [u'cave_first@localhost', u'cave_second@localhost', u'home_third@localhost', u'none_fourth@localhost']
    >>> getCalendarEvents(browser, 'http://localhost/app/location/cave/cave.vcs')
    [u'cave_first@localhost', u'cave_second@localhost']
    >>> getCalendarEvents(browser, 'http://localhost/app/location/home/home.vcs')

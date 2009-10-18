@@ -194,8 +194,7 @@ class DisplayEvent(object):
         self.isMajor = event.isMajor
         self.categories = event.categories
 
-        self.locationName = event.location.name
-        self.locationUrl = locationUrl(view, event.location)
+        self.location = event.location
 
         self.start = event.start
         self.end = event.end

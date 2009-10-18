@@ -25,6 +25,7 @@ import grok
 
 import asmmobile.util as util
 import asmmobile.interfaces as interfaces
+import asmmobile.config as config
 from asmmobile.components import MobileView
 from asmmobile.util import getEventList
 
@@ -129,6 +130,28 @@ class Location(grok.Model):
         return self.getEvents()
 
 
+class NoneLocation_cls(object):
+    """This object is a placeholder location in events that do not happen
+    anywhere but are just informative events."""
+
+    grok.implements(interfaces.ILocation)
+
+    name = u''
+    url = None
+    description = None
+
+    priority = config.defaultLocationPriority
+    hideUntil = config.defaultHideTime
+
+    def __init__(self):
+        self.majorLocation = self
+
+    def __call__(self):
+        return self
+
+
+NoneLocation = NoneLocation_cls()
+
 class LocationIndex(MobileView):
     grok.name("index")
     grok.context(Location)
@@ -162,3 +185,27 @@ class ViewUrl(grok.View):
     def render(self):
         return "%s/%s" % (util.applicationRelativeUrl(self, 'location'),
                           self.context.__name__)
+
+class NoneUrl(grok.View):
+    grok.name("url")
+    grok.context(NoneLocation_cls)
+
+    def render(self):
+        return None
+
+
+class ViewLink(grok.View):
+    grok.name("link")
+    grok.context(Location)
+
+    def relativeUrl(self):
+        return "%s/%s" % (util.applicationRelativeUrl(self, 'location'),
+                          self.context.__name__)
+
+
+class NoneLink(grok.View):
+    grok.name("link")
+    grok.context(NoneLocation_cls)
+
+    def render(self):
+        return ""
