@@ -46,6 +46,18 @@ from zope.publisher.interfaces import INotFound
 from zope.security.interfaces import IUnauthorized
 from zope.app.exception.systemerror import SystemErrorView
 
+
+# Monkey patch send_header() method not to send "Server" header.
+# This saves 42 bytes when sending responses.
+import paste.httpserver
+old_send_header = paste.httpserver.WSGIHandler.send_header
+def new_send_header(self, key, value):
+    if key.lower() == "server":
+        return
+    return old_send_header(self, key, value)
+paste.httpserver.WSGIHandler.send_header = new_send_header
+
+
 class MobileTemplateFactory(grok.GlobalUtility):
     grok.implements(grokcore.view.interfaces.ITemplateFileFactory)
     grok.name('ptm')
