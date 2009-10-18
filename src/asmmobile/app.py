@@ -113,7 +113,7 @@ class AsmMobile(grok.Application, grok.Container):
             if values['location'] is not None:
                 location = self.LOCATIONS.getLocation(values['location'])
             else:
-                location = asmmobile.location.NoneLocation()
+                location = None
             eventValues['location'] = location
             eventData[eventId] = eventValues
 

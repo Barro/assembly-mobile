@@ -24,7 +24,8 @@ import dateutil.tz
 import asmmobile.interfaces as interfaces
 from asmmobile.components import MobileView
 import asmmobile.util as util
-import config
+import asmmobile.config as config
+import asmmobile.location
 
 
 def _sortByStartTime(first, second):
@@ -68,7 +69,7 @@ class EventContainer(grok.OrderedContainer):
                 name=eventValues['name'],
                 start=eventValues['start'].astimezone(dateutil.tz.tzlocal()),
                 end=eventValues['end'].astimezone(dateutil.tz.tzlocal()),
-                location=eventValues['location'],
+                location=eventValues.get('location', None),
                 url=eventValues.get('url', None),
                 categories=eventValues.get('categories', []),
                 description=eventValues.get('description', None),
@@ -83,7 +84,7 @@ class EventContainer(grok.OrderedContainer):
             event.name = eventValues['name']
             event.start = eventValues['start'].astimezone(dateutil.tz.tzlocal())
             event.end = eventValues['end'].astimezone(dateutil.tz.tzlocal())
-            event.location = eventValues['location']
+            event.location = eventValues.get('location', None)
             event.url = eventValues.get('url', None)
             event.categories = eventValues.get('categories', [])
             event.description = eventValues.get('description', None)
@@ -128,7 +129,7 @@ class Event(grok.Model):
         self.name = name
         self.start = start
         self.end = end
-        self.location = location
+        self._location = location
         self.url = url
         self.description = description
         self.categories = categories
@@ -137,6 +138,16 @@ class Event(grok.Model):
             self.shortName = name
         else:
             self.shortName = shortName
+
+    def getLocation(self):
+        if self._location is None:
+            return asmmobile.location.NoneLocation
+        return self._location
+
+    def setLocation(self, location):
+        self._location = location
+
+    location = property(getLocation, setLocation)
 
     @property
     def majorLocation(self):
