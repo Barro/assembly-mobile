@@ -33,11 +33,13 @@
   <span tal:replace="context/length/@@hourminuteparenthesis" />
 </div>
 
-<h2>Location</h2>
-<div>
-  <a tal:attributes="href context/location/@@url"
-     tal:content="context/location/name">Location</a>
-</div>
+<tal:block tal:condition="context/location/name">
+  <h2>Location</h2>
+  <div>
+    <a tal:attributes="href context/location/@@url"
+       tal:content="context/location/name">Location</a>
+  </div>
+</tal:block>
 
 </div>
 </metal:block >

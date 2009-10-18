@@ -128,6 +128,15 @@ Check that description is visible:
    >>> "SECOND_DESCRIPTION" in browser.contents
    True
 
+Check that location is not visible when there is none:
+
+   >>> browser.open('http://localhost/app/event/none_fourth')
+   >>> assertXml(browser)
+   >>> "Location" in browser.contents
+   False
+   >>> "location" in browser.contents
+   False
+
 Check that all events are visible in all-events page:
 
    >>> browser.open('http://localhost/app/all-events')
@@ -137,6 +146,8 @@ Check that all events are visible in all-events page:
    >>> "EVSECOND" in browser.contents
    True
    >>> "EVTHIRD" in browser.contents
+   True
+   >>> "NONEFOURTH" in browser.contents
    True
 
 Check that all events are visible in next-events page:
