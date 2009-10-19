@@ -13,8 +13,10 @@
   <span>
     <span tal:define="timeRemaining python:event.end - view.now"
           tal:replace="timeRemaining/@@hourminute">
-      1 h 5 min</span> left - <!---->
-    <a tal:replace="structure event/location/@@link" />
+      1 h 5 min</span> left
+    <tal:block tal:condition="event/location/name">
+      - <!----> <a tal:replace="structure event/location/@@link" />
+    </tal:block>
   </span>
 </div>
 
@@ -30,9 +32,10 @@ No new scheduled events are starting in next two hours. See <!----> <a tal:attri
   </h3>
   <span>
     in <span tal:define="timeTillStart python:event.start - view.now"
-             tal:replace="timeTillStart/@@hourminute" /> -
-    <!---->
-    <a tal:replace="structure event/location/@@link" />
+             tal:replace="timeTillStart/@@hourminute" />
+    <tal:block tal:condition="event/location/name">
+      - <!----> <a tal:replace="structure event/location/@@link" />
+    </tal:block>
   </span>
 </div>
 </tal:block>
