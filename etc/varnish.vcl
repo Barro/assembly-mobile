@@ -2,33 +2,26 @@
 # man page for details on VCL syntax and semantics.
 
 backend backend_0 {
-        .host = "localhost.localdomain";
-        .port = "8080";
-        .first_byte_timeout = 300s;
+	.host = "localhost";
+	.port = "8080";
+	.first_byte_timeout = 20s;
 
-        .probe = {
-                .url = "/probe";
-                .timeout = 100 ms;
-                .interval = 1s;
-                .window = 4;
-                .threshold = 3;
-        }
-}
-
-
-acl purge {
-    "localhost";
+	.probe = {
+		.url = "/probe";
+		.timeout = 400 ms;
+		.interval = 2s;
+		.window = 4;
+		.threshold = 3;
+	}
 }
 
 sub vcl_recv {
-        set req.grace = 30s;
-        set req.backend = backend_0;
-	
-	if (req.request == "PURGE") {
-		if (!client.ip ~ purge) {
-			error 405 "Not allowed.";
-		}
-		lookup;
+	set req.backend = backend_0;
+
+	if (req.backend.healthy) {
+		set req.grace = 30s;
+	} else {
+		set req.grace = 15m;
 	}
 
 	if (req.request != "GET" &&
@@ -47,19 +40,8 @@ sub vcl_recv {
 		pass;
 	}
 
-	if (req.http.If-None-Match) {
-		pass;
-	}
-
-	if (req.url ~ "createObject") {
-		pass;
-	}
-
 	if (req.http.Accept-Encoding) {
-		if (req.url ~ "\.(jpg|png|gif|gz|tgz|bz2|tbz|mp3|ogg)$") {
-			# No point in compressing these
-			remove req.http.Accept-Encoding;
-		} elsif (req.http.Accept-Encoding ~ "gzip") {
+		if (req.http.Accept-Encoding ~ "gzip") {
 			set req.http.Accept-Encoding = "gzip";
 		} elsif (req.http.Accept-Encoding ~ "deflate") {
 			set req.http.Accept-Encoding = "deflate";
@@ -78,25 +60,13 @@ sub vcl_pipe {
 }
 
 sub vcl_hit {
-	if (req.request == "PURGE") {
-		purge_url(req.url);
-		error 200 "Purged";
-	}
-
 	if (!obj.cacheable) {
 		pass;
 	}
 }
 
-sub vcl_miss {
-	if (req.request == "PURGE") {
-		error 404 "Not in cache";
-	}
-
-}
-
 sub vcl_fetch {
-        set obj.grace = 30s;
+	set obj.grace = 30s;
 	if (!obj.cacheable) {
 		pass;
 	}
@@ -109,6 +79,16 @@ sub vcl_fetch {
 	if (req.http.Authorization && !obj.http.Cache-Control ~ "public") {
 		pass;
 	}
-	
 }
 
+sub vcl_deliver {
+	# Remove some headers that are not necessary.
+	remove resp.http.X-Varnish;
+	remove resp.http.Via;
+
+	# Remove caching headers as they take quite a many bytes.
+	remove resp.http.Cache-Control;
+	remove resp.http.Expires;
+	remove resp.http.Vary;
+	remove resp.http.Age;
+}
