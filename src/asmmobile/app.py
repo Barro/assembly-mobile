@@ -199,7 +199,7 @@ class Index(MobileView):
 
 
 class NextEvents(MobileView):
-    grok.name("next-events")
+    grok.name("next")
     grok.context(AsmMobile)
 
     startDifference = datetime.timedelta(hours=config.nextEventsEndHours)
@@ -308,7 +308,7 @@ class ScheduledEvent(grok.View):
 
 
 class AllEvents(MobileView):
-    grok.name("all-events")
+    grok.name("all")
     grok.context(AsmMobile)
 
     cacheTime = util.defaultCacheTime()

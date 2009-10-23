@@ -104,7 +104,7 @@ class EventContainerIndex(grok.View):
     grok.name("index")
 
     def update(self):
-        self.targetUrl = self.url(self.context.__parent__, "all-events")
+        self.targetUrl = self.url(self.context.__parent__, "all")
         self.redirect(self.targetUrl)
 
     def render(self):

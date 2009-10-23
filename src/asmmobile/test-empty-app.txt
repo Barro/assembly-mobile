@@ -21,15 +21,15 @@ Open all pages and verify that no errors are emitted:
    >>> browser.headers.get('Status').upper()
    '200 OK'
    >>> assertXml(browser)
-   >>> browser.open('http://localhost/app/all-events')
+   >>> browser.open('http://localhost/app/all')
    >>> browser.headers.get('Status').upper()
    '200 OK'
    >>> assertXml(browser)
-   >>> browser.open('http://localhost/app/next-events')
+   >>> browser.open('http://localhost/app/next')
    >>> browser.headers.get('Status').upper()
    '200 OK'
    >>> assertXml(browser)
-   >>> browser.open('http://localhost/app/next-events?s=2009-01-01-01')
+   >>> browser.open('http://localhost/app/next?s=2009-01-01-01')
    >>> browser.headers.get('Status').upper()
    '200 OK'
    >>> assertXml(browser)
@@ -38,8 +38,8 @@ Open all pages and verify that no errors are emitted:
    '200 OK'
    >>> assertXml(browser)
 
-Event should redirect to all-events:
+Event should redirect to all:
 
    >>> browser.open('http://localhost/app/event')
    >>> browser.url
-   'http://localhost/app/all-events'
+   'http://localhost/app/all'

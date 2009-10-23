@@ -23,7 +23,7 @@
 <h2>Next</h2>
 <div tal:condition="python:len(view.nextEvents)==0"
      tal:attributes="class shorten:event">
-No new scheduled events are starting in next two hours. See <!----> <a tal:attributes="href python:view.urlR('next-events')+'#now'">next events</a> <!----> for further events.</div>
+No new scheduled events are starting in next two hours. See <!----> <a tal:attributes="href python:view.urlR('next')+'#now'">next events</a> <!----> for further events.</div>
 <div tal:attributes="class shorten:event"
      tal:repeat="event view/nextEvents">
   <h3>
@@ -41,7 +41,7 @@ No new scheduled events are starting in next two hours. See <!----> <a tal:attri
 </tal:block>
 
 <p tal:condition="not:view/partyHasStarted">
-<span tal:replace="context/partyName" /> has not started yet. See <!----> <a tal:attributes="href python:view.urlR('all-events')">full party schedule</a> <!----> for the whole program.
+<span tal:replace="context/partyName" /> has not started yet. See <!----> <a tal:attributes="href python:view.urlR('all')">full party schedule</a> <!----> for the whole program.
 </p>
 <p tal:condition="view/partyHasEnded">
 <span tal:replace="context/partyName" /> has ended. Welcome again next year!
