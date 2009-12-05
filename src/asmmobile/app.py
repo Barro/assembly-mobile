@@ -24,6 +24,7 @@ import grokcore.view.components
 import grokcore.view.interfaces
 
 import zope.interface
+from zope.i18n import translate
 import datetime
 import dateutil.tz
 
@@ -317,23 +318,30 @@ class AllEvents(MobileView):
         self.events = getEventList(self, self.context.getEvents())
 
         if len(self.events):
-            self.length = self.events[-1].end - self.events[0].start
+            self.startTime = self.events[0].start
+            self.endTime = self.events[-1].end
+            self.length = self.endTime - self.startTime
         else:
             self.length = datetime.timedelta(seconds=0)
 
     def lengthString(self):
-        stringValue = u""
+        stringParts = []
         if self.length.days != 0:
             if self.length.days == 1:
-                stringValue += u"%d day " % self.length.days
+                lengthDays = _(u"%d day")
             else:
-                stringValue += u"%d days " % self.length.days
+                lengthDays = _(u"%d days")
+            stringParts.append(translate(
+                    lengthDays, context=self.request) % self.length.days)
+
         hours = self.length.seconds/3600
         if hours == 1:
-            stringValue += u"%d hour" % hours
+            lengthHours = _(u"%d hour")
         else:
-            stringValue += u"%d hours" % hours
-        return stringValue
+            lengthHours = _(u"%d hours")
+        stringParts.append(translate(lengthHours, context=self.request) % hours)
+
+        return u" ".join(stringParts)
 
 
 class ErrorLayout(MobileView):

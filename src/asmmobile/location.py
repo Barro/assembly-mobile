@@ -141,7 +141,7 @@ class NoneLocation_cls(object):
     description = None
 
     priority = config.defaultLocationPriority
-    hideUntil = config.defaultHideTime
+    hideUntil = datetime.timedelta(seconds=config.defaultHideTime)
 
     def __init__(self):
         self.majorLocation = self

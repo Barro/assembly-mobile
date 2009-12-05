@@ -21,4 +21,4 @@
 
 from zope.i18nmessageid import MessageFactory
 
-AsmMobileMessageFactory = MessageFactory('AsmMobile')
+AsmMobileMessageFactory = MessageFactory('asmmobile')

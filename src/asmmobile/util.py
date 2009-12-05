@@ -24,8 +24,10 @@ import grok
 import string
 import dateutil.tz
 
+from zope.i18n import translate
 from zope.app.form.browser.textwidgets import TextWidget
 
+from asmmobile import AsmMobileMessageFactory as _
 import asmmobile.interfaces as interfaces
 import asmmobile.config as config
 
@@ -141,23 +143,31 @@ class IntervalHourMinute(grok.View):
         intervalMinutes = (interval.days*86400 + interval.seconds)/60
         hours = intervalMinutes/60
         minutes = intervalMinutes%60
-        timeList = []
+
+        strHours = u""
         if hours > 0:
-            timeList.append(u"%d h" % hours)
+            strHours = translate(_(u"%d h"), context=self.request) % hours
+
+        strMinutes = u""
         if minutes > 0:
-            timeList.append(u"%d min" % minutes)
-        return u" ".join(timeList)
+            strMinutes = translate(_(u"%d min"), context=self.request) % minutes
+
+        hourMinutes = translate(_(u"%(hours)s %(minutes)s"), context=self.request)
+        result = hourMinutes % {'hours': strHours, 'minutes': strMinutes }
+        return result.strip()
 
 
 class IntervalHourMinuteParenthesis(IntervalHourMinute):
     grok.name("hourminuteparenthesis")
 
     def render(self):
-        result = super(IntervalHourMinuteParenthesis, self).render()
-        if len(result):
-            return u"(%s)" % result
+        interval = super(IntervalHourMinuteParenthesis, self).render()
+        if len(interval):
+            return translate(
+                _(u"(interval_parenthesis)", u"(%s)"),
+                context=self.request) % interval
         else:
-            return result
+            return interval
 
 
 class TimeHourMinute(grok.View):
@@ -165,7 +175,9 @@ class TimeHourMinute(grok.View):
     grok.name("hourminute")
 
     def render(self):
-        return self.context.strftime("%H:%M")
+        hourMinuteStr = translate(_(u"(hour_minute)", u"%H:%M"),
+                                  context=self.request)
+        return self.context.strftime(hourMinuteStr.encode('utf8'))
 
 
 class TimeDayname(grok.View):
@@ -173,7 +185,20 @@ class TimeDayname(grok.View):
     grok.name("dayname")
 
     def render(self):
-        return self.context.strftime("%A")
+        formatter = self.request.locale.dates.getFormatter("dateTime")
+        formatter.setPattern("EEEE")
+        return formatter.format(self.context).capitalize()
+
+
+class TimeFullDate(grok.View):
+    grok.context(datetime.datetime)
+    grok.name("fulldate")
+
+    def render(self):
+        formatter = self.request.locale.dates.getFormatter("dateTime")
+        formatter.setPattern(
+            translate(_(u"EEEE yyyy-MM-dd HH:mm"), context=self.request))
+        return formatter.format(self.context)
 
 
 class DisplayEvent(object):

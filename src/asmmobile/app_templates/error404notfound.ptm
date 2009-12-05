@@ -1,6 +1,8 @@
 <metal:block metal:use-macro="context/@@errorlayout/macros/page">
-<metal:block metal:fill-slot='page-title'>Page not found</metal:block>
+<metal:block metal:fill-slot='page-title' i18n:translate="">Page not found</metal:block>
 <p metal:fill-slot='body'>
-The page you requested does not exist.<!----> <a tal:attributes="href view/siteUrl">Go back to the front page of <span tal:replace="context/@@layout/siteName" />.</a>
+<tal:block i18n:translate="">The page you requested does not exist.</tal:block>
+<!---->
+<a tal:attributes="href view/siteUrl" i18n:translate="">Go back to the front page of <span i18n:name="site_name" tal:replace="context/@@layout/siteName" />.</a>
 </p>
 </metal:block>

@@ -1,50 +1,56 @@
 <metal:block metal:use-macro="context/@@layout/macros/page">
-<metal:block metal:fill-slot='page-title'>Overview</metal:block>
+<metal:block metal:fill-slot='page-title' i18n:translate="">Overview</metal:block>
 <div metal:fill-slot='content'>
 
 <tal:block tal:condition="view/partyIsOngoing">
-<h2>Now</h2>
+<h2 i18n:translate="">Now</h2>
 <div tal:attributes="class shorten:event"
      tal:repeat="event view/currentEvents">
   <h3>
     <a tal:attributes="href event/shorturl"
        tal:content="event/shortName">Event</a>
   </h3>
-  <span>
-    <span tal:define="timeRemaining python:event.end - view.now"
+  <span i18n:translate="">
+    <span i18n:name="time_left"
+          tal:define="timeRemaining python:event.end - view.now"
           tal:replace="timeRemaining/@@hourminute">
       1 h 5 min</span> left
-    <tal:block tal:condition="event/location/name">
+    <tal:block i18n:name="location_name"
+               tal:condition="event/location/name">
       - <!----> <a tal:replace="structure event/location/@@link" />
     </tal:block>
   </span>
 </div>
 
-<h2>Next</h2>
+<h2 i18n:translate="">Next</h2>
 <div tal:condition="python:len(view.nextEvents)==0"
-     tal:attributes="class shorten:event">
-No new scheduled events are starting in next two hours. See <!----> <a tal:attributes="href python:view.urlR('next')+'#now'">next events</a> <!----> for further events.</div>
+     tal:attributes="class shorten:event"
+     i18n:translate="">
+No new scheduled events are starting in next two hours. See <!----> <a i18n:name="link_next_events" tal:attributes="href python:view.urlR('next')+'#now'">next events</a> <!----> for further events.</div>
 <div tal:attributes="class shorten:event"
      tal:repeat="event view/nextEvents">
   <h3>
     <a tal:attributes="href event/shorturl"
        tal:content="event/shortName">Event</a>
   </h3>
-  <span>
-    in <span tal:define="timeTillStart python:event.start - view.now"
+  <span i18n:translate="">
+    in <span i18n:name="time_till_start"
+             tal:define="timeTillStart python:event.start - view.now"
              tal:replace="timeTillStart/@@hourminute" />
-    <tal:block tal:condition="event/location/name">
+    <tal:block i18n:name="location_name" tal:condition="event/location/name">
       - <!----> <a tal:replace="structure event/location/@@link" />
     </tal:block>
   </span>
 </div>
 </tal:block>
 
-<p tal:condition="not:view/partyHasStarted">
-<span tal:replace="context/partyName" /> has not started yet. See <!----> <a tal:attributes="href python:view.urlR('all')">full party schedule</a> <!----> for the whole program.
+<p tal:condition="not:view/partyHasStarted"
+   i18n:translate="">
+<span i18n:name="party_name" tal:replace="context/partyName" /> has not started yet. See <!----> <a i18n:name="link_all_events" tal:attributes="href python:view.urlR('all')" i18n:translate="">full party schedule</a> <!----> for the whole program.
 </p>
-<p tal:condition="view/partyHasEnded">
-<span tal:replace="context/partyName" /> has ended. Welcome again next year!
+<p tal:condition="view/partyHasEnded"
+   i18n:translate="">
+<span i18n:name="party_name" tal:replace="context/partyName" /> has ended. Welcome again next year!
 </p>
 </div>
 </metal:block >

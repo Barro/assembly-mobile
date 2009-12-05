@@ -6,15 +6,15 @@
 
 <h1 tal:content="context/name">Location name</h1>
 <div tal:attributes="class shorten:links">
-  <a tal:attributes="href python:view.urlR('%s.vcs' % context.__name__)">vCal (events)</a>
+  <a tal:attributes="href python:view.urlR('%s.vcs' % context.__name__)" i18n:translate="">vCal (events)</a>
   <tal:block tal:condition="context/url">
     <!---->&#8226;<!---->
-    <a tal:attributes="href context/url">View on external page</a>
+    <a tal:attributes="href context/url" i18n:translate="">View on external page</a>
   </tal:block>
 </div>
 
 <tal:block tal:condition="context/description">
-  <h2>Description</h2>
+  <h2 i18n:translate="">Description</h2>
   <p tal:content="context/description">description</p>
 </tal:block>
 

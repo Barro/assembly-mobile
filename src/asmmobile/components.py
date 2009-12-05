@@ -23,6 +23,7 @@ import dateutil.tz
 
 import zope.app.pagetemplate.engine
 from zope.tales.interfaces import ITALESExpression
+import zope.tales.expressions
 from zope.interface import Interface
 
 from grokcore.view.components import PageTemplate
@@ -38,14 +39,9 @@ class MobileView(grok.View):
     cacheTime = util.ceilToNextMinute
 
     charset = "UTF-8"
-    contentType = "application/xhtml+xml; charset=%s" % charset
+    contentType = "application/xhtml+xml;charset=%s" % charset
 
-    def __call__(self, *args, **kw):
-        self.request.response.setHeader(
-            "Content-Type",
-            self.contentType
-            )
-
+    def _sendCachingHeaders(self):
         self.now = util.clock()
 
         utcnow = self.now.astimezone(dateutil.tz.tzutc())
@@ -59,12 +55,21 @@ class MobileView(grok.View):
             )
         self.request.response.setHeader(
             "Cache-Control",
-            "max-age=%d, public" % (cacheTime.seconds + cacheTime.days * 86400)
+            "max-age=%d,public" % (cacheTime.seconds + cacheTime.days * 86400)
             )
         self.request.response.setHeader(
             'Vary',
-            "Accept-Encoding"
+            "Accept-Encoding,Accept-Language"
             )
+
+    def __call__(self, *args, **kw):
+        self.request.response.setHeader(
+            "Content-Type",
+            self.contentType
+            )
+
+        if config.sendCachingHeaders:
+            self._sendCachingHeaders()
 
         return super(MobileView, self).__call__(*args, **kw)
 
@@ -110,6 +115,30 @@ class ShortenExpr(object):
 
 # Registering handler for "shorten" type.
 zope.app.pagetemplate.engine.TrustedEngine.registerType("shorten", ShortenExpr)
+
+
+class TimeFormatExpr(object):
+    grok.implements(ITALESExpression)
+
+    def __init__(self, name, expr, engine):
+        format, pathExpr = expr.split(",", 1)
+        self._s = expr
+        self._format = format
+        self._path = zope.tales.expressions.PathExpr("", pathExpr, engine)
+
+    def __call__(self, econtext):
+        formatter = econtext.request.locale.dates.getFormatter("dateTime")
+        formatter.setPattern(self._format)
+        return formatter.format(self._path(econtext))
+
+    def __str__(self):
+        return 'formatter expression (%s)' % `self._s`
+
+    def __repr__(self):
+        return '<TimeFormatExpr %s>' % `self._s`
+
+# Registering handler for "timeformat" type.
+zope.app.pagetemplate.engine.TrustedEngine.registerType("timeformat", TimeFormatExpr)
 
 
 class StylesheetManager(grok.ViewletManager):

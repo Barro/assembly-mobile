@@ -1,21 +1,25 @@
 <metal:block metal:use-macro="context/@@layout/macros/page">
-<metal:block metal:fill-slot='page-title'>Next events</metal:block>
+<metal:block metal:fill-slot='page-title' i18n:translate="">Next events</metal:block>
 <tal:block metal:fill-slot='content'>
 <div tal:attributes="class shorten:links"
      metal:define-macro="next-previous">
   <tal:block tal:condition="view/showPrevious">
-    <a tal:attributes="href python:'%s?s=%s' % (view.urlR(), view.previousCenter)">Previous <tal:block tal:replace="view/differenceHours"/> hours</a>
+    <a tal:attributes="href python:'%s?s=%s' % (view.urlR(), view.previousCenter)"
+       i18n:translate="">Previous
+      <tal:block i18n:name="difference_hours"
+                 tal:replace="view/differenceHours" /> hours</a>
     <!---->&#8226;<!---->
   </tal:block>
-  <a tal:attributes="href python:view.urlR('all')">All events</a>
+  <a tal:attributes="href python:view.urlR('all')" i18n:translate="">All events</a>
   <tal:block tal:condition="view/showNext">
     <!---->&#8226;<!---->
-     <a tal:attributes="href python:'%s?s=%s' % (view.urlR(), view.nextCenter)">Next <tal:block tal:replace="view/differenceHours"/> hours</a>
+     <a tal:attributes="href python:'%s?s=%s' % (view.urlR(), view.nextCenter)" i18n:translate="">Next <tal:block i18n:name="difference_hours" tal:replace="view/differenceHours"/> hours</a>
   </tal:block>
 </div>
 
+
 <tal:block tal:repeat="event view/events"
-     tal:define="global lastStart python:None">
+           tal:define="global lastStart python:None">
 
 
 <span tal:replace="structure string:</div>"
@@ -24,6 +28,7 @@
 
 <h2 tal:condition="python:lastStart!=event.start.day"
     tal:content="event/start/@@dayname">Dayname</h2>
+
 
 <span tal:replace="structure python:'<div class=\'%s\'>' % shorten('event')"
       tal:condition="python:lastStart!=event.start.day" />
@@ -42,9 +47,9 @@
           tal:replace="structure string:</div>" />
 
   </tal:block>
-<tal:block tal:condition="python: event == view.anchorEvent">
-<span tal:replace="structure python:'</div><div class=\'%s\'>' % shorten('current-time')" />
-Current time: <span tal:replace="view/now/@@hourminute" />
+<tal:block tal:condition="python: event == view.anchorEvent" i18n:translate="">
+<span i18n:name="xml_data" tal:replace="structure python:'</div><div class=\'%s\'>' % shorten('current-time')"/>
+Current time: <span i18n:name="now" tal:replace="view/now/@@hourminute" />
 </tal:block>
 
 </div>

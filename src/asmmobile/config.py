@@ -116,6 +116,14 @@ shortNameCutPostfix = stringValue("short-name-cut-postfix", "...")
 ########################################################################
 # Options that affect internal workings of this application
 
+# Controls that do we send headers indicating modified and cache times to
+# clients. All caching related headers take a few hundred bytes so this
+# might be good to take into account when trying to reduce sent data.
+#
+# Header removal can also be done in reverse proxy, so we can still benefit
+# from server side caching and clients get less data per connection.
+sendCachingHeaders = booleanValue("send-caching-headers", True)
+
 # Time how long one event is considered to be valid.
 # This affects caching of all other pages than the overview schedule and next
 # events schedule, as those pages have data that is changed at least once
@@ -136,7 +144,7 @@ mobileMode = booleanValue('mobile-mode', True)
 #
 # For example "2009-08-06-18-23" would set the application time to 2009-08-06
 # 18:23:00 local time.
-time = stringValue("time", "now")
+time = stringValue("time", "2009-10-24-18-23")
 
 # Container name for Location objects.
 locations = stringValue("locations", "location")

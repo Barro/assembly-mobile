@@ -1,0 +1,216 @@
+# #############################################################################
+#
+# Copyright (c) 2003-2004 Zope Corporation and Contributors.
+# All Rights Reserved.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+# #############################################################################
+msgid ""
+msgstr ""
+"Project-Id-Version: Development/Unknown\n"
+"POT-Creation-Date: Sat Dec  5 23:10:03 2009\n"
+"PO-Revision-Date: 2009-12-05 23:06+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: zope/app/locales/extract.py\n"
+
+#: src/asmmobile/app.py:331
+msgid "%d day"
+msgstr "%d päivä"
+
+#: src/asmmobile/app.py:333
+msgid "%d days"
+msgstr "%d päivää"
+
+#: src/asmmobile/app.py:339
+msgid "%d hour"
+msgstr "%d tunti"
+
+#: src/asmmobile/app.py:341
+msgid "%d hours"
+msgstr "%d tuntia"
+
+#: src/asmmobile/app_templates/allevents.ptm:14
+msgid "Party time: ${party_start} - ${party_end}. Length: ${party_length}."
+msgstr "Tapahtuma-aika: ${party_start} - ${party_end}. Kesto: ${party_length}."
+
+#: src/asmmobile/app_templates/allevents.ptm:2
+#: src/asmmobile/app_templates/nextevents.ptm:13
+msgid "All events"
+msgstr "Koko ohjelma"
+
+#: src/asmmobile/app_templates/allevents.ptm:44
+msgid "There are no events in this party!"
+msgstr "Tässä tapahtumassa ei ole ohjelmaa!"
+
+#: src/asmmobile/app_templates/allevents.ptm:8
+msgid "Events (vCal)"
+msgstr "Tapahtumat (vCal)"
+
+#: src/asmmobile/app_templates/error401unauthorized.ptm:2
+msgid "Unauthorized"
+msgstr "Pääsy evätty"
+
+#: src/asmmobile/app_templates/error401unauthorized.ptm:5
+msgid ""
+"Our monkey king has decided that you are not authorized to view this page."
+msgstr "Apinakuninkaamme ei salli sinun näkevän tätä sivua."
+
+#: src/asmmobile/app_templates/error404notfound.ptm:2
+msgid "Page not found"
+msgstr "Sivua ei löytynyt"
+
+#: src/asmmobile/app_templates/error404notfound.ptm:4
+msgid "The page you requested does not exist."
+msgstr "Hakemaasi sivua ei löytynyt."
+
+#: src/asmmobile/app_templates/error404notfound.ptm:6
+#: src/asmmobile/app_templates/error500internalservererror.ptm:6
+#: src/asmmobile/app_templates/error401unauthorized.ptm:7
+msgid "Go back to the front page of ${site_name}."
+msgstr "Palaa takaisin ${site_name}n etusivulle."
+
+#: src/asmmobile/app_templates/error500internalservererror.ptm:2
+msgid "Internal server error"
+msgstr "Sisäinen järjestelmävirhe"
+
+#: src/asmmobile/app_templates/error500internalservererror.ptm:4
+msgid ""
+"Internal server error happened. Our highly trained monkeys have been "
+"dispatched to investigate this."
+msgstr ""
+"Sisäinen järjestelmävirhe tapahtui. Innovatiivisen korkeasti koulutetut "
+"apinamme tutkivat tapahtunutta."
+
+#: src/asmmobile/app_templates/index.ptm:18
+msgid "${time_left} left ${location_name}"
+msgstr "${time_left} jäljellä ${location_name}"
+
+#: src/asmmobile/app_templates/index.ptm:2
+msgid "Overview"
+msgstr "Yleisnäkymä"
+
+#: src/asmmobile/app_templates/index.ptm:25
+msgid "Next"
+msgstr "Seuraavaksi"
+
+#: src/asmmobile/app_templates/index.ptm:29
+msgid ""
+"No new scheduled events are starting in next two hours. See <!----> "
+"${link_next_events} <!----> for further events."
+msgstr ""
+"Uusia tapahtumia ei ole tiedossa seuraavaan kahteen tuntiin. Sivulta <!----> "
+"${link_next_events} <!----> näet seuraavat tapahtumat."
+
+#: src/asmmobile/app_templates/index.ptm:40
+msgid "in ${time_till_start} ${location_name}"
+msgstr "alkuun ${time_till_start} ${location_name}"
+
+#: src/asmmobile/app_templates/index.ptm:49
+msgid "full party schedule"
+msgstr "koko ohjelma"
+
+#: src/asmmobile/app_templates/index.ptm:49
+msgid ""
+"${party_name} has not started yet. See <!----> ${link_all_events} <!----> "
+"for the whole program."
+msgstr ""
+"${party_name} ei ole vielä alkanut. Ohjelmatarjontaa voi tutkia sivulta "
+"<!----> ${link_all_events}."
+
+#: src/asmmobile/app_templates/index.ptm:53
+msgid "${party_name} has ended. Welcome again next year!"
+msgstr "${party_name} on ohi. Tervetuloa takaisin ensi vuonna!"
+
+#: src/asmmobile/app_templates/index.ptm:6
+msgid "Now"
+msgstr "Nyt"
+
+#: src/asmmobile/app_templates/layout.ptm:35
+msgid "View main site"
+msgstr "Pääsivustolle"
+
+#: src/asmmobile/app_templates/nextevents.ptm:16
+msgid "Next ${difference_hours} hours"
+msgstr "Seuraavat ${difference_hours} tuntia"
+
+#: src/asmmobile/app_templates/nextevents.ptm:2
+msgid "Next events"
+msgstr "Seuraavaksi"
+
+#: src/asmmobile/app_templates/nextevents.ptm:52
+msgid "${xml_data} Current time: ${now}"
+msgstr "${xml_data} Nykyinen kellonaika: ${now}"
+
+#: src/asmmobile/app_templates/nextevents.ptm:9
+msgid "Previous ${difference_hours} hours"
+msgstr "Edelliset ${difference_hours} tuntia"
+
+#: src/asmmobile/event_templates/eventindex.ptm:22
+msgid "Time"
+msgstr "Aika"
+
+#: src/asmmobile/event_templates/eventindex.ptm:34
+msgid "- ${end_day} ${end_time}"
+msgstr "- ${end_day} ${end_time}"
+
+#: src/asmmobile/event_templates/eventindex.ptm:38
+msgid "${start_day} ${start_time} ${end_time} ${event_length}"
+msgstr "${start_day} ${start_time} ${end_time} ${event_length}"
+
+#: src/asmmobile/event_templates/eventindex.ptm:43
+msgid "Location"
+msgstr "Paikka"
+
+#: src/asmmobile/event_templates/eventindex.ptm:9
+msgid "vCal (event)"
+msgstr "vCal (tapahtuma)"
+
+#: src/asmmobile/location_templates/locationindex.ptm:12
+#: src/asmmobile/event_templates/eventindex.ptm:13
+msgid "View on external page"
+msgstr "Ulkoiselle sivustolle"
+
+#: src/asmmobile/location_templates/locationindex.ptm:17
+#: src/asmmobile/event_templates/eventindex.ptm:18
+msgid "Description"
+msgstr "Kuvaus"
+
+#: src/asmmobile/location_templates/locationindex.ptm:9
+msgid "vCal (events)"
+msgstr "vCal (tapahtumat)"
+
+#: src/asmmobile/util.py:149
+msgid "%d h"
+msgstr "%d h"
+
+#: src/asmmobile/util.py:153
+msgid "%d min"
+msgstr "%d min"
+
+#: src/asmmobile/util.py:155
+msgid "%(hours)s %(minutes)s"
+msgstr "%(hours)s %(minutes)s"
+
+#. Default: "(%s)"
+#: src/asmmobile/util.py:167
+msgid "(interval_parenthesis)"
+msgstr "(%s)"
+
+#. Default: "%H:%M"
+#: src/asmmobile/util.py:178
+msgid "(hour_minute)"
+msgstr "%H.%M"
+
+#: src/asmmobile/util.py:200
+msgid "EEEE yyyy-MM-dd HH:mm"
+msgstr "EEEE d.M.yyyy HH.mm"
