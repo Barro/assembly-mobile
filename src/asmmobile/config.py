@@ -144,7 +144,7 @@ mobileMode = booleanValue('mobile-mode', True)
 #
 # For example "2009-08-06-18-23" would set the application time to 2009-08-06
 # 18:23:00 local time.
-time = stringValue("time", "2009-10-24-18-23")
+time = stringValue("time", "now")
 
 # Container name for Location objects.
 locations = stringValue("locations", "location")
