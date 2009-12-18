@@ -24,6 +24,11 @@ import transaction
 import asmmobile.config
 import asmmobile.util
 
+def touchDict(obj, name):
+    if name not in obj:
+        obj[name] = {}
+    return obj
+
 def updateSchedule(app, config):
     importFuncs = {}
     for importer,arguments in config.IMPORTERS.items():
@@ -37,38 +42,45 @@ def updateSchedule(app, config):
 
     for importer, params in importFuncs.items():
         importedLocations, importedEvents = importer(**params)
-        for name, url in importedLocations.items():
-            locations[name] = url
+        for language, languageLocations in importedLocations.items():
+            locations = touchDict(locations, language)
+            for name, url in languageLocations.items():
+                locations[language][name] = url
 
-        for eventId, eventParams in importedEvents.items():
-            if eventId in events:
-                raise Exception("Duplicate event ID: %s (%s)" % \
-                                    (eventId, eventParams))
-            events[eventId] = eventParams
+        for language, languageEvents in importedEvents.items():
+            events = touchDict(events, language)
+            for eventId, eventParams in languageEvents.items():
+                if eventId in events[language]:
+                    raise Exception("Duplicate event ID: %s (%s)" % \
+                                        (eventId, eventParams))
+                events[language][eventId] = eventParams
 
     mappingLocations = {}
-    for fromLocation, toLocation in config.MAPPING_LOCATIONS.items():
-        app.addLocation(toLocation, None, None, None, None)
-        app.addLocation(fromLocation, None, None, None, toLocation)
-        locations[toLocation] = None
+    for language, fromToLocations in config.MAPPING_LOCATIONS.items():
+        for fromLocation, toLocation in fromToLocations.items():
+            app.addLocation(language, toLocation, None, None, None, None)
+            app.addLocation(language, fromLocation, None, None, None, toLocation)
+            locations[language][toLocation] = None
 
     zope.app.component.hooks.setSite(app)
-    for name,url in locations.items():
-        if name is None:
-            continue
-        priority = config.PRIORITIES.get(name, None)
-        app.addLocation(name, url, priority, None, None)
+    for language, locationData in locations.items():
+        for name,url in locationData.items():
+            if name is None:
+                continue
+            priority = config.PRIORITIES.get(name, None)
+            app.addLocation(language, name, url, priority, None, None)
 
-    for event in events.values():
-        shortName = event.get('short-name', event['name'])
-        shortName = asmmobile.util.shortenName(
-            name=shortName,
-            maximumLength=asmmobile.config.shortNameMaximumLength,
-            shortenTo=asmmobile.config.shortNameShortenTo,
-            nonWordCharacters=asmmobile.config.shortNameNonWordCharacters,
-            cutPostfix=asmmobile.config.shortNameCutPostfix,
-            )
-        event['short-name'] = shortName
+    for eventData in events.values():
+        for event in eventData.values():
+            shortName = event.get('short-name', event['name'])
+            shortName = asmmobile.util.shortenName(
+                name=shortName,
+                maximumLength=asmmobile.config.shortNameMaximumLength,
+                shortenTo=asmmobile.config.shortNameShortenTo,
+                nonWordCharacters=asmmobile.config.shortNameNonWordCharacters,
+                cutPostfix=asmmobile.config.shortNameCutPostfix,
+                )
+            event['short-name'] = shortName
 
     app.updateEvents(events)
     transaction.commit()

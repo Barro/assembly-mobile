@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Sat Dec  5 23:10:03 2009\n"
+"POT-Creation-Date: Sat Dec 19 00:41:11 2009\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -23,19 +23,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
 
-#: src/asmmobile/app.py:331
+#: src/asmmobile/app.py:429
 msgid "%d day"
 msgstr ""
 
-#: src/asmmobile/app.py:333
+#: src/asmmobile/app.py:431
 msgid "%d days"
 msgstr ""
 
-#: src/asmmobile/app.py:339
+#: src/asmmobile/app.py:437
 msgid "%d hour"
 msgstr ""
 
-#: src/asmmobile/app.py:341
+#: src/asmmobile/app.py:439
 msgid "%d hours"
 msgstr ""
 
@@ -122,7 +122,7 @@ msgstr ""
 msgid "Now"
 msgstr ""
 
-#: src/asmmobile/app_templates/layout.ptm:35
+#: src/asmmobile/app_templates/layout.ptm:43
 msgid "View main site"
 msgstr ""
 
@@ -154,6 +154,10 @@ msgstr ""
 msgid "${start_day} ${start_time} ${end_time} ${event_length}"
 msgstr ""
 
+#: src/asmmobile/event_templates/eventindex.ptm:4
+msgid "${event_name} (event)"
+msgstr ""
+
 #: src/asmmobile/event_templates/eventindex.ptm:43
 msgid "Location"
 msgstr ""
@@ -172,33 +176,37 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
+#: src/asmmobile/location_templates/locationindex.ptm:4
+msgid "${location_name} (location)"
+msgstr ""
+
 #: src/asmmobile/location_templates/locationindex.ptm:9
 msgid "vCal (events)"
 msgstr ""
 
-#: src/asmmobile/util.py:149
+#: src/asmmobile/util.py:151
 msgid "%d h"
 msgstr ""
 
-#: src/asmmobile/util.py:153
+#: src/asmmobile/util.py:155
 msgid "%d min"
 msgstr ""
 
-#: src/asmmobile/util.py:155
+#: src/asmmobile/util.py:157
 msgid "%(hours)s %(minutes)s"
 msgstr ""
 
-#: src/asmmobile/util.py:167
+#: src/asmmobile/util.py:169
 #. Default: "(%s)"
 msgid "(interval_parenthesis)"
 msgstr ""
 
-#: src/asmmobile/util.py:178
+#: src/asmmobile/util.py:180
 #. Default: "%H:%M"
 msgid "(hour_minute)"
 msgstr ""
 
-#: src/asmmobile/util.py:200
+#: src/asmmobile/util.py:203
 msgid "EEEE yyyy-MM-dd HH:mm"
 msgstr ""
 

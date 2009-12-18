@@ -36,6 +36,16 @@ class EditDescription(grok.Permission):
 class LocationContainer(grok.Container):
     grok.implements(interfaces.ILocationContainer)
 
+
+    def touchLocation(self, keyName):
+        if keyName in self:
+            return self[keyName]
+        else:
+            location = Location(keyName, None, None)
+            self[keyName] = location
+            return location
+
+
     def addLocation(self,
                     keyName,
                     name,
@@ -43,36 +53,29 @@ class LocationContainer(grok.Container):
                     priority=None,
                     hideUntil=None,
                     majorLocation=None):
-        if keyName in self:
-            location = self[keyName]['en']
-            if name != location.name:
-                location.name = name
-            if url is not None:
-                location.url = url
-            if priority is not None:
-                location.priority = priority
-            if hideUntil is not None:
-                location.hideUntil = hideUntil
-            if majorLocation is not None:
-                location.majorLocation = majorLocation
-        else:
-            location = Location(id=keyName,
-                                name=name,
-                                url=url,
-                                priority=priority,
-                                hideUntil=hideUntil,
-                                majorLocation=majorLocation)
-            self[keyName] = LocalizedContentContainer()
-            self[keyName]['en'] = location
+
+        location = self.touchLocation(keyName)
+
+        if name != location.name:
+            location.name = name
+        if url is not None:
+            location.url = url
+        if priority is not None:
+            location.priority = priority
+        if hideUntil is not None:
+            location.hideUntil = hideUntil
+        if majorLocation is not None:
+            location.majorLocation = majorLocation
 
         return location
 
 
     def getLocation(self, name):
-        return self[util.convertNameToKey(name)]['en']
+        return self[util.convertNameToKey(name)]
+
 
     def application(self):
-        return self.__parent__
+        return self.__parent__.__parent__
 
 
 class Index(MobileView):
@@ -82,7 +85,7 @@ class Index(MobileView):
     title = u"Locations"
 
     def locations(self):
-        return (x['en'] for x in self.context.values())
+        return self.context.values()
 
 
 class Location(grok.Model):

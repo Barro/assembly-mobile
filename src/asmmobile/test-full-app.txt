@@ -35,8 +35,8 @@ Date creation function:
 Add some locations:
 
    >>> import datetime
-   >>> cave = app.addLocation("CAVE", "http://cave/", 0, datetime.timedelta(seconds=60), None)
-   >>> home = app.addLocation("HOME", "http://home/", 10, datetime.timedelta(seconds=7200), None)
+   >>> cave = app.addLocation('en', "CAVE", "http://cave/", 0, datetime.timedelta(seconds=60), None)
+   >>> home = app.addLocation('en', "HOME", "http://home/", 10, datetime.timedelta(seconds=7200), None)
 
 Check that locations got added correctly:
 
@@ -60,7 +60,7 @@ Check that all locations are listed in location index:
 
 Add some events to locations:
 
-   >>> events = {
+   >>> events = {'en': {
    ...     'cave_first': {
    ...         'name': 'EVFIRST',
    ...         'url': 'http://cave/first',
@@ -90,7 +90,7 @@ Add some events to locations:
    ...         'end': createTime("2009-01-01-11-00"),
    ...         'location': None,
    ...         }
-   ...     }
+   ...     }}
    >>> app.updateEvents(events)
 
 Check that events are visible in their respective locations:
@@ -218,11 +218,11 @@ Check that different calendar outputs have correct events:
 
 Remove one event and check that it is removed from application events:
 
-   >>> del(events['cave_second'])
-   >>> 'cave_second' in app['event']
+   >>> del(events['en']['cave_second'])
+   >>> 'cave_second' in app['event']['en']
    True
    >>> app.updateEvents(events)
-   >>> 'cave_second' in app['event']
+   >>> 'cave_second' in app['event']['en']
    False
 
 Putting back the program clock not to mess with other tests:

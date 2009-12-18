@@ -40,7 +40,7 @@ def generateName():
     name = " ".join(words)
     return name[0].upper() + name[1:]
 
-def importer(events, locations, startTime='now'):
+def generateLanguageData(events, locations, startTime):
     locationNames = []
     resultLocations = {}
     for locationId  in xrange(0, locations):
@@ -84,5 +84,12 @@ def importer(events, locations, startTime='now'):
             currentEvents = 1
         else:
             currentEvents += 1
+    return (resultLocations, resultEvents)
+
+def importer(events, locations, languages=['en'], startTime='now'):
+    resultLocations = {}
+    resultEvents = {}
+    for language in languages:
+        resultLocations[language], resultEvents[language] = generateLanguageData(events, locations, startTime)
 
     return (resultLocations, resultEvents)

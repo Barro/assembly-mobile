@@ -100,12 +100,13 @@ class EventContainer(grok.OrderedContainer):
     def getEvents(self, eventFilter):
         return filter(eventFilter, self.values())
 
+
 class EventContainerIndex(grok.View):
     grok.context(EventContainer)
     grok.name("index")
 
     def update(self):
-        self.targetUrl = self.url(self.context.__parent__, "all")
+        self.targetUrl = self.application_url("all")
         self.redirect(self.targetUrl)
 
     def render(self):

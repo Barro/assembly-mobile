@@ -42,10 +42,9 @@ class MobileView(grok.View):
 
     charset = "UTF-8"
     contentType = "application/xhtml+xml;charset=%s" % charset
+    enableInternalization = config.enableInternalization
 
     def _sendCachingHeaders(self):
-        self.now = util.clock()
-
         utcnow = self.now.astimezone(dateutil.tz.tzutc())
         cacheTime = self.cacheTime(utcnow)
 
@@ -64,7 +63,15 @@ class MobileView(grok.View):
             "Accept-Encoding,Accept-Language"
             )
 
+    def _setupLanguages(self):
+        self.language = self.request.locale.id.language
+
     def __call__(self, *args, **kw):
+        self.now = util.clock()
+
+        if self.enableInternalization:
+            self._setupLanguages()
+
         self.request.response.setHeader(
             "Content-Type",
             self.contentType
@@ -207,8 +214,12 @@ from zope.app.publisher.browser import getDefaultViewName
 class ContentTraverser(grok.Traverser):
     grok.context(ILocalizedContentContainer)
 
+    def traverse(self, name):
+        content = self.context[config.defaultLanguage]
+        return content.get(name, None)
+
     def getContent(self, request):
-        return self.context['en']
+        return self.context[config.defaultLanguage]
 
     def browserDefault(self, request):
         content = self.getContent(request)
@@ -216,7 +227,10 @@ class ContentTraverser(grok.Traverser):
         view_uri = "@@%s" % view_name
         return content, (view_uri,)
 
-    def publishTraverse(self, request, name):
-        content = self.getContent(request)
-        view = zope.component.queryMultiAdapter((content, request))
-        return view.publishTraverse(request, name)
+#     def publishTraverse(self, request, name):
+#         content = self.getContent(request)
+#         print self.context
+#         print name
+#         print content
+#         view = zope.component.queryMultiAdapter((content, request))
+#         return view.publishTraverse(request, name)

@@ -14,28 +14,27 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Sat Dec  5 23:10:03 2009\n"
-"PO-Revision-Date: 2009-12-05 23:06+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
+"POT-Creation-Date: Sat Dec 19 00:41:11 2009\n"
+"PO-Revision-Date: 2009-12-19 00:42+0200\n"
+"Last-Translator: Jussi Judin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
 
-#: src/asmmobile/app.py:331
+#: src/asmmobile/app.py:429
 msgid "%d day"
 msgstr "%d päivä"
 
-#: src/asmmobile/app.py:333
+#: src/asmmobile/app.py:431
 msgid "%d days"
 msgstr "%d päivää"
 
-#: src/asmmobile/app.py:339
+#: src/asmmobile/app.py:437
 msgid "%d hour"
 msgstr "%d tunti"
 
-#: src/asmmobile/app.py:341
+#: src/asmmobile/app.py:439
 msgid "%d hours"
 msgstr "%d tuntia"
 
@@ -135,7 +134,7 @@ msgstr "${party_name} on ohi. Tervetuloa takaisin ensi vuonna!"
 msgid "Now"
 msgstr "Nyt"
 
-#: src/asmmobile/app_templates/layout.ptm:35
+#: src/asmmobile/app_templates/layout.ptm:43
 msgid "View main site"
 msgstr "Pääsivustolle"
 
@@ -167,6 +166,10 @@ msgstr "- ${end_day} ${end_time}"
 msgid "${start_day} ${start_time} ${end_time} ${event_length}"
 msgstr "${start_day} ${start_time} ${end_time} ${event_length}"
 
+#: src/asmmobile/event_templates/eventindex.ptm:4
+msgid "${event_name} (event)"
+msgstr "${event_name} (tapahtuma)"
+
 #: src/asmmobile/event_templates/eventindex.ptm:43
 msgid "Location"
 msgstr "Paikka"
@@ -185,32 +188,36 @@ msgstr "Ulkoiselle sivustolle"
 msgid "Description"
 msgstr "Kuvaus"
 
+#: src/asmmobile/location_templates/locationindex.ptm:4
+msgid "${location_name} (location)"
+msgstr "${location_name} (paikka)"
+
 #: src/asmmobile/location_templates/locationindex.ptm:9
 msgid "vCal (events)"
 msgstr "vCal (tapahtumat)"
 
-#: src/asmmobile/util.py:149
+#: src/asmmobile/util.py:151
 msgid "%d h"
 msgstr "%d h"
 
-#: src/asmmobile/util.py:153
+#: src/asmmobile/util.py:155
 msgid "%d min"
 msgstr "%d min"
 
-#: src/asmmobile/util.py:155
+#: src/asmmobile/util.py:157
 msgid "%(hours)s %(minutes)s"
 msgstr "%(hours)s %(minutes)s"
 
 #. Default: "(%s)"
-#: src/asmmobile/util.py:167
+#: src/asmmobile/util.py:169
 msgid "(interval_parenthesis)"
 msgstr "(%s)"
 
 #. Default: "%H:%M"
-#: src/asmmobile/util.py:178
+#: src/asmmobile/util.py:180
 msgid "(hour_minute)"
 msgstr "%H.%M"
 
-#: src/asmmobile/util.py:200
+#: src/asmmobile/util.py:203
 msgid "EEEE yyyy-MM-dd HH:mm"
 msgstr "EEEE d.M.yyyy HH.mm"

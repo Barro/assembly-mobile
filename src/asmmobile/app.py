@@ -33,6 +33,7 @@ import re
 import asmmobile.interfaces as interfaces
 import asmmobile.location
 import asmmobile.event
+import asmmobile.components
 from asmmobile.components import MobileView, StylesheetManager, MobileTemplate
 import asmmobile.util as util
 from asmmobile.util import getEventList, DisplayEvent
@@ -58,6 +59,45 @@ def new_send_header(self, key, value):
     return old_send_header(self, key, value)
 paste.httpserver.WSGIHandler.send_header = new_send_header
 
+from zope.i18n.interfaces import INegotiator, IUserPreferredLanguages
+
+from zope.publisher.interfaces.http import IHTTPRequest
+from zope.publisher.browser import BrowserLanguages
+
+class CatalogBasedI18nUserPreferredLanguages(grok.Adapter):
+    grok.context(IHTTPRequest)
+    grok.provides(IUserPreferredLanguages)
+
+    availableLanguages = None
+
+    def __init__(self, request):
+        if self.availableLanguages is None:
+            CatalogBasedI18nUserPreferredLanguages.availableLanguages = \
+                util.getAvailableLanguages()
+
+        self.request = request
+        self.browserLanguages = BrowserLanguages(request)
+
+    def getPreferredLanguages(self):
+        browserLanguages = []
+        if config.cookieLanguage in self.request.cookies:
+            browserLanguages.append(self.request.cookies[config.cookieLanguage])
+
+        langs = self.browserLanguages.getPreferredLanguages()
+        for httplang in langs:
+            language, country, variant = \
+                (httplang.split('-') + [None, None])[:3]
+            browserLanguages.append(unicode(language))
+
+        existingLanguages = []
+        for language in browserLanguages:
+            if language in self.availableLanguages:
+                existingLanguages.append(language)
+
+        existingLanguages.append(config.defaultLanguage)
+
+        return util.uniqify(existingLanguages)
+
 
 class MobileTemplateFactory(grok.GlobalUtility):
     grok.implements(grokcore.view.interfaces.ITemplateFileFactory)
@@ -76,6 +116,11 @@ class StylesheetTemplateFactory(grok.GlobalUtility):
             filename=filename, _prefix=_prefix)
 
 
+class ImportError(RuntimeError):
+    def __init__(self, msg):
+        self.msg = msg
+
+
 class AsmMobile(grok.Application, grok.Container):
     zope.interface.implements(interfaces.IAsmMobile, interfaces.IEventOwner)
 
@@ -84,8 +129,15 @@ class AsmMobile(grok.Application, grok.Container):
     def __init__(self, **vars):
         super(AsmMobile, self).__init__(**vars)
 
-        self[config.locations] = asmmobile.location.LocationContainer()
-        self[config.events] = asmmobile.event.EventContainer()
+        defaultLanguage = config.defaultLanguage
+
+        locations = asmmobile.components.LocalizedContentContainer()
+        self[config.locations] = locations
+        locations[defaultLanguage] = asmmobile.location.LocationContainer()
+
+        events = asmmobile.components.LocalizedContentContainer()
+        self[config.events] = events
+        events[defaultLanguage] = asmmobile.event.EventContainer()
 
 
     @property
@@ -98,50 +150,96 @@ class AsmMobile(grok.Application, grok.Container):
         return self[config.locations]
 
 
-    def addLocation(self, name, url, priority, hideUntil, majorLocationName):
+    def addLocation(
+        self, language, name, url, priority, hideUntil, majorLocationName):
+        locations = self.LOCATIONS.get(language, None)
+        if locations is None:
+            locations = asmmobile.location.LocationContainer()
+            self.LOCATIONS[language] = locations
+
+        # Make sure that location data is unicode.
         if isinstance(name, str):
             name = unicode(name)
         if isinstance(url, str):
             url = unicode(url)
 
         if majorLocationName is not None:
-            majorLocation = self.LOCATIONS.getLocation(majorLocationName)
+            majorLocation = locations.getLocation(majorLocationName)
         else:
             majorLocation = None
 
         keyName = util.convertNameToKey(name)
 
-        return self.LOCATIONS.addLocation(
+        return locations.addLocation(
             keyName, name, url, priority, hideUntil, majorLocation)
 
 
-    def updateEvents(self, events):
+    def updateEvents(self, languagedEvents):
+        if config.defaultLanguage not in languagedEvents:
+            raise ImportError("No events for default language.")
+
         eventData = {}
-        for eventId, values in events.items():
-            eventValues = {}
-            for key,value in values.items():
-                if isinstance(value, str):
-                    value = unicode(value)
-                eventValues[key] = value
-            if values['location'] is not None:
-                location = self.LOCATIONS.getLocation(values['location'])
-            else:
-                location = None
-            eventValues['location'] = location
-            eventData[eventId] = eventValues
 
-        self.EVENTS.updateEvents(eventData)
+        # Check for event sanity and objectify textual location data.
+        for language, events in languagedEvents.items():
+            locations = self.LOCATIONS[language]
+            eventData[language] = {}
+            for eventId, values in events.items():
+                if eventId not in languagedEvents[config.defaultLanguage]:
+                    raise ImportError("All events must be available for default language.")
+
+                eventValues = {}
+                # We only like unicode values.
+                for key,value in values.items():
+                    if isinstance(value, str):
+                        value = unicode(value)
+                    eventValues[key] = value
+
+                # Objectify location.
+                if values['location'] is not None:
+                    location = locations.getLocation(values['location'])
+                else:
+                    location = None
+                eventValues['location'] = location
+
+                eventData[language][eventId] = eventValues
+
+        # Make sure that all languages have at least some version of all events.
+        for eventId, values in eventData[config.defaultLanguage].items():
+            for language, events in eventData.items():
+                if eventId not in events:
+                    events[eventId] = values
+
+        # Update events for each language.
+        for language, languageEvents in eventData.items():
+            events = self.EVENTS.get(language, None)
+            if events is None:
+                events = asmmobile.event.EventContainer()
+                self.EVENTS[language] = events
+            events.updateEvents(languageEvents)
+
+        # Remove unused languages.
+        for language in self.EVENTS.keys():
+            if language not in eventData:
+                del(self.EVENTS[language])
 
 
-    def getEvents(self, eventFilter=None):
-        return self.EVENTS.getEvents(eventFilter)
+    def getEvents(self, language, eventFilter=None):
+        events = self.EVENTS.get(language, None)
+        if events is None:
+            return []
+        return events.getEvents(eventFilter)
 
-    events = property(getEvents)
+    def getLocaleEvents(self, eventFilter=None):
+        return self.getEvents(config.defaultLanguage, eventFilter)
+
+    events = property(getLocaleEvents)
 
 
     def getLocationEvents(self, location):
         eventFilter = lambda event : (event.location == location)
-        return self.EVENTS.getEvents(eventFilter)
+        events = []
+        return self.EVENTS[location.__parent__.__name__].getEvents(eventFilter)
 
 
 nextSelectors = [selector.FutureEvents()]
@@ -162,7 +260,7 @@ class Index(MobileView):
     grok.context(AsmMobile)
 
     def _getCurrentNextEvents(self, now):
-        allEvents = self.context.getEvents(
+        allEvents = self.context.getEvents('en',
             selector.NotEndedEvents().setNow(now))
 
         currentEvents = filter(selector.CurrentEvents().setNow(now), allEvents)
@@ -180,7 +278,7 @@ class Index(MobileView):
 
 
     def _getPartyStatus(self, now, nextEvents):
-        allEvents = self.context.getEvents()
+        allEvents = self.context.getEvents('en')
         hasUpcomingEvents = len(nextEvents) > 0
         haveEvents = len(allEvents) > 0
         self.partyHasStarted = haveEvents and allEvents[0].start <= now
@@ -241,14 +339,14 @@ class NextEvents(MobileView):
         self.nextCenter = \
             (displayEnd + self.startDifference).strftime(self.dateFormat)
 
-        events = self.context.getEvents(
+        events = self.context.getEvents('en',
             (lambda event: displayStart < event.end
              and event.start <= displayEnd))
 
         # If the first displayable event is the same as the first event out of
         # all events, we don't have any more events in past and disable the
         # "previous 24 hours" link.
-        allEvents = self.context.getEvents()
+        allEvents = self.context.getEvents('en')
         if len(events) > 0 and events[0] != allEvents[0]:
             self.showPrevious = True
         else:
@@ -315,7 +413,7 @@ class AllEvents(MobileView):
     cacheTime = util.defaultCacheTime()
 
     def update(self):
-        self.events = getEventList(self, self.context.getEvents())
+        self.events = getEventList(self, self.context.getEvents('en'))
 
         if len(self.events):
             self.startTime = self.events[0].start
@@ -376,5 +474,32 @@ class Error500InternalServerError(MobileView, SystemErrorView):
      grok.name('index.html')
 
      def update(self):
+         print self.context
+#import pdb; pdb.set_trace()
          self.siteUrl = self.url(grok.getSite())
          self.response.setStatus(500)
+
+
+
+class SetLanguage(MobileView):
+    grok.context(zope.interface.Interface)
+    grok.name('l')
+
+    def publishTraverse(self, request, name):
+        self.newLanguage = name
+        request.setTraversalStack([])
+        return self
+
+    def update(self):
+        language = getattr(self, 'newLanguage', None)
+        if language is not None:
+            self.request.response.setCookie(
+                config.cookieLanguage, language, path='/')
+
+        returnTo = self.request.getHeader('Referer')
+        if returnTo is None:
+            returnTo = self.url(self.context)
+        self.redirect(returnTo)
+
+    def render(self):
+        return ''

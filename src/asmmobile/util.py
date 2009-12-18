@@ -26,6 +26,8 @@ import dateutil.tz
 
 from zope.i18n import translate
 from zope.app.form.browser.textwidgets import TextWidget
+from zope.component import queryUtility
+from zope.i18n.interfaces import ITranslationDomain
 
 from asmmobile import AsmMobileMessageFactory as _
 import asmmobile.interfaces as interfaces
@@ -196,6 +198,7 @@ class TimeFullDate(grok.View):
 
     def render(self):
         formatter = self.request.locale.dates.getFormatter("dateTime")
+        #import pdb; pdb.set_trace()
         formatter.setPattern(
             translate(_(u"EEEE yyyy-MM-dd HH:mm"), context=self.request))
         return formatter.format(self.context)
@@ -298,3 +301,33 @@ class LongTextWidget(TextWidget):
 
 def defaultCacheTime():
     return AddTime(datetime.timedelta(minutes=config.eventCacheMinutes))
+
+def getAvailableLanguages():
+    translationDomain = queryUtility(ITranslationDomain, _._domain)
+    languages = set(translationDomain.getCatalogsInfo().keys())
+
+    if config.defaultLanguage not in languages:
+        languages.add(config.defaultLanguage)
+
+    if config.enabledLanguages == u"*":
+        return languages
+
+    enabledLanguages = [lang.trim() for lang in config.enabledLanguages.split(u",")]
+
+    result = []
+    for language in enabledLanguages:
+        if language in languages:
+            result.append(language)
+    return set(result)
+
+
+def uniqify(sequence):
+    seen = {}
+    result = []
+    for item in sequence:
+        marker = item
+        if marker in seen:
+            continue
+        seen[marker] = 1
+        result.append(item)
+    return result

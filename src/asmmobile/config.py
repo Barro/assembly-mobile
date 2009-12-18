@@ -92,6 +92,16 @@ defaultLocationPriority = integerValue("default-location-priority", 0)
 # Default time objects are hidden before they are shown in "next events".
 defaultHideTime = integerValue("default-hide-time", 7200)
 
+# Enable internalization.
+enableInternalization = booleanValue("enable-internalization", True)
+
+# A comma separated list of enabled languages or a start to enable them all.
+enabledLanguages = stringValue("enabled-languages", "*")
+
+# Default language that is used when user with unknown language comes to site
+# or if events or locations are not available with such language.
+defaultLanguage = stringValue("default-language", "en")
+
 ########################################################################
 # Importing options
 
@@ -101,7 +111,7 @@ shortNameMaximumLength = integerValue("short-name-maximum-length", 60)
 # Names are shortened to this length before starting to search for word
 # boundary. Names are cut at word boundaries instead of coldly cutting them
 # to short length.
-shortNameShortenTo = integerValue("short-name-shorten-to", 55)
+shortNameShortenTo = integerValue("short-name-shorten-to", 57)
 
 # Characters that we use to find word boundaries.
 shortNameNonWordCharacters = stringValue("short-name-non-word-characters", "-_ #:,.?!/")
@@ -122,7 +132,7 @@ shortNameCutPostfix = stringValue("short-name-cut-postfix", "...")
 #
 # Header removal can also be done in reverse proxy, so we can still benefit
 # from server side caching and clients get less data per connection.
-sendCachingHeaders = booleanValue("send-caching-headers", True)
+sendCachingHeaders = booleanValue("send-caching-headers", False)
 
 # Time how long one event is considered to be valid.
 # This affects caching of all other pages than the overview schedule and next
@@ -151,3 +161,6 @@ locations = stringValue("locations", "location")
 
 # Container name for Event objects.
 events = stringValue("events", "event")
+
+# Name for language including cookie.
+cookieLanguage = stringValue("cookie-language", "l")

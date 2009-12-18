@@ -1,7 +1,7 @@
 <metal:block metal:use-macro="context/@@layout/macros/page">
 <metal:block
-    metal:fill-slot='page-title'
-    tal:content="string:${context/name} (location)">Location name</metal:block>
+   metal:fill-slot='page-title'
+   i18n:translate=""><tal:block i18n:name="location_name" tal:replace="context/name" /> (location)</metal:block>
 <div metal:fill-slot='content'>
 
 <h1 tal:content="context/name">Location name</h1>

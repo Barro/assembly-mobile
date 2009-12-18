@@ -21,14 +21,14 @@
 IMPORTERS = {
     'test': {
         'events': 200,
-        'locations': 10
+        'locations': 10,
         },
     }
 
-MAPPING_LOCATIONS = {
-    'Big screen': 'MAIN-ARENA',
-    'Stage': 'MAIN-ARENA',
-    }
+MAPPING_LOCATIONS = {'en': {
+        'Big screen': 'MAIN-ARENA',
+        'Stage': 'MAIN-ARENA',
+        }}
 
 
 PRIORITIES = {
