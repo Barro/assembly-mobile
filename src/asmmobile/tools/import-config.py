@@ -19,16 +19,10 @@
 
 
 IMPORTERS = {
-    'icalendar': {
-        'filename': '/tmp/asmtv.ics',
-        'locationMap': {'none': 'AssemblyTV'},
-        'majorCategory': 'Major_event',
+    'test': {
+        'events': 200,
+        'locations': 10
         },
-    'asmcsv': {
-        'filename': '/tmp/schedule.csv',
-        'prefix': 'asm',
-        'language': 'EN',
-        }
     }
 
 MAPPING_LOCATIONS = {
