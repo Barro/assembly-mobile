@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 def name(first, second):
-    return cmp(first.__name__, second.__name__)
+    return cmp(first.id, second.id)
 
 
 def startTime(first, second):

@@ -25,6 +25,7 @@ import zope.app.pagetemplate.engine
 from zope.tales.interfaces import ITALESExpression
 import zope.tales.expressions
 from zope.interface import Interface
+import zope.component
 
 from grokcore.view.components import PageTemplate
 
@@ -32,6 +33,7 @@ import grok
 
 import asmmobile.util as util
 import asmmobile.config as config
+from asmmobile.interfaces import ILocalizedContentContainer
 
 class MobileView(grok.View):
     grok.context(Interface)
@@ -191,3 +193,30 @@ class StylesheetManager(grok.ViewletManager):
             selectorData[-1] = self.minifySelector(selectorData[-1])
             outputSelectors.append("}".join(selectorData))
         return "{".join(outputSelectors)
+
+
+class LocalizedContentContainer(grok.Container):
+    grok.implements(ILocalizedContentContainer)
+
+    def application(self):
+        return self.__parent__.application()
+
+
+from zope.app.publisher.browser import getDefaultViewName
+
+class ContentTraverser(grok.Traverser):
+    grok.context(ILocalizedContentContainer)
+
+    def getContent(self, request):
+        return self.context['en']
+
+    def browserDefault(self, request):
+        content = self.getContent(request)
+        view_name = getDefaultViewName(content, request)
+        view_uri = "@@%s" % view_name
+        return content, (view_uri,)
+
+    def publishTraverse(self, request, name):
+        content = self.getContent(request)
+        view = zope.component.queryMultiAdapter((content, request))
+        return view.publishTraverse(request, name)

@@ -15,7 +15,7 @@ locations and events.
    ...         self.start = start
    ...         self.end = end
    ...         self.majorLocation = location
-   ...         self.__name__ = location.name + str(self.start)
+   ...         self.id = location.name + str(self.start)
    ...     def __repr__(self):
    ...         return "<%d-%d %s>" % (
    ...             self.start, self.end, self.majorLocation)

@@ -26,7 +26,7 @@ import grok
 import asmmobile.util as util
 import asmmobile.interfaces as interfaces
 import asmmobile.config as config
-from asmmobile.components import MobileView
+from asmmobile.components import MobileView, LocalizedContentContainer
 from asmmobile.util import getEventList
 
 class EditDescription(grok.Permission):
@@ -44,7 +44,7 @@ class LocationContainer(grok.Container):
                     hideUntil=None,
                     majorLocation=None):
         if keyName in self:
-            location = self[keyName]
+            location = self[keyName]['en']
             if name != location.name:
                 location.name = name
             if url is not None:
@@ -56,18 +56,20 @@ class LocationContainer(grok.Container):
             if majorLocation is not None:
                 location.majorLocation = majorLocation
         else:
-            location = Location(name=name,
+            location = Location(id=keyName,
+                                name=name,
                                 url=url,
                                 priority=priority,
                                 hideUntil=hideUntil,
                                 majorLocation=majorLocation)
-            self[keyName] = location
+            self[keyName] = LocalizedContentContainer()
+            self[keyName]['en'] = location
 
         return location
 
 
     def getLocation(self, name):
-        return self[util.convertNameToKey(name)]
+        return self[util.convertNameToKey(name)]['en']
 
     def application(self):
         return self.__parent__
@@ -80,7 +82,7 @@ class Index(MobileView):
     title = u"Locations"
 
     def locations(self):
-        return self.context.values()
+        return (x['en'] for x in self.context.values())
 
 
 class Location(grok.Model):
@@ -90,12 +92,14 @@ class Location(grok.Model):
     DEFAULT_HIDE_TIME = datetime.timedelta(hours=2)
 
     def __init__(self,
+                 id,
                  name,
                  url,
                  description=None,
                  priority=None,
                  hideUntil=None,
                  majorLocation=None):
+        self.id = id
         self.name = name
         self.url = url
         self.description = description
@@ -184,7 +188,7 @@ class ViewUrl(grok.View):
 
     def render(self):
         return "%s/%s" % (util.applicationRelativeUrl(self, 'location'),
-                          self.context.__name__)
+                          self.context.id)
 
 class NoneUrl(grok.View):
     grok.name("url")
@@ -200,7 +204,7 @@ class ViewLink(grok.View):
 
     def relativeUrl(self):
         return "%s/%s" % (util.applicationRelativeUrl(self, 'location'),
-                          self.context.__name__)
+                          self.context.id)
 
 
 class NoneLink(grok.View):

@@ -33,7 +33,7 @@ def _sortByStartTime(first, second):
     if startCmp == 0:
         # In case we have same start time, compare by ID to always get correct
         # sort order.
-        return cmp(first.__name__, second.__name__)
+        return cmp(first.id, second.id)
     else:
         return startCmp
 
@@ -66,6 +66,7 @@ class EventContainer(grok.OrderedContainer):
         for key in addKeys:
             eventValues = values[key]
             self[key] = Event(
+                id=key,
                 name=eventValues['name'],
                 start=eventValues['start'].astimezone(dateutil.tz.tzlocal()),
                 end=eventValues['end'].astimezone(dateutil.tz.tzlocal()),
@@ -94,7 +95,7 @@ class EventContainer(grok.OrderedContainer):
         # Order events by start time.
         values = list(self.values())
         values.sort(_sortByStartTime)
-        self.updateOrder(order=[key.__name__ for key in values])
+        self.updateOrder(order=[key.id for key in values])
 
     def getEvents(self, eventFilter):
         return filter(eventFilter, self.values())
@@ -116,6 +117,7 @@ class Event(grok.Model):
 
     def __init__(
         self,
+        id,
         name,
         start,
         end,
@@ -126,6 +128,7 @@ class Event(grok.Model):
         isMajor=False,
         shortName=None,
         ):
+        self.id = id
         self.name = name
         self.start = start
         self.end = end
@@ -156,10 +159,6 @@ class Event(grok.Model):
     @property
     def length(self):
         return self.end - self.start
-
-    @property
-    def id(self):
-        return self.__name__
 
     @property
     def events(self):

@@ -89,6 +89,7 @@ class ILocationContainer(zope.interface.Interface):
 
 class ILocation(zope.interface.Interface):
 
+    id = zope.interface.Attribute("")
     name = schema.TextLine(title=u"Name")
     url = schema.TextLine(title=u"URL", required=False)
 
@@ -97,3 +98,7 @@ class ILocation(zope.interface.Interface):
     majorLocation = zope.interface.Attribute("")
     priority = schema.Int(title=u"Priority")
     hideUntil = zope.interface.Attribute("")
+
+class ILocalizedContentContainer(zope.interface.Interface):
+    def getContent(request):
+        pass

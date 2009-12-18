@@ -103,14 +103,14 @@ def applicationRelativeUrl(view, path):
 def locationUrl(view, location):
     return applicationRelativeUrl(
         view,
-        "%s/%s" % (LOCATIONS, location.__name__)
+        "%s/%s" % (LOCATIONS, location.id)
         )
 
 
 def eventUrl(view, event):
     return applicationRelativeUrl(
         view,
-        "%s/%s" % (EVENTS, event.__name__)
+        "%s/%s" % (EVENTS, event.id)
         )
 
 
@@ -208,7 +208,7 @@ class DisplayEvent(object):
     Data known at view time includes URL to event and location view.
     """
     def __init__(self, view, event):
-        self.id = event.__name__
+        self.id = event.id
         self.name = event.name
         self.shortName = event.shortName
         # This is used by iCalendar views as absolute URL.
