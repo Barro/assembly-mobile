@@ -1,7 +1,7 @@
 :Test-Layer: unit
 
 Create some test classes so that we don't need to import real
-locations and events.
+locations and events::
 
    >>> class DummyLocation(object):
    ...     def __init__(self, name, priority):
@@ -21,7 +21,7 @@ locations and events.
    ...             self.start, self.end, self.majorLocation)
 
 Create test objects where we have some meaningful locations and amount
-of events.
+of events::
 
    >>> cave = DummyLocation("cave", 1)
    >>> home = DummyLocation("home", 2)
@@ -35,13 +35,13 @@ of events.
 
    >>> import asmmobile.orderby as orderby
 
-Order by start time:
+Order by start time::
 
    >>> events.sort(orderby.startTime)
    >>> events
    [<1-2 @ cave>, <1-2 @ home>, <4-5 @ cave>, <6-7 @ cave>, <6-7 @ home>]
 
-Order by location priority where home is more important than cave:
+Order by location priority where home is more important than cave::
 
    >>> events.sort(orderby.locationPriority)
    >>> events

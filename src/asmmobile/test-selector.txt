@@ -1,8 +1,7 @@
-
 :Test-Layer: unit
 
 Create some test classes so that we don't need to import real
-locations and events.
+locations and events::
 
    >>> class DummyLocation(object):
    ...     def __init__(self, name, hideUntil):
@@ -21,7 +20,7 @@ locations and events.
    ...             self.start, self.end, self.majorLocation)
 
 Create test objects where we have some meaningful locations and amount
-of events.
+of events::
 
    >>> cave = DummyLocation("cave", 3)
    >>> home = DummyLocation("home", 3)
@@ -33,7 +32,7 @@ of events.
    ...     DummyEvent(6, 7, home),
    ...     ]
 
-Helper function to shorten event selection.
+Helper function to shorten event selection::
 
    >>> def select(selector, now, events):
    ...     selector.now = now
@@ -41,12 +40,12 @@ Helper function to shorten event selection.
 
    >>> import asmmobile.selector as selector
 
-Select events have not yet ended:
+Select events have not yet ended::
 
    >>> select(selector.NotEndedEvents(), 3, events)
    [<4-5 @ cave>, <6-7 @ cave>, <6-7 @ home>]
 
-Select events that are currently ongoing:
+Select events that are currently ongoing::
 
    >>> select(selector.CurrentEvents(), 1, events)
    [<1-2 @ cave>, <1-2 @ home>]
@@ -54,18 +53,18 @@ Select events that are currently ongoing:
    >>> select(selector.CurrentEvents(), 2, events)
    []
 
-Select events that have not yet started.
+Select events that have not yet started::
 
    >>> select(selector.FutureEvents(), 1, events)
    [<4-5 @ cave>, <6-7 @ cave>, <6-7 @ home>]
 
-Select one event perlocation.
+Select one event perlocation::
 
    >>> select(selector.LocationEvents(), 1, events)
    [<1-2 @ cave>, <1-2 @ home>]
 
 Select events that start time in future is less that current time +
-hiding time.
+hiding time::
 
    >>> select(selector.NotHiddenEvents(), 1, events)
    [<1-2 @ cave>, <1-2 @ home>, <4-5 @ cave>]
@@ -73,7 +72,7 @@ hiding time.
    >>> select(selector.NotHiddenEvents(), 3, events)
    [<1-2 @ cave>, <1-2 @ home>, <4-5 @ cave>, <6-7 @ cave>, <6-7 @ home>]
 
-Select events from future that are starting in certain time from now.
+Select events from future that are starting in certain time from now::
 
    >>> selectFuture = selector.FutureEvents()
    >>> selectFuture.now = 2
@@ -82,12 +81,12 @@ Select events from future that are starting in certain time from now.
    >>> select(selector.AndSelector([selectFuture, selectNotHidden]), 2, events)
    [<4-5 @ cave>]
 
-Select maximum amount of events:
+Select maximum amount of events::
 
    >>> select(selector.MaximumEvents(3), 1, events)
    [<1-2 @ cave>, <1-2 @ home>, <4-5 @ cave>]
 
-Make sure that events that start at certain time get all selected:
+Make sure that events that start at certain time get all selected::
 
    >>> select(selector.MaximumEvents(1), 1, events)
    [<1-2 @ cave>, <1-2 @ home>]

@@ -1,11 +1,11 @@
 :Test-Layer: functional
 
-Initialize standard test environment:
+Initialize standard test environment::
 
     >>> from asmmobile.testutils import initializeApplicationTestEnv, assertXml
     >>> root, app, browser = initializeApplicationTestEnv(getRootFolder())
 
-Open all pages and verify that no errors are emitted:
+Open all pages and verify that no errors are emitted::
 
    >>> browser.open('http://localhost/app')
    >>> browser.headers.get('Status').upper()
@@ -28,7 +28,7 @@ Open all pages and verify that no errors are emitted:
    '200 OK'
    >>> assertXml(browser)
 
-Check that there are no calendar events:
+Check that there are no calendar events::
 
    >>> from asmmobile.testutils import getCalendarEvents
    >>> getCalendarEvents(browser, 'http://localhost/app/all.vcs')
@@ -36,7 +36,7 @@ Check that there are no calendar events:
    >>> getCalendarEvents(browser, 'http://localhost/app/all.ics')
    []
 
-Event should redirect to all:
+Event should redirect to all::
 
    >>> browser.open('http://localhost/app/event')
    >>> browser.url

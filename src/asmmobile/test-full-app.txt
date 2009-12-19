@@ -1,17 +1,17 @@
 :Test-Layer: functional
 
-Initialize standard test environment:
+Initialize standard test environment::
 
     >>> from asmmobile.testutils import initializeApplicationTestEnv, assertXml
     >>> root, app, browser = initializeApplicationTestEnv(getRootFolder())
 
-Change the clock to be some known time:
+Change the clock to be some known time::
 
    >>> import asmmobile.util
    >>> oldClock = asmmobile.util.clock
    >>> asmmobile.util.clock = asmmobile.util._staticTimeClock("2009-01-01-10-00")
 
-Date creation function:
+Date creation function::
 
    >>> import datetime
    >>> import dateutil.tz
@@ -20,13 +20,13 @@ Date creation function:
    ...     return datetime.datetime(
    ...         year, month, day, hour, minute, tzinfo=dateutil.tz.tzlocal())
 
-Add some locations:
+Add some locations::
 
    >>> import datetime
    >>> cave = app.addLocation('cave', 'en', "CAVE", "http://cave/", 0, datetime.timedelta(seconds=60), None)
    >>> home = app.addLocation('home', 'en', "HOME", "http://home/", 10, datetime.timedelta(seconds=7200), None)
 
-Check that locations got added correctly:
+Check that locations got added correctly::
 
    >>> browser.open('http://localhost/app/location/cave')
    >>> assertXml(browser)
@@ -37,7 +37,7 @@ Check that locations got added correctly:
    >>> "HOME" in browser.contents
    True
 
-Check that all locations are listed in location index:
+Check that all locations are listed in location index::
 
    >>> browser.open('http://localhost/app/location')
    >>> assertXml(browser)
@@ -46,7 +46,7 @@ Check that all locations are listed in location index:
    >>> "CAVE" in browser.contents
    True
 
-Add some events to locations:
+Add some events to locations::
 
    >>> events = {'en': {
    ...     'cave_first': {
@@ -81,7 +81,7 @@ Add some events to locations:
    ...     }}
    >>> app.updateEvents(events)
 
-Check that events are visible in their respective locations:
+Check that events are visible in their respective locations::
 
    >>> browser.open('http://localhost/app/location/cave')
    >>> assertXml(browser)
@@ -93,7 +93,7 @@ Check that events are visible in their respective locations:
    >>> "EVTHIRD" in browser.contents
    True
 
-Check that correct information is visible in events:
+Check that correct information is visible in events::
 
    >>> browser.open('http://localhost/app/event/cave_first')
    >>> assertXml(browser)
@@ -102,21 +102,21 @@ Check that correct information is visible in events:
    >>> 'http://cave/first' in browser.contents
    True
 
-Check that location is visible:
+Check that location is visible::
 
    >>> "CAVE" in browser.contents
    True
    >>> "location/cave" in browser.contents
    True
 
-Check that description is visible:
+Check that description is visible::
 
    >>> browser.open('http://localhost/app/event/cave_second')
    >>> assertXml(browser)
    >>> "SECOND_DESCRIPTION" in browser.contents
    True
 
-Check that location is not visible when there is none:
+Check that location is not visible when there is none::
 
    >>> browser.open('http://localhost/app/event/none_fourth')
    >>> assertXml(browser)
@@ -125,7 +125,7 @@ Check that location is not visible when there is none:
    >>> "location" in browser.contents
    False
 
-Check that all events are visible in all page:
+Check that all events are visible in all page::
 
    >>> browser.open('http://localhost/app/all')
    >>> assertXml(browser)
@@ -138,7 +138,7 @@ Check that all events are visible in all page:
    >>> "NONEFOURTH" in browser.contents
    True
 
-Check that all events are visible in next page:
+Check that all events are visible in next page::
 
    >>> browser.open('http://localhost/app/next')
    >>> assertXml(browser)
@@ -150,14 +150,14 @@ Check that all events are visible in next page:
    True
 
 Check that we can change the display time of next events to hide
-all events:
+all events::
 
    >>> browser.open('http://localhost/app/next?s=2007-01-01-01')
    >>> assertXml(browser)
    >>> "EVFIRST" in browser.contents
    False
 
-Invalid time stamps should result in default behaviour:
+Invalid time stamps should result in default behaviour::
 
    >>> browser.open('http://localhost/app/next?s=abbabaabaa')
    >>> assertXml(browser)
@@ -168,7 +168,7 @@ Invalid time stamps should result in default behaviour:
    >>> "EVFIRST" in browser.contents
    True
 
-Check that non-hidden events are visible in overview page:
+Check that non-hidden events are visible in overview page::
 
    >>> browser.open('http://localhost/app')
    >>> assertXml(browser)
@@ -178,12 +178,12 @@ Check that non-hidden events are visible in overview page:
    True
 
 Second cave event is not starting in 1 hour and cave hide-until time is only
-one minute so we should not see it:
+one minute so we should not see it::
 
    >>> "EVSECOND" in browser.contents
    False
 
-Check that different calendar outputs have correct events:
+Check that different calendar outputs have correct events::
 
    >>> from asmmobile.testutils import getCalendarEvents
    >>> getCalendarEvents(browser, 'http://localhost/app/all.vcs')
@@ -195,7 +195,7 @@ Check that different calendar outputs have correct events:
    >>> getCalendarEvents(browser, 'http://localhost/app/event/cave_first/cave_first.vcs')
    [u'cave_first@localhost']
 
-Remove one event and check that it is removed from application events:
+Remove one event and check that it is removed from application events::
 
    >>> del(events['en']['cave_second'])
    >>> 'cave_second' in app['event']['en']
@@ -204,6 +204,6 @@ Remove one event and check that it is removed from application events:
    >>> 'cave_second' in app['event']['en']
    False
 
-Putting back the program clock not to mess with other tests:
+Putting back the program clock not to mess with other tests::
 
    >>> asmmobile.util.clock = oldClock
