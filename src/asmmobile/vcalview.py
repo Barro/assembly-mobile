@@ -64,9 +64,11 @@ class EventCalendarTraverser(grok.Traverser):
 
     def traverse(self, name):
         if name.endswith('.vcs'):
-            return EventOwnerWrapper("text/x-vCalendar", self.context.events)
+            return EventOwnerWrapper(
+                "text/x-vCalendar", self.context.getEvents(self.request))
         elif name.endswith('.ics'):
-            return EventOwnerWrapper("text/calendar", self.context.events)
+            return EventOwnerWrapper(
+                "text/calendar", self.context.getEvents(self.request))
 
 
 class ICalTimeView(grok.View):

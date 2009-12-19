@@ -44,8 +44,8 @@ def updateSchedule(app, config):
         importedLocations, importedEvents = importer(**params)
         for language, languageLocations in importedLocations.items():
             locations = touchDict(locations, language)
-            for name, url in languageLocations.items():
-                locations[language][name] = url
+            for locationId, data in languageLocations.items():
+                locations[language][locationId] = data
 
         for language, languageEvents in importedEvents.items():
             events = touchDict(events, language)
@@ -58,17 +58,19 @@ def updateSchedule(app, config):
     mappingLocations = {}
     for language, fromToLocations in config.MAPPING_LOCATIONS.items():
         for fromLocation, toLocation in fromToLocations.items():
-            app.addLocation(language, toLocation, None, None, None, None)
-            app.addLocation(language, fromLocation, None, None, None, toLocation)
-            locations[language][toLocation] = None
+            app.addLocation(toLocation.lower(), language, toLocation, None, None, None, None)
+            app.addLocation(toLocation.lower(), language, fromLocation, None, None, None, toLocation)
+            locations[language][toLocation.lower()] = {'name': toLocation}
 
     zope.app.component.hooks.setSite(app)
     for language, locationData in locations.items():
-        for name,url in locationData.items():
-            if name is None:
+        for id, data in locationData.items():
+            if id is None:
                 continue
-            priority = config.PRIORITIES.get(name, None)
-            app.addLocation(language, name, url, priority, None, None)
+            name = data.get('name', id)
+            url = data.get('url', None)
+            priority = config.PRIORITIES.get(id, None)
+            app.addLocation(id, language, name, url, priority, None, None)
 
     for eventData in events.values():
         for event in eventData.values():

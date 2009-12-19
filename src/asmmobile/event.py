@@ -161,8 +161,7 @@ class Event(grok.Model):
     def length(self):
         return self.end - self.start
 
-    @property
-    def events(self):
+    def getEvents(self, request):
         return [self]
 
 

@@ -92,7 +92,7 @@ class Location(grok.Model):
     grok.implements(interfaces.ILocation, interfaces.IEventOwner)
 
     DEFAULT_PRIORITY = 0
-    DEFAULT_HIDE_TIME = datetime.timedelta(hours=2)
+    DEFAULT_HIDE_TIME = datetime.timedelta(seconds=config.defaultHideTime)
 
     def __init__(self,
                  id,
@@ -126,15 +126,11 @@ class Location(grok.Model):
         # Get parent hiding time to be hiding time of this location.
         return self.majorLocation.hideUntil
 
-    def getEvents(self):
-        return self.application().getLocationEvents(self)
+    def getEvents(self, request):
+        return self.application().getLocationEvents(request, self)
 
     def application(self):
         return self.__parent__.application()
-
-    @property
-    def events(self):
-        return self.getEvents()
 
 
 class NoneLocation_cls(object):
@@ -173,7 +169,7 @@ class LocationIndex(MobileView):
     title = property(getTitle)
 
     def update(self):
-        self.events = getEventList(self, self.context.getEvents())
+        self.events = getEventList(self, self.context.getEvents(self.request))
 
 
 class Edit(grok.EditForm):

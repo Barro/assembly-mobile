@@ -35,8 +35,8 @@ Date creation function:
 Add some locations:
 
    >>> import datetime
-   >>> cave = app.addLocation('en', "CAVE", "http://cave/", 0, datetime.timedelta(seconds=60), None)
-   >>> home = app.addLocation('en', "HOME", "http://home/", 10, datetime.timedelta(seconds=7200), None)
+   >>> cave = app.addLocation('cave', 'en', "CAVE", "http://cave/", 0, datetime.timedelta(seconds=60), None)
+   >>> home = app.addLocation('home', 'en', "HOME", "http://home/", 10, datetime.timedelta(seconds=7200), None)
 
 Check that locations got added correctly:
 

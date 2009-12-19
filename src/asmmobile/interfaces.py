@@ -39,8 +39,10 @@ class IAsmMobile(zope.interface.Interface):
         @param currentTime Time that represents current time.
         """
 
+
 class IEventOwner(zope.interface.Interface):
-    events = zope.interface.Attribute("")
+    def getEvents(request):
+        pass
 
 
 class IEventContainer(zope.interface.Interface):
@@ -56,6 +58,7 @@ class IEventContainer(zope.interface.Interface):
 
         Events are given for filter function in ascending start time order.
         """
+
 
 class IEvent(zope.interface.Interface):
     lastModified = zope.interface.Attribute(
@@ -98,6 +101,7 @@ class ILocation(zope.interface.Interface):
     majorLocation = zope.interface.Attribute("")
     priority = schema.Int(title=u"Priority")
     hideUntil = zope.interface.Attribute("")
+
 
 class ILocalizedContentContainer(zope.interface.Interface):
     def getContent(request):

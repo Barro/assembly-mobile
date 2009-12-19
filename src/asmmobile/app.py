@@ -149,9 +149,8 @@ class AsmMobile(grok.Application, grok.Container):
     def LOCATIONS(self):
         return self[config.locations]
 
-
     def addLocation(
-        self, language, name, url, priority, hideUntil, majorLocationName):
+        self, id, language, name, url, priority, hideUntil, majorLocationName):
         locations = self.LOCATIONS.get(language, None)
         if locations is None:
             locations = asmmobile.location.LocationContainer()
@@ -168,10 +167,8 @@ class AsmMobile(grok.Application, grok.Container):
         else:
             majorLocation = None
 
-        keyName = util.convertNameToKey(name)
-
         return locations.addLocation(
-            keyName, name, url, priority, hideUntil, majorLocation)
+            id, name, url, priority, hideUntil, majorLocation)
 
 
     def updateEvents(self, languagedEvents):
@@ -224,22 +221,16 @@ class AsmMobile(grok.Application, grok.Container):
                 del(self.EVENTS[language])
 
 
-    def getEvents(self, language, eventFilter=None):
-        events = self.EVENTS.get(language, None)
+    def getEvents(self, request, eventFilter=None):
+        events = self.EVENTS.get(request.locale.id.language, None)
+        # Fall back to default language.
         if events is None:
-            return []
+            events = self.EVENTS[config.defaultLanguage]
         return events.getEvents(eventFilter)
 
-    def getLocaleEvents(self, eventFilter=None):
-        return self.getEvents(config.defaultLanguage, eventFilter)
-
-    events = property(getLocaleEvents)
-
-
-    def getLocationEvents(self, location):
+    def getLocationEvents(self, request, location):
         eventFilter = lambda event : (event.location == location)
-        events = []
-        return self.EVENTS[location.__parent__.__name__].getEvents(eventFilter)
+        return self.getEvents(request, eventFilter)
 
 
 nextSelectors = [selector.FutureEvents()]
@@ -260,7 +251,7 @@ class Index(MobileView):
     grok.context(AsmMobile)
 
     def _getCurrentNextEvents(self, now):
-        allEvents = self.context.getEvents('en',
+        allEvents = self.context.getEvents(self.request,
             selector.NotEndedEvents().setNow(now))
 
         currentEvents = filter(selector.CurrentEvents().setNow(now), allEvents)
@@ -278,7 +269,7 @@ class Index(MobileView):
 
 
     def _getPartyStatus(self, now, nextEvents):
-        allEvents = self.context.getEvents('en')
+        allEvents = self.context.getEvents(self.request)
         hasUpcomingEvents = len(nextEvents) > 0
         haveEvents = len(allEvents) > 0
         self.partyHasStarted = haveEvents and allEvents[0].start <= now
@@ -339,14 +330,14 @@ class NextEvents(MobileView):
         self.nextCenter = \
             (displayEnd + self.startDifference).strftime(self.dateFormat)
 
-        events = self.context.getEvents('en',
+        events = self.context.getEvents(self.request,
             (lambda event: displayStart < event.end
              and event.start <= displayEnd))
 
         # If the first displayable event is the same as the first event out of
         # all events, we don't have any more events in past and disable the
         # "previous 24 hours" link.
-        allEvents = self.context.getEvents('en')
+        allEvents = self.context.getEvents(self.request)
         if len(events) > 0 and events[0] != allEvents[0]:
             self.showPrevious = True
         else:
@@ -413,7 +404,7 @@ class AllEvents(MobileView):
     cacheTime = util.defaultCacheTime()
 
     def update(self):
-        self.events = getEventList(self, self.context.getEvents('en'))
+        self.events = getEventList(self, self.context.getEvents(self.request))
 
         if len(self.events):
             self.startTime = self.events[0].start
@@ -475,7 +466,7 @@ class Error500InternalServerError(MobileView, SystemErrorView):
 
      def update(self):
          print self.context
-#import pdb; pdb.set_trace()
+         #import pdb; pdb.set_trace()
          self.siteUrl = self.url(grok.getSite())
          self.response.setStatus(500)
 

@@ -215,11 +215,14 @@ class ContentTraverser(grok.Traverser):
     grok.context(ILocalizedContentContainer)
 
     def traverse(self, name):
-        content = self.context[config.defaultLanguage]
+        content = self.getContent(self.request)
         return content.get(name, None)
 
     def getContent(self, request):
-        return self.context[config.defaultLanguage]
+        content = self.context.get(request.locale.id.language, None)
+        if content is None:
+            content = self.context[config.defaultLanguage]
+        return content
 
     def browserDefault(self, request):
         content = self.getContent(request)

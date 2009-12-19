@@ -20,6 +20,7 @@
 import random
 import datetime
 import dateutil.tz
+import copy
 
 parts = """a e i u o y
 ca ce ci cu co cy
@@ -40,14 +41,29 @@ def generateName():
     name = " ".join(words)
     return name[0].upper() + name[1:]
 
-def generateLanguageData(events, locations, startTime):
-    locationNames = []
+def generateIdLocations(amount):
     resultLocations = {}
-    for locationId  in xrange(0, locations):
+    for locationId  in xrange(0, amount):
         name = generateName()
         idName = name.replace(" ", "_").lower()
-        resultLocations[name] = "http://www.example.com/location/%s" % idName
-        locationNames.append(name)
+        resultLocations[idName] = {
+            'name': name,
+            'url': "http://www.example.com/location/%s" % idName
+            }
+    return resultLocations
+
+def generateTranslatedLocations(existingNames):
+    resultLocations = {}
+    for idName in existingNames:
+        name = generateName()
+        resultLocations[idName] = {
+            'name': name,
+            'url': "http://www.example.com/location/%s" % idName
+            }
+    return resultLocations
+
+def generateLanguageData(eventAmount, locations, startTime):
+    locationNames = locations.keys()
 
     lengths = [datetime.timedelta(minutes=minutes) for minutes in
                [0, 15, 30, 30, 45, 60, 60, 60, 60, 60, 90, 90, 90, 120, 120]]
@@ -62,9 +78,9 @@ def generateLanguageData(events, locations, startTime):
 
     resultEvents = {}
     currentEvents = 1
-    for id in xrange(0, events):
+    for id in xrange(0, eventAmount):
         eventName = generateName()
-        eventId = "%d_%s" % (id, eventName.replace(" ", "_").lower())
+        eventId = "test_%d" % id
         resultEvents[eventId] = {
             'name': eventName,
             'start': eventTime,
@@ -84,12 +100,29 @@ def generateLanguageData(events, locations, startTime):
             currentEvents = 1
         else:
             currentEvents += 1
-    return (resultLocations, resultEvents)
+    return resultEvents
 
-def importer(events, locations, languages=['en'], startTime='now'):
+def translateEvents(baseEvents):
+    translatedEvents = {}
+    for key,data in baseEvents.items():
+        translatedEvents[key] = copy.deepcopy(data)
+        translatedEvents[key]['name'] = generateName()
+    return translatedEvents
+
+def importer(events, locations, languages=['en', 'fi'], startTime='now'):
     resultLocations = {}
     resultEvents = {}
-    for language in languages:
-        resultLocations[language], resultEvents[language] = generateLanguageData(events, locations, startTime)
+
+    baseLanguage = languages[0]
+    restLanguages = []
+    if len(languages) > 1:
+        restLanguages = languages[1:]
+
+    resultLocations[baseLanguage] = generateIdLocations(locations)
+    resultEvents[baseLanguage] = generateLanguageData(events, resultLocations[baseLanguage], startTime)
+
+    for language in restLanguages:
+        resultLocations[language] = generateTranslatedLocations(resultLocations[baseLanguage])
+        resultEvents[language] = translateEvents(resultEvents[baseLanguage])
 
     return (resultLocations, resultEvents)
