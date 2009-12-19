@@ -17,18 +17,27 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import grok
+import copy
+import datetime
+import dateutil.tz
+import re
 
+import grok
 import grokcore.component
 import grokcore.view.components
 import grokcore.view.interfaces
 
 import zope.interface
 from zope.i18n import translate
-import datetime
-import dateutil.tz
+from zope.interface.common.interfaces import IException
+from zope.publisher.interfaces import INotFound
+from zope.security.interfaces import IUnauthorized
+from zope.app.exception.systemerror import SystemErrorView
+from zope.i18n.interfaces import INegotiator, IUserPreferredLanguages
+from zope.publisher.interfaces.http import IHTTPRequest
+from zope.publisher.browser import BrowserLanguages
 
-import re
+import paste.httpserver
 
 import asmmobile.interfaces as interfaces
 import asmmobile.location
@@ -40,18 +49,10 @@ from asmmobile.util import getEventList, DisplayEvent
 import asmmobile.config as config
 import asmmobile.selector as selector
 import asmmobile.orderby as orderby
-
 from asmmobile import AsmMobileMessageFactory as _
-
-from zope.interface.common.interfaces import IException
-from zope.publisher.interfaces import INotFound
-from zope.security.interfaces import IUnauthorized
-from zope.app.exception.systemerror import SystemErrorView
-
 
 # Monkey patch send_header() method not to send "Server" header.
 # This saves 42 bytes when sending responses.
-import paste.httpserver
 old_send_header = paste.httpserver.WSGIHandler.send_header
 def new_send_header(self, key, value):
     if key.lower() == "server":
@@ -59,10 +60,6 @@ def new_send_header(self, key, value):
     return old_send_header(self, key, value)
 paste.httpserver.WSGIHandler.send_header = new_send_header
 
-from zope.i18n.interfaces import INegotiator, IUserPreferredLanguages
-
-from zope.publisher.interfaces.http import IHTTPRequest
-from zope.publisher.browser import BrowserLanguages
 
 class CatalogBasedI18nUserPreferredLanguages(grok.Adapter):
     grok.context(IHTTPRequest)
@@ -149,26 +146,32 @@ class AsmMobile(grok.Application, grok.Container):
     def LOCATIONS(self):
         return self[config.locations]
 
-    def addLocation(
-        self, id, language, name, url, priority, hideUntil, majorLocationName):
-        locations = self.LOCATIONS.get(language, None)
-        if locations is None:
-            locations = asmmobile.location.LocationContainer()
-            self.LOCATIONS[language] = locations
+    def updateLocations(self, languagedLocations):
+        if config.defaultLanguage not in languagedLocations:
+            raise ImportError("No locations for default language.")
 
-        # Make sure that location data is unicode.
-        if isinstance(name, str):
-            name = unicode(name)
-        if isinstance(url, str):
-            url = unicode(url)
+        locationData = {}
+        for language, locations in languagedLocations.items():
+            locationData[language] = {}
+            for locationId, locationValues in locations.items():
+                if locationId not in languagedLocations[config.defaultLanguage]:
+                    raise ImportError("All locations must be available for default language.")
+                locationUnicodeValues = util.unicodefyStrDict(locationValues)
+                locationData[language][locationId] = locationUnicodeValues
 
-        if majorLocationName is not None:
-            majorLocation = locations.getLocation(majorLocationName)
-        else:
-            majorLocation = None
+        # Make sure that every language has all locations.
+        defaultLocations = locationData[config.defaultLanguage]
+        for locationId, defaultValues in defaultLocations.items():
+            for languageValues in locationData.values():
+                if locationId not in languageValues:
+                    languageValues[locationId] = copy.copy(defaultValues)
 
-        return locations.addLocation(
-            id, name, url, priority, hideUntil, majorLocation)
+        for languageId, locationValues in locationData.items():
+            locations = self.LOCATIONS.get(languageId, None)
+            if locations is None:
+                locations = asmmobile.location.LocationContainer()
+                self.LOCATIONS[languageId] = locations
+            locations.updateLocations(locationValues)
 
 
     def updateEvents(self, languagedEvents):
@@ -185,16 +188,11 @@ class AsmMobile(grok.Application, grok.Container):
                 if eventId not in languagedEvents[config.defaultLanguage]:
                     raise ImportError("All events must be available for default language.")
 
-                eventValues = {}
-                # We only like unicode values.
-                for key,value in values.items():
-                    if isinstance(value, str):
-                        value = unicode(value)
-                    eventValues[key] = value
+                eventValues = util.unicodefyStrDict(values)
 
                 # Objectify location.
                 if values['location'] is not None:
-                    location = locations.getLocation(values['location'])
+                    location = locations[values['location']]
                 else:
                     location = None
                 eventValues['location'] = location
@@ -204,8 +202,14 @@ class AsmMobile(grok.Application, grok.Container):
         # Make sure that all languages have at least some version of all events.
         for eventId, values in eventData[config.defaultLanguage].items():
             for language, events in eventData.items():
+                locations = self.LOCATIONS[language]
                 if eventId not in events:
-                    events[eventId] = values
+                    newValues = copy.copy(values)
+                    location = None
+                    if newValues['location'] is not None:
+                        location = locations[newValues['location'].id]
+                    newValues['location'] = location
+                    events[eventId] = newValues
 
         # Update events for each language.
         for language, languageEvents in eventData.items():
@@ -477,6 +481,7 @@ class SetLanguage(MobileView):
     grok.name('l')
 
     def publishTraverse(self, request, name):
+        print self.context
         self.newLanguage = name
         request.setTraversalStack([])
         return self

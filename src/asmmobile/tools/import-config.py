@@ -25,10 +25,10 @@ IMPORTERS = {
         },
     }
 
-MAPPING_LOCATIONS = {'en': {
-        'Big screen': 'MAIN-ARENA',
-        'Stage': 'MAIN-ARENA',
-        }}
+MAPPING_LOCATIONS = {
+    'Big screen': 'MAIN-ARENA',
+    'Stage': 'MAIN-ARENA',
+    }
 
 
 PRIORITIES = {

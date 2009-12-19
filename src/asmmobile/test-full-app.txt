@@ -23,8 +23,34 @@ Date creation function::
 Add some locations::
 
    >>> import datetime
-   >>> cave = app.addLocation('cave', 'en', "CAVE", "http://cave/", 0, datetime.timedelta(seconds=60), None)
-   >>> home = app.addLocation('home', 'en', "HOME", "http://home/", 10, datetime.timedelta(seconds=7200), None)
+   >>> locations = {
+   ...     'en': {
+   ...         'cave':  {
+   ...             'name': 'CAVE',
+   ...             'url': 'http://cave/',
+   ...             'priority': 0,
+   ...             'hideUntil': datetime.timedelta(seconds=60),
+   ...             'majorLocation': None,
+   ...             },
+   ...         'home':  {
+   ...             'name': 'HOME',
+   ...             'url': 'http://home/',
+   ...             'priority': 10,
+   ...             'hideUntil': datetime.timedelta(seconds=7200),
+   ...             'majorLocation': None,
+   ...             },
+   ...         },
+   ...     'fi':  {
+   ...         'cave':  {
+   ...             'name': 'LUOLA',
+   ...             'url': 'http://cave/',
+   ...             'priority': 10,
+   ...             'hideUntil': datetime.timedelta(seconds=7200),
+   ...             'majorLocation': None,
+   ...             },
+   ...         },
+   ...     }
+   >>> app.updateLocations(locations)
 
 Check that locations got added correctly::
 
@@ -48,37 +74,48 @@ Check that all locations are listed in location index::
 
 Add some events to locations::
 
-   >>> events = {'en': {
-   ...     'cave_first': {
-   ...         'name': 'EVFIRST',
-   ...         'url': 'http://cave/first',
-   ...         'start': createTime("2009-01-01-09-00"),
-   ...         'end': createTime("2009-01-01-11-00"),
-   ...         'location': "cave",
+   >>> events = {
+   ...     'en': {
+   ...         'cave_first': {
+   ...             'name': 'EVFIRST',
+   ...             'url': 'http://cave/first',
+   ...             'start': createTime("2009-01-01-09-00"),
+   ...             'end': createTime("2009-01-01-11-00"),
+   ...             'location': "cave",
+   ...             },
+   ...         'cave_second': {
+   ...             'name': 'EVSECOND',
+   ...             'url': None,
+   ...             'start': createTime("2009-01-01-11-00"),
+   ...             'end': createTime("2009-01-01-12-00"),
+   ...             'location': "cave",
+   ...             'description': 'SECOND_DESCRIPTION\nSECOND_LINE',
+   ...             },
+   ...         'home_third': {
+   ...             'name': 'EVTHIRD',
+   ...             'url': 'http://home/third',
+   ...             'start': createTime("2009-01-01-10-30"),
+   ...             'end': createTime("2009-01-01-12-00"),
+   ...             'location': "home",
+   ...             },
+   ...         'none_fourth': {
+   ...             'name': 'NONEFOURTH',
+   ...             'url': 'http://none/FOURTH',
+   ...             'start': createTime("2009-01-01-09-00"),
+   ...             'end': createTime("2009-01-01-11-00"),
+   ...             'location': None,
+   ...             },
    ...         },
-   ...     'cave_second': {
-   ...         'name': 'EVSECOND',
-   ...         'url': None,
-   ...         'start': createTime("2009-01-01-11-00"),
-   ...         'end': createTime("2009-01-01-12-00"),
-   ...         'location': "cave",
-   ...         'description': 'SECOND_DESCRIPTION\nSECOND_LINE',
-   ...         },
-   ...     'home_third': {
-   ...         'name': 'EVTHIRD',
-   ...         'url': 'http://home/third',
-   ...         'start': createTime("2009-01-01-10-30"),
-   ...         'end': createTime("2009-01-01-12-00"),
-   ...         'location': "home",
-   ...         },
-   ...     'none_fourth': {
-   ...         'name': 'NONEFOURTH',
-   ...         'url': 'http://none/FOURTH',
-   ...         'start': createTime("2009-01-01-09-00"),
-   ...         'end': createTime("2009-01-01-11-00"),
-   ...         'location': None,
+   ...     'fi': {
+   ...         'cave_first': {
+   ...             'name': 'EVFIFIRST',
+   ...             'url': 'http://cave/first',
+   ...             'start': createTime("2009-01-01-09-00"),
+   ...             'end': createTime("2009-01-01-11-00"),
+   ...             'location': "cave",
+   ...             },
    ...         }
-   ...     }}
+   ...     }
    >>> app.updateEvents(events)
 
 Check that events are visible in their respective locations::
@@ -194,6 +231,33 @@ Check that different calendar outputs have correct events::
    [u'home_third@localhost']
    >>> getCalendarEvents(browser, 'http://localhost/app/event/cave_first/cave_first.vcs')
    [u'cave_first@localhost']
+
+Change language and check that there is translated event selected::
+
+   >>> browser.open('http://localhost/app/event/cave_first')
+   >>> assertXml(browser)
+   >>> "EVFIRST" in browser.contents
+   True
+   >>> "EVFIFIRST" in browser.contents
+   False
+   >>> browser.addHeader("Accept-Language", "fi")
+   >>> browser.open('http://localhost/app/event/cave_first')
+   >>> assertXml(browser)
+   >>> "EVFIRST" in browser.contents
+   False
+   >>> "EVFIFIRST" in browser.contents
+   True
+   >>> "LUOLA" in browser.contents
+   True
+
+Untranslated events should still result in something::
+
+   >>> browser.open('http://localhost/app/event/cave_second')
+   >>> assertXml(browser)
+   >>> "EVSECOND" in browser.contents
+   True
+   >>> "LUOLA" in browser.contents
+   True
 
 Remove one event and check that it is removed from application events::
 

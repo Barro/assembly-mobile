@@ -55,25 +55,20 @@ def updateSchedule(app, config):
                                         (eventId, eventParams))
                 events[language][eventId] = eventParams
 
-    mappingLocations = {}
-    for language, fromToLocations in config.MAPPING_LOCATIONS.items():
-        for fromLocation, toLocation in fromToLocations.items():
-            app.addLocation(toLocation.lower(), language, toLocation, None, None, None, None)
-            app.addLocation(toLocation.lower(), language, fromLocation, None, None, None, toLocation)
-            locations[language][toLocation.lower()] = {'name': toLocation}
+    # Add location mappings:
+    for language, locationData in locations.items():
+        for fromLocation, toLocation in config.MAPPING_LOCATIONS.items():
+            locations[fromLocation]['majorLocation'] = toLocation
+            locations[toLocation] = {'name': toLocation}
 
-    zope.app.component.hooks.setSite(app)
+    # Set priorities:
     for language, locationData in locations.items():
         for id, data in locationData.items():
-            if id is None:
-                continue
-            name = data.get('name', id)
-            url = data.get('url', None)
-            priority = config.PRIORITIES.get(id, None)
-            app.addLocation(id, language, name, url, priority, None, None)
+            data['priority'] = config.PRIORITIES.get(id, None)
 
-    for eventData in events.values():
-        for event in eventData.values():
+    # Shorten event names.
+    for languageEvents in events.values():
+        for event in languageEvents.values():
             shortName = event.get('short-name', event['name'])
             shortName = asmmobile.util.shortenName(
                 name=shortName,
@@ -84,5 +79,7 @@ def updateSchedule(app, config):
                 )
             event['short-name'] = shortName
 
+    zope.app.component.hooks.setSite(app)
+    app.updateLocations(locations)
     app.updateEvents(events)
     transaction.commit()

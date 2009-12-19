@@ -331,3 +331,11 @@ def uniqify(sequence):
         seen[marker] = 1
         result.append(item)
     return result
+
+def unicodefyStrDict(values):
+    result = {}
+    for key,value in values.items():
+        if isinstance(value, str):
+            value = unicode(value)
+        result[key] = value
+    return result
