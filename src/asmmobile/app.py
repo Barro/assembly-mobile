@@ -475,13 +475,13 @@ class Error500InternalServerError(MobileView, SystemErrorView):
          self.response.setStatus(500)
 
 
-
 class SetLanguage(MobileView):
     grok.context(zope.interface.Interface)
     grok.name('l')
 
+    cacheTime = util.AddTime(datetime.timedelta(seconds=0))
+
     def publishTraverse(self, request, name):
-        print self.context
         self.newLanguage = name
         request.setTraversalStack([])
         return self
@@ -493,7 +493,7 @@ class SetLanguage(MobileView):
                 config.cookieLanguage, language, path='/')
 
         returnTo = self.request.getHeader('Referer')
-        if returnTo is None:
+        if returnTo is None or returnTo == self.request.getURL():
             returnTo = self.url(self.context)
         self.redirect(returnTo)
 

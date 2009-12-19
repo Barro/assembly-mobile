@@ -48,6 +48,9 @@ class MobileView(grok.View):
         utcnow = self.now.astimezone(dateutil.tz.tzutc())
         cacheTime = self.cacheTime(utcnow)
 
+        if cacheTime == util.INTERVAL_ZERO_SECONDS:
+            return
+
         expiresAt = utcnow + cacheTime
 
         self.request.response.setHeader(
@@ -66,6 +69,7 @@ class MobileView(grok.View):
     def _setupLanguages(self):
         self.language = self.request.locale.id.language
 
+
     def __call__(self, *args, **kw):
         self.now = util.clock()
 
@@ -81,6 +85,16 @@ class MobileView(grok.View):
             self._sendCachingHeaders()
 
         return super(MobileView, self).__call__(*args, **kw)
+
+
+    def urlVR(self, target=""):
+        if not self.request._endswithslash:
+            if self.__name__ == 'index':
+                return "%s/%s" % (self.context.__name__, target)
+            else:
+                return "%s/%s" % (self.__name__, target)
+        else:
+            return target
 
 
     def urlR(self, target=""):
