@@ -1,0 +1,76 @@
+:Test-Layer: functional
+
+Initialize standard test environment:
+
+    >>> from asmmobile.testutils import initializeApplicationTestEnv, assertXml
+    >>> root, app, browser = initializeApplicationTestEnv(getRootFolder())
+
+Create 10 events with 3 different locations for two languages.
+
+    >>> importerConfig = {
+    ...     'events': 10,
+    ...     'locations': 3,
+    ...     'languages': ['en', 'fi'],
+    ...     }
+    >>> class UpdateConfig(object):
+    ...     IMPORTERS = {'test': importerConfig}
+    ...     MAPPING_LOCATIONS = {}
+    ...     PRIORITIES = {}
+    >>> from asmmobile.tools.update_schedule import updateSchedule
+    >>> updateSchedule(app, UpdateConfig())
+
+Keys should be equal for locations and events:
+
+    >>> eventsEnKeys = app['event']['en'].keys()
+    >>> len(eventsEnKeys)
+    10
+    >>> eventsFiKeys = app['event']['fi'].keys()
+    >>> len(eventsFiKeys)
+    10
+    >>> sorted(eventsEnKeys) == sorted(eventsFiKeys)
+    True
+    >>> locationsEnKeys = app['location']['en'].keys()
+    >>> len(locationsEnKeys)
+    3
+    >>> locationsFiKeys = app['location']['fi'].keys()
+    >>> len(locationsFiKeys)
+    3
+    >>> sorted(locationsEnKeys) == sorted(locationsFiKeys)
+    True
+
+Names should differ for different languages:
+
+    >>> eventsEn = [event.name for event in app['event']['en'].values()]
+    >>> eventsFi = [event.name for event in app['event']['fi'].values()]
+    >>> sorted(eventsEn) == sorted(eventsFi)
+    False
+    >>> locationsEn = [event.name for event in app['location']['en'].values()]
+    >>> locationsFi = [event.name for event in app['location']['fi'].values()]
+    >>> sorted(locationsEn) == sorted(locationsFi)
+    False
+
+Checking that standard pages work.
+
+    >>> from asmmobile.testutils import checkStandardPages
+    >>> browser.addHeader('Accept-Language', 'en')
+    >>> checkStandardPages(
+    ...     app,
+    ...     browser,
+    ...     list(app['event']['en'].values()),
+    ...     list(app['location']['en'].values())
+    ...     )
+
+Check translations:
+
+    >>> from zope.testbrowser.testing import Browser
+    >>> browser = Browser()
+    >>> browser.handleErrors = False
+    >>> browser.addHeader('Accept-Language', 'fi')
+    >>> checkStandardPages(
+    ...     app,
+    ...     browser,
+    ...     list(app['event']['fi'].values()),
+    ...     list(app['location']['fi'].values())
+    ...     )
+
+

@@ -1,21 +1,9 @@
 :Test-Layer: functional
 
-Create application and browser:
+Initialize standard test environment:
 
-   >>> from asmmobile.app import AsmMobile
-   >>> root = getRootFolder()
-   >>> app = AsmMobile()
-   >>> root['app'] = app
-   >>> from zope.testbrowser.testing import Browser
-   >>> browser = Browser()
-   >>> browser.handleErrors = False
-
-This function will throw an exception if returned XML is invalid.
-
-   >>> import xml.etree.ElementTree as etree
-   >>> def assertXml(browser):
-   ...     etree.fromstring(browser.contents) and None
-
+    >>> from asmmobile.testutils import initializeApplicationTestEnv, assertXml
+    >>> root, app, browser = initializeApplicationTestEnv(getRootFolder())
 
 Change the clock to be some known time:
 
@@ -195,18 +183,9 @@ one minute so we should not see it:
    >>> "EVSECOND" in browser.contents
    False
 
-Calendar functions:
-
-   >>> import icalendar
-   >>> def getCalendarEvents(browser, url):
-   ...     browser.open(url)
-   ...     cal = icalendar.Calendar.from_string(browser.contents)
-   ...     eventIds = [event.decoded('uid') for event in cal.walk('vevent')]
-   ...     eventIds.sort()
-   ...     return eventIds
-
 Check that different calendar outputs have correct events:
 
+   >>> from asmmobile.testutils import getCalendarEvents
    >>> getCalendarEvents(browser, 'http://localhost/app/all.vcs')
    [u'cave_first@localhost', u'cave_second@localhost', u'home_third@localhost', u'none_fourth@localhost']
    >>> getCalendarEvents(browser, 'http://localhost/app/location/cave/cave.vcs')

@@ -1,19 +1,9 @@
 :Test-Layer: functional
 
-Create application and browser:
+Initialize standard test environment:
 
-   >>> from asmmobile.app import AsmMobile
-   >>> root = getRootFolder()
-   >>> root['app'] = AsmMobile()
-   >>> from zope.testbrowser.testing import Browser
-   >>> browser = Browser()
-   >>> browser.handleErrors = False
-
-This function will throw an exception if returned XML is invalid.
-
-   >>> import xml.etree.ElementTree as etree
-   >>> def assertXml(browser):
-   ...     etree.fromstring(browser.contents) and None
+    >>> from asmmobile.testutils import initializeApplicationTestEnv, assertXml
+    >>> root, app, browser = initializeApplicationTestEnv(getRootFolder())
 
 Open all pages and verify that no errors are emitted:
 
@@ -37,6 +27,14 @@ Open all pages and verify that no errors are emitted:
    >>> browser.headers.get('Status').upper()
    '200 OK'
    >>> assertXml(browser)
+
+Check that there are no calendar events:
+
+   >>> from asmmobile.testutils import getCalendarEvents
+   >>> getCalendarEvents(browser, 'http://localhost/app/all.vcs')
+   []
+   >>> getCalendarEvents(browser, 'http://localhost/app/all.ics')
+   []
 
 Event should redirect to all:
 
