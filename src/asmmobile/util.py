@@ -339,3 +339,12 @@ def unicodefyStrDict(values):
             value = unicode(value)
         result[key] = value
     return result
+
+def setObjectAttributesFromDict(obj, newValues, attributes):
+    for name in attributes:
+        if isinstance(name, tuple):
+            attribute, key = name
+        else:
+            attribute, key = (name, name)
+        setattr(obj, attribute, newValues.get(key, getattr(obj, attribute)))
+    return obj

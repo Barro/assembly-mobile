@@ -49,19 +49,25 @@ class LocationContainer(grok.Container):
     def updateLocations(self, locationValues):
         for locationKey, locationData in locationValues.items():
             location = self.touchLocation(locationKey)
-            location.name = locationData.get('name', location.name)
-            location.url = locationData.get('url', location.url)
-            location.priority = locationData.get('priority', location.priority)
-            location.hideUntil = locationData.get(
-                'hideUntil', location.hideUntil)
 
-            if 'majorLocation' in locationData:
-                majorLocationKey = locationData['majorLocation']
+            if 'major-location' in locationData:
+                majorLocationKey = locationData['major-location']
                 if majorLocationKey is not None:
                     majorLocation = self.touchLocation(majorLocationKey)
                 else:
                     majorLocation = location
-                location.majorLocation = majorLocation
+                locationData['major-location'] = majorLocation
+
+            util.setObjectAttributesFromDict(
+                location,
+                locationData,
+                ['name',
+                 'url',
+                 'description',
+                 'priority',
+                 ('hideUntil', 'hide-until'),
+                 ('majorLocation', 'major-location'),
+                 ])
 
     def application(self):
         return self.__parent__.__parent__

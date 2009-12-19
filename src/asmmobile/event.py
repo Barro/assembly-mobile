@@ -54,6 +54,15 @@ class EventContainer(grok.OrderedContainer):
 
     lastModified = None
 
+    def _touchEvent(self, keyName):
+        if keyName in self:
+            return self[keyName]
+        else:
+            event = Event(keyName, None, None, None)
+            self[keyName] = event
+            return event
+
+
     def updateEvents(self, values):
         currentKeys = set(self.keys())
         newKeys = set(values.keys())
@@ -63,34 +72,26 @@ class EventContainer(grok.OrderedContainer):
             del self[key]
 
         addKeys = newKeys.difference(currentKeys)
-        for key in addKeys:
-            eventValues = values[key]
-            self[key] = Event(
-                id=key,
-                name=eventValues['name'],
-                start=eventValues['start'].astimezone(dateutil.tz.tzlocal()),
-                end=eventValues['end'].astimezone(dateutil.tz.tzlocal()),
-                location=eventValues.get('location', None),
-                url=eventValues.get('url', None),
-                categories=eventValues.get('categories', []),
-                description=eventValues.get('description', None),
-                shortName=eventValues.get('short-name', eventValues['name']),
-                isMajor=eventValues.get('is-major', False),
-                )
+        for key, eventData in values.items():
+            eventData['start'] = eventData['start'].astimezone(dateutil.tz.tzlocal())
+            eventData['end'] = eventData['end'].astimezone(dateutil.tz.tzlocal())
+            if 'short-name' not in eventData:
+                eventData['short-name'] = eventData['name']
 
-        updateKeys = newKeys.intersection(currentKeys)
-        for key in updateKeys:
-            eventValues = values[key]
-            event = self[key]
-            event.name = eventValues['name']
-            event.start = eventValues['start'].astimezone(dateutil.tz.tzlocal())
-            event.end = eventValues['end'].astimezone(dateutil.tz.tzlocal())
-            event.location = eventValues.get('location', None)
-            event.url = eventValues.get('url', None)
-            event.categories = eventValues.get('categories', [])
-            event.description = eventValues.get('description', None)
-            event.shortName = eventValues.get('short-name', eventValues['name'])
-            event.isMajor = eventValues.get('is-major', False)
+            event = self._touchEvent(key)
+            util.setObjectAttributesFromDict(
+                event,
+                eventData,
+                ['name',
+                 'start',
+                 'end',
+                 'location',
+                 'url',
+                 'categories',
+                 'description',
+                 ('shortName', 'short-name'),
+                 ('isMajor', 'is-major'),
+                 ])
 
         # Order events by start time.
         values = list(self.values())
