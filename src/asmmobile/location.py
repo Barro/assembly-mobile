@@ -37,7 +37,7 @@ class LocationContainer(grok.Container):
     grok.implements(interfaces.ILocationContainer)
 
 
-    def touchLocation(self, keyName):
+    def _touchLocation(self, keyName):
         if keyName in self:
             return self[keyName]
         else:
@@ -48,12 +48,12 @@ class LocationContainer(grok.Container):
 
     def updateLocations(self, locationValues):
         for locationKey, locationData in locationValues.items():
-            location = self.touchLocation(locationKey)
+            location = self._touchLocation(locationKey)
 
             if 'major-location' in locationData:
                 majorLocationKey = locationData['major-location']
                 if majorLocationKey is not None:
-                    majorLocation = self.touchLocation(majorLocationKey)
+                    majorLocation = self._touchLocation(majorLocationKey)
                 else:
                     majorLocation = location
                 locationData['major-location'] = majorLocation

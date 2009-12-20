@@ -33,9 +33,6 @@ class IAsmMobile(zope.interface.Interface):
     def getEvents(request, eventFilter=None):
         pass
 
-    def getLocationEvents(request, location):
-        pass
-
 
 class IEventOwner(zope.interface.Interface):
     def getEvents(request):
@@ -80,10 +77,7 @@ class IEvent(zope.interface.Interface):
 
 
 class ILocationContainer(zope.interface.Interface):
-    def addLocation(name, url, priority, hideUntil, majorLocation):
-        pass
-
-    def getLocation(name):
+    def updateLocations(locationValues):
         pass
 
 
