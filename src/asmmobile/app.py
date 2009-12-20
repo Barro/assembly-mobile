@@ -232,10 +232,6 @@ class AsmMobile(grok.Application, grok.Container):
             events = self.EVENTS[config.defaultLanguage]
         return events.getEvents(eventFilter)
 
-    def getLocationEvents(self, request, location):
-        eventFilter = lambda event : (event.location == location)
-        return self.getEvents(request, eventFilter)
-
 
 nextSelectors = [selector.FutureEvents()]
 for selectString in config.selectNextEvents.split("&"):

@@ -24,20 +24,17 @@ import asmmobile.config as config
 class IAsmMobile(zope.interface.Interface):
     """Marker interface for the application object."""
 
-    def addLocation(name, url, priority, hideUntil, majorLocationName):
+    def updateLocations(locations):
         pass
 
-    def getCurrentEvents(currentTime):
-        """Returns all events that are currently going on.
+    def updateEvents(events):
+        pass
 
-        @param currentTime Time that represents current time.
-        """
+    def getEvents(request, eventFilter=None):
+        pass
 
-    def getNextEvents(currentTime):
-        """Returns all events that are going to happen next in some area.
-
-        @param currentTime Time that represents current time.
-        """
+    def getLocationEvents(request, location):
+        pass
 
 
 class IEventOwner(zope.interface.Interface):

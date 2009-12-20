@@ -122,7 +122,8 @@ class Location(grok.Model):
         return self.majorLocation.hideUntil
 
     def getEvents(self, request):
-        return self.application().getLocationEvents(request, self)
+        eventFilter = lambda event : (event.location == self)
+        return self.application().getEvents(request, eventFilter)
 
     def application(self):
         return self.__parent__.application()
