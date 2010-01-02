@@ -7,9 +7,7 @@ body {
   margin: 1%;
 }
 
-/* #title must be before anchor selector because Nokia's S40 browser will
-   otherwise show wrong colours in links. */
-#title, #title a {
+#title, #title a, .links {
   color: #659cab;
 }
 
@@ -18,30 +16,30 @@ a, .links a:hover, .links strong {
   color: #033442;
 }
 
-a:hover, .links a, p a {
+a:hover, .links a, p a, .event_links a {
   text-decoration: underline;
 }
 
 h1 {
   font-size: 100%;
   margin: 0;
-  padding: 0;
 }
 
 h2 {
-  padding: 0;
   font-size: 105%;
   margin: 10px 0 0 0;
 }
 
 h3 {
   margin: 0;
-  padding: 0;
   font-size: 100%;
 }
 
+h1, h2, h3 {
+  padding: 0;
+}
+
 .header, .footer {
-  color: #659cab;
   padding: 4px 0;
   border-bottom: 2px solid #b0cfd8;
   margin-bottom: 5px;
@@ -49,10 +47,9 @@ h3 {
 
 .footer {
   border-top: 2px solid #b0cfd8;
-  margin-top: 5px;
 }
 
-p {
+p, .footer {
   margin-top: 5px;
 }
 

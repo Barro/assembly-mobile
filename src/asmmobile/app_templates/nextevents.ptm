@@ -48,8 +48,8 @@
 
   </tal:block>
 <tal:block tal:condition="python: event == view.anchorEvent" i18n:translate="">
-<span i18n:name="xml_data" tal:replace="structure python:'</div><div class=\'%s\'>' % shorten('current-time')"/>
-Current time: <span i18n:name="now" tal:replace="view/now/@@hourminute" />
+  <span i18n:name="xml_data" tal:replace="structure python:'</div><div class=\'%s\'>' % shorten('current-time')"/>
+  Current time: <span i18n:name="now" tal:replace="view/now/@@hourminute" />
 </tal:block>
 
 </div>
