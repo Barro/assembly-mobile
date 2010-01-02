@@ -10,38 +10,35 @@
 </head>
 <body>
 <h1 tal:attributes="id shorten:title">
-  <a tal:attributes="href view/application_urlR"
+  <tal:block tal:condition="python:view.application_url('index')==view.url()"
+             tal:replace="context/@@layout/siteName" />
+  <a tal:condition="python:view.application_url('index')!=view.url()"
+     tal:attributes="href view/application_urlR"
      tal:content="context/@@layout/siteName">Assembly Mobile</a>
 </h1>
 <metal:block define-slot="body">
-  <div tal:attributes="class shorten:header">
-<tal:block metal:define-macro='links'>
-<a tal:attributes="href view/application_urlR"
-   i18n:translate="">Overview</a>
-<!---->&#8226;<!---->
-<a tal:attributes="href python:view.application_urlR('next#now')"
-   i18n:translate="">Next events</a>
-</tal:block>
-</div>
+<div tal:attributes="class shorten:header"></div>
 <metal:block define-slot="content">
 
 </metal:block>
-<div tal:attributes="class shorten:footer">
+<div tal:attributes="class shorten:footer links">
+<tal:block tal:replace="structure context/@@layout/pageOverview/@@viewlink" />
+<!-- <a tal:attributes="href view/application_urlR" -->
+<!--    i18n:translate="">Overview</a> -->
+<!---->&#8226;<!---->
+<tal:block tal:replace="structure context/@@layout/pageNextEvents/@@viewlink" />
+<!---->&#8226;<!---->
+<tal:block tal:replace="structure context/@@layout/pageAllEvents/@@viewlink" />
+<!---->&#8226;<!---->
+<a tal:attributes="href context/@@layout/mainSiteUrl"
+   i18n:translate="">View main site</a>
+<!---->&#8226;<!---->
 <tal:block tal:condition="view/enableInternalization">
   <a tal:condition="python: view.language != 'fi'"
      tal:attributes="href python:view.urlVR('@@l/fi')">FI</a>
   <a tal:condition="python: view.language != 'en'"
      tal:attributes="href python:view.urlVR('@@l/en')">EN</a>
-<!---->&#8226;<!---->
 </tal:block>
-<tal:block metal:use-macro='context/@@layout/macros/links'>
-</tal:block>
-<!---->&#8226;<!---->
-<a tal:attributes="href python:view.application_urlR('all')"
-   i18n:translate="">All events</a>
-<!---->&#8226;<!---->
-<a tal:attributes="href context/@@layout/mainSiteUrl"
-   i18n:translate="">View main site</a>
 </div>
 </metal:block>
 </body>

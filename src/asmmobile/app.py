@@ -76,6 +76,7 @@ class CatalogBasedI18nUserPreferredLanguages(grok.Adapter):
         self.browserLanguages = BrowserLanguages(request)
 
     def getPreferredLanguages(self):
+
         browserLanguages = []
         if config.cookieLanguage in self.request.cookies:
             browserLanguages.append(self.request.cookies[config.cookieLanguage])
@@ -93,7 +94,9 @@ class CatalogBasedI18nUserPreferredLanguages(grok.Adapter):
 
         existingLanguages.append(config.defaultLanguage)
 
-        return util.uniqify(existingLanguages)
+        uniqueLanguages = util.uniqify(existingLanguages)
+
+        return uniqueLanguages
 
 
 class MobileTemplateFactory(grok.GlobalUtility):
@@ -374,6 +377,10 @@ class Layout(MobileView):
     sourceUrl = config.sourceUrl
     siteName = config.siteName
     mainSiteUrl = config.mainSiteUrl
+
+    pageOverview = (_(u"Overview"), '')
+    pageNextEvents = (_(u"Next events"), 'next#now')
+    pageAllEvents = (_(u"All events"), 'all')
 
 
 class LayoutStyle(grok.Viewlet):

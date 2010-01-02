@@ -13,12 +13,12 @@ body {
   color: #659cab;
 }
 
-a {
+a, .links a:hover, .links strong {
   text-decoration: none;
   color: #033442;
 }
 
-a:hover, p a {
+a:hover, .links a, p a {
   text-decoration: underline;
 }
 
@@ -50,10 +50,6 @@ h3 {
 .footer {
   border-top: 2px solid #b0cfd8;
   margin-top: 5px;
-}
-
-.links {
-  color: #659cab;
 }
 
 p {

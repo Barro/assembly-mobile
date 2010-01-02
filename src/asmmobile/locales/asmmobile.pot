@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Sat Dec 19 00:41:11 2009\n"
+"POT-Creation-Date: Sat Jan  2 15:28:20 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -23,23 +23,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
 
-#: src/asmmobile/app.py:429
+#: src/asmmobile/app.py:423
 msgid "%d day"
 msgstr ""
 
-#: src/asmmobile/app.py:431
+#: src/asmmobile/app.py:425
 msgid "%d days"
 msgstr ""
 
-#: src/asmmobile/app.py:437
+#: src/asmmobile/app.py:431
 msgid "%d hour"
 msgstr ""
 
-#: src/asmmobile/app.py:439
+#: src/asmmobile/app.py:433
 msgid "%d hours"
 msgstr ""
 
-#: src/asmmobile/app_templates/allevents.ptm:14
+#: src/asmmobile/app_templates/allevents.ptm:17
 msgid "Party time: ${party_start} - ${party_end}. Length: ${party_length}."
 msgstr ""
 
@@ -48,12 +48,18 @@ msgstr ""
 msgid "All events"
 msgstr ""
 
-#: src/asmmobile/app_templates/allevents.ptm:44
+#: src/asmmobile/app_templates/allevents.ptm:47
 msgid "There are no events in this party!"
 msgstr ""
 
-#: src/asmmobile/app_templates/allevents.ptm:8
+#: src/asmmobile/app_templates/allevents.ptm:9
 msgid "Events (vCal)"
+msgstr ""
+
+#: src/asmmobile/app_templates/allevents.ptm:9
+#: src/asmmobile/location_templates/locationindex.ptm:9
+#: src/asmmobile/event_templates/eventindex.ptm:9
+msgid "Nokia mobile phones and various desktop calendar software can import events from this file."
 msgstr ""
 
 #: src/asmmobile/app_templates/error401unauthorized.ptm:2
@@ -122,7 +128,7 @@ msgstr ""
 msgid "Now"
 msgstr ""
 
-#: src/asmmobile/app_templates/layout.ptm:43
+#: src/asmmobile/app_templates/layout.ptm:42
 msgid "View main site"
 msgstr ""
 
@@ -142,23 +148,23 @@ msgstr ""
 msgid "Previous ${difference_hours} hours"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:22
+#: src/asmmobile/event_templates/eventindex.ptm:24
 msgid "Time"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:34
+#: src/asmmobile/event_templates/eventindex.ptm:36
 msgid "- ${end_day} ${end_time}"
-msgstr ""
-
-#: src/asmmobile/event_templates/eventindex.ptm:38
-msgid "${start_day} ${start_time} ${end_time} ${event_length}"
 msgstr ""
 
 #: src/asmmobile/event_templates/eventindex.ptm:4
 msgid "${event_name} (event)"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:43
+#: src/asmmobile/event_templates/eventindex.ptm:40
+msgid "${start_day} ${start_time} ${end_time} ${event_length}"
+msgstr ""
+
+#: src/asmmobile/event_templates/eventindex.ptm:45
 msgid "Location"
 msgstr ""
 
@@ -166,13 +172,13 @@ msgstr ""
 msgid "vCal (event)"
 msgstr ""
 
-#: src/asmmobile/location_templates/locationindex.ptm:12
-#: src/asmmobile/event_templates/eventindex.ptm:13
+#: src/asmmobile/location_templates/locationindex.ptm:15
+#: src/asmmobile/event_templates/eventindex.ptm:15
 msgid "View on external page"
 msgstr ""
 
-#: src/asmmobile/location_templates/locationindex.ptm:17
-#: src/asmmobile/event_templates/eventindex.ptm:18
+#: src/asmmobile/location_templates/locationindex.ptm:20
+#: src/asmmobile/event_templates/eventindex.ptm:20
 msgid "Description"
 msgstr ""
 

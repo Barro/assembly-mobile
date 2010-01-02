@@ -21,6 +21,7 @@ import re
 import urlparse
 import dateutil.tz
 
+from zope.i18n import translate
 import zope.app.pagetemplate.engine
 from zope.tales.interfaces import ITALESExpression
 import zope.tales.expressions
@@ -251,3 +252,19 @@ class ContentTraverser(grok.Traverser):
 #         print content
 #         view = zope.component.queryMultiAdapter((content, request))
 #         return view.publishTraverse(request, name)
+
+class ViewLink(grok.View):
+    grok.context(tuple)
+    grok.name("viewlink")
+
+    def render(self):
+        pageName, pageLocation = self.context
+        nohashPart = pageLocation.split("#", 1)[0]
+        cleanedViewUrl = self.request.getURL().replace("@@index", "")
+        if self.application_url(nohashPart) == cleanedViewUrl:
+            return "<strong>%s</strong>" % translate(
+                pageName, context=self.request)
+
+        locationUrl = util.applicationRelativeUrl(self, pageLocation)
+        return '<a href="%s">%s</a>' % (
+            locationUrl, translate(pageName, context=self.request))

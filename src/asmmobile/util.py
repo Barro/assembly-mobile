@@ -270,9 +270,9 @@ class NameShortener(object):
         self.base = len(self.OUT_CHARS)
         self.shortened = {}
 
-    def shorten(self, name):
-        if name in self.shortened:
-            return self.shortened[name]
+    def _shortenPart(self, partName):
+        if partName in self.shortened:
+            return self.shortened[partName]
 
         thisId = self.id
         self.id += 1
@@ -286,9 +286,11 @@ class NameShortener(object):
             thisId -= letter
             thisId /= self.base
 
-        self.shortened[name] = result
+        self.shortened[partName] = result
         return result
 
+    def shorten(self, name):
+        return " ".join(self._shortenPart(part) for part in name.split(" "))
 
 class AsIsName(object):
     def shorten(self, name):

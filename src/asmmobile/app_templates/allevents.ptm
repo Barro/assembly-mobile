@@ -5,9 +5,13 @@
 <tal:block tal:condition="view/events">
 
 <h1 tal:content="context/partyName">Assembly</h1>
-<div><a tal:define="normPartyName string:${context/partyName/@@keynormalize}.vcs"
-        tal:attributes="href python:view.application_urlR(normPartyName)"
-        i18n:translate="">Events (vCal)</a></div>
+<div tal:attributes="class shorten:links"
+     tal:define="normPartyName string:${context/partyName/@@keynormalize}">
+  <a tal:attributes="href python:view.application_urlR(normPartyName) + '.vcs'"
+     title="Nokia mobile phones and various desktop calendar software can import events from this file."
+     i18n:attributes="title"
+     i18n:translate="">Events (vCal)</a>
+</div>
 <p i18n:translate="">
   Party time: <span i18n:name="party_start" tal:replace="view/startTime/@@fulldate" /> -
   <span i18n:name="party_end" tal:replace="view/endTime/@@fulldate" />. Length:

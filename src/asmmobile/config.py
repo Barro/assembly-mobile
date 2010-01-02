@@ -132,7 +132,7 @@ shortNameCutPostfix = stringValue("short-name-cut-postfix", "...")
 #
 # Header removal can also be done in reverse proxy, so we can still benefit
 # from server side caching and clients get less data per connection.
-sendCachingHeaders = booleanValue("send-caching-headers", False)
+sendCachingHeaders = booleanValue("send-caching-headers", True)
 
 # Time how long one event is considered to be valid.
 # This affects caching of all other pages than the overview schedule and next

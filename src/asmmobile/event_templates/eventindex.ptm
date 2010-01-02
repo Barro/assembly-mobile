@@ -7,6 +7,8 @@
 <h1 tal:content="context/name">Event name</h1>
 <div tal:attributes="class shorten:links">
   <a tal:attributes="href python:view.urlR('%s.vcs' % context.__name__)"
+     title="Nokia mobile phones and various desktop calendar software can import events from this file."
+     i18n:attributes="title"
      i18n:translate="">vCal (event)</a>
   <tal:block tal:condition="context/url">
     <!---->&#8226;<!---->
