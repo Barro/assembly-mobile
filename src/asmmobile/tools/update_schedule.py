@@ -58,8 +58,11 @@ def updateSchedule(app, config):
     # Add location mappings:
     for language, locationData in locations.items():
         for fromLocation, toLocation in config.MAPPING_LOCATIONS.items():
-            locations[fromLocation]['majorLocation'] = toLocation
-            locations[toLocation] = {'name': toLocation}
+            # Only map location if fromLocation exists.
+            if fromLocation in locationData:
+                locationData[fromLocation]['majorLocation'] = toLocation
+                if toLocation not in locations:
+                    locationData[toLocation] = {'name': toLocation}
 
     # Set priorities:
     for language, locationData in locations.items():

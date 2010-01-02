@@ -14,8 +14,8 @@ Create 10 events with 3 different locations for two languages::
     ...     }
     >>> class UpdateConfig(object):
     ...     IMPORTERS = {'test': importerConfig}
-    ...     MAPPING_LOCATIONS = {}
-    ...     PRIORITIES = {}
+    ...     MAPPING_LOCATIONS = {'nothing': 'nonexistent'}
+    ...     PRIORITIES = {'nopriority': 7}
     >>> from asmmobile.tools.update_schedule import updateSchedule
     >>> updateSchedule(app, UpdateConfig())
 

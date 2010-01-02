@@ -13,6 +13,8 @@
   <tal:block tal:condition="context/url">
     <!---->&#8226;<!---->
     <a tal:attributes="href context/url"
+       title="External location page may provide additional information about this location that is not optimized for mobile devices."
+       i18n:attributes="title"
        i18n:translate="">View on external page</a>
   </tal:block>
 </div>

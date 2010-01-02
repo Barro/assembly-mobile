@@ -12,7 +12,10 @@
      i18n:translate="">vCal (event)</a>
   <tal:block tal:condition="context/url">
     <!---->&#8226;<!---->
-    <a tal:attributes="href context/url" i18n:translate="">View on external page</a>
+    <a tal:attributes="href context/url"
+       title="External event page may provide additional information about this event that is not optimized for mobile devices."
+       i18n:attributes="title"
+       i18n:translate="">View on external page</a>
   </tal:block>
 </div>
 
