@@ -6,7 +6,6 @@
 <head>
   <title><metal:block define-slot='page-title'></metal:block> - <span tal:replace="context/@@layout/siteName">Assembly Mobile</span></title>
   <style type='text/css' tal:content="structure provider:stylesheets"></style>
-  <meta name="source-code" tal:attributes="content context/@@layout/sourceUrl" />
 </head>
 <body>
 <h1 tal:attributes="id shorten:title">
@@ -32,6 +31,8 @@
 <!---->&#8226;<!---->
 <a tal:attributes="href context/@@layout/mainSiteUrl"
    i18n:translate="">View main site</a>
+<!---->&#8226;<!---->
+<tal:block tal:replace="structure context/@@layout/pageAbout/@@viewlink" />
 <!---->&#8226;<!---->
 <tal:block tal:condition="view/enableInternalization">
   <a tal:condition="python: view.language != 'fi'"

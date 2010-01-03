@@ -27,6 +27,10 @@ Open all pages and verify that no errors are emitted::
    >>> browser.headers.get('Status').upper()
    '200 OK'
    >>> assertXml(browser)
+   >>> browser.open('http://localhost/app/about')
+   >>> browser.headers.get('Status').upper()
+   '200 OK'
+   >>> assertXml(browser)
 
 Check that there are no calendar events::
 

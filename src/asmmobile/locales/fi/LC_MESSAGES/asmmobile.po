@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Sat Jan  2 22:35:49 2010\n"
-"PO-Revision-Date: 2010-01-02 22:31+0200\n"
+"POT-Creation-Date: Sun Jan  3 16:42:10 2010\n"
+"PO-Revision-Date: 2010-01-03 16:50+0200\n"
 "Last-Translator: Jussi Judin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,21 +35,66 @@ msgstr "Seuraavaksi"
 msgid "All events"
 msgstr "Koko ohjelma"
 
-#: src/asmmobile/app.py:427
+#: src/asmmobile/app.py:384 src/asmmobile/app_templates/about.ptm:2
+#: src/asmmobile/app_templates/about.ptm:5
+msgid "About"
+msgstr "Tietoja"
+
+#: src/asmmobile/app.py:428
 msgid "%d day"
 msgstr "%d päivä"
 
-#: src/asmmobile/app.py:429
+#: src/asmmobile/app.py:430
 msgid "%d days"
 msgstr "%d päivää"
 
-#: src/asmmobile/app.py:435
+#: src/asmmobile/app.py:436
 msgid "%d hour"
 msgstr "%d tunti"
 
-#: src/asmmobile/app.py:437
+#: src/asmmobile/app.py:438
 msgid "%d hours"
 msgstr "%d tuntia"
+
+#: src/asmmobile/app_templates/about.ptm:10
+msgid ""
+"Calendar data is available in <!----><a href=\"http://en.wikipedia.org/wiki/"
+"Icalendar\">iCalendar</a><!----> format that also works with calendar "
+"software and mobile devices compatible with vCalendar format."
+msgstr "Kalenteridata on saatavilla <!----><a href=\"http://fi.wikipedia.org/wiki/Icalendar\">iCalendar-muodossa</a>, joka on yhteensopiva myös vCalendar-muotoa tukevien kalenteriohjelmistojen ja mobiililaitteiden kanssa."
+
+#: src/asmmobile/app_templates/about.ptm:11
+msgid "QR code links"
+msgstr "QR-koodi -linkit"
+
+#: src/asmmobile/app_templates/about.ptm:12
+msgid ""
+"QR code links enable quick access to web addresses by using your mobile "
+"phone's camera and QR code reader. An excellent list of available QR code "
+"readers can be found at <!----> <a href=\"http://code.google.com/p/zxing/"
+"wiki/InterestingLinks\">ZXing Interesting Links page</a>."
+msgstr ""
+"QR-koodi -linkit mahdollistavat nopean pääsyn webbiosoitteisiin käyttäen "
+"matkapuhelimesi kameraa ja QR-koodien lukijaa. Erinomainen lista "
+"olemassaolevista QR-koodien lukijoista löytyy osoitteesta <!----> <a href="
+"\"http://code.google.com/p/zxing/wiki/InterestingLinks\">http://code.google."
+"com/p/zxing/wiki/InterestingLinks</a>."
+
+#: src/asmmobile/app_templates/about.ptm:14
+#: src/asmmobile/app_templates/about.ptm:16
+msgid "QR code link to overview"
+msgstr "QR-koodi -linkki yleisnäkymään"
+
+#: src/asmmobile/app_templates/about.ptm:7
+msgid ""
+"${site_name} is available under<!----> <a href=\"http://www.fsf.org/"
+"licensing/licenses/agpl-3.0.html\">GNU Affero General Public License version "
+"3</a>. Source code for this application is available at <!---->${source_url}."
+msgstr "${site_name} -sivuston lähdekoodi on saatavilla <!----> <a href=\"http://www.fsf.org/licensing/licenses/agpl-3.0.html\">GNU Affero General Public License -lisenssin version 3</a> <!----> alaisuudessa osoitteesta <!---->${source_url}."
+
+#: src/asmmobile/app_templates/about.ptm:9
+msgid "Calendar data"
+msgstr "Kalenteridata"
 
 #: src/asmmobile/app_templates/allevents.ptm:10
 msgid "Events (vCal)"
@@ -65,11 +110,23 @@ msgstr ""
 "Nokian matkapuhelimet ja monet kalenterisovellukset tukevat tästä "
 "tiedostosta tuotuja tapahtumia."
 
-#: src/asmmobile/app_templates/allevents.ptm:18
+#: src/asmmobile/app_templates/allevents.ptm:15
+#: src/asmmobile/location_templates/locationindex.ptm:14
+#: src/asmmobile/event_templates/eventindex.ptm:14
+msgid "QR code link"
+msgstr "QR-koodi -linkki"
+
+#: src/asmmobile/app_templates/allevents.ptm:15
+#: src/asmmobile/location_templates/locationindex.ptm:14
+#: src/asmmobile/event_templates/eventindex.ptm:14
+msgid "QR code links require a mobile phone with a QR code reader."
+msgstr "QR-koodi -linkit vaativat QR-koodeja lukevat matkapuhelimen."
+
+#: src/asmmobile/app_templates/allevents.ptm:24
 msgid "Party time: ${party_start} - ${party_end}. Length: ${party_length}."
 msgstr "Tapahtuma-aika: ${party_start} - ${party_end}. Kesto: ${party_length}."
 
-#: src/asmmobile/app_templates/allevents.ptm:48
+#: src/asmmobile/app_templates/allevents.ptm:54
 msgid "There are no events in this party!"
 msgstr "Tässä tapahtumassa ei ole ohjelmaa!"
 
@@ -148,7 +205,7 @@ msgstr "${party_name} on ohi. Tervetuloa takaisin ensi vuonna!"
 msgid "Now"
 msgstr "Nyt"
 
-#: src/asmmobile/app_templates/layout.ptm:33
+#: src/asmmobile/app_templates/layout.ptm:32
 msgid "View main site"
 msgstr "Pääsivustolle"
 
@@ -164,7 +221,7 @@ msgstr "${xml_data} Nykyinen kellonaika: ${now}"
 msgid "Previous ${difference_hours} hours"
 msgstr "Edelliset ${difference_hours} tuntia"
 
-#: src/asmmobile/event_templates/eventindex.ptm:15
+#: src/asmmobile/event_templates/eventindex.ptm:21
 msgid ""
 "External event page may provide additional information about this event that "
 "is not optimized for mobile devices."
@@ -172,23 +229,23 @@ msgstr ""
 "Ulkoinen sivusto voi tarjota mobiililaitteille sopimatonta lisätietoa tästä "
 "tapahtumasta."
 
-#: src/asmmobile/event_templates/eventindex.ptm:27
+#: src/asmmobile/event_templates/eventindex.ptm:33
 msgid "Time"
 msgstr "Aika"
-
-#: src/asmmobile/event_templates/eventindex.ptm:39
-msgid "- ${end_day} ${end_time}"
-msgstr "- ${end_day} ${end_time}"
 
 #: src/asmmobile/event_templates/eventindex.ptm:4
 msgid "${event_name} (event)"
 msgstr "${event_name} (tapahtuma)"
 
-#: src/asmmobile/event_templates/eventindex.ptm:43
+#: src/asmmobile/event_templates/eventindex.ptm:45
+msgid "- ${end_day} ${end_time}"
+msgstr "- ${end_day} ${end_time}"
+
+#: src/asmmobile/event_templates/eventindex.ptm:49
 msgid "${start_day} ${start_time} ${end_time} ${event_length}"
 msgstr "${start_day} ${start_time} ${end_time} ${event_length}"
 
-#: src/asmmobile/event_templates/eventindex.ptm:48
+#: src/asmmobile/event_templates/eventindex.ptm:54
 msgid "Location"
 msgstr "Tapahtumapaikka"
 
@@ -196,7 +253,7 @@ msgstr "Tapahtumapaikka"
 msgid "vCal (event)"
 msgstr "vCal (tapahtuma)"
 
-#: src/asmmobile/location_templates/locationindex.ptm:15
+#: src/asmmobile/location_templates/locationindex.ptm:21
 msgid ""
 "External location page may provide additional information about this "
 "location that is not optimized for mobile devices."
@@ -204,13 +261,13 @@ msgstr ""
 "Ulkoinen sivusto voi tarjota mobiililaitteille sopimatonta lisätietoa tästä "
 "tapahtumapaikasta."
 
-#: src/asmmobile/location_templates/locationindex.ptm:15
-#: src/asmmobile/event_templates/eventindex.ptm:15
+#: src/asmmobile/location_templates/locationindex.ptm:21
+#: src/asmmobile/event_templates/eventindex.ptm:21
 msgid "View on external page"
 msgstr "Ulkoiselle sivustolle"
 
-#: src/asmmobile/location_templates/locationindex.ptm:23
-#: src/asmmobile/event_templates/eventindex.ptm:23
+#: src/asmmobile/location_templates/locationindex.ptm:29
+#: src/asmmobile/event_templates/eventindex.ptm:29
 msgid "Description"
 msgstr "Kuvaus"
 

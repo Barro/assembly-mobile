@@ -381,6 +381,7 @@ class Layout(MobileView):
     pageOverview = (_(u"Overview"), '')
     pageNextEvents = (_(u"Next events"), 'next#now')
     pageAllEvents = (_(u"All events"), 'all')
+    pageAbout = (_(u"About"), 'about')
 
 
 class LayoutStyle(grok.Viewlet):
@@ -440,11 +441,16 @@ class AllEvents(MobileView):
         return u" ".join(stringParts)
 
 
+class About(MobileView):
+    grok.context(AsmMobile)
+
+    cacheTime = util.defaultCacheTime()
+
+
 class ErrorLayout(MobileView):
     """The view that contains the error layout."""
     grok.context(zope.interface.Interface)
 
-    sourceUrl = config.sourceUrl
     siteName = config.siteName
 
 

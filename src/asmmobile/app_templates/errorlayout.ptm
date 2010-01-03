@@ -5,7 +5,6 @@
 <head>
   <title><metal:block define-slot='page-title'></metal:block> - <span tal:replace="context/@@layout/siteName">Assembly Mobile</span></title>
   <style type='text/css' tal:content="structure provider:stylesheets"></style>
-  <meta name="source-code" tal:attributes="content context/@@layout/sourceUrl" />
 </head>
 <body>
 <h1 tal:attributes="id shorten:title">

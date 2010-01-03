@@ -1,0 +1,23 @@
+<metal:block metal:use-macro="context/@@layout/macros/page">
+<metal:block metal:fill-slot='page-title'
+             i18n:translate="">About</metal:block>
+<div metal:fill-slot='content'>
+<h2 i18n:translate="">About</h2>
+<p i18n:translate="">
+<span i18n:name="site_name" tal:replace="context/@@layout/siteName">Assembly Mobile</span> is available under<!----> <a href="http://www.fsf.org/licensing/licenses/agpl-3.0.html">GNU Affero General Public License version 3</a>. Source code for this application is available at <!----><a i18n:name="source_url" tal:attributes="href context/@@layout/sourceUrl" tal:content="context/@@layout/sourceUrl">http://bitbucket.org/barro/assembly-mobile/</a>.
+</p>
+<h2 i18n:translate="">Calendar data</h2>
+<p i18n:translate="">Calendar data is available in <!----><a href="http://en.wikipedia.org/wiki/Icalendar">iCalendar</a><!----> format that also works with calendar software and mobile devices compatible with vCalendar format.</p>
+<h2 i18n:translate="">QR code links</h2>
+<p i18n:translate="">QR code links enable quick access to web addresses by using your mobile phone's camera and QR code reader. An excellent list of available QR code readers can be found at <!----> <a href="http://code.google.com/p/zxing/wiki/InterestingLinks">ZXing Interesting Links page</a>.
+</p>
+<h3 i18n:translate="">QR code link to overview</h3>
+<p>
+  <img tal:define="qrData view/application_url"
+       tal:attributes="src qrData/@@qrcodeurl"
+       alt="QR code link to overview"
+       title="QR code link to overview"
+       i18n:attributes="alt;title" />
+</p>
+</div>
+</metal:block>

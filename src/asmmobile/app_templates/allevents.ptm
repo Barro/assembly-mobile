@@ -11,6 +11,12 @@
      title="Nokia mobile phones and various desktop calendar software can import events from this file."
      i18n:attributes="title"
      i18n:translate="">Events (vCal)</a>
+    <!---->&#8226;<!---->
+    <a tal:define="qrData python:view.application_url('all')"
+       tal:attributes="href qrData/@@qrcodeurl"
+       title="QR code links require a mobile phone with a QR code reader."
+       i18n:attributes="title"
+       i18n:translate="">QR code link</a>
 </div>
 <p i18n:translate="">
   Party time: <span i18n:name="party_start" tal:replace="view/startTime/@@fulldate" /> -
