@@ -446,6 +446,12 @@ class About(MobileView):
 
     cacheTime = util.defaultCacheTime()
 
+    qrCodeAltTemplate = _(u"QR code link to overview (%s).")
+
+    def update(self):
+        self.qrCodeAlt = translate(
+            self.qrCodeAltTemplate % self.application_url())
+
 
 class ErrorLayout(MobileView):
     """The view that contains the error layout."""

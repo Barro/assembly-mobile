@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Sun Jan  3 16:42:10 2010\n"
-"PO-Revision-Date: 2010-01-03 16:45+0200\n"
+"POT-Creation-Date: Sun Jan  3 18:57:27 2010\n"
+"PO-Revision-Date: 2010-01-03 18:20+0200\n"
 "Last-Translator: Jussi Judin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -56,6 +56,10 @@ msgstr "%d hour"
 msgid "%d hours"
 msgstr "%d hours"
 
+#: src/asmmobile/app.py:449
+msgid "QR code link to overview (%s)."
+msgstr "QR code link to overview (%s)."
+
 #: src/asmmobile/app_templates/about.ptm:10
 msgid ""
 "Calendar data is available in <!----><a href=\"http://en.wikipedia.org/wiki/"
@@ -83,16 +87,18 @@ msgstr ""
 "wiki/InterestingLinks\">ZXing Interesting Links page</a>."
 
 #: src/asmmobile/app_templates/about.ptm:14
-#: src/asmmobile/app_templates/about.ptm:16
-msgid "QR code link to overview"
-msgstr "QR code link to overview"
+msgid "QR code link to overview (${overview_url})"
+msgstr "QR code link to overview (${overview_url})"
 
 #: src/asmmobile/app_templates/about.ptm:7
 msgid ""
 "${site_name} is available under<!----> <a href=\"http://www.fsf.org/"
 "licensing/licenses/agpl-3.0.html\">GNU Affero General Public License version "
 "3</a>. Source code for this application is available at <!---->${source_url}."
-msgstr "${site_name} is available under<!----> <a href=\"http://www.fsf.org/licensing/licenses/agpl-3.0.html\">GNU Affero General Public License version 3</a>. Source code for this application is available at <!---->${source_url}."
+msgstr ""
+"${site_name} is available under<!----> <a href=\"http://www.fsf.org/"
+"licensing/licenses/agpl-3.0.html\">GNU Affero General Public License version "
+"3</a>. Source code for this application is available at <!---->${source_url}."
 
 #: src/asmmobile/app_templates/about.ptm:9
 msgid "Calendar data"

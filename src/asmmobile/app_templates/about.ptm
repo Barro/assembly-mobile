@@ -11,13 +11,12 @@
 <h2 i18n:translate="">QR code links</h2>
 <p i18n:translate="">QR code links enable quick access to web addresses by using your mobile phone's camera and QR code reader. An excellent list of available QR code readers can be found at <!----> <a href="http://code.google.com/p/zxing/wiki/InterestingLinks">ZXing Interesting Links page</a>.
 </p>
-<h3 i18n:translate="">QR code link to overview</h3>
+<h3 i18n:translate="">QR code link to overview (<a i18n:name="overview_url" tal:attributes="href view/application_url" tal:content="view/application_url">http://this_sites_url/</a>)</h3>
 <p>
   <img tal:define="qrData view/application_url"
-       tal:attributes="src qrData/@@qrcodeurl"
-       alt="QR code link to overview"
-       title="QR code link to overview"
-       i18n:attributes="alt;title" />
+       tal:attributes="src qrData/@@qrcodeurl;
+                       alt view/qrCodeAlt;
+                       title view/qrCodeAlt" />
 </p>
 </div>
 </metal:block>

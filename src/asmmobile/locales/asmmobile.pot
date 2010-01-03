@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Sun Jan  3 16:42:10 2010\n"
+"POT-Creation-Date: Sun Jan  3 18:57:27 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -61,6 +61,10 @@ msgstr ""
 msgid "%d hours"
 msgstr ""
 
+#: src/asmmobile/app.py:449
+msgid "QR code link to overview (%s)."
+msgstr ""
+
 #: src/asmmobile/app_templates/about.ptm:10
 msgid "Calendar data is available in <!----><a href=\"http://en.wikipedia.org/wiki/Icalendar\">iCalendar</a><!----> format that also works with calendar software and mobile devices compatible with vCalendar format."
 msgstr ""
@@ -74,9 +78,7 @@ msgid "QR code links enable quick access to web addresses by using your mobile p
 msgstr ""
 
 #: src/asmmobile/app_templates/about.ptm:14
-#: src/asmmobile/app_templates/about.ptm:16
-#: src/asmmobile/app_templates/about.ptm:16
-msgid "QR code link to overview"
+msgid "QR code link to overview (${overview_url})"
 msgstr ""
 
 #: src/asmmobile/app_templates/about.ptm:7
