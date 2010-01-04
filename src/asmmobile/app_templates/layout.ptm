@@ -4,7 +4,7 @@
 <html tal:attributes="xml:lang view/language"
       xmlns="http://www.w3.org/1999/xhtml" i18n:domain="asmmobile">
 <head>
-  <title><metal:block define-slot='page-title'></metal:block> - <span tal:replace="context/@@layout/siteName">Assembly Mobile</span></title>
+  <title><metal:block define-slot="page-title"></metal:block><metal:block define-slot="page-title-separator"> - </metal:block><span tal:replace="context/@@layout/siteName">Assembly Mobile</span></title>
   <style type='text/css' tal:content="structure provider:stylesheets"></style>
 </head>
 <body>
@@ -22,8 +22,6 @@
 </metal:block>
 <div tal:attributes="class shorten:footer links">
 <tal:block tal:replace="structure context/@@layout/pageOverview/@@viewlink" />
-<!-- <a tal:attributes="href view/application_urlR" -->
-<!--    i18n:translate="">Overview</a> -->
 <!---->&#8226;<!---->
 <tal:block tal:replace="structure context/@@layout/pageNextEvents/@@viewlink" />
 <!---->&#8226;<!---->

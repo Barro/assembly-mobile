@@ -14,17 +14,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Sun Jan  3 18:57:27 2010\n"
-"PO-Revision-Date: 2010-01-03 18:58+0200\n"
+"POT-Creation-Date: Mon Jan  4 22:45:22 2010\n"
+"PO-Revision-Date: 2010-01-04 22:46+0200\n"
 "Last-Translator: Jussi Judin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
 
-#: src/asmmobile/app.py:381 src/asmmobile/app_templates/index.ptm:2
-msgid "Overview"
-msgstr "Yleisnäkymä"
+#: src/asmmobile/app.py:381
+msgid "Home"
+msgstr "Etusivu"
 
 #: src/asmmobile/app.py:382 src/asmmobile/app_templates/nextevents.ptm:2
 msgid "Next events"
@@ -57,8 +57,8 @@ msgid "%d hours"
 msgstr "%d tuntia"
 
 #: src/asmmobile/app.py:449
-msgid "QR code link to overview (%s)."
-msgstr "QR-koodi -linkki yleisnäkymään (%s)."
+msgid "QR code link to home page (%s)."
+msgstr "QR-koodi -linkki etusivulle (%s)."
 
 #: src/asmmobile/app_templates/about.ptm:10
 msgid ""
@@ -88,8 +88,8 @@ msgstr ""
 "com/p/zxing/wiki/InterestingLinks</a>."
 
 #: src/asmmobile/app_templates/about.ptm:14
-msgid "QR code link to overview (${overview_url})"
-msgstr "QR-koodi -linkki yleisnäkymään (${overview_url})"
+msgid "QR code link to home page (${overview_url})"
+msgstr "QR-koodi -linkki etusivulle (${overview_url})"
 
 #: src/asmmobile/app_templates/about.ptm:7
 msgid ""
@@ -175,15 +175,15 @@ msgstr ""
 "Sisäinen järjestelmävirhe tapahtui. Innovatiivisen korkeasti koulutetut "
 "apinamme tutkivat tapahtunutta."
 
-#: src/asmmobile/app_templates/index.ptm:18
+#: src/asmmobile/app_templates/index.ptm:19
 msgid "${time_left} left ${location_name}"
 msgstr "${time_left} jäljellä ${location_name}"
 
-#: src/asmmobile/app_templates/index.ptm:25
+#: src/asmmobile/app_templates/index.ptm:26
 msgid "Next"
 msgstr "Seuraavaksi"
 
-#: src/asmmobile/app_templates/index.ptm:29
+#: src/asmmobile/app_templates/index.ptm:30
 msgid ""
 "No new scheduled events are starting in next two hours. See <!----> "
 "${link_next_events} <!----> for further events."
@@ -191,15 +191,15 @@ msgstr ""
 "Uusia tapahtumia ei ole tiedossa seuraavaan kahteen tuntiin. Sivulta <!----> "
 "${link_next_events} <!----> näet seuraavat tapahtumat."
 
-#: src/asmmobile/app_templates/index.ptm:40
+#: src/asmmobile/app_templates/index.ptm:41
 msgid "in ${time_till_start} ${location_name}"
 msgstr "alkuun ${time_till_start} ${location_name}"
 
-#: src/asmmobile/app_templates/index.ptm:49
+#: src/asmmobile/app_templates/index.ptm:50
 msgid "full party schedule"
 msgstr "koko ohjelma"
 
-#: src/asmmobile/app_templates/index.ptm:49
+#: src/asmmobile/app_templates/index.ptm:50
 msgid ""
 "${party_name} has not started yet. See <!----> ${link_all_events} <!----> "
 "for the whole program."
@@ -207,15 +207,15 @@ msgstr ""
 "${party_name} ei ole vielä alkanut. Ohjelmatarjontaa voi tutkia sivulta "
 "<!----> ${link_all_events}."
 
-#: src/asmmobile/app_templates/index.ptm:53
+#: src/asmmobile/app_templates/index.ptm:54
 msgid "${party_name} has ended. Welcome again next year!"
 msgstr "${party_name} on ohi. Tervetuloa takaisin ensi vuonna!"
 
-#: src/asmmobile/app_templates/index.ptm:6
+#: src/asmmobile/app_templates/index.ptm:7
 msgid "Now"
 msgstr "Nyt"
 
-#: src/asmmobile/app_templates/layout.ptm:32
+#: src/asmmobile/app_templates/layout.ptm:30
 msgid "View main site"
 msgstr "Pääsivustolle"
 

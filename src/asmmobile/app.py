@@ -378,7 +378,7 @@ class Layout(MobileView):
     siteName = config.siteName
     mainSiteUrl = config.mainSiteUrl
 
-    pageOverview = (_(u"Overview"), '')
+    pageOverview = (_(u"Home"), '')
     pageNextEvents = (_(u"Next events"), 'next#now')
     pageAllEvents = (_(u"All events"), 'all')
     pageAbout = (_(u"About"), 'about')
@@ -446,7 +446,7 @@ class About(MobileView):
 
     cacheTime = util.defaultCacheTime()
 
-    qrCodeAltTemplate = _(u"QR code link to overview (%s).")
+    qrCodeAltTemplate = _(u"QR code link to home page (%s).")
 
     def update(self):
         self.qrCodeAlt = translate(

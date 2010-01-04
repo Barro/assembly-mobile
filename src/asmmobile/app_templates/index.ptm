@@ -1,5 +1,6 @@
 <metal:block metal:use-macro="context/@@layout/macros/page">
-<metal:block metal:fill-slot='page-title' i18n:translate="">Overview</metal:block>
+<metal:block metal:fill-slot='page-title'></metal:block>
+<metal:block metal:fill-slot='page-title-separator'></metal:block>
 <div metal:fill-slot='content'>
 
 <tal:block tal:condition="view/partyIsOngoing">

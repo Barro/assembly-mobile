@@ -14,17 +14,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Sun Jan  3 18:57:27 2010\n"
-"PO-Revision-Date: 2010-01-03 18:20+0200\n"
+"POT-Creation-Date: Mon Jan  4 22:45:22 2010\n"
+"PO-Revision-Date: 2010-01-04 22:45+0200\n"
 "Last-Translator: Jussi Judin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
 
-#: src/asmmobile/app.py:381 src/asmmobile/app_templates/index.ptm:2
-msgid "Overview"
-msgstr "Overview"
+#: src/asmmobile/app.py:381
+msgid "Home"
+msgstr "Home"
 
 #: src/asmmobile/app.py:382 src/asmmobile/app_templates/nextevents.ptm:2
 msgid "Next events"
@@ -57,8 +57,8 @@ msgid "%d hours"
 msgstr "%d hours"
 
 #: src/asmmobile/app.py:449
-msgid "QR code link to overview (%s)."
-msgstr "QR code link to overview (%s)."
+msgid "QR code link to home page (%s)."
+msgstr "QR code link to home page (%s)."
 
 #: src/asmmobile/app_templates/about.ptm:10
 msgid ""
@@ -87,8 +87,8 @@ msgstr ""
 "wiki/InterestingLinks\">ZXing Interesting Links page</a>."
 
 #: src/asmmobile/app_templates/about.ptm:14
-msgid "QR code link to overview (${overview_url})"
-msgstr "QR code link to overview (${overview_url})"
+msgid "QR code link to home page (${overview_url})"
+msgstr "QR code link to home page (${overview_url})"
 
 #: src/asmmobile/app_templates/about.ptm:7
 msgid ""
@@ -174,15 +174,15 @@ msgstr ""
 "Internal server error happened. Our highly trained monkeys have been "
 "dispatched to investigate this."
 
-#: src/asmmobile/app_templates/index.ptm:18
+#: src/asmmobile/app_templates/index.ptm:19
 msgid "${time_left} left ${location_name}"
 msgstr "${time_left} left ${location_name}"
 
-#: src/asmmobile/app_templates/index.ptm:25
+#: src/asmmobile/app_templates/index.ptm:26
 msgid "Next"
 msgstr "Next"
 
-#: src/asmmobile/app_templates/index.ptm:29
+#: src/asmmobile/app_templates/index.ptm:30
 msgid ""
 "No new scheduled events are starting in next two hours. See <!----> "
 "${link_next_events} <!----> for further events."
@@ -190,15 +190,15 @@ msgstr ""
 "No new scheduled events are starting in next two hours. See <!----> "
 "${link_next_events} <!----> for further events."
 
-#: src/asmmobile/app_templates/index.ptm:40
+#: src/asmmobile/app_templates/index.ptm:41
 msgid "in ${time_till_start} ${location_name}"
 msgstr "in ${time_till_start} ${location_name}"
 
-#: src/asmmobile/app_templates/index.ptm:49
+#: src/asmmobile/app_templates/index.ptm:50
 msgid "full party schedule"
 msgstr "full party schedule"
 
-#: src/asmmobile/app_templates/index.ptm:49
+#: src/asmmobile/app_templates/index.ptm:50
 msgid ""
 "${party_name} has not started yet. See <!----> ${link_all_events} <!----> "
 "for the whole program."
@@ -206,15 +206,15 @@ msgstr ""
 "${party_name} has not started yet. See <!----> ${link_all_events} <!----> "
 "for the whole program."
 
-#: src/asmmobile/app_templates/index.ptm:53
+#: src/asmmobile/app_templates/index.ptm:54
 msgid "${party_name} has ended. Welcome again next year!"
 msgstr "${party_name} has ended. Welcome again next year!"
 
-#: src/asmmobile/app_templates/index.ptm:6
+#: src/asmmobile/app_templates/index.ptm:7
 msgid "Now"
 msgstr "Now"
 
-#: src/asmmobile/app_templates/layout.ptm:32
+#: src/asmmobile/app_templates/layout.ptm:30
 msgid "View main site"
 msgstr "View main site"
 
