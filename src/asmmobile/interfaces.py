@@ -67,7 +67,8 @@ class IEvent(zope.interface.Interface):
     start = schema.Datetime(title=u"Start time")
     end = schema.Datetime(title=u"End time")
 
-    url = schema.URI(title=u"External URL", required=False)
+    # XXX schema.URI has bugs.
+    url = schema.TextLine(title=u"External URL", required=False)
     isMajor = schema.Bool(title=u"Is major event")
     categories = zope.interface.Attribute("")
     description = schema.Text(title=u"Description", required=False)
@@ -85,6 +86,7 @@ class ILocation(zope.interface.Interface):
 
     id = zope.interface.Attribute("")
     name = schema.TextLine(title=u"Name")
+    # XXX schema.URI has bugs.
     url = schema.TextLine(title=u"URL", required=False)
 
     description = schema.Text(title=u"Description")

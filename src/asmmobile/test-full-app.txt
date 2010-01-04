@@ -162,6 +162,51 @@ Check that location is not visible when there is none::
    >>> "location" in browser.contents
    False
 
+Check that locations and events include edit view and need password::
+
+   >>> browser.open('http://localhost/app/location/cave/edit') # doctest: +ELLIPSIS
+   Traceback (most recent call last):
+   ...
+   Unauthorized: ...
+   >>> browser.open('http://localhost/app/event/cave_first/edit') # doctest: +ELLIPSIS
+   Traceback (most recent call last):
+   ...
+   Unauthorized: ...
+
+Set authorization::
+
+   >>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
+
+Modify location description::
+
+   >>> browser.open('http://localhost/app/location/cave/edit')
+   >>> browser.headers.get('Status').upper()
+   '200 OK'
+   >>> assertXml(browser)
+   >>> browser.getControl(name="form.description").value = "MOD_CAVE_DESCRIPTION\n<&"
+   >>> browser.getControl("Apply").click()
+   >>> "error" in browser.contents
+   False
+   >>> browser.open('http://localhost/app/location/cave')
+   >>> assertXml(browser)
+   >>> "MOD_CAVE_DESCRIPTION" in browser.contents
+   True
+
+Modify event description::
+
+   >>> browser.open('http://localhost/app/event/cave_first/edit')
+   >>> browser.headers.get('Status').upper()
+   '200 OK'
+   >>> assertXml(browser)
+   >>> browser.getControl(name="form.description").value = "MOD_CAVE_FIRST_DESCRIPTION\n<&"
+   >>> browser.getControl("Apply").click()
+   >>> "error" in browser.contents
+   False
+   >>> browser.open('http://localhost/app/event/cave_first')
+   >>> assertXml(browser)
+   >>> "MOD_CAVE_FIRST_DESCRIPTION" in browser.contents
+   True
+
 Check that all events are visible in all page::
 
    >>> browser.open('http://localhost/app/all')
