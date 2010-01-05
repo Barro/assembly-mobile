@@ -314,7 +314,8 @@ def getAvailableLanguages():
     if config.enabledLanguages == u"*":
         return languages
 
-    enabledLanguages = [lang.trim() for lang in config.enabledLanguages.split(u",")]
+    enabledLanguages = [
+        lang.strip() for lang in config.enabledLanguages.split(u",")]
 
     result = []
     for language in enabledLanguages:

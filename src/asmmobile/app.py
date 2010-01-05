@@ -76,6 +76,8 @@ class CatalogBasedI18nUserPreferredLanguages(grok.Adapter):
         self.browserLanguages = BrowserLanguages(request)
 
     def getPreferredLanguages(self):
+        if not config.enableInternalization:
+            return [config.defaultLanguage]
 
         browserLanguages = []
         if config.cookieLanguage in self.request.cookies:

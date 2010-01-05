@@ -44,7 +44,8 @@ class MobileView(grok.View):
 
     charset = "UTF-8"
     contentType = "application/xhtml+xml;charset=%s" % charset
-    enableInternalization = config.enableInternalization
+
+    language = None
 
     def _sendCachingHeaders(self):
         utcnow = self.now.astimezone(dateutil.tz.tzutc())
@@ -65,17 +66,16 @@ class MobileView(grok.View):
             )
         self.request.response.setHeader(
             'Vary',
-            "Accept-Encoding,Accept-Language"
+            "Accept-Encoding,Accept-Language,Cookie"
             )
 
     def _setupLanguages(self):
         self.language = self.request.locale.id.language
 
-
     def __call__(self, *args, **kw):
         self.now = util.clock()
 
-        if self.enableInternalization:
+        if config.enableInternalization:
             self._setupLanguages()
 
         self.request.response.setHeader(
