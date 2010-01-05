@@ -149,6 +149,15 @@ class AsmMobile(grok.Application, grok.Container):
     def LOCATIONS(self):
         return self[config.locations]
 
+
+    def getFirstEvent(self, request):
+        return self.EVENTS[request.locale.id.language].firstEvent
+
+
+    def getLastEvent(self, request):
+        return self.EVENTS[request.locale.id.language].lastEvent
+
+
     def updateLocations(self, languagedLocations):
         if config.defaultLanguage not in languagedLocations:
             raise ImportError("No locations for default language.")
@@ -254,10 +263,11 @@ class Index(MobileView):
     grok.context(AsmMobile)
 
     def _getCurrentNextEvents(self, now):
-        allEvents = self.context.getEvents(self.request,
+        notEndedEvents = self.context.getEvents(self.request,
             selector.NotEndedEvents().setNow(now))
 
-        currentEvents = filter(selector.CurrentEvents().setNow(now), allEvents)
+        currentEvents = filter(
+            selector.CurrentEvents().setNow(now), notEndedEvents)
         currentEvents.sort(currentSort)
 
         self.currentEvents = getEventList(self, currentEvents)
@@ -265,18 +275,20 @@ class Index(MobileView):
         for nextSelector in nextSelectors:
             nextSelector.reset(now)
         nextEvents = filter(
-            selector.AndSelector(nextSelectors), allEvents)
+            selector.AndSelector(nextSelectors), notEndedEvents)
         nextEvents.sort(nextSort)
 
         self.nextEvents = getEventList(self, nextEvents)
 
 
     def _getPartyStatus(self, now, nextEvents):
-        allEvents = self.context.getEvents(self.request)
+        firstEvent = self.context.getFirstEvent(self.request)
+        lastEvent = self.context.getLastEvent(self.request)
+
         hasUpcomingEvents = len(nextEvents) > 0
-        haveEvents = len(allEvents) > 0
-        self.partyHasStarted = haveEvents and allEvents[0].start <= now
-        self.partyHasEnded = haveEvents and allEvents[-1].end < now
+        haveEvents = firstEvent != u''
+        self.partyHasStarted = haveEvents and firstEvent.start <= now
+        self.partyHasEnded = haveEvents and lastEvent.end < now
         partyIsOngoing = (
             haveEvents and self.partyHasStarted and not self.partyHasEnded)
         # Some event might be starting in a while so we mark party as ongoing.
@@ -337,22 +349,35 @@ class NextEvents(MobileView):
             (lambda event: displayStart < event.end
              and event.start <= displayEnd))
 
-        # If the first displayable event is the same as the first event out of
-        # all events, we don't have any more events in past and disable the
-        # "previous 24 hours" link.
-        allEvents = self.context.getEvents(self.request)
-        if len(events) > 0 and events[0] != allEvents[0]:
+        haveNextEvents = len(events) > 0
+
+        firstEvent = self.context.getFirstEvent(self.request)
+        lastEvent = self.context.getLastEvent(self.request)
+        haveEvents = firstEvent.id != u''
+
+        # If we don't have any more events in past and disable the
+        # "previous xx hours" link.
+        if haveNextEvents and events[0] != firstEvent:
             self.showPrevious = True
         else:
             self.showPrevious = False
 
-        # If the first displayable event is the same as the last event out of
-        # all events, we don't have any more events in future and disable the
-        # "next 24 hours" link.
-        if len(events) > 0 and events[-1] != allEvents[-1]:
+        # If we don't have any more events in future and disable the
+        # "next xx hours" link.
+        if haveNextEvents and events[-1] != lastEvent:
             self.showNext = True
         else:
             self.showNext = False
+
+        # This displays same "party has started" message that is in index.
+        self.partyHasStarted = False
+        if haveEvents and firstEvent.start < displayEnd:
+            self.partyHasStarted = True
+
+        # This displays same "party has ended" message that is in index.
+        self.partyHasEnded = False
+        if haveEvents and lastEvent.end < displayStart:
+            self.partyHasEnded = True
 
         self.events = getEventList(self, events)
         self.anchorEvent = None

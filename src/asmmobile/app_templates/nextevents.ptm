@@ -8,15 +8,18 @@
        i18n:translate="">Previous
       <tal:block i18n:name="difference_hours"
                  tal:replace="view/differenceHours" /> hours</a>
+  </tal:block>
+  <tal:block tal:condition="python: view.showPrevious and view.showNext">
     <!---->&#8226;<!---->
   </tal:block>
-  <a tal:attributes="href python:view.urlR('all')" i18n:translate="">All events</a>
+<!--   <a tal:attributes="href python:view.urlR('all')" --> <!-- i18n:translate="">All events</a> -->
   <tal:block tal:condition="view/showNext">
-    <!---->&#8226;<!---->
      <a tal:attributes="href python:'%s?s=%s' % (view.urlR(), view.nextCenter)" i18n:translate="">Next <tal:block i18n:name="difference_hours" tal:replace="view/differenceHours"/> hours</a>
   </tal:block>
 </div>
 
+<metal:block metal:use-macro="context/@@index/macros/party-has-not-started"></metal:block>
+<metal:block metal:use-macro="context/@@index/macros/party-has-ended"></metal:block>
 
 <tal:block tal:repeat="event view/events"
            tal:define="global lastStart python:None">

@@ -16,16 +16,17 @@
      tal:content="context/@@layout/siteName">Assembly Mobile</a>
 </h1>
 <metal:block define-slot="body">
-<div tal:attributes="class shorten:header"></div>
-<metal:block define-slot="content">
-
-</metal:block>
-<div tal:attributes="class shorten:footer links">
-<tal:block tal:replace="structure context/@@layout/pageOverview/@@viewlink" />
+<div tal:attributes="class shorten:header links"><metal:block define-slot="content-header"><tal:block metal:define-macro='internal-links'><tal:block tal:replace="structure context/@@layout/pageOverview/@@viewlink" />
 <!---->&#8226;<!---->
 <tal:block tal:replace="structure context/@@layout/pageNextEvents/@@viewlink" />
 <!---->&#8226;<!---->
 <tal:block tal:replace="structure context/@@layout/pageAllEvents/@@viewlink" />
+</tal:block></metal:block></div>
+<metal:block define-slot="content">
+
+</metal:block>
+<div tal:attributes="class shorten:footer links">
+<tal:block metal:use-macro="context/@@layout/macros/internal-links"></tal:block>
 <!---->&#8226;<!---->
 <a tal:attributes="href context/@@layout/mainSiteUrl"
    i18n:translate="">View main site</a>

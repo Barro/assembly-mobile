@@ -49,10 +49,29 @@ def notify_eventModified(event, modifiedEvent):
     container.lastModified = util.clock()
 
 
+class NoneEvent(grok.Model):
+    grok.implements(interfaces.IEvent)
+
+    id = u''
+    name = u''
+    shortName = u''
+    # start > end so that this screws something up.
+    start = datetime.datetime(datetime.MAXYEAR,12,30,tzinfo=dateutil.tz.tzlocal())
+    end = datetime.datetime(datetime.MINYEAR,1,1,tzinfo=dateutil.tz.tzlocal())
+    location = None
+    url = None
+    description = None
+    categories = []
+    isMajor = False
+
+
 class EventContainer(grok.OrderedContainer):
     grok.implements(interfaces.IEventContainer)
 
     lastModified = None
+
+    firstEvent = NoneEvent()
+    lastEvent = firstEvent
 
     def _touchEvent(self, keyName):
         if keyName in self:
@@ -97,6 +116,15 @@ class EventContainer(grok.OrderedContainer):
         values = list(self.values())
         values.sort(_sortByStartTime)
         self.updateOrder(order=[key.id for key in values])
+
+        if len(values) != 0:
+            self.firstEvent = values[0]
+            self.lastEvent = values[-1]
+        else:
+            self.firstEvent = NoneEvent()
+            self.lastEvent = self.firstEvent
+
+
 
     def getEvents(self, eventFilter):
         return filter(eventFilter, self.values())
