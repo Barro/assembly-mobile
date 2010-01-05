@@ -16,7 +16,7 @@ a, .links a:hover, .links strong, p a:hover {
   color: #033442;
 }
 
-a:hover, .links a, p a, .event_links a {
+a:hover, .links a, p a {
   text-decoration: underline;
 }
 
