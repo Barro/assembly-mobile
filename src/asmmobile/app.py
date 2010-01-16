@@ -34,7 +34,7 @@ from zope.publisher.interfaces import INotFound
 from zope.security.interfaces import IUnauthorized
 from zope.app.exception.systemerror import SystemErrorView
 from zope.i18n.interfaces import INegotiator, IUserPreferredLanguages
-from zope.publisher.interfaces.http import IHTTPRequest
+from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.publisher.browser import BrowserLanguages
 
 import paste.httpserver
@@ -62,28 +62,30 @@ paste.httpserver.WSGIHandler.send_header = new_send_header
 
 
 class CatalogBasedI18nUserPreferredLanguages(grok.Adapter):
-    grok.context(IHTTPRequest)
+    grok.context(IBrowserRequest)
     grok.provides(IUserPreferredLanguages)
 
     availableLanguages = None
 
-    def __init__(self, request):
+    def getPreferredLanguages(self):
+
+        if not config.enableInternalization:
+            return [config.defaultLanguage]
+
+        request = self.context
+
+        if hasattr(request, 'locale'):
+            return [request.locale.id.language]
+
         if self.availableLanguages is None:
             CatalogBasedI18nUserPreferredLanguages.availableLanguages = \
                 util.getAvailableLanguages()
 
-        self.request = request
-        self.browserLanguages = BrowserLanguages(request)
-
-    def getPreferredLanguages(self):
-        if not config.enableInternalization:
-            return [config.defaultLanguage]
-
         browserLanguages = []
-        if config.cookieLanguage in self.request.cookies:
-            browserLanguages.append(self.request.cookies[config.cookieLanguage])
+        if config.cookieLanguage in request.cookies:
+            browserLanguages.append(request.cookies[config.cookieLanguage])
 
-        langs = self.browserLanguages.getPreferredLanguages()
+        langs = BrowserLanguages(request).getPreferredLanguages()
         for httplang in langs:
             language, country, variant = \
                 (httplang.split('-') + [None, None])[:3]
