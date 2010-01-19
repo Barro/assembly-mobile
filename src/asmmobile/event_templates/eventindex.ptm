@@ -25,10 +25,6 @@
   </tal:block>
 </div>
 
-<tal:block tal:condition="context/description">
-  <h2 i18n:translate="">Description</h2>
-  <p tal:content="context/description">description</p>
-</tal:block>
 
 <h2 i18n:translate="">Time</h2>
 <div i18n:translate="">
@@ -56,6 +52,11 @@
     <a tal:attributes="href context/location/@@url"
        tal:content="context/location/name">Location</a>
   </div>
+</tal:block>
+
+<tal:block tal:condition="context/description">
+  <h2 i18n:translate="">Description</h2>
+  <p tal:content="context/description">description</p>
 </tal:block>
 
 </div>
