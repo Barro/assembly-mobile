@@ -31,11 +31,11 @@ ta te ti tu to ty
 ma me mi mu mo my
 va ve vi vu vo vy""".split()
 
-def generateName():
+def generateWords(wordMin, wordMax, partMin, partMax):
     words = []
-    for wid in xrange(0, random.randint(1, 3)):
+    for wid in xrange(0, random.randint(wordMin, wordMax)):
         word = ""
-        for part in xrange(0, random.randint(2, 4)):
+        for part in xrange(0, random.randint(partMin, partMax)):
             word += parts[random.randint(0, len(parts) - 1)]
         words.append(word)
     name = " ".join(words)
@@ -44,21 +44,23 @@ def generateName():
 def generateIdLocations(amount):
     resultLocations = {}
     for locationId  in xrange(0, amount):
-        name = generateName()
+        name = generateWords(1, 3, 2, 4)
         idName = name.replace(" ", "_").lower()
         resultLocations[idName] = {
             'name': name,
-            'url': "http://www.example.com/location/%s" % idName
+            'url': "http://www.example.com/location/%s" % idName,
+            'description': generateWords(20, 50, 2, 5) + ".",
             }
     return resultLocations
 
 def generateTranslatedLocations(existingNames):
     resultLocations = {}
     for idName in existingNames:
-        name = generateName()
+        name = generateWords(1, 3, 2, 4)
         resultLocations[idName] = {
             'name': name,
-            'url': "http://www.example.com/location/%s" % idName
+            'url': "http://www.example.com/location/%s" % idName,
+            'description': generateWords(20, 50, 2, 5) + ".",
             }
     return resultLocations
 
@@ -79,7 +81,7 @@ def generateLanguageData(eventAmount, locations, startTime):
     resultEvents = {}
     currentEvents = 1
     for id in xrange(0, eventAmount):
-        eventName = generateName()
+        eventName = generateWords(1, 3, 2, 4)
         eventId = "test_%d" % id
         resultEvents[eventId] = {
             'name': eventName,
@@ -88,6 +90,7 @@ def generateLanguageData(eventAmount, locations, startTime):
             'location': locationNames[random.randint(0, len(locationNames) - 1)],
             'categories': [],
             'is-major': random.random() < 0.1,
+            'description': generateWords(20, 50, 2, 5) + ".",
             }
 
         if currentEvents >= 6:
@@ -106,7 +109,8 @@ def translateEvents(baseEvents):
     translatedEvents = {}
     for key,data in baseEvents.items():
         translatedEvents[key] = copy.deepcopy(data)
-        translatedEvents[key]['name'] = generateName()
+        translatedEvents[key]['name'] = generateWords(1, 3, 2, 4)
+        translatedEvents[key]['description'] = generateWords(20, 50, 2, 5) + "."
     return translatedEvents
 
 def importer(events, locations, languages=['en', 'fi'], startTime='now'):
