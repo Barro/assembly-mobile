@@ -408,7 +408,7 @@ class NavigationBreadcrumbs(grok.Viewlet):
     grok.viewletmanager(NavigationManager)
     grok.context(zope.interface.Interface)
 
-    BREADCRUMB_SEPARATOR = " &gt; "
+    BREADCRUMB_SEPARATOR = "<!----> &gt; <!---->"
 
     def render(self):
         contexts = []
