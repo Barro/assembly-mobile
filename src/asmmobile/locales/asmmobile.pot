@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Jan  4 22:45:22 2010\n"
+"POT-Creation-Date: Tue Jan 19 20:50:29 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -23,44 +23,47 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
 
-#: src/asmmobile/app.py:381
+#: src/asmmobile/app.py:137
+#: src/asmmobile/app.py:457
 msgid "Home"
 msgstr ""
 
-#: src/asmmobile/app.py:382
+#: src/asmmobile/app.py:323
+#: src/asmmobile/app.py:458
 #: src/asmmobile/app_templates/nextevents.ptm:2
 msgid "Next events"
 msgstr ""
 
-#: src/asmmobile/app.py:383
+#: src/asmmobile/app.py:459
+#: src/asmmobile/app.py:489
+#: src/asmmobile/event.py:72
 #: src/asmmobile/app_templates/allevents.ptm:2
-#: src/asmmobile/app_templates/nextevents.ptm:13
 msgid "All events"
 msgstr ""
 
-#: src/asmmobile/app.py:384
+#: src/asmmobile/app.py:460
 #: src/asmmobile/app_templates/about.ptm:2
 #: src/asmmobile/app_templates/about.ptm:5
 msgid "About"
 msgstr ""
 
-#: src/asmmobile/app.py:428
+#: src/asmmobile/app.py:507
 msgid "%d day"
 msgstr ""
 
-#: src/asmmobile/app.py:430
+#: src/asmmobile/app.py:509
 msgid "%d days"
 msgstr ""
 
-#: src/asmmobile/app.py:436
+#: src/asmmobile/app.py:515
 msgid "%d hour"
 msgstr ""
 
-#: src/asmmobile/app.py:438
+#: src/asmmobile/app.py:517
 msgid "%d hours"
 msgstr ""
 
-#: src/asmmobile/app.py:449
+#: src/asmmobile/app.py:528
 msgid "QR code link to home page (%s)."
 msgstr ""
 
@@ -148,47 +151,47 @@ msgstr ""
 msgid "Internal server error happened. Our highly trained monkeys have been dispatched to investigate this."
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:19
+#: src/asmmobile/app_templates/index.ptm:20
 msgid "${time_left} left ${location_name}"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:26
+#: src/asmmobile/app_templates/index.ptm:27
 msgid "Next"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:30
+#: src/asmmobile/app_templates/index.ptm:31
 msgid "No new scheduled events are starting in next two hours. See <!----> ${link_next_events} <!----> for further events."
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:41
+#: src/asmmobile/app_templates/index.ptm:42
 msgid "in ${time_till_start} ${location_name}"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:50
+#: src/asmmobile/app_templates/index.ptm:51
 msgid "full party schedule"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:50
+#: src/asmmobile/app_templates/index.ptm:51
 msgid "${party_name} has not started yet. See <!----> ${link_all_events} <!----> for the whole program."
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:54
+#: src/asmmobile/app_templates/index.ptm:55
 msgid "${party_name} has ended. Welcome again next year!"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:7
+#: src/asmmobile/app_templates/index.ptm:8
 msgid "Now"
 msgstr ""
 
-#: src/asmmobile/app_templates/layout.ptm:30
+#: src/asmmobile/app_templates/layout.ptm:37
 msgid "View main site"
 msgstr ""
 
-#: src/asmmobile/app_templates/nextevents.ptm:16
+#: src/asmmobile/app_templates/nextevents.ptm:17
 msgid "Next ${difference_hours} hours"
 msgstr ""
 
-#: src/asmmobile/app_templates/nextevents.ptm:52
+#: src/asmmobile/app_templates/nextevents.ptm:55
 msgid "${xml_data} Current time: ${now}"
 msgstr ""
 
@@ -222,6 +225,11 @@ msgstr ""
 
 #: src/asmmobile/event_templates/eventindex.ptm:9
 msgid "vCal (event)"
+msgstr ""
+
+#: src/asmmobile/location.py:51
+#: src/asmmobile/location_templates/index.ptm:2
+msgid "Locations"
 msgstr ""
 
 #: src/asmmobile/location_templates/locationindex.ptm:21

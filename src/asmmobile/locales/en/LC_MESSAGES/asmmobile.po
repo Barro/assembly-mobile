@@ -14,49 +14,50 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Jan  4 22:45:22 2010\n"
-"PO-Revision-Date: 2010-01-04 22:45+0200\n"
+"POT-Creation-Date: Tue Jan 19 20:50:29 2010\n"
+"PO-Revision-Date: 2010-01-19 20:33+0200\n"
 "Last-Translator: Jussi Judin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
 
-#: src/asmmobile/app.py:381
+#: src/asmmobile/app.py:137 src/asmmobile/app.py:457
 msgid "Home"
 msgstr "Home"
 
-#: src/asmmobile/app.py:382 src/asmmobile/app_templates/nextevents.ptm:2
+#: src/asmmobile/app.py:323 src/asmmobile/app.py:458
+#: src/asmmobile/app_templates/nextevents.ptm:2
 msgid "Next events"
 msgstr "Next events"
 
-#: src/asmmobile/app.py:383 src/asmmobile/app_templates/allevents.ptm:2
-#: src/asmmobile/app_templates/nextevents.ptm:13
+#: src/asmmobile/app.py:459 src/asmmobile/app.py:489 src/asmmobile/event.py:72
+#: src/asmmobile/app_templates/allevents.ptm:2
 msgid "All events"
 msgstr "All events"
 
-#: src/asmmobile/app.py:384 src/asmmobile/app_templates/about.ptm:2
+#: src/asmmobile/app.py:460 src/asmmobile/app_templates/about.ptm:2
 #: src/asmmobile/app_templates/about.ptm:5
 msgid "About"
 msgstr "About"
 
-#: src/asmmobile/app.py:428
+#: src/asmmobile/app.py:507
 msgid "%d day"
 msgstr "%d day"
 
-#: src/asmmobile/app.py:430
+#: src/asmmobile/app.py:509
 msgid "%d days"
 msgstr "%d days"
 
-#: src/asmmobile/app.py:436
+#: src/asmmobile/app.py:515
 msgid "%d hour"
 msgstr "%d hour"
 
-#: src/asmmobile/app.py:438
+#: src/asmmobile/app.py:517
 msgid "%d hours"
 msgstr "%d hours"
 
-#: src/asmmobile/app.py:449
+#: src/asmmobile/app.py:528
 msgid "QR code link to home page (%s)."
 msgstr "QR code link to home page (%s)."
 
@@ -174,15 +175,15 @@ msgstr ""
 "Internal server error happened. Our highly trained monkeys have been "
 "dispatched to investigate this."
 
-#: src/asmmobile/app_templates/index.ptm:19
+#: src/asmmobile/app_templates/index.ptm:20
 msgid "${time_left} left ${location_name}"
 msgstr "${time_left} left ${location_name}"
 
-#: src/asmmobile/app_templates/index.ptm:26
+#: src/asmmobile/app_templates/index.ptm:27
 msgid "Next"
 msgstr "Next"
 
-#: src/asmmobile/app_templates/index.ptm:30
+#: src/asmmobile/app_templates/index.ptm:31
 msgid ""
 "No new scheduled events are starting in next two hours. See <!----> "
 "${link_next_events} <!----> for further events."
@@ -190,15 +191,15 @@ msgstr ""
 "No new scheduled events are starting in next two hours. See <!----> "
 "${link_next_events} <!----> for further events."
 
-#: src/asmmobile/app_templates/index.ptm:41
+#: src/asmmobile/app_templates/index.ptm:42
 msgid "in ${time_till_start} ${location_name}"
 msgstr "in ${time_till_start} ${location_name}"
 
-#: src/asmmobile/app_templates/index.ptm:50
+#: src/asmmobile/app_templates/index.ptm:51
 msgid "full party schedule"
 msgstr "full party schedule"
 
-#: src/asmmobile/app_templates/index.ptm:50
+#: src/asmmobile/app_templates/index.ptm:51
 msgid ""
 "${party_name} has not started yet. See <!----> ${link_all_events} <!----> "
 "for the whole program."
@@ -206,23 +207,23 @@ msgstr ""
 "${party_name} has not started yet. See <!----> ${link_all_events} <!----> "
 "for the whole program."
 
-#: src/asmmobile/app_templates/index.ptm:54
+#: src/asmmobile/app_templates/index.ptm:55
 msgid "${party_name} has ended. Welcome again next year!"
 msgstr "${party_name} has ended. Welcome again next year!"
 
-#: src/asmmobile/app_templates/index.ptm:7
+#: src/asmmobile/app_templates/index.ptm:8
 msgid "Now"
 msgstr "Now"
 
-#: src/asmmobile/app_templates/layout.ptm:30
+#: src/asmmobile/app_templates/layout.ptm:37
 msgid "View main site"
 msgstr "View main site"
 
-#: src/asmmobile/app_templates/nextevents.ptm:16
+#: src/asmmobile/app_templates/nextevents.ptm:17
 msgid "Next ${difference_hours} hours"
 msgstr "Next ${difference_hours} hours"
 
-#: src/asmmobile/app_templates/nextevents.ptm:52
+#: src/asmmobile/app_templates/nextevents.ptm:55
 msgid "${xml_data} Current time: ${now}"
 msgstr "${xml_data} Current time: ${now}"
 
@@ -261,6 +262,10 @@ msgstr "Location"
 #: src/asmmobile/event_templates/eventindex.ptm:9
 msgid "vCal (event)"
 msgstr "vCal (event)"
+
+#: src/asmmobile/location.py:51 src/asmmobile/location_templates/index.ptm:2
+msgid "Locations"
+msgstr "Locations"
 
 #: src/asmmobile/location_templates/locationindex.ptm:21
 msgid ""

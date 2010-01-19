@@ -23,6 +23,7 @@ import dateutil.tz
 import re
 
 import grok
+import grok.interfaces
 import grokcore.component
 import grokcore.view.components
 import grokcore.view.interfaces
@@ -43,13 +44,18 @@ import asmmobile.interfaces as interfaces
 import asmmobile.location
 import asmmobile.event
 import asmmobile.components
-from asmmobile.components import MobileView, StylesheetManager, MobileTemplate
+from asmmobile.components import MobileView, StylesheetManager, MobileTemplate, NavigationManager
 import asmmobile.util as util
 from asmmobile.util import getEventList, DisplayEvent
 import asmmobile.config as config
 import asmmobile.selector as selector
 import asmmobile.orderby as orderby
 from asmmobile import AsmMobileMessageFactory as _
+
+
+import zope.app.exception.interfaces
+import zope.browser.interfaces
+zope.app.exception.interfaces.ISystemErrorView = zope.browser.interfaces.ISystemErrorView
 
 # Monkey patch send_header() method not to send "Server" header.
 # This saves 42 bytes when sending responses.
@@ -128,6 +134,8 @@ class ImportError(RuntimeError):
 class AsmMobile(grok.Application, grok.Container):
     zope.interface.implements(interfaces.IAsmMobile, interfaces.IEventOwner)
 
+    name = _(u"Home")
+
     partyName = config.partyName
 
     def __init__(self, **vars):
@@ -135,11 +143,11 @@ class AsmMobile(grok.Application, grok.Container):
 
         defaultLanguage = config.defaultLanguage
 
-        locations = asmmobile.components.LocalizedContentContainer()
+        locations = asmmobile.location.LocalizedLocationContainer()
         self[config.locations] = locations
         locations[defaultLanguage] = asmmobile.location.LocationContainer()
 
-        events = asmmobile.components.LocalizedContentContainer()
+        events = asmmobile.event.LocalizedEventContainer()
         self[config.events] = events
         events[defaultLanguage] = asmmobile.event.EventContainer()
 
@@ -310,6 +318,9 @@ class Index(MobileView):
 class NextEvents(MobileView):
     grok.name("next")
     grok.context(AsmMobile)
+    grok.implements(interfaces.INamedObject)
+
+    name = _(u"Next events")
 
     startDifference = datetime.timedelta(hours=config.nextEventsEndHours)
     endDifference = datetime.timedelta(hours=config.nextEventsStartHours)
@@ -393,6 +404,42 @@ class NextEvents(MobileView):
             previousEvent = event
 
 
+class NavigationBreadcrumbs(grok.Viewlet):
+    grok.viewletmanager(NavigationManager)
+    grok.context(zope.interface.Interface)
+
+    BREADCRUMB_SEPARATOR = " &gt; "
+
+    def render(self):
+        contexts = []
+
+        if interfaces.INamedObject.providedBy(self.view):
+            contexts.append(self.view)
+
+        context = self.context
+        while not grok.interfaces.IApplication.providedBy(context):
+            if interfaces.INamedObject.providedBy(context):
+                contexts.append(context)
+            context = context.__parent__
+
+        contexts.append(context)
+
+        contexts.reverse()
+
+        linkContexts = contexts[:-1]
+
+        links = []
+
+        for context in linkContexts:
+            name = translate(context.name, context=self.request)
+            links.append("<a href='%s'>%s</a>" % (self.view.url(context), name))
+
+        currentName = translate(contexts[-1].name, context=self.request)
+        links.append("<strong>%s</strong>" % currentName)
+
+        return self.BREADCRUMB_SEPARATOR.join(links)
+
+
 class NextEventsStyle(grok.Viewlet):
     grok.viewletmanager(StylesheetManager)
     grok.context(AsmMobile)
@@ -437,6 +484,9 @@ class ScheduledEvent(grok.View):
 class AllEvents(MobileView):
     grok.name("all")
     grok.context(AsmMobile)
+    grok.implements(interfaces.INamedObject)
+
+    name = _(u"All events")
 
     cacheTime = util.defaultCacheTime()
 

@@ -35,7 +35,7 @@ import grok
 
 import asmmobile.util as util
 import asmmobile.config as config
-from asmmobile.interfaces import ILocalizedContentContainer
+import asmmobile.interfaces as interfaces
 
 class MobileView(grok.View):
     grok.context(Interface)
@@ -218,17 +218,10 @@ class StylesheetManager(grok.ViewletManager):
         return "{".join(outputSelectors)
 
 
-class LocalizedContentContainer(grok.Container):
-    grok.implements(ILocalizedContentContainer)
-
-    def application(self):
-        return self.__parent__.application()
-
-
 from zope.app.publisher.browser import getDefaultViewName
 
 class ContentTraverser(grok.Traverser):
-    grok.context(ILocalizedContentContainer)
+    grok.context(interfaces.ILocalizedContentContainer)
 
     def traverse(self, name):
         content = self.getContent(self.request)
@@ -241,7 +234,8 @@ class ContentTraverser(grok.Traverser):
         return content
 
     def browserDefault(self, request):
-        content = self.getContent(request)
+        # content = self.getContent(request)
+        content = self.context
         view_name = getDefaultViewName(content, request)
         view_uri = "@@%s" % view_name
         return content, (view_uri,)
@@ -293,3 +287,8 @@ class QrCodeLink(grok.View):
             }
 
         return chartLink
+
+
+class NavigationManager(grok.ViewletManager):
+    grok.name('navigation')
+    grok.context(Interface)

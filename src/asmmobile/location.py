@@ -23,17 +23,38 @@ import re
 
 import grok
 
+from asmmobile import AsmMobileMessageFactory as _
 import asmmobile.util as util
 import asmmobile.interfaces as interfaces
 import asmmobile.config as config
-from asmmobile.components import MobileView, LocalizedContentContainer
+from asmmobile.components import MobileView
+from asmmobile.interfaces import ILocalizedContentContainer
 from asmmobile.util import getEventList
+
+
+def _sortByName(first, second):
+    nameCmp = cmp(first.name, second.name)
+    if nameCmp == 0:
+        # In case we have same name (shouldn't happen), compare by ID to
+        # always get correct sort order.
+        return cmp(first.id, second.id)
+    else:
+        return nameCmp
 
 class EditDescription(grok.Permission):
     grok.name('asmmobile.Edit')
 
 
-class LocationContainer(grok.Container):
+class LocalizedLocationContainer(grok.Container):
+    grok.implements(ILocalizedContentContainer)
+
+    name = _(u"Locations")
+
+    def application(self):
+        return self.__parent__.application()
+
+
+class LocationContainer(grok.OrderedContainer):
     grok.implements(interfaces.ILocationContainer)
 
 
@@ -46,8 +67,15 @@ class LocationContainer(grok.Container):
             return location
 
 
-    def updateLocations(self, locationValues):
-        for locationKey, locationData in locationValues.items():
+    def updateLocations(self, values):
+        currentKeys = set(self.keys())
+        newKeys = set(values.keys())
+
+        removeKeys = currentKeys.difference(newKeys)
+        for key in removeKeys:
+            del self[key]
+
+        for locationKey, locationData in values.items():
             location = self._touchLocation(locationKey)
 
             if 'major-location' in locationData:
@@ -69,18 +97,25 @@ class LocationContainer(grok.Container):
                  ('majorLocation', 'major-location'),
                  ])
 
+        # Order locations by their name.
+        values = list(self.values())
+        values.sort(_sortByName)
+        self.updateOrder(order=[key.id for key in values])
+
+
     def application(self):
         return self.__parent__.__parent__
 
 
 class Index(MobileView):
-    grok.context(LocationContainer)
+    grok.context(LocalizedLocationContainer)
     grok.name("index")
 
-    title = u"Locations"
-
-    def locations(self):
-        return self.context.values()
+    def update(self):
+        content = self.context.get(self.request.locale.id.language, None)
+        if content is None:
+            content = self.context[config.defaultLanguage]
+        self.locations = content.values()
 
 
 class Location(grok.Model):

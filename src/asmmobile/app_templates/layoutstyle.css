@@ -11,7 +11,7 @@ body {
   color: #659cab;
 }
 
-a, .links a:hover, .links strong, p a:hover {
+a, .links a:hover, .links strong, p a:hover, .header {
   text-decoration: none;
   color: #033442;
 }

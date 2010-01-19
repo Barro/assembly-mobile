@@ -21,6 +21,7 @@ import datetime
 import grok
 import dateutil.tz
 
+from asmmobile import AsmMobileMessageFactory as _
 import asmmobile.interfaces as interfaces
 from asmmobile.components import MobileView
 import asmmobile.util as util
@@ -63,6 +64,15 @@ class NoneEvent(grok.Model):
     description = None
     categories = []
     isMajor = False
+
+
+class LocalizedEventContainer(grok.Container):
+    grok.implements(interfaces.ILocalizedContentContainer)
+
+    name = _(u"All events")
+
+    def application(self):
+        return self.__parent__.application()
 
 
 class EventContainer(grok.OrderedContainer):
@@ -131,7 +141,7 @@ class EventContainer(grok.OrderedContainer):
 
 
 class EventContainerIndex(grok.View):
-    grok.context(EventContainer)
+    grok.context(LocalizedEventContainer)
     grok.name("index")
 
     def update(self):

@@ -21,7 +21,10 @@ import zope.interface
 from zope import schema
 import asmmobile.config as config
 
-class IAsmMobile(zope.interface.Interface):
+class INamedObject(zope.interface.Interface):
+    name = schema.TextLine(title=u"Name")
+
+class IAsmMobile(INamedObject):
     """Marker interface for the application object."""
 
     def updateLocations(locations):
@@ -54,7 +57,7 @@ class IEventContainer(zope.interface.Interface):
         """
 
 
-class IEvent(zope.interface.Interface):
+class IEvent(INamedObject):
     lastModified = zope.interface.Attribute(
         u"When this event has last been modified"
         )
@@ -82,7 +85,7 @@ class ILocationContainer(zope.interface.Interface):
         pass
 
 
-class ILocation(zope.interface.Interface):
+class ILocation(INamedObject):
 
     id = zope.interface.Attribute("")
     name = schema.TextLine(title=u"Name")
@@ -96,6 +99,6 @@ class ILocation(zope.interface.Interface):
     hideUntil = zope.interface.Attribute("")
 
 
-class ILocalizedContentContainer(zope.interface.Interface):
+class ILocalizedContentContainer(INamedObject):
     def getContent(request):
         pass
