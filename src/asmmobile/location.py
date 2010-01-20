@@ -48,7 +48,7 @@ class EditDescription(grok.Permission):
 class LocalizedLocationContainer(grok.Container):
     grok.implements(ILocalizedContentContainer)
 
-    name = _(u"Locations")
+    navigationName = _(u"Locations")
 
     def application(self):
         return self.__parent__.application()
@@ -162,6 +162,10 @@ class Location(grok.Model):
 
     def application(self):
         return self.__parent__.application()
+
+    @property
+    def navigationName(self):
+        return self.name
 
 
 class NoneLocation_cls(object):

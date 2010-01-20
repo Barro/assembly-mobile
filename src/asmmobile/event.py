@@ -69,7 +69,7 @@ class NoneEvent(grok.Model):
 class LocalizedEventContainer(grok.Container):
     grok.implements(interfaces.ILocalizedContentContainer)
 
-    name = _(u"All events")
+    navigationName = _(u"All events")
 
     def application(self):
         return self.__parent__.application()
@@ -202,6 +202,10 @@ class Event(grok.Model):
 
     def getEvents(self, request):
         return [self]
+
+    @property
+    def navigationName(self):
+        return self.shortName
 
 
 class EventIndex(MobileView):

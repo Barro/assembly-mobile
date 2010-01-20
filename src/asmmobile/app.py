@@ -134,7 +134,7 @@ class ImportError(RuntimeError):
 class AsmMobile(grok.Application, grok.Container):
     zope.interface.implements(interfaces.IAsmMobile, interfaces.IEventOwner)
 
-    name = _(u"Home")
+    navigationName = _(u"Home")
 
     partyName = config.partyName
 
@@ -318,9 +318,9 @@ class Index(MobileView):
 class NextEvents(MobileView):
     grok.name("next")
     grok.context(AsmMobile)
-    grok.implements(interfaces.INamedObject)
+    grok.implements(interfaces.INavigationObject)
 
-    name = _(u"Next events")
+    navigationName = _(u"Next events")
 
     startDifference = datetime.timedelta(hours=config.nextEventsEndHours)
     endDifference = datetime.timedelta(hours=config.nextEventsStartHours)
@@ -413,12 +413,12 @@ class NavigationBreadcrumbs(grok.Viewlet):
     def render(self):
         contexts = []
 
-        if interfaces.INamedObject.providedBy(self.view):
+        if interfaces.INavigationObject.providedBy(self.view):
             contexts.append(self.view)
 
         context = self.context
         while not grok.interfaces.IApplication.providedBy(context):
-            if interfaces.INamedObject.providedBy(context):
+            if interfaces.INavigationObject.providedBy(context):
                 contexts.append(context)
             context = context.__parent__
 
@@ -431,10 +431,10 @@ class NavigationBreadcrumbs(grok.Viewlet):
         links = []
 
         for context in linkContexts:
-            name = translate(context.name, context=self.request)
+            name = translate(context.navigationName, context=self.request)
             links.append("<a href='%s'>%s</a>" % (self.view.url(context), name))
 
-        currentName = translate(contexts[-1].name, context=self.request)
+        currentName = translate(contexts[-1].navigationName, context=self.request)
         links.append("<strong>%s</strong>" % currentName)
 
         return self.BREADCRUMB_SEPARATOR.join(links)
@@ -484,9 +484,9 @@ class ScheduledEvent(grok.View):
 class AllEvents(MobileView):
     grok.name("all")
     grok.context(AsmMobile)
-    grok.implements(interfaces.INamedObject)
+    grok.implements(interfaces.INavigationObject)
 
-    name = _(u"All events")
+    navigationName = _(u"All events")
 
     cacheTime = util.defaultCacheTime()
 
