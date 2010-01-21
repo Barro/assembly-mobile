@@ -25,7 +25,7 @@ Add some locations::
    >>> import datetime
    >>> locations = {
    ...     'en': {
-   ...         'cave':  {
+   ...         u'cave':  {
    ...             'name': 'CAVE',
    ...             'url': 'http://cave/',
    ...             'priority': 0,
@@ -76,7 +76,7 @@ Add some events to locations::
 
    >>> events = {
    ...     'en': {
-   ...         'cave_first': {
+   ...         u'cave_first': {
    ...             'name': 'EVFIRST',
    ...             'url': 'http://cave/first',
    ...             'start': createTime("2009-01-01-09-00"),

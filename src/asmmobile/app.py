@@ -183,7 +183,8 @@ class AsmMobile(grok.Application, grok.Container):
         locationData = {}
         for language, locations in languagedLocations.items():
             locationData[language] = {}
-            for locationId, locationValues in locations.items():
+            for location, locationValues in locations.items():
+                locationId = str(location)
                 if locationId not in languagedLocations[config.defaultLanguage]:
                     raise ImportError("All locations must be available for default language.")
                 locationUnicodeValues = util.unicodefyStrDict(locationValues)
@@ -214,8 +215,9 @@ class AsmMobile(grok.Application, grok.Container):
         for language, events in languagedEvents.items():
             locations = self.LOCATIONS[language]
             eventData[language] = {}
-            for eventId, values in events.items():
-                if eventId not in languagedEvents[config.defaultLanguage]:
+            for event, values in events.items():
+                eventId = str(event)
+                if event not in languagedEvents[config.defaultLanguage]:
                     raise ImportError("All events must be available for default language.")
 
                 eventValues = util.unicodefyStrDict(values)
