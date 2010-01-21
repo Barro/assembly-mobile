@@ -78,14 +78,17 @@ def importer(filename, prefix):
         if not url.startswith("http"):
             url = u"http://www.assembly.org%s" % url
 
-        locations['en'][locationKey] = {
-            'name': unicode(entry['Location_EN'], 'utf-8'),
-            'url': locationUrl,
-            }
-        locations['fi'][locationKey] = {
-            'name': unicode(entry['Location_FI'], 'utf-8'),
-            'url': locationUrl,
-            }
+        if locationKey == '':
+            locationKey = None
+        else:
+            locations['en'][locationKey] = {
+                'name': unicode(entry['Location_EN'], 'utf-8'),
+                'url': locationUrl,
+                }
+            locations['fi'][locationKey] = {
+                'name': unicode(entry['Location_FI'], 'utf-8'),
+                'url': locationUrl,
+                }
 
         events['en'][eventId] = {
             'name': unicode(entry['Title_EN'], 'utf-8'),
