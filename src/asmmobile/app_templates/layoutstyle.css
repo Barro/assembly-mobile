@@ -47,6 +47,9 @@ h1, h2, h3 {
 
 .footer {
   border-top: 2px solid #b0cfd8;
+  /* Some smartphones show controls in bottom of the screens. */
+  /* This prevents front page navigation to be obscured by them. */
+  margin-bottom: 3em;
 }
 
 p, .footer {
