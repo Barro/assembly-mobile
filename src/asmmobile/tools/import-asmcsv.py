@@ -58,10 +58,10 @@ def importer(filename, prefix):
 
         locationKey = util.convertNameToKey(entry['Location_EN'])
 
-        locationUrl = entry['Location_URL']
+        locationUrl = unicode(entry['Location_URL'], 'utf-8')
         # Add absolute URL to main website if location is relative
         if not locationUrl.startswith("http"):
-            locationUrl = "http://www.assembly.org%s" % locationUrl
+            locationUrl = u"http://www.assembly.org%s" % locationUrl
 
         startTime = parseCsvDate(entry['Start_Date'])
         eventId = "%s%d_%s" % (prefix, startTime.year, entry['ID'])
@@ -73,22 +73,22 @@ def importer(filename, prefix):
         if len(entry['Class']) > 0:
             categories += entry['Class'].split(" ")
 
-        url = entry['URL']
+        url = unicode(entry['URL'], 'utf-8')
         # Add absolute URL to main website if location is relative
         if not url.startswith("http"):
-            url = "http://www.assembly.org%s" % url
+            url = u"http://www.assembly.org%s" % url
 
         locations['en'][locationKey] = {
-            'name': entry['Location_EN'],
+            'name': unicode(entry['Location_EN'], 'utf-8'),
             'url': locationUrl,
             }
         locations['fi'][locationKey] = {
-            'name': entry['Location_FI'],
+            'name': unicode(entry['Location_FI'], 'utf-8'),
             'url': locationUrl,
             }
 
         events['en'][eventId] = {
-            'name': entry['Title_EN'],
+            'name': unicode(entry['Title_EN'], 'utf-8'),
             'url': url,
             'start': startTime,
             'end': parseCsvDate(entry['Finish_Date']),
@@ -97,7 +97,7 @@ def importer(filename, prefix):
             'is-major': isMajor,
             }
         events['fi'][eventId] = {
-            'name': entry['Title_FI'],
+            'name': unicode(entry['Title_FI'], 'utf-8'),
             'url': url,
             'start': startTime,
             'end': parseCsvDate(entry['Finish_Date']),
