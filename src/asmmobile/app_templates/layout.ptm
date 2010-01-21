@@ -6,6 +6,7 @@
 <head>
   <title><metal:block define-slot="page-title"></metal:block><metal:block define-slot="page-title-separator"> - </metal:block><span tal:replace="context/@@layout/siteName">Assembly Mobile</span></title>
   <style type='text/css' tal:content="structure provider:stylesheets"></style>
+  <meta name="viewport" content="width=320" />
 </head>
 <body>
 <h1 tal:attributes="id shorten:title">
