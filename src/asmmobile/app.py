@@ -447,7 +447,7 @@ class NavigationBreadcrumbs(grok.Viewlet):
             links.append("<a href='%s'>%s</a>" % (self.view.url(context, aliasFor), name))
 
         currentName = translate(contexts[-1].navigationName, context=self.request)
-        links.append("<strong>%s</strong>" % currentName)
+        links.append("%s" % currentName)
 
         return self.BREADCRUMB_SEPARATOR.join(links)
 

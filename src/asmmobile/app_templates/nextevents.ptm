@@ -4,7 +4,7 @@
 <div tal:attributes="class shorten:links"
      metal:define-macro="next-previous">
   <tal:block tal:condition="view/showPrevious">
-    <a tal:attributes="href python:'%s?s=%s' % (view.urlR(), view.previousCenter)"
+    « <!----><a tal:attributes="href python:'%s?s=%s' % (view.urlR(), view.previousCenter)"
        i18n:translate="">Previous
       <tal:block i18n:name="difference_hours"
                  tal:replace="view/differenceHours" /> hours</a>
@@ -14,7 +14,7 @@
   </tal:block>
 <!--   <a tal:attributes="href python:view.urlR('all')" --> <!-- i18n:translate="">All events</a> -->
   <tal:block tal:condition="view/showNext">
-     <a tal:attributes="href python:'%s?s=%s' % (view.urlR(), view.nextCenter)" i18n:translate="">Next <tal:block i18n:name="difference_hours" tal:replace="view/differenceHours"/> hours</a>
+     <a tal:attributes="href python:'%s?s=%s' % (view.urlR(), view.nextCenter)" i18n:translate="">Next <tal:block i18n:name="difference_hours" tal:replace="view/differenceHours"/> hours</a><!----> »
   </tal:block>
 </div>
 
