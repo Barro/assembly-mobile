@@ -58,10 +58,10 @@ def importer(filename, prefix):
 
         locationKey = util.convertNameToKey(entry['Location_EN'])
 
-        locationUrl = unicode(entry['Location_URL'], 'utf-8')
+        locationUrl = entry['Location_URL']
         # Add absolute URL to main website if location is relative
         if not locationUrl.startswith("http"):
-            locationUrl = u"http://www.assembly.org%s" % locationUrl
+            locationUrl = "http://www.assembly.org%s" % locationUrl
 
         startTime = parseCsvDate(entry['Start_Date'])
         eventId = "%s%d_%s" % (prefix, startTime.year, entry['ID'])
@@ -73,10 +73,10 @@ def importer(filename, prefix):
         if len(entry['Class']) > 0:
             categories += entry['Class'].split(" ")
 
-        url = unicode(entry['URL'], 'utf-8')
+        url = entry['URL']
         # Add absolute URL to main website if location is relative
         if not url.startswith("http"):
-            url = u"http://www.assembly.org%s" % url
+            url = "http://www.assembly.org%s" % url
 
         if locationKey == '':
             locationKey = None
