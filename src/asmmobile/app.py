@@ -163,11 +163,17 @@ class AsmMobile(grok.Application, grok.Container):
 
 
     def getFirstEvent(self, request):
-        return self.EVENTS[request.locale.id.language].firstEvent
+        events = self.EVENTS.get(request.locale.id.language, None)
+        if events == None:
+            return asmmobile.event.NoneEvent()
+        return events.firstEvent
 
 
     def getLastEvent(self, request):
-        return self.EVENTS[request.locale.id.language].lastEvent
+        events = self.EVENTS.get(request.locale.id.language, None)
+        if events == None:
+            return asmmobile.event.NoneEvent()
+        return events.lastEvent
 
 
     def updateLocations(self, languagedLocations):

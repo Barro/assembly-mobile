@@ -45,3 +45,11 @@ Event should redirect to all::
    >>> browser.open('http://localhost/app/event')
    >>> browser.url
    'http://localhost/app/all'
+
+Different languages than the default one should work.
+
+   >>> browser.addHeader("Accept-Language", "fi")
+   >>> browser.open('http://localhost/app')
+   >>> browser.headers.get('Status').upper()
+   '200 OK'
+   >>> assertXml(browser)
