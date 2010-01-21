@@ -26,16 +26,16 @@ IMPORTERS = {
     }
 
 MAPPING_LOCATIONS = {
-    'Big screen': 'MAIN-ARENA',
-    'Stage': 'MAIN-ARENA',
+    # 'Big screen': 'MAIN-ARENA',
+    # 'Stage': 'MAIN-ARENA',
     }
 
 
 PRIORITIES = {
-    'MAIN-ARENA': 10,
-    'Seminar hall': 9,
-    'Game hall': 7,
-    'PMS': 6,
-    'AssemblyTV': 4,
-    'Infodesk': -1,
+    # 'MAIN-ARENA': 10,
+    # 'Seminar hall': 9,
+    # 'Game hall': 7,
+    # 'PMS': 6,
+    # 'AssemblyTV': 4,
+    # 'Infodesk': -1,
     }

@@ -21,6 +21,7 @@
 import csv
 import datetime
 import dateutil.tz
+import asmmobile.util as util
 
 def parseCsvDate(dateString):
     # Date is in format:
@@ -38,27 +39,30 @@ def parseCsvDate(dateString):
         )
 
 
-def importer(filename, prefix, language):
+def importer(filename, prefix):
     # Schedule is in format:
     # FIELDNAME1;FIELDNAME2;...
     # field_value1;field_value2;...
     fp = open(filename, "r")
     reader = csv.DictReader(fp, delimiter=';')
-    locations = {}
-    events = {}
+
+    locations = {'en': {}, 'fi': {}}
+    events = {'en': {}, 'fi': {}}
+
     for entry in reader:
         if entry['Public'] == 'No':
             continue
         # Ignore empty entries:
-        if entry['Title_' + language] == "":
+        if entry['Title_EN'] == "" or entry['Title_FI'] == "":
             continue
-        locationName = entry['Location_' + language]
+
+        locationKey = util.convertNameToKey(entry['Location_EN'])
+
         locationUrl = entry['Location_URL']
         # Add absolute URL to main website if location is relative
         if not locationUrl.startswith("http"):
             locationUrl = "http://www.assembly.org%s" % locationUrl
 
-        locations[locationName] = locationUrl
         startTime = parseCsvDate(entry['Start_Date'])
         eventId = "%s%d_%s" % (prefix, startTime.year, entry['ID'])
         categories = []
@@ -74,13 +78,32 @@ def importer(filename, prefix, language):
         if not url.startswith("http"):
             url = "http://www.assembly.org%s" % url
 
-        events[eventId] = {
-            'name': entry['Title_' + language],
+        locations['en'][locationKey] = {
+            'name': entry['Location_EN'],
+            'url': locationUrl,
+            }
+        locations['fi'][locationKey] = {
+            'name': entry['Location_FI'],
+            'url': locationUrl,
+            }
+
+        events['en'][eventId] = {
+            'name': entry['Title_EN'],
             'url': url,
             'start': startTime,
             'end': parseCsvDate(entry['Finish_Date']),
-            'location': locationName,
+            'location': locationKey,
             'categories': categories,
             'is-major': isMajor,
             }
+        events['fi'][eventId] = {
+            'name': entry['Title_FI'],
+            'url': url,
+            'start': startTime,
+            'end': parseCsvDate(entry['Finish_Date']),
+            'location': locationKey,
+            'categories': categories,
+            'is-major': isMajor,
+            }
+
     return (locations, events)
