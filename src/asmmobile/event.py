@@ -71,6 +71,8 @@ class LocalizedEventContainer(grok.Container):
 
     navigationName = _(u"All events")
 
+    aliasFor = "all"
+
     def application(self):
         return self.__parent__.application()
 

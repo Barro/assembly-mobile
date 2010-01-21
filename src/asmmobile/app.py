@@ -432,7 +432,11 @@ class NavigationBreadcrumbs(grok.Viewlet):
 
         for context in linkContexts:
             name = translate(context.navigationName, context=self.request)
-            links.append("<a href='%s'>%s</a>" % (self.view.url(context), name))
+            aliasFor = getattr(context, 'aliasFor', None)
+            if aliasFor is not None:
+                context = context.__parent__
+                aliasFor = aliasFor
+            links.append("<a href='%s'>%s</a>" % (self.view.url(context, aliasFor), name))
 
         currentName = translate(contexts[-1].navigationName, context=self.request)
         links.append("<strong>%s</strong>" % currentName)
