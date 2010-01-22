@@ -3,19 +3,20 @@
 <tal:block metal:fill-slot='content'>
 <div tal:attributes="class shorten:links"
      metal:define-macro="next-previous">
-  <tal:block tal:condition="view/showPrevious">
-    « <!----><a tal:attributes="href python:'%s?s=%s' % (view.urlR(), view.previousCenter)"
-       i18n:translate="">Previous
-      <tal:block i18n:name="difference_hours"
-                 tal:replace="view/differenceHours" /> hours</a>
-  </tal:block>
-  <tal:block tal:condition="python: view.showPrevious and view.showNext">
+  <span tal:condition="view/showPrevious">
+    <a tal:attributes="href python:'%s?s=%s' % (view.urlR(), view.previousCenter)"
+       tal:content="view/previousHoursText">Previous 12 hours</a></span>
+  <span tal:condition="not: view/showPrevious"
+        tal:attributes="class shorten:disabled"
+        tal:content="view/previousHoursText">Previous 12 hours</span>
     <!---->&#8226;<!---->
-  </tal:block>
-<!--   <a tal:attributes="href python:view.urlR('all')" --> <!-- i18n:translate="">All events</a> -->
-  <tal:block tal:condition="view/showNext">
-     <a tal:attributes="href python:'%s?s=%s' % (view.urlR(), view.nextCenter)" i18n:translate="">Next <tal:block i18n:name="difference_hours" tal:replace="view/differenceHours"/> hours</a><!----> »
-  </tal:block>
+  <span tal:condition="view/showNext">
+     <a tal:attributes="href python:'%s?s=%s' % (view.urlR(), view.nextCenter)"
+        tal:content="view/nextHoursText">Next 12 hours</a>
+  </span>
+  <span tal:condition="not: view/showNext"
+        tal:attributes="class shorten:disabled"
+        tal:content="view/nextHoursText">Next 12 hours</span>
 </div>
 
 <metal:block metal:use-macro="context/@@index/macros/party-has-not-started"></metal:block>

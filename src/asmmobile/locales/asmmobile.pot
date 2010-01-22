@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Jan 19 20:50:29 2010\n"
+"POT-Creation-Date: Fri Jan 22 13:03:54 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -24,46 +24,54 @@ msgstr ""
 "Generated-By: zope/app/locales/extract.py\n"
 
 #: src/asmmobile/app.py:137
-#: src/asmmobile/app.py:457
+#: src/asmmobile/app.py:474
 msgid "Home"
 msgstr ""
 
-#: src/asmmobile/app.py:323
-#: src/asmmobile/app.py:458
+#: src/asmmobile/app.py:331
+#: src/asmmobile/app.py:475
 #: src/asmmobile/app_templates/nextevents.ptm:2
 msgid "Next events"
 msgstr ""
 
-#: src/asmmobile/app.py:459
-#: src/asmmobile/app.py:489
+#: src/asmmobile/app.py:343
+msgid "\302\253 Previous %d hours"
+msgstr ""
+
+#: src/asmmobile/app.py:345
+msgid "Next %d hours \302\273"
+msgstr ""
+
+#: src/asmmobile/app.py:476
+#: src/asmmobile/app.py:506
 #: src/asmmobile/event.py:72
 #: src/asmmobile/app_templates/allevents.ptm:2
 msgid "All events"
 msgstr ""
 
-#: src/asmmobile/app.py:460
+#: src/asmmobile/app.py:477
 #: src/asmmobile/app_templates/about.ptm:2
 #: src/asmmobile/app_templates/about.ptm:5
 msgid "About"
 msgstr ""
 
-#: src/asmmobile/app.py:507
+#: src/asmmobile/app.py:524
 msgid "%d day"
 msgstr ""
 
-#: src/asmmobile/app.py:509
+#: src/asmmobile/app.py:526
 msgid "%d days"
 msgstr ""
 
-#: src/asmmobile/app.py:515
+#: src/asmmobile/app.py:532
 msgid "%d hour"
 msgstr ""
 
-#: src/asmmobile/app.py:517
+#: src/asmmobile/app.py:534
 msgid "%d hours"
 msgstr ""
 
-#: src/asmmobile/app.py:528
+#: src/asmmobile/app.py:545
 msgid "QR code link to home page (%s)."
 msgstr ""
 
@@ -183,27 +191,19 @@ msgstr ""
 msgid "Now"
 msgstr ""
 
-#: src/asmmobile/app_templates/layout.ptm:37
+#: src/asmmobile/app_templates/layout.ptm:38
 msgid "View main site"
 msgstr ""
 
-#: src/asmmobile/app_templates/nextevents.ptm:17
-msgid "Next ${difference_hours} hours"
-msgstr ""
-
-#: src/asmmobile/app_templates/nextevents.ptm:55
+#: src/asmmobile/app_templates/nextevents.ptm:56
 msgid "${xml_data} Current time: ${now}"
-msgstr ""
-
-#: src/asmmobile/app_templates/nextevents.ptm:9
-msgid "Previous ${difference_hours} hours"
 msgstr ""
 
 #: src/asmmobile/event_templates/eventindex.ptm:21
 msgid "External event page may provide additional information about this event that is not optimized for mobile devices."
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:33
+#: src/asmmobile/event_templates/eventindex.ptm:29
 msgid "Time"
 msgstr ""
 
@@ -211,15 +211,15 @@ msgstr ""
 msgid "${event_name} (event)"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:45
+#: src/asmmobile/event_templates/eventindex.ptm:41
 msgid "- ${end_day} ${end_time}"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:49
+#: src/asmmobile/event_templates/eventindex.ptm:45
 msgid "${start_day} ${start_time} ${end_time} ${event_length}"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:54
+#: src/asmmobile/event_templates/eventindex.ptm:50
 msgid "Location"
 msgstr ""
 
@@ -242,7 +242,7 @@ msgid "View on external page"
 msgstr ""
 
 #: src/asmmobile/location_templates/locationindex.ptm:29
-#: src/asmmobile/event_templates/eventindex.ptm:29
+#: src/asmmobile/event_templates/eventindex.ptm:58
 msgid "Description"
 msgstr ""
 

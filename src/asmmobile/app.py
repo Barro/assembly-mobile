@@ -339,6 +339,11 @@ class NextEvents(MobileView):
     dateValidate = re.compile(r"\d\d\d\d-\d\d-\d\d-\d\d")
 
     def update(self, s=None):
+        self.previousHoursText = translate(
+            _(u"« Previous %d hours"), context=self.request) % self.differenceHours
+        self.nextHoursText = translate(
+            _(u"Next %d hours »"), context=self.request) % self.differenceHours
+
         displayCenter = self.now
         try:
             if s is not None and self.dateValidate.match(s):
@@ -541,7 +546,7 @@ class About(MobileView):
 
     def update(self):
         self.qrCodeAlt = translate(
-            self.qrCodeAltTemplate % self.application_url())
+            self.qrCodeAltTemplate, context=self.request) % self.application_url()
 
 
 class ErrorLayout(MobileView):

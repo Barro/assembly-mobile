@@ -13,3 +13,8 @@ div.now, .now a {
   padding: 0;
   color: #3a5e0b;
 }
+
+span.disabled {
+  color: grey;
+  text-decoration: line-through;
+}
