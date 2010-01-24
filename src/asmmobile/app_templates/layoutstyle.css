@@ -56,6 +56,10 @@ p, .footer {
   margin-top: 5px;
 }
 
+a:visited {
+    color: #590459;
+}
+
 /* Event layout */
 
 .event {
@@ -71,11 +75,18 @@ p, .footer {
   color: #62a60a;
 }
 
+.event a:visited {
+    color: #7e8839;
+}
+
 .event div {
   padding: 2px 0;
 }
 
 a.location {
   color: #666;
-  font-size: 100%;
+}
+
+a:visited.location {
+  color: #222;
 }
