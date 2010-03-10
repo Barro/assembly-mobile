@@ -21,13 +21,14 @@ import datetime
 import grok
 import dateutil.tz
 
+from zope.i18n import translate
+
 from asmmobile import AsmMobileMessageFactory as _
 import asmmobile.interfaces as interfaces
 from asmmobile.components import MobileView
 import asmmobile.util as util
 import asmmobile.config as config
 import asmmobile.location
-
 
 def _sortByStartTime(first, second):
     startCmp = cmp(first.start, second.start)
@@ -215,6 +216,14 @@ class EventIndex(MobileView):
     grok.context(Event)
 
     cacheTime = util.defaultCacheTime()
+
+    @property
+    def displayName(self):
+        if self.context.isMajor:
+            return translate(
+                _(u"%s (major event)"), context=self.request) % self.context.name
+        else:
+            return self.context.name
 
 
 class Edit(grok.EditForm):

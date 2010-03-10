@@ -56,10 +56,14 @@ def assertEqual(expected, result):
         raise AssertionError(
             "Expected '%s' does not match '%s'" % (expected, result))
 
-def assertIsIn(element, container):
+def assertIsIn(element, container, message=None):
     if element not in container:
+        additionalMessage = ''
+        if message is not None:
+            additionalMessage = ": %s" % message
         raise AssertionError(
-            "Element '%s' could not be found in '%s'" % (element, container))
+            "Element '%s' could not be found in '%s'%s" % (
+                element, container, additionalMessage))
 
 def checkStandardPages(
     app,
@@ -70,8 +74,8 @@ def checkStandardPages(
     calendars=['/all-events.vcs', '/all-events.ics']
     ):
 
-    def assertIsInBrowserContents(text, browser):
-        assertIsIn(text, unicode(browser.contents, 'utf-8'))
+    def assertIsInBrowserContents(text, browser, message=None):
+        assertIsIn(text, unicode(browser.contents, 'utf-8'), message)
 
     baseUrl = 'http://localhost/%s' % app.__name__
 
@@ -89,7 +93,7 @@ def checkStandardPages(
         calendarUrl = locationBaseUrl + "/somename.vcs"
         for uid in getCalendarEvents(browser, calendarUrl):
             locationEvents.add(uid)
-        assertIsInBrowserContents(location.name, browser)
+        assertIsInBrowserContents(location.name, browser, "Location was not found in calendar.")
 
     for event in events:
         # Check that event page is OK and includes basic event information.
@@ -107,7 +111,7 @@ def checkStandardPages(
         uid = getCalendarEvents(browser, calendarUrl)[0]
         assertEqual(event.id + "@localhost", uid)
         assertIsIn(event.id + "@localhost", locationEvents)
-        assertIsInBrowserContents(event.name, browser)
+        assertIsInBrowserContents(event.name, browser, "Event was not found in calendar.")
 
         if event.location is not None:
             assertIsInBrowserContents(event.location.name, browser)

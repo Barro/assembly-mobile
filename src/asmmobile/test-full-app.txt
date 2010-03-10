@@ -304,6 +304,17 @@ Untranslated events should still result in something::
    >>> "LUOLA" in browser.contents
    True
 
+Check that redirection on language changes works correctly:
+
+   >>> browser.open('http://localhost/app/event/cave_second/@@l/en')
+   >>> browser.url
+   'http://localhost/app/event/cave_second'
+
+   >>> browser.addHeader("Referer", "http://localhost/app")
+   >>> browser.open('http://localhost/app/event/cave_second/@@l/en')
+   >>> browser.url
+   'http://localhost/app'
+
 Remove one event and check that it is removed from application events::
 
    >>> del(events['en']['cave_second'])

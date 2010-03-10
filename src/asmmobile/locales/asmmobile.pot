@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Jan 22 13:03:54 2010\n"
+"POT-Creation-Date: Wed Mar 10 12:47:22 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -31,6 +31,7 @@ msgstr ""
 #: src/asmmobile/app.py:331
 #: src/asmmobile/app.py:475
 #: src/asmmobile/app_templates/nextevents.ptm:2
+#: src/asmmobile/app_templates/nextevents.ptm:4
 msgid "Next events"
 msgstr ""
 
@@ -44,7 +45,7 @@ msgstr ""
 
 #: src/asmmobile/app.py:476
 #: src/asmmobile/app.py:506
-#: src/asmmobile/event.py:72
+#: src/asmmobile/event.py:73
 #: src/asmmobile/app_templates/allevents.ptm:2
 msgid "All events"
 msgstr ""
@@ -110,15 +111,16 @@ msgid "Nokia mobile phones and various desktop calendar software can import even
 msgstr ""
 
 #: src/asmmobile/app_templates/allevents.ptm:15
+#: src/asmmobile/app_templates/nextevents.ptm:6
 #: src/asmmobile/location_templates/locationindex.ptm:14
 #: src/asmmobile/event_templates/eventindex.ptm:14
-msgid "QR code link"
+msgid "QR code links require a mobile phone with a QR code reader."
 msgstr ""
 
 #: src/asmmobile/app_templates/allevents.ptm:15
 #: src/asmmobile/location_templates/locationindex.ptm:14
 #: src/asmmobile/event_templates/eventindex.ptm:14
-msgid "QR code links require a mobile phone with a QR code reader."
+msgid "QR code link"
 msgstr ""
 
 #: src/asmmobile/app_templates/allevents.ptm:24
@@ -195,8 +197,16 @@ msgstr ""
 msgid "View main site"
 msgstr ""
 
-#: src/asmmobile/app_templates/nextevents.ptm:56
+#: src/asmmobile/app_templates/nextevents.ptm:6
+msgid "QR code link to this page"
+msgstr ""
+
+#: src/asmmobile/app_templates/nextevents.ptm:65
 msgid "${xml_data} Current time: ${now}"
+msgstr ""
+
+#: src/asmmobile/event.py:224
+msgid "%s (major event)"
 msgstr ""
 
 #: src/asmmobile/event_templates/eventindex.ptm:21

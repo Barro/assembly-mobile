@@ -604,8 +604,20 @@ class SetLanguage(MobileView):
                 config.cookieLanguage, language, path='/')
 
         returnTo = self.request.getHeader('Referer')
-        if returnTo is None or returnTo == self.request.getURL():
-            returnTo = self.url(self.context)
+        # No referrer or referrer is the language selector view.
+        if (returnTo is None or
+            not returnTo.startswith(self.application_url()) or
+            returnTo == self.request.getURL()):
+            names = []
+            context = self.context
+            site = grok.getSite()
+            while context != site:
+                if interfaces.ILocalizedContentContainer not in \
+                        zope.interface.providedBy(context.__parent__):
+                    names.append(context.__name__)
+                context = context.__parent__
+            names.reverse()
+            returnTo = "%s/%s" % (self.application_url(), "/".join(names))
         self.redirect(returnTo)
 
     def render(self):
