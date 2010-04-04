@@ -54,10 +54,6 @@ import asmmobile.orderby as orderby
 from asmmobile import AsmMobileMessageFactory as _
 
 
-import zope.app.exception.interfaces
-import zope.browser.interfaces
-zope.app.exception.interfaces.ISystemErrorView = zope.browser.interfaces.ISystemErrorView
-
 # Monkey patch send_header() method not to send "Server" header.
 # This saves 42 bytes when sending responses.
 old_send_header = paste.httpserver.WSGIHandler.send_header
