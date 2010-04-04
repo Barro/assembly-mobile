@@ -59,6 +59,7 @@ class NoneEvent(grok.Model):
     shortName = u''
     # start > end so that this screws something up.
     start = datetime.datetime(datetime.MAXYEAR,12,30,tzinfo=dateutil.tz.tzlocal())
+    startOriginal = start
     end = datetime.datetime(datetime.MINYEAR,1,1,tzinfo=dateutil.tz.tzlocal())
     location = None
     url = None
@@ -104,9 +105,11 @@ class EventContainer(grok.OrderedContainer):
             del self[key]
 
         addKeys = newKeys.difference(currentKeys)
+        localTz = dateutil.tz.tzlocal()
         for key, eventData in values.items():
-            eventData['start'] = eventData['start'].astimezone(dateutil.tz.tzlocal())
-            eventData['end'] = eventData['end'].astimezone(dateutil.tz.tzlocal())
+            eventData['start'] = eventData['start'].astimezone(localTz)
+            eventData['end'] = eventData['end'].astimezone(localTz)
+            eventData['start-original'] = eventData['start-original'].astimezone(localTz)
             if 'short-name' not in eventData:
                 eventData['short-name'] = eventData['name']
 
@@ -116,6 +119,7 @@ class EventContainer(grok.OrderedContainer):
                 eventData,
                 ['name',
                  'start',
+                 ('startOriginal', 'start-original'),
                  'end',
                  'location',
                  'url',
@@ -136,7 +140,6 @@ class EventContainer(grok.OrderedContainer):
         else:
             self.firstEvent = NoneEvent()
             self.lastEvent = self.firstEvent
-
 
 
     def getEvents(self, eventFilter):
@@ -174,6 +177,7 @@ class Event(grok.Model):
         self.id = id
         self.name = name
         self.start = start
+        self.startOriginal = start
         self.end = end
         self._location = location
         self.url = url

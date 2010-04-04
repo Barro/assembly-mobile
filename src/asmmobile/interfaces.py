@@ -67,10 +67,16 @@ class IEvent(INavigationObject):
     name = schema.TextLine(title=u"Name")
     shortName = schema.TextLine(
         title=u"Short name", max_length=config.shortNameMaximumLength)
+
     start = schema.Datetime(title=u"Start time")
+
+    # Original start time that can be used to create notices about schedule
+    # changes.
+    startOriginal = schema.Datetime(title=u"Original start time")
+
     end = schema.Datetime(title=u"End time")
 
-    # XXX schema.URI has bugs.
+    # XXX schema.URI has bugs and we can't use it.
     url = schema.TextLine(title=u"External URL", required=False)
     isMajor = schema.Bool(title=u"Is major event")
     categories = zope.interface.Attribute("")
@@ -78,6 +84,7 @@ class IEvent(INavigationObject):
 
     location = zope.interface.Attribute("")
     majorLocation = zope.interface.Attribute("")
+
 
 
 class ILocationContainer(zope.interface.Interface):

@@ -21,6 +21,7 @@ import random
 import datetime
 import dateutil.tz
 import copy
+import asmmobile.util as util
 
 parts = """a e i u o y
 ca ce ci cu co cy
@@ -73,7 +74,8 @@ def generateLanguageData(eventAmount, locations, startTime):
     increases = [datetime.timedelta(minutes=minutes) for minutes in
                  [15, 30, 30, 30, 30, 30, 30, 30, 60, 60, 60]]
 
-    now = datetime.datetime(2009, 1, 1).now(dateutil.tz.tzlocal())
+    localOffset = util.localTzOffset()
+    now = datetime.datetime.now(dateutil.tz.tzlocal())
     # Start from full hour.
     eventTime = now - datetime.timedelta(
         seconds=now.second, minutes=now.minute)
@@ -83,10 +85,13 @@ def generateLanguageData(eventAmount, locations, startTime):
     for id in xrange(0, eventAmount):
         eventName = generateWords(1, 3, 2, 4)
         eventId = "test_%d" % id
+        eventStart = eventTime.strftime("%Y-%m-%dT%H:%M:%S") + localOffset
+        eventEndTime = eventTime + lengths[random.randint(0, len(lengths) - 1)]
+        eventEnd = eventEndTime.strftime("%Y-%m-%dT%H:%M:%S") + localOffset
         resultEvents[eventId] = {
             'name': eventName,
-            'start': eventTime,
-            'end': eventTime + lengths[random.randint(0, len(lengths) - 1)],
+            'start': eventStart,
+            'end': eventEnd,
             'location': locationNames[random.randint(0, len(locationNames) - 1)],
             'categories': [],
             'is-major': random.random() < 0.1,

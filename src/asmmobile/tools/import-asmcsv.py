@@ -23,20 +23,17 @@ import datetime
 import dateutil.tz
 import asmmobile.util as util
 
+
+
 def parseCsvDate(dateString):
     # Date is in format:
     # Mon 14.7.09 18:00
     dayName, date, time = dateString.split(" ")
     day, month, year = (int(x) for x in date.split("."))
     hour, minute = (int(x) for x in time.split(":"))
-    return datetime.datetime(
-        year=(2000 + year),
-        month=month,
-        day=day,
-        hour=hour,
-        minute=minute,
-        tzinfo=dateutil.tz.tzlocal()
-        )
+
+    return "%04d-%02d-%02dT%02d:%02d:%02d%s" % (
+        (2000 + year), month, day, hour, minute, 0, util.localTzOffset())
 
 
 def importer(filename, prefix):
@@ -64,7 +61,7 @@ def importer(filename, prefix):
             locationUrl = "http://www.assembly.org%s" % locationUrl
 
         startTime = parseCsvDate(entry['Start_Date'])
-        eventId = "%s%d_%s" % (prefix, startTime.year, entry['ID'])
+        eventId = "%s%s_%s" % (prefix, startTime[0:4], entry['ID'])
         categories = []
         isMajor = False
         if entry['Major'] == 'Yes':

@@ -20,6 +20,7 @@
 import copy
 import datetime
 import dateutil.tz
+import dateutil.parser
 import re
 
 import grok
@@ -131,6 +132,8 @@ class ImportError(RuntimeError):
         self.msg = msg
 
 
+DATE_FORMAT_RE = re.compile(ur"^\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d[+-]\d\d\d\d$")
+
 class AsmMobile(grok.Application, grok.Container):
     zope.interface.implements(interfaces.IAsmMobile, interfaces.IEventOwner)
 
@@ -204,6 +207,47 @@ class AsmMobile(grok.Application, grok.Container):
                 self.LOCATIONS[languageId] = locations
             locations.updateLocations(locationValues)
 
+    def _sanitizeEvent(self, locations, values):
+        if 'name' not in values:
+            raise ImportError("Event has to have a name")
+
+        if 'start' not in values:
+            raise ImportError("Event has to have a start time")
+
+        if not DATE_FORMAT_RE.match(values['start']):
+            print values['start']
+            raise ImportError("Invalid start time format: %s" % values['start'])
+
+        if 'end' not in values:
+            values['end'] = values['start']
+
+        if not DATE_FORMAT_RE.match(values['end']):
+            raise ImportError("Invalid end time format: %s" % values['end'])
+
+        if 'start-original' not in values:
+            values['start-original'] = values['start']
+
+        if not DATE_FORMAT_RE.match(values['start-original']):
+            raise ImportError(
+                "Invalid original start time time format: %s" % \
+                    values['start-original'])
+
+        eventValues = util.unicodefyStrDict(values)
+
+        # Objectify location.
+        if 'location' in values and values['location'] is not None:
+            location = locations[values['location']]
+        else:
+            location = None
+        eventValues['location'] = location
+
+
+        # Objectify times.
+        eventValues['start'] = dateutil.parser.parse(eventValues['start'])
+        eventValues['start-original'] = dateutil.parser.parse(eventValues['start-original'])
+        eventValues['end'] = dateutil.parser.parse(eventValues['end'])
+
+        return eventValues
 
     def updateEvents(self, languagedEvents):
         if config.defaultLanguage not in languagedEvents:
@@ -216,19 +260,11 @@ class AsmMobile(grok.Application, grok.Container):
             locations = self.LOCATIONS[language]
             eventData[language] = {}
             for event, values in events.items():
-                eventId = str(event)
                 if event not in languagedEvents[config.defaultLanguage]:
                     raise ImportError("All events must be available for default language.")
 
-                eventValues = util.unicodefyStrDict(values)
-
-                # Objectify location.
-                if values['location'] is not None:
-                    location = locations[values['location']]
-                else:
-                    location = None
-                eventValues['location'] = location
-
+                eventId = str(event)
+                eventValues = self._sanitizeEvent(locations, values)
                 eventData[language][eventId] = eventValues
 
         # Make sure that all languages have at least some version of all events.
@@ -339,6 +375,7 @@ class NextEvents(MobileView):
     dateValidate = re.compile(r"\d\d\d\d-\d\d-\d\d-\d\d")
 
     def update(self, s=None):
+        startTime = s
         self.previousHoursText = translate(
             _(u"« Previous %d hours"), context=self.request) % self.differenceHours
         self.nextHoursText = translate(
@@ -346,8 +383,8 @@ class NextEvents(MobileView):
 
         displayCenter = self.now
         try:
-            if s is not None and self.dateValidate.match(s):
-                year, month, day, hour = (int(x) for x in s.split("-"))
+            if startTime is not None and self.dateValidate.match(startTime):
+                year, month, day, hour = (int(x) for x in startTime.split("-"))
                 displayCenter = datetime.datetime(
                     year=year,
                     month=month,
