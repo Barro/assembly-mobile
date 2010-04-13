@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Wed Mar 10 12:47:22 2010\n"
-"PO-Revision-Date: 2010-03-10 12:48+0200\n"
+"PO-Revision-Date: 2010-04-13 13:28+0300\n"
 "Last-Translator: Jussi Judin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -68,7 +68,7 @@ msgstr "%d tuntia"
 
 #: src/asmmobile/app.py:545
 msgid "QR code link to home page (%s)."
-msgstr "QR-koodi -linkki etusivulle (%s)."
+msgstr "QR-koodi-linkki etusivulle (%s)."
 
 #: src/asmmobile/app_templates/about.ptm:10
 msgid ""
@@ -99,7 +99,7 @@ msgstr ""
 
 #: src/asmmobile/app_templates/about.ptm:14
 msgid "QR code link to home page (${overview_url})"
-msgstr "QR-koodi -linkki etusivulle (${overview_url})"
+msgstr "QR-koodi-linkki etusivulle (${overview_url})"
 
 #: src/asmmobile/app_templates/about.ptm:7
 msgid ""
@@ -141,7 +141,7 @@ msgstr "QR-koodi -linkit vaativat QR-koodeja lukevat matkapuhelimen."
 #: src/asmmobile/location_templates/locationindex.ptm:14
 #: src/asmmobile/event_templates/eventindex.ptm:14
 msgid "QR code link"
-msgstr "QR-koodi -linkki"
+msgstr "QR-koodi-linkki"
 
 #: src/asmmobile/app_templates/allevents.ptm:24
 msgid "Party time: ${party_start} - ${party_end}. Length: ${party_length}."
@@ -232,7 +232,7 @@ msgstr "Pääsivustolle"
 
 #: src/asmmobile/app_templates/nextevents.ptm:6
 msgid "QR code link to this page"
-msgstr "QR-koodi -linkki tälle sivulle"
+msgstr "QR-koodi-linkki tälle sivulle"
 
 #: src/asmmobile/app_templates/nextevents.ptm:65
 msgid "${xml_data} Current time: ${now}"
