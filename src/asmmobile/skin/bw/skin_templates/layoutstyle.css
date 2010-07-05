@@ -44,15 +44,17 @@ p, .footer {
 }
 
 a {
-    color: #000;
+  color: #000;
+  /* Needed for Mobile Safari. */
+  text-decoration: underline;
 }
 
 a:visited {
-    font-style: italic;
+  font-style: italic;
 }
 
 a:hover {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 /* Event layout */
