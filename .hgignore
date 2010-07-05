@@ -2,7 +2,7 @@ syntax: glob
 bin
 develop-eggs
 parts
-src/AsmMobile.egg-info
+src/asmmobile.egg-info
 eggs
 *.pyc
 *~

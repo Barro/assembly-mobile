@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
-version = '0.0'
+version = '1.0'
 
-setup(name='AsmMobile',
+setup(name='asmmobile',
       version=version,
       description="",
       long_description="""\
