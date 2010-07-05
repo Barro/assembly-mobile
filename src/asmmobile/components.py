@@ -47,6 +47,8 @@ class MobileView(grok.View):
 
     language = None
 
+    skin = None
+
     def _sendCachingHeaders(self):
         utcnow = self.now.astimezone(dateutil.tz.tzutc())
         cacheTime = self.cacheTime(utcnow)

@@ -17,21 +17,22 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import urlparse
-import re
 import datetime
-import grok
-import string
 import dateutil.tz
+import grok
+import re
+import string
+import urlparse
 
-from zope.i18n import translate
 from zope.app.form.browser.textwidgets import TextWidget
 from zope.component import queryUtility
+from zope.i18n import translate
 from zope.i18n.interfaces import ITranslationDomain
+import zope.interface
 
 from asmmobile import AsmMobileMessageFactory as _
-import asmmobile.interfaces as interfaces
 import asmmobile.config as config
+import asmmobile.interfaces as interfaces
 
 EVENTS = 'event'
 LOCATIONS = 'location'
@@ -373,3 +374,23 @@ def findAnchorEvent(now, events):
         previousEvent = event
     return anchorEvent
 
+
+def findReturnTo(view):
+    returnTo = view.request.getHeader('Referer')
+
+    # No referrer or referrer is the language selector view.
+    if (returnTo is None or
+        not returnTo.startswith(view.application_url()) or
+        returnTo == view.request.getURL()):
+        names = []
+        context = view.context
+        site = grok.getSite()
+        while context != site:
+            if interfaces.ILocalizedContentContainer not in \
+                    zope.interface.providedBy(context.__parent__):
+                names.append(context.__name__)
+            context = context.__parent__
+        names.reverse()
+        returnTo = "%s/%s" % (view.application_url(), "/".join(names))
+
+    return returnTo

@@ -45,7 +45,7 @@ import asmmobile.interfaces as interfaces
 import asmmobile.location
 import asmmobile.event
 import asmmobile.components
-from asmmobile.components import MobileView, StylesheetManager, MobileTemplate, NavigationManager
+from asmmobile.components import MobileView
 import asmmobile.util as util
 from asmmobile.util import getEventList, DisplayEvent
 import asmmobile.config as config
@@ -111,7 +111,7 @@ class MobileTemplateFactory(grok.GlobalUtility):
     grok.name('ptm')
 
     def __call__(self, filename, _prefix=None):
-        return MobileTemplate(filename=filename, _prefix=_prefix)
+        return asmmobile.components.MobileTemplate(filename=filename, _prefix=_prefix)
 
 
 class StylesheetTemplateFactory(grok.GlobalUtility):
@@ -356,7 +356,7 @@ class Index(MobileView):
 
 
 class NavigationBreadcrumbs(grok.Viewlet):
-    grok.viewletmanager(NavigationManager)
+    grok.viewletmanager(asmmobile.components.NavigationManager)
     grok.context(zope.interface.Interface)
 
     BREADCRUMB_SEPARATOR = "<!----> &gt; <!---->"
@@ -409,7 +409,7 @@ class Layout(MobileView):
 
 
 class LayoutStyle(grok.Viewlet):
-    grok.viewletmanager(StylesheetManager)
+    grok.viewletmanager(asmmobile.components.StylesheetManager)
     grok.context(zope.interface.Interface)
     grok.order(1)
 
@@ -470,10 +470,11 @@ class AllEvents(MobileView):
 
 
 class AllEventsStyle(grok.Viewlet):
-    grok.viewletmanager(StylesheetManager)
+    grok.viewletmanager(asmmobile.components.StylesheetManager)
     grok.context(interfaces.IAsmMobile)
     grok.view(AllEvents)
     grok.order(2)
+
 
 class About(MobileView):
     grok.context(interfaces.IAsmMobile)
@@ -541,22 +542,7 @@ class SetLanguage(MobileView):
             self.request.response.setCookie(
                 config.cookieLanguage, language, path='/')
 
-        returnTo = self.request.getHeader('Referer')
-        # No referrer or referrer is the language selector view.
-        if (returnTo is None or
-            not returnTo.startswith(self.application_url()) or
-            returnTo == self.request.getURL()):
-            names = []
-            context = self.context
-            site = grok.getSite()
-            while context != site:
-                if interfaces.ILocalizedContentContainer not in \
-                        zope.interface.providedBy(context.__parent__):
-                    names.append(context.__name__)
-                context = context.__parent__
-            names.reverse()
-            returnTo = "%s/%s" % (self.application_url(), "/".join(names))
-        self.redirect(returnTo)
+        self.redirect(util.findReturnTo(self))
 
     def render(self):
         return ''

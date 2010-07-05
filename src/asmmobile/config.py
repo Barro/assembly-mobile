@@ -164,3 +164,9 @@ events = stringValue("events", "event")
 
 # Name for language including cookie.
 cookieLanguage = stringValue("cookie-language", "l")
+
+# Alternative skin.
+skinAlternative = stringValue("alternative-skin", "bw")
+
+# Default skin name.
+skinNameDefault = stringValue("skin-name-default", "ASM")

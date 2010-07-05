@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Jul  5 20:44:24 2010\n"
+"POT-Creation-Date: Mon Jul  5 22:07:17 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -57,7 +57,7 @@ msgstr ""
 msgid "%d hours"
 msgstr ""
 
-#: src/asmmobile/app.py:483
+#: src/asmmobile/app.py:484
 msgid "QR code link to home page (%s)."
 msgstr ""
 
@@ -240,29 +240,33 @@ msgstr ""
 msgid "vCal (events)"
 msgstr ""
 
-#: src/asmmobile/util.py:151
+#: src/asmmobile/skin/bw/skin.py:15
+msgid "B/W"
+msgstr ""
+
+#: src/asmmobile/util.py:152
 msgid "%d h"
 msgstr ""
 
-#: src/asmmobile/util.py:155
+#: src/asmmobile/util.py:156
 msgid "%d min"
 msgstr ""
 
-#: src/asmmobile/util.py:157
+#: src/asmmobile/util.py:158
 msgid "%(hours)s %(minutes)s"
 msgstr ""
 
-#: src/asmmobile/util.py:169
+#: src/asmmobile/util.py:170
 #. Default: "(%s)"
 msgid "(interval_parenthesis)"
 msgstr ""
 
-#: src/asmmobile/util.py:180
+#: src/asmmobile/util.py:181
 #. Default: "%H:%M"
 msgid "(hour_minute)"
 msgstr ""
 
-#: src/asmmobile/util.py:203
+#: src/asmmobile/util.py:204
 msgid "EEEE yyyy-MM-dd HH:mm"
 msgstr ""
 
