@@ -1,21 +1,10 @@
 /* Styles for "current time" line in next event list */
 
-.current-time {
-  margin: 2px 0;
-  padding: 4px;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  font-weight: bold;
-}
-
 div.now, .now a {
-  background: #eee;
   padding: 0;
-  color: #3a5e0b;
 }
 
 span.disabled {
-  color: grey;
   text-decoration: line-through;
 }
 

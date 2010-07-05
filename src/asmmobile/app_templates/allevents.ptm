@@ -35,13 +35,23 @@
 
 <span tal:replace="structure python:'<div class=\'%s\'>' % shorten('event')"
       tal:condition="python:lastStart!=event.start.day" />
-<div>
+
+<div tal:attributes="class python:event.end < view.now and 'finished' or None">
+
+  <a id="now"
+     tal:condition="python: event == view.anchorEvent"></a>
+
   <tal:block metal:define-macro="eventContainer">
+
+    <span tal:condition="python: event.start <= view.now and view.now < event.end"
+          tal:replace="structure string:&#8226;<!---->" />
 
     <span tal:replace="structure event/@@scheduledevent" />
     <!---->
     <a tal:replace="structure event/location/@@link" />
   </tal:block>
+
+<hr tal:condition="python: event == view.anchorEvent" />
 
 </div>
 <span tal:condition="python: False"

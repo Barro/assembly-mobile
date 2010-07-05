@@ -1,0 +1,13 @@
+.finished, .finished a, .finished a:hover {
+  color: #666;
+  text-decoration: none;
+}
+
+.finished a {
+  text-decoration: underline;
+}
+
+.finished a:visited {
+  color: #666;
+  font-style: italic;
+}

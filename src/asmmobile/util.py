@@ -361,3 +361,15 @@ def localTzOffset():
     offsetMinutes = (seconds % 3600) / 60
     tzOffset = "%+0.2d%0.2d" % (offsetHours, offsetMinutes)
     return tzOffset
+
+
+def findAnchorEvent(now, events):
+    previousEvent = None
+    anchorEvent = None
+    for event in events:
+        if event.start >= now:
+            anchorEvent = previousEvent
+            break
+        previousEvent = event
+    return anchorEvent
+

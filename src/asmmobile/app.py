@@ -312,7 +312,7 @@ nextSort = orderby.types[config.sortNextEvents]
 
 
 class Index(MobileView):
-    grok.context(AsmMobile)
+    grok.context(interfaces.IAsmMobile)
 
     def _getCurrentNextEvents(self, now):
         notEndedEvents = self.context.getEvents(self.request,
@@ -357,7 +357,7 @@ class Index(MobileView):
 
 class NextEvents(MobileView):
     grok.name("next")
-    grok.context(AsmMobile)
+    grok.context(interfaces.IAsmMobile)
     grok.implements(interfaces.INavigationObject)
 
     navigationName = _(u"Next events")
@@ -441,13 +441,8 @@ class NextEvents(MobileView):
             self.partyHasEnded = True
 
         self.events = getEventList(self, events)
-        self.anchorEvent = None
-        previousEvent = None
-        for event in self.events:
-            if event.start >= self.now:
-                self.anchorEvent = previousEvent
-                break
-            previousEvent = event
+
+        self.anchorEvent = util.findAnchorEvent(self.now, self.events)
 
 
 class NavigationBreadcrumbs(grok.Viewlet):
@@ -492,8 +487,9 @@ class NavigationBreadcrumbs(grok.Viewlet):
 
 class NextEventsStyle(grok.Viewlet):
     grok.viewletmanager(StylesheetManager)
-    grok.context(AsmMobile)
+    grok.context(interfaces.IAsmMobile)
     grok.view(NextEvents)
+    grok.order(2)
 
 
 class Layout(MobileView):
@@ -513,6 +509,7 @@ class Layout(MobileView):
 class LayoutStyle(grok.Viewlet):
     grok.viewletmanager(StylesheetManager)
     grok.context(zope.interface.Interface)
+    grok.order(1)
 
 
 class Favicon(MobileView):
@@ -533,7 +530,7 @@ class ScheduledEvent(grok.View):
 
 class AllEvents(MobileView):
     grok.name("all")
-    grok.context(AsmMobile)
+    grok.context(interfaces.IAsmMobile)
     grok.implements(interfaces.INavigationObject)
 
     navigationName = _(u"All events")
@@ -549,6 +546,8 @@ class AllEvents(MobileView):
             self.length = self.endTime - self.startTime
         else:
             self.length = datetime.timedelta(seconds=0)
+
+        self.anchorEvent = util.findAnchorEvent(self.now, self.events)
 
     def lengthString(self):
         stringParts = []
@@ -570,8 +569,14 @@ class AllEvents(MobileView):
         return u" ".join(stringParts)
 
 
+class AllEventsStyle(grok.Viewlet):
+    grok.viewletmanager(StylesheetManager)
+    grok.context(interfaces.IAsmMobile)
+    grok.view(AllEvents)
+    grok.order(2)
+
 class About(MobileView):
-    grok.context(AsmMobile)
+    grok.context(interfaces.IAsmMobile)
 
     cacheTime = util.defaultCacheTime()
 

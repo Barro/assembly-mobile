@@ -1,23 +1,10 @@
 /* General layout */
 
 body {
-  background: #d8eaef;
-  color: #333;
+  background: #fff;
+  color: #000;
   font-family: sans-serif;
   margin: 1%;
-}
-
-#title, #title a, .links {
-  color: #659cab;
-}
-
-a, .links a:hover, .links strong, p a:hover, .header {
-  text-decoration: none;
-  color: #033442;
-}
-
-a:hover, .links a, p a {
-  text-decoration: underline;
 }
 
 h1 {
@@ -41,12 +28,12 @@ h1, h2, h3 {
 
 .header, .footer {
   padding: 4px 0;
-  border-bottom: 2px solid #b0cfd8;
+  border-bottom: 2px solid #000;
   margin-bottom: 5px;
 }
 
 .footer {
-  border-top: 2px solid #b0cfd8;
+  border-top: 2px solid #000;
   /* Some smartphones show controls in bottom of the screens. */
   /* This prevents front page navigation to be obscured by them. */
   margin-bottom: 3em;
@@ -56,45 +43,35 @@ p, .footer {
   margin-top: 5px;
 }
 
+a {
+    color: #000;
+}
+
 a:visited {
-    color: #4d034d;
+    font-style: italic;
+}
+
+a:hover {
+    text-decoration: none;
 }
 
 /* Event layout */
 
 .event {
-  background: white;
   padding: 8px 10px;
   margin: 0 0 6px 0;
   line-height: 1.1;
-  border: 1px solid #bbb;
-  color: #222;
+  border: 1px solid #000;
 }
 
 div.major-event {
-  border: 3px solid #bbb;
+  border: 3px solid #000;
 }
 
 span.major-event {
   font-weight: bold;
 }
 
-.event a {
-  color: #62a60a;
-}
-
-.event a:visited {
-    color: #7e8839;
-}
-
 .event div {
   padding: 2px 0;
-}
-
-a.location {
-  color: #666;
-}
-
-a:visited.location {
-  color: #222;
 }
