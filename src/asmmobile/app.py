@@ -307,9 +307,22 @@ for selectString in config.selectNextEvents.split("&"):
         selectArgs = selectParts[1]
     nextSelectors.append(selector.types[selectName].construct(selectArgs))
 
-currentSort = orderby.types[config.sortCurrentEvents]
-nextSort = orderby.types[config.sortNextEvents]
+def getSorter(sorterString):
+    sorters = sorterString.split("&")
+    sorter = orderby.types[sorters[0]]
+    decorators = sorters[1:]
+    for decorator in decorators:
+        parts = decorator.split(":", 1)
+        name = parts[0]
+        if len(parts) != 2:
+            args = None
+        else:
+            args = parts[1]
+        sorter = orderby.decorators[name](sorter, args)
+    return sorter
 
+currentSort = getSorter(config.sortCurrentEvents)
+nextSort = getSorter(config.sortNextEvents)
 
 class Index(MobileView):
     grok.context(interfaces.IAsmMobile)

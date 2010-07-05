@@ -17,25 +17,58 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+decorators = {}
+types = {}
+
 def name(first, second):
     return cmp(first.id, second.id)
 
 
 def startTime(first, second):
     result = cmp(first.start, second.start)
-    if result == 0:
-        return name(first, second)
     return result
 
 
 def locationPriority(first, second):
     result = cmp(second.majorLocation.priority, first.majorLocation.priority)
-    if result == 0:
-        return startTime(first, second)
     return result
 
 
-types = {
+def major(first, second):
+    if first.isMajor and not second.isMajor:
+        return -1
+    if second.isMajor and not first.isMajor:
+        return 1
+    return 0
+
+def reverse(function, parameters=None):
+    def compare(first, second):
+        return function(second, first)
+
+    return compare
+
+
+def ifEquals(function, parameters=None):
+    comparator = types[parameters]
+
+    def compare(first, second):
+        result = function(first, second)
+        if result == 0:
+            return comparator(first, second)
+        return result
+
+    return compare
+
+
+decorators.update({
+    'if-equals': ifEquals,
+    'reverse': reverse,
+})
+
+
+types.update({
+    'name': name,
     'start-time': startTime,
     'location-priority': locationPriority,
-}
+    'major': major,
+})

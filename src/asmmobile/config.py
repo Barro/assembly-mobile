@@ -56,19 +56,19 @@ sourceUrl = stringValue("source-url", "http://bitbucket.org/barro/assembly-mobil
 ########################################################################
 # Options that affect the display of events
 
-# Controls how many hours in past the ended events remain in the next events
-# view.
-nextEventsEndHours = integerValue('next-events-show-end-hours', 2)
-# Controls how many hours to future we look for starting events in the next
-# events view.
-nextEventsStartHours = integerValue('next-events-show-start-hours', 10)
-
+# Decorators:
+#
+# reverse
+# if-equals
+#
 # Sort types:
 #
+# name
 # start-time
 # location-priority
-sortCurrentEvents = stringValue("sort-current-events", "start-time")
-sortNextEvents = stringValue("sort-next-events", "start-time")
+# major
+sortCurrentEvents = stringValue("sort-current-events", "start-time&reverse&if-equals:major&if-equals:location-priority&if-equals:name")
+sortNextEvents = stringValue("sort-next-events", "start-time&if-equals:major&if-equals:location-priority&if-equals:name")
 
 # Selector types for future events:
 #
@@ -84,7 +84,7 @@ sortNextEvents = stringValue("sort-next-events", "start-time")
 #
 # By default choose events that are not hidden and show only the first ones
 # of those.
-selectNextEvents = stringValue("select-next-events", "not-hidden&one-per-location")
+selectNextEvents = stringValue("select-next-events", "not-hidden&maximum-amount:8")
 
 # Default priority for locations.
 defaultLocationPriority = integerValue("default-location-priority", 0)
