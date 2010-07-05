@@ -84,8 +84,9 @@ class SkinManager(grok.ViewletManager):
         for viewlet in self.viewlets:
             content = viewlet.render()
             if len(content):
-                result += "<!---->&#8226;<!----> <a href='@@s/%s'>%s</a>" % (
-                    viewlet.name, content)
+                skinUrl = self.view.urlVR("@@s/%s" % viewlet.name)
+                result += "<!---->&#8226;<!----> <a href='%s'>%s</a>" % (
+                    skinUrl, content)
         return result
 
 
