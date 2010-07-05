@@ -31,8 +31,6 @@
 <div tal:attributes="class shorten:footer links">
 <tal:block tal:replace="structure context/@@layout/pageOverview/@@viewlink" />
 <!---->&#8226;<!---->
-<tal:block tal:replace="structure context/@@layout/pageNextEvents/@@viewlink" />
-<!---->&#8226;<!---->
 <tal:block tal:replace="structure context/@@layout/pageAllEvents/@@viewlink" />
 <!---->&#8226;<!---->
 <a tal:attributes="href context/@@layout/mainSiteUrl"

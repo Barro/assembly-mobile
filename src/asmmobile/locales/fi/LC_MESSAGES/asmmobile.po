@@ -14,59 +14,45 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Jul  5 20:32:31 2010\n"
-"PO-Revision-Date: 2010-07-05 20:35+0300\n"
+"POT-Creation-Date: Mon Jul  5 20:44:24 2010\n"
+"PO-Revision-Date: 2010-07-05 20:45+0300\n"
 "Last-Translator: Jussi Judin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
 
-#: src/asmmobile/app.py:136 src/asmmobile/app.py:503
+#: src/asmmobile/app.py:136 src/asmmobile/app.py:406
 msgid "Home"
 msgstr "Etusivu"
 
-#: src/asmmobile/app.py:363 src/asmmobile/app.py:504
-#: src/asmmobile/app_templates/nextevents.ptm:2
-#: src/asmmobile/app_templates/nextevents.ptm:4
-msgid "Next events"
-msgstr "Seuraavaksi"
-
-#: src/asmmobile/app.py:376
-msgid "« Previous %d hours"
-msgstr "« Edelliset %d tuntia"
-
-#: src/asmmobile/app.py:378
-msgid "Next %d hours »"
-msgstr "Seuraavat %d tuntia »"
-
-#: src/asmmobile/app.py:505 src/asmmobile/app.py:536 src/asmmobile/event.py:74
+#: src/asmmobile/app.py:407 src/asmmobile/app.py:438 src/asmmobile/event.py:74
 #: src/asmmobile/app_templates/allevents.ptm:2
 msgid "All events"
 msgstr "Koko ohjelma"
 
-#: src/asmmobile/app.py:506 src/asmmobile/app_templates/about.ptm:2
+#: src/asmmobile/app.py:408 src/asmmobile/app_templates/about.ptm:2
 #: src/asmmobile/app_templates/about.ptm:5
 msgid "About"
 msgstr "Tietoja"
 
-#: src/asmmobile/app.py:556
+#: src/asmmobile/app.py:456
 msgid "%d day"
 msgstr "%d päivä"
 
-#: src/asmmobile/app.py:558
+#: src/asmmobile/app.py:458
 msgid "%d days"
 msgstr "%d päivää"
 
-#: src/asmmobile/app.py:564
+#: src/asmmobile/app.py:464
 msgid "%d hour"
 msgstr "%d tunti"
 
-#: src/asmmobile/app.py:566
+#: src/asmmobile/app.py:466
 msgid "%d hours"
 msgstr "%d tuntia"
 
-#: src/asmmobile/app.py:583
+#: src/asmmobile/app.py:483
 msgid "QR code link to home page (%s)."
 msgstr "QR-koodi-linkki etusivulle (%s)."
 
@@ -131,17 +117,16 @@ msgstr ""
 "tiedostosta tuotuja tapahtumia."
 
 #: src/asmmobile/app_templates/allevents.ptm:15
-#: src/asmmobile/app_templates/nextevents.ptm:6
-#: src/asmmobile/location_templates/locationindex.ptm:14
-#: src/asmmobile/event_templates/eventindex.ptm:14
-msgid "QR code links require a mobile phone with a QR code reader."
-msgstr "QR-koodi -linkit vaativat QR-koodeja lukevat matkapuhelimen."
-
-#: src/asmmobile/app_templates/allevents.ptm:15
 #: src/asmmobile/location_templates/locationindex.ptm:14
 #: src/asmmobile/event_templates/eventindex.ptm:14
 msgid "QR code link"
 msgstr "QR-koodi-linkki"
+
+#: src/asmmobile/app_templates/allevents.ptm:15
+#: src/asmmobile/location_templates/locationindex.ptm:14
+#: src/asmmobile/event_templates/eventindex.ptm:14
+msgid "QR code links require a mobile phone with a QR code reader."
+msgstr "QR-koodi -linkit vaativat QR-koodeja lukevat matkapuhelimen."
 
 #: src/asmmobile/app_templates/allevents.ptm:24
 msgid "Party time: ${party_start} - ${party_end}. Length: ${party_length}."
@@ -189,7 +174,8 @@ msgstr ""
 #: src/asmmobile/app_templates/index.ptm:27
 msgid ""
 "${major_span_start} ${time_left} left ${major_span_end} ${location_name}"
-msgstr "${major_span_start} ${time_left} jäljellä ${major_span_end} ${location_name}"
+msgstr ""
+"${major_span_start} ${time_left} jäljellä ${major_span_end} ${location_name}"
 
 #: src/asmmobile/app_templates/index.ptm:35
 msgid "Next"
@@ -206,7 +192,9 @@ msgstr ""
 #: src/asmmobile/app_templates/index.ptm:57
 msgid ""
 "${major_span_start} in ${time_till_start} ${major_span_end} ${location_name}"
-msgstr "${major_span_start} alkuun ${time_till_start} ${major_span_end} ${location_name}"
+msgstr ""
+"${major_span_start} alkuun ${time_till_start} ${major_span_end} "
+"${location_name}"
 
 #: src/asmmobile/app_templates/index.ptm:69
 msgid "full party schedule"
@@ -228,13 +216,9 @@ msgstr "${party_name} on ohi. Tervetuloa takaisin ensi vuonna!"
 msgid "Now"
 msgstr "Nyt"
 
-#: src/asmmobile/app_templates/layout.ptm:38
+#: src/asmmobile/app_templates/layout.ptm:36
 msgid "View main site"
 msgstr "Pääsivustolle"
-
-#: src/asmmobile/app_templates/nextevents.ptm:6
-msgid "QR code link to this page"
-msgstr "QR-koodi-linkki tälle sivulle"
 
 #: src/asmmobile/event.py:228
 msgid "%s (major event)"
@@ -327,6 +311,3 @@ msgstr "%H.%M"
 #: src/asmmobile/util.py:203
 msgid "EEEE yyyy-MM-dd HH:mm"
 msgstr "EEEE d.M.yyyy HH.mm"
-
-#~ msgid "${xml_data} Current time: ${now}"
-#~ msgstr "${xml_data} Nykyinen kellonaika: ${now}"

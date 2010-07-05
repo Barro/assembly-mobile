@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Jul  5 20:32:31 2010\n"
+"POT-Creation-Date: Mon Jul  5 20:44:24 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -24,55 +24,40 @@ msgstr ""
 "Generated-By: zope/app/locales/extract.py\n"
 
 #: src/asmmobile/app.py:136
-#: src/asmmobile/app.py:503
+#: src/asmmobile/app.py:406
 msgid "Home"
 msgstr ""
 
-#: src/asmmobile/app.py:363
-#: src/asmmobile/app.py:504
-#: src/asmmobile/app_templates/nextevents.ptm:2
-#: src/asmmobile/app_templates/nextevents.ptm:4
-msgid "Next events"
-msgstr ""
-
-#: src/asmmobile/app.py:376
-msgid "\302\253 Previous %d hours"
-msgstr ""
-
-#: src/asmmobile/app.py:378
-msgid "Next %d hours \302\273"
-msgstr ""
-
-#: src/asmmobile/app.py:505
-#: src/asmmobile/app.py:536
+#: src/asmmobile/app.py:407
+#: src/asmmobile/app.py:438
 #: src/asmmobile/event.py:74
 #: src/asmmobile/app_templates/allevents.ptm:2
 msgid "All events"
 msgstr ""
 
-#: src/asmmobile/app.py:506
+#: src/asmmobile/app.py:408
 #: src/asmmobile/app_templates/about.ptm:2
 #: src/asmmobile/app_templates/about.ptm:5
 msgid "About"
 msgstr ""
 
-#: src/asmmobile/app.py:556
+#: src/asmmobile/app.py:456
 msgid "%d day"
 msgstr ""
 
-#: src/asmmobile/app.py:558
+#: src/asmmobile/app.py:458
 msgid "%d days"
 msgstr ""
 
-#: src/asmmobile/app.py:564
+#: src/asmmobile/app.py:464
 msgid "%d hour"
 msgstr ""
 
-#: src/asmmobile/app.py:566
+#: src/asmmobile/app.py:466
 msgid "%d hours"
 msgstr ""
 
-#: src/asmmobile/app.py:583
+#: src/asmmobile/app.py:483
 msgid "QR code link to home page (%s)."
 msgstr ""
 
@@ -111,16 +96,15 @@ msgid "Nokia mobile phones and various desktop calendar software can import even
 msgstr ""
 
 #: src/asmmobile/app_templates/allevents.ptm:15
-#: src/asmmobile/app_templates/nextevents.ptm:6
 #: src/asmmobile/location_templates/locationindex.ptm:14
 #: src/asmmobile/event_templates/eventindex.ptm:14
-msgid "QR code links require a mobile phone with a QR code reader."
+msgid "QR code link"
 msgstr ""
 
 #: src/asmmobile/app_templates/allevents.ptm:15
 #: src/asmmobile/location_templates/locationindex.ptm:14
 #: src/asmmobile/event_templates/eventindex.ptm:14
-msgid "QR code link"
+msgid "QR code links require a mobile phone with a QR code reader."
 msgstr ""
 
 #: src/asmmobile/app_templates/allevents.ptm:24
@@ -193,12 +177,8 @@ msgstr ""
 msgid "Now"
 msgstr ""
 
-#: src/asmmobile/app_templates/layout.ptm:38
+#: src/asmmobile/app_templates/layout.ptm:36
 msgid "View main site"
-msgstr ""
-
-#: src/asmmobile/app_templates/nextevents.ptm:6
-msgid "QR code link to this page"
 msgstr ""
 
 #: src/asmmobile/event.py:228

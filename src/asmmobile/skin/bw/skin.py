@@ -10,9 +10,3 @@ class LayoutStyle(grok.Viewlet):
     grok.viewletmanager(asmmobile.app.StylesheetManager)
     grok.context(zope.interface.Interface)
     grok.layer(BwSkin)
-
-class NextEventsStyle(grok.Viewlet):
-    grok.viewletmanager(asmmobile.app.StylesheetManager)
-    grok.context(asmmobile.interfaces.IAsmMobile)
-    grok.view(asmmobile.app.NextEvents)
-    grok.layer(BwSkin)

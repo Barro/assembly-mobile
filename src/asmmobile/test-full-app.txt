@@ -211,36 +211,6 @@ Check that all events are visible in all page::
    >>> "NONEFOURTH" in browser.contents
    True
 
-Check that all events are visible in next page::
-
-   >>> browser.open('http://localhost/app/next')
-   >>> assertXml(browser)
-   >>> "EVFIRST" in browser.contents
-   True
-   >>> "EVSECOND" in browser.contents
-   True
-   >>> "EVTHIRD" in browser.contents
-   True
-
-Check that we can change the display time of next events to hide
-all events::
-
-   >>> browser.open('http://localhost/app/next?s=2007-01-01-01')
-   >>> assertXml(browser)
-   >>> "EVFIRST" in browser.contents
-   False
-
-Invalid time stamps should result in default behaviour::
-
-   >>> browser.open('http://localhost/app/next?s=abbabaabaa')
-   >>> assertXml(browser)
-   >>> "EVFIRST" in browser.contents
-   True
-   >>> browser.open('http://localhost/app/next?s=2007-02-31-01')
-   >>> assertXml(browser)
-   >>> "EVFIRST" in browser.contents
-   True
-
 Check that non-hidden events are visible in overview page::
 
    >>> browser.open('http://localhost/app')

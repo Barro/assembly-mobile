@@ -70,7 +70,7 @@ def checkStandardPages(
     browser,
     events=[],
     locations=[],
-    lists=['/', '/all', '/next', '/location'],
+    lists=['/', '/all', '/location'],
     calendars=['/all-events.vcs', '/all-events.ics']
     ):
 

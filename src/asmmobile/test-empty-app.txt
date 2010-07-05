@@ -15,14 +15,6 @@ Open all pages and verify that no errors are emitted::
    >>> browser.headers.get('Status').upper()
    '200 OK'
    >>> assertXml(browser)
-   >>> browser.open('http://localhost/app/next')
-   >>> browser.headers.get('Status').upper()
-   '200 OK'
-   >>> assertXml(browser)
-   >>> browser.open('http://localhost/app/next?s=2009-01-01-01')
-   >>> browser.headers.get('Status').upper()
-   '200 OK'
-   >>> assertXml(browser)
    >>> browser.open('http://localhost/app/location')
    >>> browser.headers.get('Status').upper()
    '200 OK'

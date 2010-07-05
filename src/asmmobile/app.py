@@ -355,96 +355,6 @@ class Index(MobileView):
         self._getPartyStatus(self.now, self.nextEvents)
 
 
-class NextEvents(MobileView):
-    grok.name("next")
-    grok.context(interfaces.IAsmMobile)
-    grok.implements(interfaces.INavigationObject)
-
-    navigationName = _(u"Next events")
-
-    startDifference = datetime.timedelta(hours=config.nextEventsEndHours)
-    endDifference = datetime.timedelta(hours=config.nextEventsStartHours)
-
-    differenceHours = config.nextEventsStartHours + config.nextEventsEndHours
-
-    dateFormat = "%Y-%m-%d-%H"
-    dateValidate = re.compile(r"\d\d\d\d-\d\d-\d\d-\d\d")
-
-    def update(self, s=None):
-        startTime = s
-        self.previousHoursText = translate(
-            _(u"« Previous %d hours"), context=self.request) % self.differenceHours
-        self.nextHoursText = translate(
-            _(u"Next %d hours »"), context=self.request) % self.differenceHours
-
-        displayCenter = self.now
-        try:
-            if startTime is not None and self.dateValidate.match(startTime):
-                year, month, day, hour = (int(x) for x in startTime.split("-"))
-                displayCenter = datetime.datetime(
-                    year=year,
-                    month=month,
-                    day=day,
-                    hour=hour,
-                    tzinfo=dateutil.tz.tzlocal()
-                    )
-        # ValueError happens when time matches validation regular expression
-        # but is evaluated as invalid date.
-        except ValueError, e:
-            pass
-
-        # Round to next full hour.
-        secondsTillNextHour = \
-            (3600 - (displayCenter.second + displayCenter.minute * 60))%3600
-        displayCenter += datetime.timedelta(seconds=secondsTillNextHour)
-
-        displayStart = displayCenter - self.startDifference
-        displayEnd = displayCenter + self.endDifference
-
-        self.previousCenter = \
-            (displayStart - self.endDifference).strftime(self.dateFormat)
-        self.nextCenter = \
-            (displayEnd + self.startDifference).strftime(self.dateFormat)
-
-        events = self.context.getEvents(self.request,
-            (lambda event: displayStart < event.end
-             and event.start <= displayEnd))
-
-        haveNextEvents = len(events) > 0
-
-        firstEvent = self.context.getFirstEvent(self.request)
-        lastEvent = self.context.getLastEvent(self.request)
-        haveEvents = firstEvent.id != u''
-
-        # If we don't have any more events in past and disable the
-        # "previous xx hours" link.
-        if haveNextEvents and events[0] != firstEvent:
-            self.showPrevious = True
-        else:
-            self.showPrevious = False
-
-        # If we don't have any more events in future and disable the
-        # "next xx hours" link.
-        if haveNextEvents and events[-1] != lastEvent:
-            self.showNext = True
-        else:
-            self.showNext = False
-
-        # This displays same "party has started" message that is in index.
-        self.partyHasStarted = False
-        if haveEvents and firstEvent.start < displayEnd:
-            self.partyHasStarted = True
-
-        # This displays same "party has ended" message that is in index.
-        self.partyHasEnded = False
-        if haveEvents and lastEvent.end < displayStart:
-            self.partyHasEnded = True
-
-        self.events = getEventList(self, events)
-
-        self.anchorEvent = util.findAnchorEvent(self.now, self.events)
-
-
 class NavigationBreadcrumbs(grok.Viewlet):
     grok.viewletmanager(NavigationManager)
     grok.context(zope.interface.Interface)
@@ -485,13 +395,6 @@ class NavigationBreadcrumbs(grok.Viewlet):
         return self.BREADCRUMB_SEPARATOR.join(links)
 
 
-class NextEventsStyle(grok.Viewlet):
-    grok.viewletmanager(StylesheetManager)
-    grok.context(interfaces.IAsmMobile)
-    grok.view(NextEvents)
-    grok.order(2)
-
-
 class Layout(MobileView):
     """The view that contains the main layout."""
     grok.context(zope.interface.Interface)
@@ -501,8 +404,7 @@ class Layout(MobileView):
     mainSiteUrl = config.mainSiteUrl
 
     pageOverview = (_(u"Home"), '')
-    pageNextEvents = (_(u"Next events"), 'next#now')
-    pageAllEvents = (_(u"All events"), 'all')
+    pageAllEvents = (_(u"All events"), 'all#now')
     pageAbout = (_(u"About"), 'about')
 
 
@@ -534,8 +436,6 @@ class AllEvents(MobileView):
     grok.implements(interfaces.INavigationObject)
 
     navigationName = _(u"All events")
-
-    cacheTime = util.defaultCacheTime()
 
     def update(self):
         self.events = getEventList(self, self.context.getEvents(self.request))
