@@ -24,6 +24,7 @@
       <tal:block i18n:name="major_span_end"
                  tal:condition="event/isMajor"
                  tal:replace="structure string:</span>" />
+      <!---->
       <tal:block i18n:name="location_name"
                  tal:condition="event/location/name">
         - <!----> <a tal:replace="structure event/location/@@link" />
@@ -54,6 +55,7 @@ No new scheduled events are starting in next two hours. See <!----> <a i18n:name
       <tal:block i18n:name="major_span_end"
                  tal:condition="event/isMajor"
                  tal:replace="structure string:</span>" />
+      <!---->
       <tal:block i18n:name="location_name"
                  tal:condition="event/location/name">
         - <!----> <a tal:replace="structure event/location/@@link" />
