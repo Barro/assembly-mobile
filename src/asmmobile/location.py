@@ -184,7 +184,7 @@ class NoneLocation_cls(object):
     def _initialize(config):
         cls = NoneLocation_cls
         cls.priority = config.defaultLocationPriority
-        clshideUntil = datetime.timedelta(seconds=config.defaultHideTime)
+        cls.hideUntil = datetime.timedelta(seconds=config.defaultHideTime)
 
     util.runDeferred(_initialize)
 

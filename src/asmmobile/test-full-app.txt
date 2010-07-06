@@ -5,12 +5,6 @@ Initialize standard test environment::
     >>> from asmmobile.testutils import initializeApplicationTestEnv, assertXml
     >>> root, app, browser = initializeApplicationTestEnv(getRootFolder())
 
-Change the clock to be some known time::
-
-   >>> import asmmobile.util
-   >>> oldClock = asmmobile.util.clock
-   >>> asmmobile.util.clock = asmmobile.util._staticTimeClock("2009-01-01-10-00")
-
 Add some locations::
 
    >>> import datetime
@@ -210,6 +204,20 @@ Check that all events are visible in all page::
    True
    >>> "NONEFOURTH" in browser.contents
    True
+
+Change the clock to be some known time::
+
+   >>> import asmmobile.util
+   >>> oldClock = asmmobile.util.clock
+   >>> asmmobile.util.clock = asmmobile.util._staticTimeClock("2009-01-01-08-30")
+
+Check that events without location won't crash application events are visible in overview page::
+
+   >>> browser.open('http://localhost/app')
+
+Change clock to time when some events are ongoing::
+
+   >>> asmmobile.util.clock = asmmobile.util._staticTimeClock("2009-01-01-10-00")
 
 Check that non-hidden events are visible in overview page::
 
