@@ -17,24 +17,26 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import re
-import urlparse
 import dateutil.tz
+import cgi
+import os
+import re
 import urllib
-
-from zope.i18n import translate
-import zope.app.pagetemplate.engine
-from zope.tales.interfaces import ITALESExpression
-import zope.tales.expressions
-from zope.interface import Interface
-import zope.component
-
-from grokcore.view.components import PageTemplate
+import urlparse
 
 import grok
+from grokcore.view.components import PageTemplate
+import zope.app.pagetemplate.engine
+import zope.component
+from zope.i18n import translate
+from zope.interface import Interface
+import zope.tales.expressions
+from zope.tales.interfaces import ITALESExpression
 
 import asmmobile.util as util
 import asmmobile.interfaces as interfaces
+
+RANDOM_REDIRECT_BYTES = 4
 
 class MobileView(grok.View):
     grok.context(Interface)
@@ -116,6 +118,16 @@ class MobileView(grok.View):
 
     def application_urlR(self, target=""):
         return util.applicationRelativeUrl(self, target)
+
+
+    def redirectUnique(self, target):
+        scheme, netloc, path, params, query, fragment = urlparse.urlparse(target)
+
+        queryDict = cgi.parse_qs(query, True)
+        queryDict['u'] = os.urandom(RANDOM_REDIRECT_BYTES).encode("hex")
+        query = urllib.urlencode(queryDict)
+
+        self.redirect(urlparse.urlunparse((scheme, netloc, path, params, query, fragment)))
 
 
 class MobileTemplate(PageTemplate):
