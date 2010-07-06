@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Assembly mobile - mobile content for visitors of Assembly computer festival.
-# Copyright (C) 2009  Assembly Organizing
+# Copyright (C) 2010  Assembly Organizing
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
