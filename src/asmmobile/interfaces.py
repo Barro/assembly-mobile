@@ -19,7 +19,6 @@
 
 import zope.interface
 from zope import schema
-import asmmobile.config as config
 
 class INavigationObject(zope.interface.Interface):
     navigationName = schema.TextLine(title=u"Name")
@@ -65,8 +64,10 @@ class IEvent(INavigationObject):
     id = zope.interface.Attribute("")
 
     name = schema.TextLine(title=u"Name")
+
+    # XXX: max_length=config.shortNameMaximumLength
     shortName = schema.TextLine(
-        title=u"Short name", max_length=config.shortNameMaximumLength)
+        title=u"Short name", max_length=50)
 
     start = schema.Datetime(title=u"Start time")
 

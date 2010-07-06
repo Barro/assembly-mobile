@@ -1,6 +1,5 @@
 import asmmobile
 import asmmobile.components
-import asmmobile.config as config
 import asmmobile.interfaces
 import asmmobile.skin.traverser
 
@@ -31,4 +30,5 @@ class AlternativeSkin(grok.Viewlet):
     name = "none"
 
     def render(self):
+        import asmmobile.config as config
         return config.skinNameDefault

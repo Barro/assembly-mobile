@@ -29,12 +29,14 @@ import grokcore.component
 import grokcore.view.components
 import grokcore.view.interfaces
 
-import zope.interface
+from zope.app.exception.systemerror import SystemErrorView
+import zope.app.wsgi.interfaces
 from zope.i18n import translate
+import zope.interface
 from zope.interface.common.interfaces import IException
+import zope.publisher.interfaces.http
 from zope.publisher.interfaces import INotFound
 from zope.security.interfaces import IUnauthorized
-from zope.app.exception.systemerror import SystemErrorView
 from zope.i18n.interfaces import INegotiator, IUserPreferredLanguages
 from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.publisher.browser import BrowserLanguages
@@ -48,11 +50,9 @@ import asmmobile.components
 from asmmobile.components import MobileView
 import asmmobile.util as util
 from asmmobile.util import getEventList, DisplayEvent
-import asmmobile.config as config
 import asmmobile.selector as selector
 import asmmobile.orderby as orderby
 from asmmobile import AsmMobileMessageFactory as _
-
 
 # Monkey patch send_header() method not to send "Server" header.
 # This saves 42 bytes when sending responses.
@@ -70,10 +70,19 @@ class CatalogBasedI18nUserPreferredLanguages(grok.Adapter):
 
     availableLanguages = None
 
+
+    def _initialize(config):
+        cls = CatalogBasedI18nUserPreferredLanguages
+        cls.enableInternalization = config.enableInternalization
+        cls.defaultLanguage = config.defaultLanguage
+        cls.cookieLanguage = config.cookieLanguage
+
+    util.runDeferred(_initialize)
+
     def getPreferredLanguages(self):
 
-        if not config.enableInternalization:
-            return [config.defaultLanguage]
+        if not self.enableInternalization:
+            return [self.defaultLanguage]
 
         request = self.context
 
@@ -85,8 +94,8 @@ class CatalogBasedI18nUserPreferredLanguages(grok.Adapter):
                 util.getAvailableLanguages()
 
         browserLanguages = []
-        if config.cookieLanguage in request.cookies:
-            browserLanguages.append(request.cookies[config.cookieLanguage])
+        if self.cookieLanguage in request.cookies:
+            browserLanguages.append(request.cookies[self.cookieLanguage])
 
         langs = BrowserLanguages(request).getPreferredLanguages()
         for httplang in langs:
@@ -99,7 +108,7 @@ class CatalogBasedI18nUserPreferredLanguages(grok.Adapter):
             if language in self.availableLanguages:
                 existingLanguages.append(language)
 
-        existingLanguages.append(config.defaultLanguage)
+        existingLanguages.append(self.defaultLanguage)
 
         uniqueLanguages = util.uniqify(existingLanguages)
 
@@ -135,31 +144,37 @@ class AsmMobile(grok.Application, grok.Container):
 
     navigationName = _(u"Home")
 
-    partyName = config.partyName
+    def _initialize(config):
+        cls = AsmMobile
+        cls.partyName = config.partyName
+        cls.defaultLanguage = config.defaultLanguage
+        cls.locations = config.locations
+        cls.events = config.events
+
+    util.runDeferred(_initialize)
 
     def __init__(self, **vars):
         super(AsmMobile, self).__init__(**vars)
 
-        defaultLanguage = config.defaultLanguage
+        defaultLanguage = self.defaultLanguage
 
         locations = asmmobile.location.LocalizedLocationContainer()
-        self[config.locations] = locations
+        self[self.locations] = locations
         locations[defaultLanguage] = asmmobile.location.LocationContainer()
 
         events = asmmobile.event.LocalizedEventContainer()
-        self[config.events] = events
+        self[self.events] = events
         events[defaultLanguage] = asmmobile.event.EventContainer()
 
 
     @property
     def EVENTS(self):
-        return self[config.events]
+        return self[self.events]
 
 
     @property
     def LOCATIONS(self):
-        return self[config.locations]
-
+        return self[self.locations]
 
     def getFirstEvent(self, request):
         events = self.EVENTS.get(request.locale.id.language, None)
@@ -176,7 +191,7 @@ class AsmMobile(grok.Application, grok.Container):
 
 
     def updateLocations(self, languagedLocations):
-        if config.defaultLanguage not in languagedLocations:
+        if self.defaultLanguage not in languagedLocations:
             raise ImportError("No locations for default language.")
 
         locationData = {}
@@ -184,13 +199,13 @@ class AsmMobile(grok.Application, grok.Container):
             locationData[language] = {}
             for location, locationValues in locations.items():
                 locationId = str(location)
-                if locationId not in languagedLocations[config.defaultLanguage]:
+                if locationId not in languagedLocations[self.defaultLanguage]:
                     raise ImportError("All locations must be available for default language.")
                 locationUnicodeValues = util.unicodefyStrDict(locationValues)
                 locationData[language][locationId] = locationUnicodeValues
 
         # Make sure that every language has all locations.
-        defaultLocations = locationData[config.defaultLanguage]
+        defaultLocations = locationData[self.defaultLanguage]
         for locationId, defaultValues in defaultLocations.items():
             for languageValues in locationData.values():
                 if locationId not in languageValues:
@@ -246,7 +261,7 @@ class AsmMobile(grok.Application, grok.Container):
         return eventValues
 
     def updateEvents(self, languagedEvents):
-        if config.defaultLanguage not in languagedEvents:
+        if self.defaultLanguage not in languagedEvents:
             raise ImportError("No events for default language.")
 
         eventData = {}
@@ -256,7 +271,7 @@ class AsmMobile(grok.Application, grok.Container):
             locations = self.LOCATIONS[language]
             eventData[language] = {}
             for event, values in events.items():
-                if event not in languagedEvents[config.defaultLanguage]:
+                if event not in languagedEvents[self.defaultLanguage]:
                     raise ImportError("All events must be available for default language.")
 
                 eventId = str(event)
@@ -264,7 +279,7 @@ class AsmMobile(grok.Application, grok.Container):
                 eventData[language][eventId] = eventValues
 
         # Make sure that all languages have at least some version of all events.
-        for eventId, values in eventData[config.defaultLanguage].items():
+        for eventId, values in eventData[self.defaultLanguage].items():
             for language, events in eventData.items():
                 locations = self.LOCATIONS[language]
                 if eventId not in events:
@@ -293,19 +308,25 @@ class AsmMobile(grok.Application, grok.Container):
         events = self.EVENTS.get(request.locale.id.language, None)
         # Fall back to default language.
         if events is None:
-            events = self.EVENTS[config.defaultLanguage]
+            events = self.EVENTS[self.defaultLanguage]
         return events.getEvents(eventFilter)
 
 
 nextSelectors = [selector.FutureEvents()]
-for selectString in config.selectNextEvents.split("&"):
-    selectParts = selectString.split(":", 1)
-    selectName = selectParts[0]
-    if len(selectParts) != 2:
-        selectArgs = None
-    else:
-        selectArgs = selectParts[1]
-    nextSelectors.append(selector.types[selectName].construct(selectArgs))
+
+def _initializeSelectors(config):
+    global nextSelectors
+
+    for selectString in config.selectNextEvents.split("&"):
+        selectParts = selectString.split(":", 1)
+        selectName = selectParts[0]
+        if len(selectParts) != 2:
+            selectArgs = None
+        else:
+            selectArgs = selectParts[1]
+        nextSelectors.append(selector.types[selectName].construct(selectArgs))
+
+util.runDeferred(_initializeSelectors)
 
 def getSorter(sorterString):
     sorters = sorterString.split("&")
@@ -321,8 +342,16 @@ def getSorter(sorterString):
         sorter = orderby.decorators[name](sorter, args)
     return sorter
 
-currentSort = getSorter(config.sortCurrentEvents)
-nextSort = getSorter(config.sortNextEvents)
+currentSort = None
+nextSort = None
+
+def _initializeSorters(config):
+    global currentSort
+    currentSort = getSorter(config.sortCurrentEvents)
+    global nextSort
+    nextSort = getSorter(config.sortNextEvents)
+
+util.runDeferred(_initializeSorters)
 
 class Index(MobileView):
     grok.context(interfaces.IAsmMobile)
@@ -412,9 +441,13 @@ class Layout(MobileView):
     """The view that contains the main layout."""
     grok.context(zope.interface.Interface)
 
-    sourceUrl = config.sourceUrl
-    siteName = config.siteName
-    mainSiteUrl = config.mainSiteUrl
+    def _initialize(config):
+        cls = Layout
+        cls.sourceUrl = config.sourceUrl
+        cls.siteName = config.siteName
+        cls.mainSiteUrl = config.mainSiteUrl
+
+    util.runDeferred(_initialize)
 
     pageOverview = (_(u"Home"), '')
     pageAllEvents = (_(u"All events"), 'all#now')
@@ -433,7 +466,11 @@ class Favicon(MobileView):
     grok.name("favicon.ico")
     template = None
 
-    cacheTime = util.defaultCacheTime()
+    def _initialize(config):
+        cls = Favicon
+        cls.cacheTime = util.defaultCacheTime(config)
+
+    util.runDeferred(_initialize)
 
     def render(self):
         return self.static.get("favicon.ico").GET()
@@ -488,11 +525,16 @@ class AllEventsStyle(grok.Viewlet):
     grok.view(AllEvents)
     grok.order(2)
 
+#import pdb; pdb.set_trace()
 
 class About(MobileView):
     grok.context(interfaces.IAsmMobile)
 
-    cacheTime = util.defaultCacheTime()
+    def _initialize(config):
+        cls = About
+        cls.cacheTime = util.defaultCacheTime(config)
+
+    util.runDeferred(_initialize)
 
     qrCodeAltTemplate = _(u"QR code link to home page (%s).")
 
@@ -505,7 +547,11 @@ class ErrorLayout(MobileView):
     """The view that contains the error layout."""
     grok.context(zope.interface.Interface)
 
-    siteName = config.siteName
+    def _initialize(config):
+        cls = ErrorLayout
+        cls.siteName = config.siteName
+
+    util.runDeferred(_initialize)
 
 
 class Error401Unauthorized(MobileView, SystemErrorView):
@@ -544,6 +590,12 @@ class SetLanguage(MobileView):
 
     cacheTime = util.AddTime(datetime.timedelta(seconds=0))
 
+    def _initialize(config):
+        cls = SetLanguage
+        cls.cookieLanguage = config.cookieLanguage
+
+    util.runDeferred(_initialize)
+
     def publishTraverse(self, request, name):
         self.newLanguage = name
         request.setTraversalStack([])
@@ -553,7 +605,7 @@ class SetLanguage(MobileView):
         language = getattr(self, 'newLanguage', None)
         if language is not None:
             self.request.response.setCookie(
-                config.cookieLanguage, language, path='/')
+                self.cookieLanguage, language, path='/')
 
         self.redirect(util.findReturnTo(self))
 

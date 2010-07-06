@@ -34,7 +34,6 @@ from grokcore.view.components import PageTemplate
 import grok
 
 import asmmobile.util as util
-import asmmobile.config as config
 import asmmobile.interfaces as interfaces
 
 class MobileView(grok.View):
@@ -48,6 +47,13 @@ class MobileView(grok.View):
     language = None
 
     skin = None
+
+    def _initialize(config):
+        cls = MobileView
+        cls.enableInternalization = config.enableInternalization
+        cls.sendCachingHeaders = config.sendCachingHeaders
+
+    util.runDeferred(_initialize)
 
     def _sendCachingHeaders(self):
         utcnow = self.now.astimezone(dateutil.tz.tzutc())
@@ -77,7 +83,7 @@ class MobileView(grok.View):
     def __call__(self, *args, **kw):
         self.now = util.clock()
 
-        if config.enableInternalization:
+        if self.enableInternalization:
             self._setupLanguages()
 
         self.request.response.setHeader(
@@ -85,7 +91,7 @@ class MobileView(grok.View):
             self.contentType
             )
 
-        if config.sendCachingHeaders:
+        if self.sendCachingHeaders:
             self._sendCachingHeaders()
 
         return super(MobileView, self).__call__(*args, **kw)
@@ -117,11 +123,17 @@ class MobileTemplate(PageTemplate):
     def render(self, view):
         return super(MobileTemplate, self).render(view).encode(view.charset)
 
+SHORTENER = None
 
-if config.mobileMode:
-    SHORTENER = util.NameShortener()
-else:
-    SHORTENER = util.AsIsName()
+def _initializeShortener(config):
+    global SHORTENER
+    if config.mobileMode:
+        SHORTENER = util.NameShortener()
+    else:
+        SHORTENER = util.AsIsName()
+
+util.runDeferred(_initializeShortener)
+
 
 class ShortenExpr(object):
     grok.implements(ITALESExpression)
@@ -177,6 +189,12 @@ class StylesheetManager(grok.ViewletManager):
     separatorMatch = re.compile(r" *([,:\{;]) *")
     semicolonMatch = re.compile(r";\}")
 
+    def _initialize(config):
+        cls = StylesheetManager
+        cls.mobileMode = config.mobileMode
+
+    util.runDeferred(_initialize)
+
     def minifySelector(self, selectorString):
         selectors = selectorString.split(",")
         result = []
@@ -207,7 +225,7 @@ class StylesheetManager(grok.ViewletManager):
     def render(self):
         content = super(StylesheetManager, self).render()
 
-        if not config.mobileMode:
+        if not self.mobileMode:
             return content
 
         compressed = self.removeExtraContent(content)
@@ -225,6 +243,12 @@ from zope.app.publisher.browser import getDefaultViewName
 class ContentTraverser(grok.Traverser):
     grok.context(interfaces.ILocalizedContentContainer)
 
+    def _initialize(config):
+        cls = ContentTraverser
+        cls.defaultLanguage = config.defaultLanguage
+
+    util.runDeferred(_initialize)
+
     def traverse(self, name):
         content = self.getContent(self.request)
         return content.get(name, None)
@@ -232,7 +256,7 @@ class ContentTraverser(grok.Traverser):
     def getContent(self, request):
         content = self.context.get(request.locale.id.language, None)
         if content is None:
-            content = self.context[config.defaultLanguage]
+            content = self.context[self.defaultLanguage]
         return content
 
     def browserDefault(self, request):

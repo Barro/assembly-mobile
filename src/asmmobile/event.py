@@ -27,7 +27,6 @@ from asmmobile import AsmMobileMessageFactory as _
 import asmmobile.interfaces as interfaces
 from asmmobile.components import MobileView
 import asmmobile.util as util
-import asmmobile.config as config
 import asmmobile.location
 
 def _sortByStartTime(first, second):
@@ -219,7 +218,11 @@ class EventIndex(MobileView):
     grok.name("index")
     grok.context(Event)
 
-    cacheTime = util.defaultCacheTime()
+    def _initialize(config):
+        cls = EventIndex
+        cls.cacheTime = util.defaultCacheTime(config)
+
+    util.runDeferred(_initialize)
 
     @property
     def displayName(self):

@@ -39,7 +39,7 @@ Order by start time::
 
    >>> events.sort(orderby.startTime)
    >>> events
-   [<1-2 @ cave>, <1-2 @ home>, <4-5 @ cave>, <6-7 @ cave>, <6-7 @ home>]
+   [<1-2 @ cave>, <1-2 @ home>, <4-5 @ cave>, <6-7 @ home>, <6-7 @ cave>]
 
 Order by location priority where home is more important than cave::
 

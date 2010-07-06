@@ -21,7 +21,6 @@
 import zope.app.component.hooks
 import zope.component
 import transaction
-import asmmobile.config
 import asmmobile.util
 
 def touchDict(obj, name):
@@ -68,6 +67,8 @@ def updateSchedule(app, config):
     for language, locationData in locations.items():
         for id, data in locationData.items():
             data['priority'] = config.PRIORITIES.get(id, None)
+
+    import asmmobile.config
 
     # Shorten event names.
     for languageEvents in events.values():

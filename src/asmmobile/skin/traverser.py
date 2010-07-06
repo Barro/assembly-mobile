@@ -25,7 +25,6 @@ from zope.publisher.browser import applySkin
 from zope.i18n import translate
 import zope.interface
 
-import asmmobile.config as config
 import asmmobile.interfaces as interfaces
 import asmmobile.util as util
 import asmmobile.components
@@ -94,10 +93,15 @@ class AlternativeSkin(grok.Viewlet):
     grok.viewletmanager(SkinManager)
     grok.context(zope.interface.Interface)
 
-    name = config.skinAlternative
+    def _initialize(config):
+        cls = AlternativeSkin
+        cls.skinAlternative = config.skinAlternative
+        cls.name = config.skinAlternative
+
+    util.runDeferred(_initialize)
 
     def render(self):
-        skin = config.skinAlternative
+        skin = self.skinAlternative
 
         if skin in SKINS:
             displayName, cls = SKINS[skin]

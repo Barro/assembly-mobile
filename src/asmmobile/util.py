@@ -31,8 +31,21 @@ from zope.i18n.interfaces import ITranslationDomain
 import zope.interface
 
 from asmmobile import AsmMobileMessageFactory as _
-import asmmobile.config as config
 import asmmobile.interfaces as interfaces
+
+_DEFERRED_RUNS = []
+
+def runDeferred(function):
+    _DEFERRED_RUNS.append(function)
+
+
+@grok.subscribe(zope.app.wsgi.interfaces.WSGIPublisherApplicationCreated)
+def handle(obj):
+    import asmmobile.config as config
+
+    for function in _DEFERRED_RUNS:
+        function(config)
+
 
 EVENTS = 'event'
 LOCATIONS = 'location'
@@ -51,12 +64,17 @@ def _staticTimeClock(timeString):
         return dateFactory
     return staticTime
 
-# Choose either between real system time or static time for testing.
-if config.time == "now":
-    clock = _currentTimeClock(dateutil.tz.tzlocal())
-else:
-    clock = _staticTimeClock(config.time)
+clock = None
 
+def _initializeClock(config):
+    global clock
+    # Choose either between real system time or static time for testing.
+    if config.time == "now":
+        clock = _currentTimeClock(dateutil.tz.tzlocal())
+    else:
+        clock = _staticTimeClock(config.time)
+
+runDeferred(_initializeClock)
 
 KEY_CHARACTERS = (string.ascii_letters.decode('ascii')
                   + string.digits.decode('ascii'))
@@ -299,13 +317,18 @@ class AsIsName(object):
 
 
 class LongTextWidget(TextWidget):
-    displayWidth = config.shortNameMaximumLength
+    def _initialize(config):
+        displayWidth = config.shortNameMaximumLength
+    runDeferred(_initialize)
 
 
-def defaultCacheTime():
+def defaultCacheTime(config):
     return AddTime(datetime.timedelta(minutes=config.eventCacheMinutes))
 
+
 def getAvailableLanguages():
+    import asmmobile.config as config
+
     translationDomain = queryUtility(ITranslationDomain, _._domain)
     languages = set(translationDomain.getCatalogsInfo().keys())
 

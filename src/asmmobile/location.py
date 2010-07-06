@@ -26,11 +26,9 @@ import grok
 from asmmobile import AsmMobileMessageFactory as _
 import asmmobile.util as util
 import asmmobile.interfaces as interfaces
-import asmmobile.config as config
 from asmmobile.components import MobileView
 from asmmobile.interfaces import ILocalizedContentContainer
 from asmmobile.util import getEventList
-
 
 def _sortByName(first, second):
     nameCmp = cmp(first.name, second.name)
@@ -122,7 +120,12 @@ class Location(grok.Model):
     grok.implements(interfaces.ILocation, interfaces.IEventOwner)
 
     DEFAULT_PRIORITY = 0
-    DEFAULT_HIDE_TIME = datetime.timedelta(seconds=config.defaultHideTime)
+
+    def _initialize(config):
+        cls = Location
+        cls.DEFAULT_HIDE_TIME = datetime.timedelta(seconds=config.defaultHideTime)
+
+    util.runDeferred(_initialize)
 
     def __init__(self,
                  id,
@@ -178,8 +181,12 @@ class NoneLocation_cls(object):
     url = None
     description = None
 
-    priority = config.defaultLocationPriority
-    hideUntil = datetime.timedelta(seconds=config.defaultHideTime)
+    def _initialize(config):
+        cls = NoneLocation_cls
+        cls.priority = config.defaultLocationPriority
+        clshideUntil = datetime.timedelta(seconds=config.defaultHideTime)
+
+    util.runDeferred(_initialize)
 
     def __init__(self):
         self.majorLocation = self
@@ -194,7 +201,11 @@ class LocationIndex(MobileView):
     grok.name("index")
     grok.context(Location)
 
-    cacheTime = util.defaultCacheTime()
+    def _initialize(config):
+        cls = LocationIndex
+        cls.cacheTime = util.defaultCacheTime(config)
+
+    util.runDeferred(_initialize)
 
     zeroSeconds = datetime.timedelta(seconds=0)
 
