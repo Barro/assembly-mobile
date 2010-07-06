@@ -36,7 +36,13 @@ from zope.tales.interfaces import ITALESExpression
 import asmmobile.util as util
 import asmmobile.interfaces as interfaces
 
+UNIQUE_VAR_NAME = 'u'
 RANDOM_REDIRECT_BYTES = 4
+
+# XXX replace this with utility.
+def uniqueIdGenerator():
+    return os.urandom(RANDOM_REDIRECT_BYTES).encode("hex")
+UNIQUE_ID_GENERATOR = uniqueIdGenerator
 
 class MobileView(grok.View):
     grok.context(Interface)
@@ -124,7 +130,7 @@ class MobileView(grok.View):
         scheme, netloc, path, params, query, fragment = urlparse.urlparse(target)
 
         queryDict = cgi.parse_qs(query, True)
-        queryDict['u'] = os.urandom(RANDOM_REDIRECT_BYTES).encode("hex")
+        queryDict[UNIQUE_VAR_NAME] = UNIQUE_ID_GENERATOR()
         query = urllib.urlencode(queryDict)
 
         self.redirect(urlparse.urlunparse((scheme, netloc, path, params, query, fragment)))
