@@ -39,7 +39,7 @@ def runDeferred(function):
     _DEFERRED_RUNS.append(function)
 
 
-@grok.subscribe(zope.app.wsgi.interfaces.WSGIPublisherApplicationCreated)
+@grok.subscribe(zope.app.wsgi.interfaces.IWSGIPublisherApplicationCreatedEvent)
 def handle(obj):
     import asmmobile.config as config
 
