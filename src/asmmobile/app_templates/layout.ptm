@@ -43,11 +43,9 @@
 <tal:block tal:condition="view/language">
   <!---->&#8226;<!---->
   <a tal:condition="python: view.language != 'fi'"
-     tal:attributes="href python:view.urlVR('@@l/fi')"
-     title="Vaihda kieli suomeksi.">FI</a>
+     tal:attributes="href python:view.urlVR('@@l/fi')">FI</a>
   <a tal:condition="python: view.language != 'en'"
-     tal:attributes="href python:view.urlVR('@@l/en')"
-     title="Change language to English.">EN</a>
+     tal:attributes="href python:view.urlVR('@@l/en')">EN</a>
 </tal:block>
 </div>
 </metal:block>
