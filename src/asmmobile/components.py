@@ -85,6 +85,12 @@ class MobileView(grok.View):
             "Accept-Encoding,Accept-Language,Cookie"
             )
 
+    def _sendDisableCachingHeaders(self):
+        self.request.response.setHeader(
+            'Cache-Control',
+            "no-cache"
+            )
+
     def _setupLanguages(self):
         self.language = self.request.locale.id.language
 
@@ -101,6 +107,9 @@ class MobileView(grok.View):
 
         if self.sendCachingHeaders:
             self._sendCachingHeaders()
+        else:
+            self._sendDisableCachingHeaders()
+
 
         return super(MobileView, self).__call__(*args, **kw)
 

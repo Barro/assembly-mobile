@@ -91,4 +91,8 @@ sub vcl_deliver {
 	remove resp.http.Expires;
 	remove resp.http.Vary;
 	remove resp.http.Age;
+
+        # Add Cache-Control: no-cache so that pages are definitely not cached
+        # on some Android based browsers.
+        set resp.http.Cache-Control = "no-cache";
 }
