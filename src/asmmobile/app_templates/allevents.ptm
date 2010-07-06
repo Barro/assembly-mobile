@@ -47,6 +47,7 @@
           tal:replace="structure string:&#8226;<!---->" />
 
     <span tal:replace="structure event/@@scheduledevent" />
+    <span tal:condition="python: event.location.name and not event.length" tal:replace="string: - " />
     <!---->
     <a tal:replace="structure event/location/@@link" />
   </tal:block>
