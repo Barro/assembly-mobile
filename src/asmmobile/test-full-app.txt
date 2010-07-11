@@ -275,19 +275,14 @@ Untranslated events should still result in something::
 
 Check that redirection on language changes works correctly:
 
-   >>> import asmmobile.components
-   >>> oldGenerator = asmmobile.components.UNIQUE_ID_GENERATOR
-   >>> asmmobile.components.UNIQUE_ID_GENERATOR = lambda : '12345678'
    >>> browser.open('http://localhost/app/event/cave_second/@@l/en')
    >>> browser.url
-   'http://localhost/app/event/cave_second?u=12345678'
+   'http://localhost/app/event/cave_second'
 
    >>> browser.addHeader("Referer", "http://localhost/app")
    >>> browser.open('http://localhost/app/event/cave_second/@@l/en')
    >>> browser.url
-   'http://localhost/app?u=12345678'
-
-   >>> asmmobile.components.UNIQUE_ID_GENERATOR = oldGenerator
+   'http://localhost/app'
 
 Remove one event and check that it is removed from application events::
 
