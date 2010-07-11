@@ -162,7 +162,7 @@ def _initializeShortener(config):
 util.runDeferred(_initializeShortener)
 
 
-class ShortenExpr(object):
+class ShortenExpression(object):
     grok.implements(ITALESExpression)
 
     def __init__(self, name, expr, engine):
@@ -176,14 +176,10 @@ class ShortenExpr(object):
         return 'shortened expression (%s)' % `self._s`
 
     def __repr__(self):
-        return '<ShortenExpr %s>' % `self._s`
+        return '<ShortenExpression %s>' % `self._s`
 
 
-# Registering handler for "shorten" type.
-zope.app.pagetemplate.engine.TrustedEngine.registerType("shorten", ShortenExpr)
-
-
-class TimeFormatExpr(object):
+class TimeFormatExpression(object):
     grok.implements(ITALESExpression)
 
     def __init__(self, name, expr, engine):
@@ -198,13 +194,10 @@ class TimeFormatExpr(object):
         return formatter.format(self._path(econtext))
 
     def __str__(self):
-        return 'formatter expression (%s)' % `self._s`
+        return 'time formatter expression (%s)' % `self._s`
 
     def __repr__(self):
-        return '<TimeFormatExpr %s>' % `self._s`
-
-# Registering handler for "timeformat" type.
-zope.app.pagetemplate.engine.TrustedEngine.registerType("timeformat", TimeFormatExpr)
+        return '<TimeFormatExpression %s>' % `self._s`
 
 
 class StylesheetManager(grok.ViewletManager):

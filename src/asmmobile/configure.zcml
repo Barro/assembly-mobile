@@ -1,9 +1,22 @@
 <configure xmlns="http://namespaces.zope.org/zope"
            xmlns:grok="http://namespaces.zope.org/grok"
            xmlns:i18n="http://namespaces.zope.org/i18n"
+           xmlns:tales="http://namespaces.zope.org/tales"
            >
   <include package="grok" />
   <includeDependencies package="." />
+
   <grok:grok package="." />
   <i18n:registerTranslations directory="locales" />
+
+  <!-- shortener: tales expression -->
+  <tales:expressiontype
+     name="shorten"
+     handler=".components.ShortenExpression" />
+
+  <!-- timeformat: tales expression -->
+  <tales:expressiontype
+     name="timeformat"
+     handler=".components.TimeFormatExpression" />
+
 </configure>
