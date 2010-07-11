@@ -291,6 +291,7 @@ class NameShortener(object):
     """
 
     OUT_CHARS = unicode(string.ascii_lowercase)
+    WHITESPACE_REPLACER = re.compile(r"\s+", re.UNICODE)
 
     def __init__(self):
         self.id = 0
@@ -317,7 +318,9 @@ class NameShortener(object):
         return result
 
     def shorten(self, name):
-        return " ".join(self._shortenPart(part) for part in name.split(" "))
+        cleanedName = self.WHITESPACE_REPLACER.sub(" ", name).strip()
+        return " ".join(
+            self._shortenPart(part) for part in cleanedName.split(" "))
 
 class AsIsName(object):
     def shorten(self, name):
