@@ -143,20 +143,17 @@ class StylesheetTemplateFactory(grok.GlobalUtility):
     grok.implements(grokcore.view.interfaces.ITemplateFileFactory)
     grok.name('css')
 
-    cleaner = None
-
     def __call__(self, filename, _prefix=None):
-        if self.cleaner is None:
-            import asmmobile.config as config
+        import asmmobile.config as config
 
-            if config.mobileMode:
-                shortener = zope.component.getUtility(asmmobile.interfaces.INameShortener)
-                self.cleaner = asmmobile.components.CssWhitespaceCleaner(shortener)
-            else:
-                self.cleaner = asmmobile.components.CssNoneCleaner()
-
-        return asmmobile.components.CssTemplate(
-            filename=filename, _prefix=_prefix, cleaner=self.cleaner)
+        if config.mobileMode:
+            shortener = zope.component.getUtility(asmmobile.interfaces.INameShortener)
+            cleaner = asmmobile.components.CssWhitespaceCleaner(shortener)
+            return asmmobile.components.CssTemplate(
+                filename=filename, _prefix=_prefix, cleaner=cleaner)
+        else:
+            return grokcore.view.components.PageTemplate(
+                filename=filename, _prefix=_prefix)
 
 
 class ImportError(RuntimeError):
