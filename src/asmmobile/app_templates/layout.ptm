@@ -3,11 +3,14 @@
     "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
 <html tal:attributes="xml:lang view/language"
       xmlns="http://www.w3.org/1999/xhtml" i18n:domain="asmmobile">
+
 <head>
   <title><metal:block define-slot="page-title"></metal:block><metal:block define-slot="page-title-separator"> - </metal:block><span tal:replace="context/@@layout/siteName">Assembly Mobile</span></title>
   <style type='text/css' tal:content="structure provider:stylesheets"></style>
   <meta name="viewport" content="width=480" />
+  <metal:block define-slot="extra-head-data"></metal:block>
 </head>
+
 <body>
 <h1 tal:attributes="id shorten:title">
   <tal:block tal:condition="python:view.application_url('index')==view.url()"
