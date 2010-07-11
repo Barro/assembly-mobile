@@ -322,6 +322,7 @@ class NameShortener(object):
         return " ".join(
             self._shortenPart(part) for part in cleanedName.split(" "))
 
+
 class AsIsName(object):
     def shorten(self, name):
         return name

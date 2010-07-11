@@ -21,12 +21,15 @@ import dateutil.tz
 import cgi
 import os
 import re
+import sys
 import urllib
 import urlparse
 
+
 import grok
-from grokcore.view.components import PageTemplate
-import zope.app.pagetemplate.engine
+import grokcore.view.components
+import grokcore.view.interfaces
+import martian.util
 import zope.component
 from zope.i18n import translate
 from zope.interface import Interface
@@ -145,21 +148,10 @@ class MobileView(grok.View):
         self.redirect(urlparse.urlunparse((scheme, netloc, path, params, query, fragment)))
 
 
-class MobileTemplate(PageTemplate):
+class MobileTemplate(grokcore.view.components.PageTemplate):
 
     def render(self, view):
         return super(MobileTemplate, self).render(view).encode(view.charset)
-
-SHORTENER = None
-
-def _initializeShortener(config):
-    global SHORTENER
-    if config.mobileMode:
-        SHORTENER = util.NameShortener()
-    else:
-        SHORTENER = util.AsIsName()
-
-util.runDeferred(_initializeShortener)
 
 
 class ShortenExpression(object):
@@ -167,7 +159,8 @@ class ShortenExpression(object):
 
     def __init__(self, name, expr, engine):
         self._s = expr
-        self._short = SHORTENER.shorten(self._s)
+        shortener = zope.component.getUtility(interfaces.INameShortener)
+        self._short = shortener.shorten(self._s)
 
     def __call__(self, econtext):
         return self._short
@@ -179,20 +172,27 @@ class ShortenExpression(object):
         return '<ShortenExpression %s>' % `self._s`
 
 
-class StylesheetManager(grok.ViewletManager):
-    grok.name('stylesheets')
-    grok.context(Interface)
+class CssNoneCleaner(object):
+    def __call__(self, data):
+        return data
 
+
+class CssWhitespaceCleaner(object):
     commentMatch = re.compile(r"/\*.*?\*/", re.DOTALL)
     newlinesMatch = re.compile(r" *\n *")
     separatorMatch = re.compile(r" *([,:\{;]) *")
     semicolonMatch = re.compile(r";\}")
 
-    def _initialize(config):
-        cls = StylesheetManager
-        cls.mobileMode = config.mobileMode
+    def __init__(self, nameShortener):
+        self.shortener = nameShortener
 
-    util.runDeferred(_initialize)
+    def removeExtraContent(self, content):
+        compressed = content
+        compressed = self.commentMatch.sub("", compressed)
+        compressed = self.newlinesMatch.sub("", compressed)
+        compressed = self.separatorMatch.sub(r"\1", compressed)
+        compressed = self.semicolonMatch.sub("}", compressed)
+        return compressed
 
     def minifySelector(self, selectorString):
         selectors = selectorString.split(",")
@@ -203,30 +203,17 @@ class StylesheetManager(grok.ViewletManager):
             for part in parts:
                 if "." in part:
                     left, right = part.split(".", 1)
-                    right = SHORTENER.shorten(right)
+                    right = self.shortener.shorten(right)
                     part = "%s.%s" % (left, right)
                 elif "#" in part:
                     left, right = part.split("#", 1)
-                    right = SHORTENER.shorten(right)
+                    right = self.shortener.shorten(right)
                     part = "%s#%s" % (left, right)
                 selectorResult.append(part)
             result.append(" ".join(selectorResult))
         return ",".join(result)
 
-    def removeExtraContent(self, content):
-        compressed = content
-        compressed = self.commentMatch.sub("", compressed)
-        compressed = self.newlinesMatch.sub("", compressed)
-        compressed = self.separatorMatch.sub(r"\1", compressed)
-        compressed = self.semicolonMatch.sub("}", compressed)
-        return compressed
-
-    def render(self):
-        content = super(StylesheetManager, self).render()
-
-        if not self.mobileMode:
-            return content
-
+    def __call__(self, content):
         compressed = self.removeExtraContent(content)
         selectors = compressed.split("{")
         outputSelectors = []
@@ -235,6 +222,42 @@ class StylesheetManager(grok.ViewletManager):
             selectorData[-1] = self.minifySelector(selectorData[-1])
             outputSelectors.append("}".join(selectorData))
         return "{".join(outputSelectors)
+
+
+class StylesheetManager(grok.ViewletManager):
+    grok.name('stylesheets')
+    grok.context(Interface)
+
+
+class CssTemplate(grokcore.view.components.BaseTemplate):
+
+    def __init__(self, string=None, filename=None, _prefix=None, cleaner=None):
+        if cleaner == None:
+            self.cleaner = CssNoneCleaner()
+        else:
+            self.cleaner = cleaner
+
+        self.__grok_module__ = martian.util.caller_module()
+
+        if string:
+            self.setFromString(string)
+        else:
+            if _prefix is None:
+                module = sys.modules[self.__grok_module__]
+                _prefix = os.path.dirname(module.__file__)
+            self.setFromFilename(filename, _prefix)
+
+    def setFromString(self, string):
+        self._templateData = self.cleaner(string)
+
+    def setFromFilename(self, filename, _prefix=None):
+        fp = open(os.path.join(_prefix, filename), "r")
+        data = fp.read()
+        fp.close()
+        self.setFromString(data)
+
+    def render(self, view):
+        return self._templateData
 
 
 from zope.app.publisher.browser import getDefaultViewName

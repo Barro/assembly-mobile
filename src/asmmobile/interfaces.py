@@ -110,3 +110,8 @@ class ILocation(INavigationObject):
 class ILocalizedContentContainer(INavigationObject):
     def getContent(request):
         pass
+
+
+class INameShortener(zope.interface.Interface):
+    def shorten(name):
+        pass

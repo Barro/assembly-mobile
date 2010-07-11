@@ -115,6 +115,22 @@ class CatalogBasedI18nUserPreferredLanguages(grok.Adapter):
         return uniqueLanguages
 
 
+class UtilNameShortener(grok.GlobalUtility):
+    grok.implements(asmmobile.interfaces.INameShortener)
+
+    def __init__(self, *args, **kw):
+        super(UtilNameShortener, self).__init__(*args, **kw)
+
+        import asmmobile.config as config
+        if config.mobileMode:
+            self.shortener = util.NameShortener()
+        else:
+            self.shortener = util.AsIsName()
+
+    def shorten(self, name):
+        return self.shortener.shorten(name)
+
+
 class MobileTemplateFactory(grok.GlobalUtility):
     grok.implements(grokcore.view.interfaces.ITemplateFileFactory)
     grok.name('ptm')
@@ -127,9 +143,20 @@ class StylesheetTemplateFactory(grok.GlobalUtility):
     grok.implements(grokcore.view.interfaces.ITemplateFileFactory)
     grok.name('css')
 
+    cleaner = None
+
     def __call__(self, filename, _prefix=None):
-        return grokcore.view.components.PageTemplate(
-            filename=filename, _prefix=_prefix)
+        if self.cleaner is None:
+            import asmmobile.config as config
+
+            if config.mobileMode:
+                shortener = zope.component.getUtility(asmmobile.interfaces.INameShortener)
+                self.cleaner = asmmobile.components.CssWhitespaceCleaner(shortener)
+            else:
+                self.cleaner = asmmobile.components.CssNoneCleaner()
+
+        return asmmobile.components.CssTemplate(
+            filename=filename, _prefix=_prefix, cleaner=self.cleaner)
 
 
 class ImportError(RuntimeError):
