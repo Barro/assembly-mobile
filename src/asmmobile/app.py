@@ -607,7 +607,7 @@ class SetLanguage(MobileView):
             self.request.response.setCookie(
                 self.cookieLanguage, language, path='/')
 
-        self.redirectUnique(util.findReturnTo(self))
+        self.redirect(util.findReturnTo(self))
 
     def render(self):
         return ''

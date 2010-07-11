@@ -68,7 +68,7 @@ class SetSkin(asmmobile.components.MobileView):
             self.request.response.setCookie(
                 's', skin, path='/')
 
-        self.redirectUnique(util.findReturnTo(self))
+        self.redirect(util.findReturnTo(self))
 
     def render(self):
         return ''
