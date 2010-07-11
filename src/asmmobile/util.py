@@ -278,11 +278,19 @@ class NameShortener(object):
     """Holds a database of shortened names and returns shortened name for given
     string.
 
-    Shortened names are useful to map long CSS class or ID names to shorter
-    forms that do not need manual class name conversion.
+    Shortened names are useful when mapping long CSS class or ID names to a
+    shorter form that does not require manual class name conversion.
+
+    >>> shortener = NameShortener()
+    >>> shortener.shorten("first")
+    'a'
+    >>> shortener.shorten("second")
+    'b'
+    >>> shortener.shorten("first second")
+    'a b'
     """
 
-    OUT_CHARS = unicode(string.ascii_lowercase + string.digits)
+    OUT_CHARS = unicode(string.ascii_lowercase)
 
     def __init__(self):
         self.id = 0
