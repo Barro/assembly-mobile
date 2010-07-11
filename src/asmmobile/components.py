@@ -179,27 +179,6 @@ class ShortenExpression(object):
         return '<ShortenExpression %s>' % `self._s`
 
 
-class TimeFormatExpression(object):
-    grok.implements(ITALESExpression)
-
-    def __init__(self, name, expr, engine):
-        format, pathExpr = expr.split(",", 1)
-        self._s = expr
-        self._format = format
-        self._path = zope.tales.expressions.PathExpr("", pathExpr, engine)
-
-    def __call__(self, econtext):
-        formatter = econtext.request.locale.dates.getFormatter("dateTime")
-        formatter.setPattern(self._format)
-        return formatter.format(self._path(econtext))
-
-    def __str__(self):
-        return 'time formatter expression (%s)' % `self._s`
-
-    def __repr__(self):
-        return '<TimeFormatExpression %s>' % `self._s`
-
-
 class StylesheetManager(grok.ViewletManager):
     grok.name('stylesheets')
     grok.context(Interface)

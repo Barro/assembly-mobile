@@ -14,9 +14,4 @@
      name="shorten"
      handler=".components.ShortenExpression" />
 
-  <!-- timeformat: tales expression -->
-  <tales:expressiontype
-     name="timeformat"
-     handler=".components.TimeFormatExpression" />
-
 </configure>
