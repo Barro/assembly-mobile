@@ -56,7 +56,7 @@
 
 <tal:block tal:condition="context/description">
   <h2 i18n:translate="">Description</h2>
-  <p tal:content="context/description">description</p>
+  <p tal:content="structure context/description">description</p>
 </tal:block>
 
 </div>

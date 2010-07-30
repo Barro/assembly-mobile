@@ -168,7 +168,7 @@ Modify location description::
    >>> browser.headers.get('Status').upper()
    '200 OK'
    >>> assertXml(browser)
-   >>> browser.getControl(name="form.description").value = "MOD_CAVE_DESCRIPTION\n<&"
+   >>> browser.getControl(name="form.description").value = "MOD_CAVE_DESCRIPTION\n&lt;&amp;"
    >>> browser.getControl("Apply").click()
    >>> "error" in browser.contents
    False
@@ -183,7 +183,7 @@ Modify event description::
    >>> browser.headers.get('Status').upper()
    '200 OK'
    >>> assertXml(browser)
-   >>> browser.getControl(name="form.description").value = "MOD_CAVE_FIRST_DESCRIPTION\n<&"
+   >>> browser.getControl(name="form.description").value = "MOD_CAVE_FIRST_DESCRIPTION\n&lt;&amp;"
    >>> browser.getControl("Apply").click()
    >>> "error" in browser.contents
    False
