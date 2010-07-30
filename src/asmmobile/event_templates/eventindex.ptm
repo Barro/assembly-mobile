@@ -4,7 +4,7 @@
     i18n:translate=""><tal:block i18n:name="event_name" tal:replace="context/name" /> (event)</metal:block>
 <div tal:attributes="class shorten:event" metal:fill-slot='content'>
 
-<h1 tal:content="structure view/displayName">Event name</h1>
+<h1 tal:content="view/displayName">Event name</h1>
 <div tal:attributes="class shorten:event_links">
   <a tal:attributes="href python:view.urlR('%s.vcs' % context.__name__)"
      title="Nokia mobile phones and various desktop calendar software can import events from this file."
