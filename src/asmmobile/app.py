@@ -21,6 +21,7 @@ import copy
 import datetime
 import dateutil.tz
 import dateutil.parser
+import cgi
 import re
 
 import grok
@@ -453,10 +454,12 @@ class NavigationBreadcrumbs(grok.Viewlet):
             if aliasFor is not None:
                 context = context.__parent__
                 aliasFor = aliasFor
-            links.append("<a href='%s'>%s</a>" % (self.view.url(context, aliasFor), name))
+            links.append("<a href='%s'>%s</a>" % (
+                    self.view.url(context, aliasFor), cgi.escape(name)))
 
-        currentName = translate(contexts[-1].navigationName, context=self.request)
-        links.append("%s" % currentName)
+        currentName = translate(
+            contexts[-1].navigationName, context=self.request)
+        links.append("%s" % cgi.escape(currentName))
 
         return self.BREADCRUMB_SEPARATOR.join(links)
 
