@@ -20,7 +20,6 @@
 import datetime
 import grok
 import urlparse
-import StringIO
 
 from asmmobile.components import MobileView
 import asmmobile.interfaces as interfaces
@@ -83,22 +82,9 @@ class ICalTimeView(grok.View):
         return self.context.strftime('%Y%m%dT%H%M%S')
 
 
-class ICalEncodedString(grok.View):
+class ICalEncodedUnicode(grok.View):
     grok.context(unicode)
     grok.name("ical")
 
-    escapeChars = {
-        "\\": u"\\\\",
-        ";": u"\\;",
-        ",": u"\\,",
-        "\n": u"\\n",
-        }
-
     def render(self):
-        buffer = StringIO.StringIO()
-        for char in self.context:
-            if char in self.escapeChars:
-                buffer.write(self.escapeChars[char])
-            else:
-                buffer.write(char)
-        return buffer.getvalue()
+        return util.icalEscape(self.context)

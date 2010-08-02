@@ -64,7 +64,6 @@ class LocationContainer(grok.OrderedContainer):
             self[keyName] = location
             return location
 
-
     def updateLocations(self, values):
         currentKeys = set(self.keys())
         newKeys = set(values.keys())

@@ -3,14 +3,14 @@ VERSION:2.0
 CALSCALE:GREGORIAN
 PRODID:-//Assembly Mobile export//iCal-AsmMobile//
 <tal:block tal:repeat="event view/events">BEGIN:VEVENT
-SUMMARY:<span tal:replace="event/name/@@ical" />
+SUMMARY:<span tal:replace="structure event/name/@@ical" />
 DTSTART:<span tal:replace="event/start/@@ical" />
 DTEND:<span tal:replace="event/end/@@ical" />
 DTSTAMP:<span tal:replace="view/now/@@ical" />
-URL:<span tal:replace="event/url/@@ical|nothing" />
-UID:<span tal:replace="string:${event/id}@${view/domain}" />
-DESCRIPTION:<span tal:replace="event/description/@@ical|nothing" />
-CATEGORIES:<span tal:replace="python:' '.join(event.categories)" />
-LOCATION:<span tal:replace="event/location/name/@@ical" />
+URL:<span tal:replace="structure event/url/@@ical|nothing" />
+UID:<span tal:replace="structure string:${event/id}@${view/domain}" />
+DESCRIPTION:<span tal:replace="structure event/description/@@ical|nothing" />
+CATEGORIES:<span tal:replace="structure python:' '.join(event.categories)" />
+LOCATION:<span tal:replace="structure event/location/name/@@ical" />
 END:VEVENT</tal:block>
 END:VCALENDAR</metal:block>

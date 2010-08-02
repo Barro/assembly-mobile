@@ -17,10 +17,12 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import random
+import cgi
+import copy
 import datetime
 import dateutil.tz
-import copy
+import random
+
 import asmmobile.util as util
 
 parts = """a e i u o y
@@ -30,7 +32,9 @@ za ze zi zu zo zy
 gha ghe ghi ghu gho ghy
 ta te ti tu to ty
 ma me mi mu mo my
-va ve vi vu vo vy""".split()
+va ve vi vu vo vy
+cä cö cå""".split()
+parts.extend([" & ", " < "])
 
 def generateWords(wordMin, wordMax, partMin, partMax):
     words = []
@@ -46,11 +50,11 @@ def generateIdLocations(amount):
     resultLocations = {}
     for locationId  in xrange(0, amount):
         name = generateWords(1, 3, 2, 4)
-        idName = name.replace(" ", "_").lower()
+        idName = util.convertNameToKey(name.lower())
         resultLocations[idName] = {
             'name': name,
             'url': "http://www.example.com/location/%s" % idName,
-            'description': generateWords(20, 50, 2, 5) + ".",
+            'description': cgi.escape(generateWords(20, 50, 2, 5)) + ".",
             }
     return resultLocations
 
@@ -61,7 +65,7 @@ def generateTranslatedLocations(existingNames):
         resultLocations[idName] = {
             'name': name,
             'url': "http://www.example.com/location/%s" % idName,
-            'description': generateWords(20, 50, 2, 5) + ".",
+            'description': cgi.escape(generateWords(20, 50, 2, 5)) + ".",
             }
     return resultLocations
 
@@ -95,7 +99,7 @@ def generateLanguageData(eventAmount, locations, startTime):
             'location': locationNames[random.randint(0, len(locationNames) - 1)],
             'categories': [],
             'is-major': random.random() < 0.1,
-            'description': generateWords(20, 50, 2, 5) + ".",
+            'description': cgi.escape(generateWords(20, 50, 2, 5)) + ".",
             }
 
         if currentEvents >= 6:
@@ -115,7 +119,7 @@ def translateEvents(baseEvents):
     for key,data in baseEvents.items():
         translatedEvents[key] = copy.deepcopy(data)
         translatedEvents[key]['name'] = generateWords(1, 3, 2, 4)
-        translatedEvents[key]['description'] = generateWords(20, 50, 2, 5) + "."
+        translatedEvents[key]['description'] = cgi.escape(generateWords(20, 50, 2, 5)) + "."
     return translatedEvents
 
 def importer(events, locations, languages=['en', 'fi'], startTime='now'):

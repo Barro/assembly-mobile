@@ -17,13 +17,15 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
+import cgi
 import icalendar
+import unittest
 import xml.etree.ElementTree as etree
 
 from zope.testbrowser.testing import Browser
 
 from asmmobile.app import AsmMobile
+import asmmobile.util as util
 
 def assertXml(browser):
     etree.fromstring(browser.contents) and None
@@ -86,35 +88,43 @@ def checkStandardPages(
         locationBaseUrl = baseUrl + "/location/%s" % location.id
         browser.open(locationBaseUrl)
         assertXml(browser)
-        assertIsInBrowserContents(location.name, browser)
+        assertIsInBrowserContents(cgi.escape(location.name), browser)
 
         # Check that location calendar data is OK and includes location name
         # in events.
         calendarUrl = locationBaseUrl + "/somename.vcs"
         for uid in getCalendarEvents(browser, calendarUrl):
             locationEvents.add(uid)
-        assertIsInBrowserContents(location.name, browser, "Location was not found in calendar.")
+        assertIsInBrowserContents(
+            util.icalEscape(location.name),
+            browser,
+            "Location was not found in calendar."
+            )
 
     for event in events:
         # Check that event page is OK and includes basic event information.
         eventBaseUrl = baseUrl + "/event/%s" % event.id
         browser.open(eventBaseUrl)
         assertXml(browser)
-        assertIsInBrowserContents(event.name, browser)
+        assertIsInBrowserContents(cgi.escape(event.name), browser)
 
         # Check that there links to location are found, if location exists.
         if event.location is not None:
-            assertIsInBrowserContents(event.location.id, browser)
-            assertIsInBrowserContents(event.location.name, browser)
+            assertIsInBrowserContents(cgi.escape(event.location.id), browser)
+            assertIsInBrowserContents(cgi.escape(event.location.name), browser)
 
         calendarUrl = eventBaseUrl + "/somename.vcs"
         uid = getCalendarEvents(browser, calendarUrl)[0]
         assertEqual(event.id + "@localhost", uid)
         assertIsIn(event.id + "@localhost", locationEvents)
-        assertIsInBrowserContents(event.name, browser, "Event was not found in calendar.")
+        assertIsInBrowserContents(
+            util.icalEscape(event.name),
+            browser,
+            "Event was not found in calendar."
+            )
 
         if event.location is not None:
-            assertIsInBrowserContents(event.location.name, browser)
+            assertIsInBrowserContents(util.icalEscape(event.location.name), browser)
 
     for listPage in lists:
         listUrl = baseUrl + listPage

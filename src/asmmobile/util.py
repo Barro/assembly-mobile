@@ -19,11 +19,12 @@
 
 import datetime
 import dateutil.tz
-import grok
 import re
 import string
+import StringIO
 import urlparse
 
+import grok
 from zope.app.form.browser.textwidgets import TextWidget
 from zope.component import queryUtility
 from zope.i18n import translate
@@ -375,7 +376,7 @@ def unicodefyStrDict(values):
     result = {}
     for key,value in values.items():
         if isinstance(value, str):
-            value = unicode(value)
+            value = unicode(value, 'UTF-8')
         result[key] = value
     return result
 
@@ -429,3 +430,19 @@ def findReturnTo(view):
         returnTo = "%s/%s" % (view.application_url(), "/".join(names))
 
     return returnTo
+
+VCAL_ESCAPE_CHARS = {
+    "\\": u"\\\\",
+    ";": u"\\;",
+    ",": u"\\,",
+    "\n": u"\\n",
+    }
+
+def icalEscape(string):
+    buffer = StringIO.StringIO()
+    for char in string:
+        if char in VCAL_ESCAPE_CHARS:
+            buffer.write(VCAL_ESCAPE_CHARS[char])
+        else:
+            buffer.write(char)
+    return buffer.getvalue()
