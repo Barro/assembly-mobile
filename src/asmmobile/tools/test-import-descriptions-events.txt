@@ -5,3 +5,8 @@
 # Empty Finnish event should result in same description as in default
 (English) one.
 :fi
+
+# This should not show anywhere.
+! empty
+:en
+:fi

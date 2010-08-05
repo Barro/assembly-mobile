@@ -14,9 +14,10 @@ def parseData(filename, defaultLanguage):
             language, description = (x.strip() for x in line[1:].split(" ", 1))
             if language not in result:
                 result[language] = {}
-            if description == '':
+            if description == '' and currentItem in result[defaultLanguage]:
                 description = result[defaultLanguage][currentItem]['description']
-            result[language][currentItem] = {'description': description}
+            if description != '':
+                result[language][currentItem] = {'description': description}
     fp.close()
     return result
 
