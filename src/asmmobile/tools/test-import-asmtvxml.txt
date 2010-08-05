@@ -1,0 +1,17 @@
+:Test-Layer: functional
+
+Initialize standard test environment::
+
+    >>> from asmmobile.testutils import initializeApplicationTestEnv, assertXml
+    >>> root, app, browser = initializeApplicationTestEnv(getRootFolder())
+
+Import test data::
+
+    >>> importerConfig = {
+    ...     'filename': '/tmp/schedule.xml',
+    ...     }
+    >>> importBase = __import__('asmmobile.tools.import-asmtvxml', globals(), locals(), [], -1)
+    >>> importModule = getattr(importBase.tools, 'import-asmtvxml')
+    >>> importFunc = importModule.importer
+
+    #    >>> locations, events = importFunc(**importerConfig)
