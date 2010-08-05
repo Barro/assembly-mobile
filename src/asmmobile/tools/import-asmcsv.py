@@ -24,7 +24,6 @@ import dateutil.tz
 import asmmobile.util as util
 
 
-
 def parseCsvDate(dateString):
     # Date is in format:
     # Mon 14.7.09 18:00
@@ -43,8 +42,14 @@ def importer(filename, prefix):
     fp = open(filename, "r")
     reader = csv.DictReader(fp, delimiter=';')
 
-    locations = {'en': {}, 'fi': {}}
-    events = {'en': {}, 'fi': {}}
+    locations = {}
+    events = {}
+
+    for lang in ['en', 'fi']:
+        if lang not in locations:
+            locations[lang] = {}
+        if lang not in events:
+            events[lang] = {}
 
     for entry in reader:
         if entry['Public'] == 'No':
@@ -106,4 +111,4 @@ def importer(filename, prefix):
             'is-major': isMajor,
             }
 
-    return (locations, events)
+    return locations, events

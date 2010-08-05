@@ -26,7 +26,18 @@ import asmmobile.util
 def touchDict(obj, name):
     if name not in obj:
         obj[name] = {}
-    return obj
+    return obj[name]
+
+def mergeDataValues(fromDict, toDict):
+    result = toDict
+    for language, languageItems in fromDict.items():
+        languageResult = touchDict(result, language)
+        for itemId, data in languageItems.items():
+            languageItem = touchDict(languageResult, itemId)
+            for name, value in data.items():
+                languageItem[name] = value
+    return result
+
 
 def updateSchedule(app, config):
     importFuncs = {}
@@ -41,18 +52,8 @@ def updateSchedule(app, config):
 
     for importer, params in importFuncs.items():
         importedLocations, importedEvents = importer(**params)
-        for language, languageLocations in importedLocations.items():
-            locations = touchDict(locations, language)
-            for locationId, data in languageLocations.items():
-                locations[language][locationId] = data
-
-        for language, languageEvents in importedEvents.items():
-            events = touchDict(events, language)
-            for eventId, eventParams in languageEvents.items():
-                if eventId in events[language]:
-                    raise Exception("Duplicate event ID: %s (%s)" % \
-                                        (eventId, eventParams))
-                events[language][eventId] = eventParams
+        locations = mergeDataValues(importedLocations, locations)
+        events = mergeDataValues(importedEvents, events)
 
     # Add location mappings:
     for language, locationData in locations.items():

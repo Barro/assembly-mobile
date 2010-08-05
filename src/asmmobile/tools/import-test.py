@@ -122,7 +122,11 @@ def translateEvents(baseEvents):
         translatedEvents[key]['description'] = cgi.escape(generateWords(20, 50, 2, 5)) + "."
     return translatedEvents
 
-def importer(events, locations, languages=['en', 'fi'], startTime='now'):
+def importer(
+    eventCount,
+    locationCount,
+    languages=['en', 'fi'],
+    startTime='now'):
     resultLocations = {}
     resultEvents = {}
 
@@ -131,11 +135,11 @@ def importer(events, locations, languages=['en', 'fi'], startTime='now'):
     if len(languages) > 1:
         restLanguages = languages[1:]
 
-    resultLocations[baseLanguage] = generateIdLocations(locations)
-    resultEvents[baseLanguage] = generateLanguageData(events, resultLocations[baseLanguage], startTime)
+    resultLocations[baseLanguage] = generateIdLocations(locationCount)
+    resultEvents[baseLanguage] = generateLanguageData(eventCount, resultLocations[baseLanguage], startTime)
 
     for language in restLanguages:
         resultLocations[language] = generateTranslatedLocations(resultLocations[baseLanguage])
         resultEvents[language] = translateEvents(resultEvents[baseLanguage])
 
-    return (resultLocations, resultEvents)
+    return resultLocations, resultEvents

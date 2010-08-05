@@ -8,8 +8,8 @@ Initialize standard test environment::
 Create 10 events with 3 different locations for two languages::
 
     >>> importerConfig = {
-    ...     'events': 10,
-    ...     'locations': 3,
+    ...     'eventCount': 10,
+    ...     'locationCount': 3,
     ...     'languages': ['en', 'fi'],
     ...     }
     >>> class UpdateConfig(object):

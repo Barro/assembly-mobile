@@ -21,13 +21,11 @@
 import icalendar
 import dateutil.tz
 
-def importer(filename, prefix='', locationMap={}, majorCategory=None):
+def importer(locations, events, filename, prefix='', locationMap={}, majorCategory=None):
     calFp = open(filename, "r")
     cal = icalendar.Calendar.from_string(calFp.read())
     calFp.close()
 
-    locations = {}
-    events = {}
     for event in cal.walk('vevent'):
         id = event.decoded('uid')
         start = event.decoded('DTSTART').replace(tzinfo=dateutil.tz.tzlocal())
@@ -53,6 +51,6 @@ def importer(filename, prefix='', locationMap={}, majorCategory=None):
                       'is-major': isMajor,
                       }
 
-    return (locations, events)
+    return locations, events
 
 

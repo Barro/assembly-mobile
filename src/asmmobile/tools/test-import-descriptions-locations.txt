@@ -1,0 +1,5 @@
+# Comment
+! location
+
+:en English location
+:fi Finnish location

@@ -1,0 +1,32 @@
+:Test-Layer: functional
+
+Initialize standard test environment::
+
+    >>> from asmmobile.testutils import initializeApplicationTestEnv, assertXml
+    >>> root, app, browser = initializeApplicationTestEnv(getRootFolder())
+
+Import test data::
+
+    >>> importerConfig = {
+    ...     'locationsFile': '../../src/asmmobile/tools/test-import-descriptions-locations.txt',
+    ...     'eventsFile': '../../src/asmmobile/tools/test-import-descriptions-events.txt',
+    ...     }
+    >>> importBase = __import__('asmmobile.tools.import-descriptions', globals(), locals(), [], -1)
+    >>> importModule = getattr(importBase.tools, 'import-descriptions')
+    >>> importFunc = importModule.importer
+    >>> locations, events = importFunc(**importerConfig)
+
+Check that locations are correct::
+
+    >>> locations['en']
+    {'location': 'English location'}
+    >>> locations['fi']
+    {'location': 'Finnish location'}
+
+Check that events are correct::
+
+    >>> events['en']
+    {'event': 'English event'}
+    >>> events['fi']
+    {'event': 'Finnish event'}
+
