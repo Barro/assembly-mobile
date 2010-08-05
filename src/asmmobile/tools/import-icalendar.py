@@ -18,6 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+import asmmobile.util as util
 import icalendar
 import dateutil.tz
 
@@ -31,8 +32,14 @@ def importer(filename, prefix='', locationMap={}, majorCategory=None, language='
 
     for event in cal.walk('vevent'):
         eventId = event.decoded('uid')
-        start = event.decoded('DTSTART').replace(tzinfo=dateutil.tz.tzlocal())
-        end = event.decoded('DTEND').replace(tzinfo=dateutil.tz.tzlocal())
+        startTime = event.decoded('DTSTART').replace(tzinfo=dateutil.tz.tzlocal())
+        #startTime = event.decoded('DTSTART')
+        startOffset = util.tzOffsetString(startTime.utcoffset())
+        start = startTime.strftime("%Y-%m-%dT%H:%M:%S") + startOffset
+        endTime = event.decoded('DTEND').replace(tzinfo=dateutil.tz.tzlocal())
+        #endTime = event.decoded('DTEND')
+        endOffset = util.tzOffsetString(endTime.utcoffset())
+        end = endTime.strftime("%Y-%m-%dT%H:%M:%S") + endOffset
         categories = event.decoded('CATEGORIES').split(" ")
         url = event.decoded('URL', u'')
         name = event.decoded('SUMMARY', u'')
@@ -51,7 +58,7 @@ def importer(filename, prefix='', locationMap={}, majorCategory=None, language='
             'start': start,
             'end': end,
             'url': url,
-            'location': location,
+            'location': location.lower(),
             'categories': categories,
             'is-major': isMajor,
             'description': description,

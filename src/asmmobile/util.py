@@ -390,10 +390,10 @@ def setObjectAttributesFromDict(obj, newValues, attributes):
     return obj
 
 
-def localTzOffset():
-    """Returns local time zone offset string if format +hhmm."""
+def tzOffsetString(offset):
+    """Returns local time zone offset string if format +hhmm or -hhmm."""
 
-    seconds = datetime.datetime.now(dateutil.tz.tzlocal()).utcoffset().seconds
+    seconds = offset.seconds
     offsetHours = seconds / 3600
     offsetMinutes = (seconds % 3600) / 60
     tzOffset = "%+0.2d%0.2d" % (offsetHours, offsetMinutes)

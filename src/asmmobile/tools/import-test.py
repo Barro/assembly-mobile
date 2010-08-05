@@ -78,7 +78,8 @@ def generateLanguageData(eventAmount, locations, startTime):
     increases = [datetime.timedelta(minutes=minutes) for minutes in
                  [15, 30, 30, 30, 30, 30, 30, 30, 60, 60, 60]]
 
-    localOffset = util.localTzOffset()
+    localOffset = util.tzOffsetString(
+        datetime.datetime.now(dateutil.tz.tzlocal()).utcoffset())
     now = datetime.datetime.now(dateutil.tz.tzlocal())
     # Start from full hour.
     eventTime = now - datetime.timedelta(

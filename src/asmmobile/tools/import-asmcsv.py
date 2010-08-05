@@ -31,8 +31,11 @@ def parseCsvDate(dateString):
     day, month, year = (int(x) for x in date.split("."))
     hour, minute = (int(x) for x in time.split(":"))
 
+    offset = util.tzOffsetString(
+        datetime.datetime.now(dateutil.tz.tzlocal()).utcoffset())
+
     return "%04d-%02d-%02dT%02d:%02d:%02d%s" % (
-        (2000 + year), month, day, hour, minute, 0, util.localTzOffset())
+        (2000 + year), month, day, hour, minute, 0, offset)
 
 
 def importer(filename, prefix):
