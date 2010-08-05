@@ -10,6 +10,7 @@ Import test data::
     >>> importerConfig = {
     ...     'locationsFile': '../../src/asmmobile/tools/test-import-descriptions-locations.txt',
     ...     'eventsFile': '../../src/asmmobile/tools/test-import-descriptions-events.txt',
+    ...     'defaultLanguage': 'en',
     ...     }
     >>> importBase = __import__('asmmobile.tools.import-descriptions', globals(), locals(), [], -1)
     >>> importModule = getattr(importBase.tools, 'import-descriptions')
@@ -28,4 +29,4 @@ Check that events are correct::
     >>> events['en']
     {'event': {'description': 'English event'}}
     >>> events['fi']
-    {'event': {'description': 'Finnish event'}}
+    {'event': {'description': 'English event'}}

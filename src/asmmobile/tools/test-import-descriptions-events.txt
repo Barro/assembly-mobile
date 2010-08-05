@@ -2,4 +2,6 @@
 ! event
 
 :en English event
-:fi Finnish event
+# Empty Finnish event should result in same description as in default
+(English) one.
+:fi
