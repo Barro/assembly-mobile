@@ -20,8 +20,8 @@
 
 IMPORTERS = {
     'test': {
-        'events': 200,
-        'locations': 10,
+        'eventCount': 200,
+        'locationCount': 10,
         },
     }
 

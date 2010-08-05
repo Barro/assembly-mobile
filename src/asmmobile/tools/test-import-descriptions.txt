@@ -19,14 +19,13 @@ Import test data::
 Check that locations are correct::
 
     >>> locations['en']
-    {'location': 'English location'}
+    {'location': {'description': 'English location'}}
     >>> locations['fi']
-    {'location': 'Finnish location'}
+    {'location': {'description': 'Finnish location'}}
 
 Check that events are correct::
 
     >>> events['en']
-    {'event': 'English event'}
+    {'event': {'description': 'English event'}}
     >>> events['fi']
-    {'event': 'Finnish event'}
-
+    {'event': {'description': 'Finnish event'}}

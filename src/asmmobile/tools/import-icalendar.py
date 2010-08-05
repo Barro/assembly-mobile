@@ -21,35 +21,41 @@
 import icalendar
 import dateutil.tz
 
-def importer(locations, events, filename, prefix='', locationMap={}, majorCategory=None):
+def importer(filename, prefix='', locationMap={}, majorCategory=None, language='en'):
     calFp = open(filename, "r")
     cal = icalendar.Calendar.from_string(calFp.read())
     calFp.close()
 
+    locations = {language: {}}
+    events = {language: {}}
+
     for event in cal.walk('vevent'):
-        id = event.decoded('uid')
+        eventId = event.decoded('uid')
         start = event.decoded('DTSTART').replace(tzinfo=dateutil.tz.tzlocal())
         end = event.decoded('DTEND').replace(tzinfo=dateutil.tz.tzlocal())
         categories = event.decoded('CATEGORIES').split(" ")
         url = event.decoded('URL', u'')
         name = event.decoded('SUMMARY', u'')
+        description = event.decoded('DESCRIPTION', u'')
 
         location = event.decoded('LOCATION', u'')
         if location in locationMap:
             location = locationMap[location]
 
-        locations[location] = ""
+        locations[language][location.lower()] = {'name': location}
 
         isMajor = majorCategory in categories
 
-        events[id] = {'name': name,
-                      'start': start,
-                      'end': end,
-                      'url': url,
-                      'location': location,
-                      'categories': categories,
-                      'is-major': isMajor,
-                      }
+        events[language][eventId] = {
+            'name': name,
+            'start': start,
+            'end': end,
+            'url': url,
+            'location': location,
+            'categories': categories,
+            'is-major': isMajor,
+            'description': description,
+            }
 
     return locations, events
 
