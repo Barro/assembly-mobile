@@ -50,7 +50,8 @@ def importer(filename, prefix='elaine-'):
                 'name': title,
                 'start': start + offset,
                 'end': end + offset,
-                'location': 'assemblytv'
+                'location': 'assemblytv',
+                'url': u'http://www.assemblytv.net/',
                 }
             if language in descriptions:
                 event['description'] = descriptions[language]
