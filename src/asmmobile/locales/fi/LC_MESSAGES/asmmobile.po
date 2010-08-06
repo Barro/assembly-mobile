@@ -14,45 +14,45 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Jul  5 22:07:17 2010\n"
-"PO-Revision-Date: 2010-07-05 22:12+0300\n"
+"POT-Creation-Date: Fri Aug  6 10:26:25 2010\n"
+"PO-Revision-Date: 2010-08-06 10:29+0300\n"
 "Last-Translator: Jussi Judin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
 
-#: src/asmmobile/app.py:136 src/asmmobile/app.py:406
+#: src/asmmobile/app.py:170 src/asmmobile/app.py:479
 msgid "Home"
 msgstr "Etusivu"
 
-#: src/asmmobile/app.py:407 src/asmmobile/app.py:438 src/asmmobile/event.py:74
+#: src/asmmobile/app.py:480 src/asmmobile/app.py:515 src/asmmobile/event.py:73
 #: src/asmmobile/app_templates/allevents.ptm:2
 msgid "All events"
 msgstr "Koko ohjelma"
 
-#: src/asmmobile/app.py:408 src/asmmobile/app_templates/about.ptm:2
+#: src/asmmobile/app.py:481 src/asmmobile/app_templates/about.ptm:2
 #: src/asmmobile/app_templates/about.ptm:5
 msgid "About"
 msgstr "Tietoja"
 
-#: src/asmmobile/app.py:456
+#: src/asmmobile/app.py:533
 msgid "%d day"
 msgstr "%d päivä"
 
-#: src/asmmobile/app.py:458
+#: src/asmmobile/app.py:535
 msgid "%d days"
 msgstr "%d päivää"
 
-#: src/asmmobile/app.py:464
+#: src/asmmobile/app.py:541
 msgid "%d hour"
 msgstr "%d tunti"
 
-#: src/asmmobile/app.py:466
+#: src/asmmobile/app.py:543
 msgid "%d hours"
 msgstr "%d tuntia"
 
-#: src/asmmobile/app.py:484
+#: src/asmmobile/app.py:566
 msgid "QR code link to home page (%s)."
 msgstr "QR-koodi-linkki etusivulle (%s)."
 
@@ -106,33 +106,11 @@ msgstr "Kalenteridata"
 msgid "Events (vCal)"
 msgstr "Tapahtumat (vCal)"
 
-#: src/asmmobile/app_templates/allevents.ptm:10
-#: src/asmmobile/location_templates/locationindex.ptm:9
-#: src/asmmobile/event_templates/eventindex.ptm:9
-msgid ""
-"Nokia mobile phones and various desktop calendar software can import events "
-"from this file."
-msgstr ""
-"Nokian matkapuhelimet ja monet kalenterisovellukset tukevat tästä "
-"tiedostosta tuotuja tapahtumia."
-
-#: src/asmmobile/app_templates/allevents.ptm:15
-#: src/asmmobile/location_templates/locationindex.ptm:14
-#: src/asmmobile/event_templates/eventindex.ptm:14
-msgid "QR code link"
-msgstr "QR-koodi-linkki"
-
-#: src/asmmobile/app_templates/allevents.ptm:15
-#: src/asmmobile/location_templates/locationindex.ptm:14
-#: src/asmmobile/event_templates/eventindex.ptm:14
-msgid "QR code links require a mobile phone with a QR code reader."
-msgstr "QR-koodi -linkit vaativat QR-koodeja lukevat matkapuhelimen."
-
 #: src/asmmobile/app_templates/allevents.ptm:24
 msgid "Party time: ${party_start} - ${party_end}. Length: ${party_length}."
 msgstr "Tapahtuma-aika: ${party_start} - ${party_end}. Kesto: ${party_length}."
 
-#: src/asmmobile/app_templates/allevents.ptm:64
+#: src/asmmobile/app_templates/allevents.ptm:65
 msgid "There are no events in this party!"
 msgstr "Tässä tapahtumassa ei ole ohjelmaa!"
 
@@ -171,36 +149,37 @@ msgstr ""
 "Sisäinen järjestelmävirhe tapahtui. Innovatiivisen korkeasti koulutetut "
 "apinamme tutkivat tapahtunutta."
 
-#: src/asmmobile/app_templates/index.ptm:27
+#: src/asmmobile/app_templates/index.ptm:28
 msgid ""
-"${major_span_start} ${time_left} left ${major_span_end} ${location_name}"
-msgstr ""
-"${major_span_start} ${time_left} jäljellä ${major_span_end} ${location_name}"
+"${major_span_start} ${time_left} left ${major_span_end} <!----> "
+"${location_name}"
+msgstr "${major_span_start} ${time_left} jäljellä ${major_span_end} <!----> ${location_name}"
 
-#: src/asmmobile/app_templates/index.ptm:35
+#: src/asmmobile/app_templates/index.ptm:36
 msgid "Next"
 msgstr "Seuraavaksi"
 
-#: src/asmmobile/app_templates/index.ptm:39
+#: src/asmmobile/app_templates/index.ptm:40
 msgid ""
 "No new scheduled events are starting in next two hours. See <!----> "
 "${link_next_events} <!----> for further events."
-msgstr ""
-"Uusia tapahtumia ei ole tiedossa seuraavaan kahteen tuntiin. Sivulta <!----> "
-"${link_next_events} <!----> näet seuraavat tapahtumat."
+msgstr "Uusia tapahtumia ei ole tiedossa seuraavaan kahteen tuntiin. <!----> ${link_next_events} <!----> näet seuraavat tapahtumat."
 
-#: src/asmmobile/app_templates/index.ptm:57
+#: src/asmmobile/app_templates/index.ptm:40
+msgid "all events"
+msgstr "Koko ohjelmasta"
+
+#: src/asmmobile/app_templates/index.ptm:59
 msgid ""
-"${major_span_start} in ${time_till_start} ${major_span_end} ${location_name}"
-msgstr ""
-"${major_span_start} alkuun ${time_till_start} ${major_span_end} "
+"${major_span_start} in ${time_till_start} ${major_span_end} <!----> "
 "${location_name}"
+msgstr "${major_span_start} alkuun ${time_till_start} ${major_span_end} <!----> ${location_name}"
 
-#: src/asmmobile/app_templates/index.ptm:69
+#: src/asmmobile/app_templates/index.ptm:71
 msgid "full party schedule"
 msgstr "koko ohjelma"
 
-#: src/asmmobile/app_templates/index.ptm:69
+#: src/asmmobile/app_templates/index.ptm:71
 msgid ""
 "${party_name} has not started yet. See <!----> ${link_all_events} <!----> "
 "for the whole program."
@@ -208,7 +187,7 @@ msgstr ""
 "${party_name} ei ole vielä alkanut. Ohjelmatarjontaa voi tutkia sivulta "
 "<!----> ${link_all_events}."
 
-#: src/asmmobile/app_templates/index.ptm:73
+#: src/asmmobile/app_templates/index.ptm:75
 msgid "${party_name} has ended. Welcome again next year!"
 msgstr "${party_name} on ohi. Tervetuloa takaisin ensi vuonna!"
 
@@ -216,13 +195,25 @@ msgstr "${party_name} on ohi. Tervetuloa takaisin ensi vuonna!"
 msgid "Now"
 msgstr "Nyt"
 
-#: src/asmmobile/app_templates/layout.ptm:36
+#: src/asmmobile/app_templates/layout.ptm:39
 msgid "View main site"
 msgstr "Pääsivustolle"
 
-#: src/asmmobile/event.py:228
+#: src/asmmobile/event.py:231
 msgid "%s (major event)"
 msgstr "%s (merkittävä tapahtuma)"
+
+#: src/asmmobile/event_templates/eventindex.ptm:14
+#: src/asmmobile/location_templates/locationindex.ptm:14
+#: src/asmmobile/app_templates/allevents.ptm:15
+msgid "QR code link"
+msgstr "QR-koodi-linkki"
+
+#: src/asmmobile/event_templates/eventindex.ptm:14
+#: src/asmmobile/location_templates/locationindex.ptm:14
+#: src/asmmobile/app_templates/allevents.ptm:15
+msgid "QR code links require a mobile phone with a QR code reader."
+msgstr "QR-koodi -linkit vaativat QR-koodeja lukevat matkapuhelimen."
 
 #: src/asmmobile/event_templates/eventindex.ptm:21
 msgid ""
@@ -232,7 +223,17 @@ msgstr ""
 "Ulkoinen sivusto voi tarjota mobiililaitteille sopimatonta lisätietoa tästä "
 "tapahtumasta."
 
+#: src/asmmobile/event_templates/eventindex.ptm:21
+#: src/asmmobile/location_templates/locationindex.ptm:21
+msgid "View on external page"
+msgstr "Ulkoiselle sivustolle"
+
 #: src/asmmobile/event_templates/eventindex.ptm:29
+#: src/asmmobile/location_templates/locationindex.ptm:29
+msgid "Description"
+msgstr "Kuvaus"
+
+#: src/asmmobile/event_templates/eventindex.ptm:33
 msgid "Time"
 msgstr "Aika"
 
@@ -240,15 +241,15 @@ msgstr "Aika"
 msgid "${event_name} (event)"
 msgstr "${event_name} (tapahtuma)"
 
-#: src/asmmobile/event_templates/eventindex.ptm:41
+#: src/asmmobile/event_templates/eventindex.ptm:45
 msgid "- ${end_day} ${end_time}"
 msgstr "- ${end_day} ${end_time}"
 
-#: src/asmmobile/event_templates/eventindex.ptm:45
+#: src/asmmobile/event_templates/eventindex.ptm:49
 msgid "${start_day} ${start_time} ${end_time} ${event_length}"
 msgstr "${start_day} ${start_time} ${end_time} ${event_length}"
 
-#: src/asmmobile/event_templates/eventindex.ptm:50
+#: src/asmmobile/event_templates/eventindex.ptm:54
 msgid "Location"
 msgstr "Tapahtumapaikka"
 
@@ -256,7 +257,17 @@ msgstr "Tapahtumapaikka"
 msgid "vCal (event)"
 msgstr "vCal (tapahtuma)"
 
-#: src/asmmobile/location.py:51 src/asmmobile/location_templates/index.ptm:2
+#: src/asmmobile/event_templates/eventindex.ptm:9
+#: src/asmmobile/location_templates/locationindex.ptm:9
+#: src/asmmobile/app_templates/allevents.ptm:10
+msgid ""
+"Nokia mobile phones and various desktop calendar software can import events "
+"from this file."
+msgstr ""
+"Nokian matkapuhelimet ja monet kalenterisovellukset tukevat tästä "
+"tiedostosta tuotuja tapahtumia."
+
+#: src/asmmobile/location.py:49 src/asmmobile/location_templates/index.ptm:2
 msgid "Locations"
 msgstr "Tapahtumapaikat"
 
@@ -268,16 +279,6 @@ msgstr ""
 "Ulkoinen sivusto voi tarjota mobiililaitteille sopimatonta lisätietoa tästä "
 "tapahtumapaikasta."
 
-#: src/asmmobile/location_templates/locationindex.ptm:21
-#: src/asmmobile/event_templates/eventindex.ptm:21
-msgid "View on external page"
-msgstr "Ulkoiselle sivustolle"
-
-#: src/asmmobile/location_templates/locationindex.ptm:29
-#: src/asmmobile/event_templates/eventindex.ptm:58
-msgid "Description"
-msgstr "Kuvaus"
-
 #: src/asmmobile/location_templates/locationindex.ptm:4
 msgid "${location_name} (location)"
 msgstr "${location_name} (tapahtumapaikka)"
@@ -286,32 +287,32 @@ msgstr "${location_name} (tapahtumapaikka)"
 msgid "vCal (events)"
 msgstr "vCal (tapahtumat)"
 
-#: src/asmmobile/skin/bw/skin.py:15
+#: src/asmmobile/skin/bw/skin.py:33
 msgid "B/W"
 msgstr "M/V"
 
-#: src/asmmobile/util.py:152
+#: src/asmmobile/util.py:171
 msgid "%d h"
 msgstr "%d h"
 
-#: src/asmmobile/util.py:156
+#: src/asmmobile/util.py:175
 msgid "%d min"
 msgstr "%d min"
 
-#: src/asmmobile/util.py:158
+#: src/asmmobile/util.py:177
 msgid "%(hours)s %(minutes)s"
 msgstr "%(hours)s %(minutes)s"
 
 #. Default: "(%s)"
-#: src/asmmobile/util.py:170
+#: src/asmmobile/util.py:189
 msgid "(interval_parenthesis)"
 msgstr "(%s)"
 
 #. Default: "%H:%M"
-#: src/asmmobile/util.py:181
+#: src/asmmobile/util.py:200
 msgid "(hour_minute)"
 msgstr "%H.%M"
 
-#: src/asmmobile/util.py:204
+#: src/asmmobile/util.py:223
 msgid "EEEE yyyy-MM-dd HH:mm"
 msgstr "EEEE d.M.yyyy HH.mm"

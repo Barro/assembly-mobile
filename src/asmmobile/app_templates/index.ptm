@@ -37,7 +37,7 @@
 <div tal:condition="python:len(view.nextEvents)==0"
      tal:attributes="class shorten:event"
      i18n:translate="">
-No new scheduled events are starting in next two hours. See <!----> <a i18n:name="link_next_events" tal:attributes="href python:view.urlR('next')+'#now'">next events</a> <!----> for further events.</div>
+No new scheduled events are starting in next two hours. See <!----> <a i18n:name="link_next_events" tal:attributes="href python:view.urlR('all')+'#now'" i18n:translate="">all events</a> <!----> for further events.</div>
 <tal:block tal:repeat="event view/nextEvents">
   <div tal:attributes="class python:event.isMajor and shorten('event major-event') or shorten('event')">
     <h3>
