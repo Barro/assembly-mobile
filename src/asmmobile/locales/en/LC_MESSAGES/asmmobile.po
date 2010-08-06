@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Aug  6 10:26:25 2010\n"
-"PO-Revision-Date: 2010-08-06 10:26+0300\n"
+"POT-Creation-Date: Fri Aug  6 15:11:13 2010\n"
+"PO-Revision-Date: 2010-08-06 15:05+0300\n"
 "Last-Translator: Jussi Judin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -148,7 +148,7 @@ msgstr ""
 "Internal server error happened. Our highly trained monkeys have been "
 "dispatched to investigate this."
 
-#: src/asmmobile/app_templates/index.ptm:28
+#: src/asmmobile/app_templates/index.ptm:30
 msgid ""
 "${major_span_start} ${time_left} left ${major_span_end} <!----> "
 "${location_name}"
@@ -156,11 +156,11 @@ msgstr ""
 "${major_span_start} ${time_left} left ${major_span_end} <!----> "
 "${location_name}"
 
-#: src/asmmobile/app_templates/index.ptm:36
+#: src/asmmobile/app_templates/index.ptm:38
 msgid "Next"
 msgstr "Next"
 
-#: src/asmmobile/app_templates/index.ptm:40
+#: src/asmmobile/app_templates/index.ptm:42
 msgid ""
 "No new scheduled events are starting in next two hours. See <!----> "
 "${link_next_events} <!----> for further events."
@@ -168,11 +168,11 @@ msgstr ""
 "No new scheduled events are starting in next two hours. See <!----> "
 "${link_next_events} <!----> for further events."
 
-#: src/asmmobile/app_templates/index.ptm:40
+#: src/asmmobile/app_templates/index.ptm:42
 msgid "all events"
 msgstr "all events"
 
-#: src/asmmobile/app_templates/index.ptm:59
+#: src/asmmobile/app_templates/index.ptm:61
 msgid ""
 "${major_span_start} in ${time_till_start} ${major_span_end} <!----> "
 "${location_name}"
@@ -180,11 +180,11 @@ msgstr ""
 "${major_span_start} in ${time_till_start} ${major_span_end} <!----> "
 "${location_name}"
 
-#: src/asmmobile/app_templates/index.ptm:71
+#: src/asmmobile/app_templates/index.ptm:73
 msgid "full party schedule"
 msgstr "full party schedule"
 
-#: src/asmmobile/app_templates/index.ptm:71
+#: src/asmmobile/app_templates/index.ptm:73
 msgid ""
 "${party_name} has not started yet. See <!----> ${link_all_events} <!----> "
 "for the whole program."
@@ -192,7 +192,7 @@ msgstr ""
 "${party_name} has not started yet. See <!----> ${link_all_events} <!----> "
 "for the whole program."
 
-#: src/asmmobile/app_templates/index.ptm:75
+#: src/asmmobile/app_templates/index.ptm:77
 msgid "${party_name} has ended. Welcome again next year!"
 msgstr "${party_name} has ended. Welcome again next year!"
 
