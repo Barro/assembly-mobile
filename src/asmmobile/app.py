@@ -405,7 +405,7 @@ class Index(MobileView):
         lastEvent = self.context.getLastEvent(self.request)
 
         hasUpcomingEvents = len(nextEvents) > 0
-        haveEvents = firstEvent != u''
+        haveEvents = (firstEvent.id != u'')
         self.partyHasStarted = haveEvents and firstEvent.start <= now
         self.partyHasEnded = haveEvents and lastEvent.end < now
         partyIsOngoing = (
