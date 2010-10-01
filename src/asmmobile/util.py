@@ -22,6 +22,7 @@ import dateutil.tz
 import re
 import string
 import StringIO
+import time
 import urlparse
 
 import grok
@@ -372,6 +373,7 @@ def uniqify(sequence):
         result.append(item)
     return result
 
+
 def unicodefyStrDict(values):
     result = {}
     for key,value in values.items():
@@ -380,13 +382,21 @@ def unicodefyStrDict(values):
         result[key] = value
     return result
 
+
 def setObjectAttributesFromDict(obj, newValues, attributes):
+    modified = False
     for name in attributes:
         if isinstance(name, tuple):
             attribute, key = name
         else:
             attribute, key = (name, name)
-        setattr(obj, attribute, newValues.get(key, getattr(obj, attribute)))
+        oldValue = getattr(obj, attribute)
+        newValue = newValues.get(key, oldValue)
+        if oldValue != newValue:
+            modified = True
+            setattr(obj, attribute, newValue)
+    if modified:
+        grok.notify(grok.ObjectModifiedEvent(obj))
     return obj
 
 
@@ -446,3 +456,49 @@ def icalEscape(string):
         else:
             buffer.write(char)
     return buffer.getvalue()
+
+# Do not use stftime's locale dependent names.
+WEEKDAY_ABBREVIATIONS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+MONTH_ABBREVIATIONS = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
+    ]
+
+def httpTime(timeValue):
+    """Returns string value for given datetime object in HTTP time format.
+
+    >>> import datetime
+    >>> now = datetime.datetime(2000, 1, 2, 3, 4, 5)
+    >>> httpTime(now)
+    Sun, 02 Jan 2000 03:04:05 GMT
+
+    Of course times should be given with time zones:
+
+    >>> import dateutil.tz
+    >>> timeZone = dateutil.tz.gettz('Europe/Helsinki')
+    >>> now = datetime.datetime(2000, 1, 2, 3, 4, 5, tzinfo=timeZone)
+    >>> httpTime(now)
+    Sun, 02 Jan 2000 01:04:05 GMT
+    """
+
+    utcTime = timeValue.utctimetuple()
+    day = utcTime.tm_wday
+    month = utcTime.tm_mon - 1
+
+    return time.strftime(
+        "%(day)s, %%d %(month)s %%Y %%H:%%M:%%S GMT" % {
+            'day': WEEKDAY_ABBREVIATIONS[day],
+            'month': MONTH_ABBREVIATIONS[month]
+            },
+        utcTime
+        )

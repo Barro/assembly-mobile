@@ -37,6 +37,10 @@ class IAsmMobile(INavigationObject):
 
 
 class IEventOwner(zope.interface.Interface):
+
+    def getLastModified(request):
+        pass
+
     def getEvents(request):
         pass
 

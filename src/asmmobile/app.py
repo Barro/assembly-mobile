@@ -336,6 +336,13 @@ class AsmMobile(grok.Application, grok.Container):
             events = self.EVENTS[self.defaultLanguage]
         return events.getEvents(eventFilter)
 
+    def getLastModified(self, request):
+        events = self.EVENTS.get(request.locale.id.language, None)
+        # Fall back to default language.
+        if events is None:
+            events = self.EVENTS[self.defaultLanguage]
+        return events.lastModified
+
 
 nextSelectors = [selector.FutureEvents()]
 

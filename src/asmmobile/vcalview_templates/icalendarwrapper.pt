@@ -12,5 +12,6 @@ UID:<span tal:replace="structure string:${event/id}@${view/domain}" />
 DESCRIPTION:<span tal:replace="structure event/description/@@ical|nothing" />
 CATEGORIES:<span tal:replace="structure python:' '.join(event.categories)" />
 LOCATION:<span tal:replace="structure event/location/name/@@ical" />
+LAST-MODIFIED:<span tal:replace="structure event/lastModified/@@ical" />
 END:VEVENT</tal:block>
 END:VCALENDAR</metal:block>

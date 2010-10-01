@@ -20,15 +20,25 @@
 import datetime
 import grok
 import urlparse
+import time
 
 from asmmobile.components import MobileView
 import asmmobile.interfaces as interfaces
 import asmmobile.util as util
 
 class EventOwnerWrapper(object):
-    def __init__(self, contentType, events):
+    def __init__(self, contentType, context, request):
         self.contentType = contentType
-        self.events = events
+        self.context = context
+        self.request = request
+
+    @property
+    def events(self):
+        return self.context.getEvents(self.request)
+
+    @property
+    def lastModified(self):
+        return self.context.getLastModified(self.request)
 
 
 class ICalendarWrapper(grok.View):
@@ -53,6 +63,9 @@ class ICalendar(MobileView):
     def update(self):
         self.response.setHeader('Content-Type', self.context.contentType)
 
+        self.request.response.setHeader(
+            'Last-Modified', util.httpTime(self.context.lastModified))
+
     def render(self):
         page = ICalendarWrapper(self.context, self.request)
         page.events = self.context.events
@@ -67,10 +80,10 @@ class EventCalendarTraverser(grok.Traverser):
     def traverse(self, name):
         if name.endswith('.vcs'):
             return EventOwnerWrapper(
-                "text/x-vCalendar", self.context.getEvents(self.request))
+                "text/x-vCalendar", self.context, self.request)
         elif name.endswith('.ics'):
             return EventOwnerWrapper(
-                "text/calendar", self.context.getEvents(self.request))
+                "text/calendar", self.context, self.request)
 
 
 class ICalTimeView(grok.View):
@@ -78,8 +91,8 @@ class ICalTimeView(grok.View):
     grok.name("ical")
 
     def render(self):
-        # Render times in local time
-        return self.context.strftime('%Y%m%dT%H%M%S')
+        utcTime = self.context.utctimetuple()
+        return time.strftime('%Y%m%dT%H%M%SZ', utcTime)
 
 
 class ICalEncodedUnicode(grok.View):

@@ -39,6 +39,13 @@ def _sortByName(first, second):
     else:
         return nameCmp
 
+
+@grok.subscribe(interfaces.IEvent, grok.IObjectModifiedEvent)
+def notify_eventModified(event, modifiedEvent):
+    now = util.clock()
+    event.location.lastModified = now
+
+
 class EditDescription(grok.Permission):
     grok.name('asmmobile.Edit')
 
@@ -154,13 +161,11 @@ class Location(grok.Model):
         else:
             self.majorLocation = majorLocation
 
+        self.lastModified = util.clock()
+
     def getHideUntil(self):
         # Get parent hiding time to be hiding time of this location.
         return self.majorLocation.hideUntil
-
-    def getEvents(self, request):
-        eventFilter = lambda event : (event.location == self)
-        return self.application().getEvents(request, eventFilter)
 
     def application(self):
         return self.__parent__.application()
@@ -168,6 +173,15 @@ class Location(grok.Model):
     @property
     def navigationName(self):
         return self.name
+
+    # interfaces.IEventOwner methods
+
+    def getEvents(self, request):
+        eventFilter = lambda event : (event.location == self)
+        return self.application().getEvents(request, eventFilter)
+
+    def getLastModified(self, request):
+        return self.lastModified
 
 
 class NoneLocation_cls(object):
@@ -215,6 +229,10 @@ class LocationIndex(MobileView):
 
     def update(self):
         self.events = getEventList(self, self.context.getEvents(self.request))
+
+        lastModified = self.context.getLastModified(self.request)
+        self.request.response.setHeader(
+            'Last-Modified', util.httpTime(lastModified))
 
 
 class Edit(grok.EditForm):

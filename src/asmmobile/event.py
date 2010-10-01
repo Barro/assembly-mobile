@@ -39,15 +39,12 @@ def _sortByStartTime(first, second):
         return startCmp
 
 
-@grok.subscribe(interfaces.IEventContainer, grok.IContainerModifiedEvent)
-def notify_eventCountChanged(container, event):
-    container.lastModified = util.clock()
-
-
 @grok.subscribe(interfaces.IEvent, grok.IObjectModifiedEvent)
 def notify_eventModified(event, modifiedEvent):
+    now = util.clock()
+    event.lastModified = now
     container = event.__parent__
-    container.lastModified = util.clock()
+    container.lastModified = now
 
 
 class NoneEvent(grok.Model):
@@ -81,7 +78,7 @@ class LocalizedEventContainer(grok.Container):
 class EventContainer(grok.OrderedContainer):
     grok.implements(interfaces.IEventContainer)
 
-    lastModified = None
+    lastModified = datetime.datetime(1970, 1, 1, tzinfo=dateutil.tz.tzlocal())
 
     firstEvent = NoneEvent()
     lastEvent = firstEvent
@@ -92,6 +89,7 @@ class EventContainer(grok.OrderedContainer):
         else:
             event = Event(keyName, None, None, None)
             self[keyName] = event
+            grok.notify(grok.ObjectCreatedEvent(event))
             return event
 
 
@@ -172,6 +170,7 @@ class Event(grok.Model):
         categories=[],
         isMajor=False,
         shortName=None,
+        lastModified=None,
         ):
         self.id = id
         self.name = name
@@ -183,10 +182,11 @@ class Event(grok.Model):
         self.description = description
         self.categories = categories
         self.isMajor = isMajor
-        if shortName == None:
+        if shortName is None:
             self.shortName = name
         else:
             self.shortName = shortName
+        self.lastModified = lastModified
 
     def getLocation(self):
         if self._location is None:
@@ -206,12 +206,17 @@ class Event(grok.Model):
     def length(self):
         return self.end - self.start
 
-    def getEvents(self, request):
-        return [self]
-
     @property
     def navigationName(self):
         return self.shortName
+
+    # interfaces.IEventOwner methods
+
+    def getEvents(self, request):
+        return [self]
+
+    def getLastModified(self, request):
+        return self.lastModified
 
 
 class EventIndex(MobileView):
@@ -231,6 +236,10 @@ class EventIndex(MobileView):
                 _(u"%s (major event)"), context=self.request) % self.context.name
         else:
             return self.context.name
+
+    def update(self):
+        self.request.response.setHeader(
+            'Last-Modified', util.httpTime(self.context.lastModified))
 
 
 class Edit(grok.EditForm):
