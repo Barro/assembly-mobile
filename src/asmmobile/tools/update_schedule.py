@@ -57,7 +57,7 @@ def addSpacesAroundSpacedTags(text):
 
 
 def escapeDescription(event):
-    if 'description' in event:
+    if event.get('description', None) is not None:
         event['description'] = addSpacesAroundSpacedTags(event['description'])
 
 
