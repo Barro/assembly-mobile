@@ -14,45 +14,45 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Aug  6 15:11:13 2010\n"
-"PO-Revision-Date: 2010-08-06 10:29+0300\n"
+"POT-Creation-Date: Sat Oct 16 16:59:18 2010\n"
+"PO-Revision-Date: 2010-10-16 16:59+0300\n"
 "Last-Translator: Jussi Judin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
 
-#: src/asmmobile/app.py:170 src/asmmobile/app.py:479
+#: src/asmmobile/app.py:170 src/asmmobile/app.py:494
 msgid "Home"
 msgstr "Etusivu"
 
-#: src/asmmobile/app.py:480 src/asmmobile/app.py:515 src/asmmobile/event.py:73
+#: src/asmmobile/app.py:495 src/asmmobile/app.py:543 src/asmmobile/event.py:70
 #: src/asmmobile/app_templates/allevents.ptm:2
 msgid "All events"
 msgstr "Koko ohjelma"
 
-#: src/asmmobile/app.py:481 src/asmmobile/app_templates/about.ptm:2
+#: src/asmmobile/app.py:496 src/asmmobile/app_templates/about.ptm:2
 #: src/asmmobile/app_templates/about.ptm:5
 msgid "About"
 msgstr "Tietoja"
 
-#: src/asmmobile/app.py:533
+#: src/asmmobile/app.py:561
 msgid "%d day"
 msgstr "%d päivä"
 
-#: src/asmmobile/app.py:535
+#: src/asmmobile/app.py:563
 msgid "%d days"
 msgstr "%d päivää"
 
-#: src/asmmobile/app.py:541
+#: src/asmmobile/app.py:569
 msgid "%d hour"
 msgstr "%d tunti"
 
-#: src/asmmobile/app.py:543
+#: src/asmmobile/app.py:571
 msgid "%d hours"
 msgstr "%d tuntia"
 
-#: src/asmmobile/app.py:566
+#: src/asmmobile/app.py:594
 msgid "QR code link to home page (%s)."
 msgstr "QR-koodi-linkki etusivulle (%s)."
 
@@ -149,7 +149,15 @@ msgstr ""
 "Sisäinen järjestelmävirhe tapahtui. Innovatiivisen korkeasti koulutetut "
 "apinamme tutkivat tapahtunutta."
 
-#: src/asmmobile/app_templates/index.ptm:30
+#: src/asmmobile/app_templates/index.ptm:15
+msgid "${event_name} <!---->@<!----> ${start_time}"
+msgstr "${event_name} <!---->@<!----> ${start_time}"
+
+#: src/asmmobile/app_templates/index.ptm:19
+msgid "Now"
+msgstr "Nyt"
+
+#: src/asmmobile/app_templates/index.ptm:41
 msgid ""
 "${major_span_start} ${time_left} left ${major_span_end} <!----> "
 "${location_name}"
@@ -157,11 +165,11 @@ msgstr ""
 "${major_span_start} ${time_left} jäljellä ${major_span_end} <!----> "
 "${location_name}"
 
-#: src/asmmobile/app_templates/index.ptm:38
+#: src/asmmobile/app_templates/index.ptm:50
 msgid "Next"
 msgstr "Seuraavaksi"
 
-#: src/asmmobile/app_templates/index.ptm:42
+#: src/asmmobile/app_templates/index.ptm:54
 msgid ""
 "No new scheduled events are starting in next two hours. See <!----> "
 "${link_next_events} <!----> for further events."
@@ -169,11 +177,11 @@ msgstr ""
 "Uusia tapahtumia ei ole tiedossa seuraavaan kahteen tuntiin. <!----> "
 "${link_next_events} <!----> näet seuraavat tapahtumat."
 
-#: src/asmmobile/app_templates/index.ptm:42
+#: src/asmmobile/app_templates/index.ptm:54
 msgid "all events"
 msgstr "Koko ohjelmasta"
 
-#: src/asmmobile/app_templates/index.ptm:61
+#: src/asmmobile/app_templates/index.ptm:75
 msgid ""
 "${major_span_start} in ${time_till_start} ${major_span_end} <!----> "
 "${location_name}"
@@ -181,11 +189,11 @@ msgstr ""
 "${major_span_start} alkuun ${time_till_start} ${major_span_end} <!----> "
 "${location_name}"
 
-#: src/asmmobile/app_templates/index.ptm:73
+#: src/asmmobile/app_templates/index.ptm:88
 msgid "full party schedule"
 msgstr "koko ohjelma"
 
-#: src/asmmobile/app_templates/index.ptm:73
+#: src/asmmobile/app_templates/index.ptm:88
 msgid ""
 "${party_name} has not started yet. See <!----> ${link_all_events} <!----> "
 "for the whole program."
@@ -193,19 +201,19 @@ msgstr ""
 "${party_name} ei ole vielä alkanut. Ohjelmatarjontaa voi tutkia sivulta "
 "<!----> ${link_all_events}."
 
-#: src/asmmobile/app_templates/index.ptm:77
+#: src/asmmobile/app_templates/index.ptm:9
+msgid "Schedule changes"
+msgstr "Aikataulumuutoksia"
+
+#: src/asmmobile/app_templates/index.ptm:92
 msgid "${party_name} has ended. Welcome again next year!"
 msgstr "${party_name} on ohi. Tervetuloa takaisin ensi vuonna!"
-
-#: src/asmmobile/app_templates/index.ptm:8
-msgid "Now"
-msgstr "Nyt"
 
 #: src/asmmobile/app_templates/layout.ptm:39
 msgid "View main site"
 msgstr "Pääsivustolle"
 
-#: src/asmmobile/event.py:231
+#: src/asmmobile/event.py:240
 msgid "%s (major event)"
 msgstr "%s (merkittävä tapahtuma)"
 
@@ -251,11 +259,17 @@ msgstr "${event_name} (tapahtuma)"
 msgid "- ${end_day} ${end_time}"
 msgstr "- ${end_day} ${end_time}"
 
-#: src/asmmobile/event_templates/eventindex.ptm:49
-msgid "${start_day} ${start_time} ${end_time} ${event_length}"
-msgstr "${start_day} ${start_time} ${end_time} ${event_length}"
+#: src/asmmobile/event_templates/eventindex.ptm:52
+msgid ""
+"${start_day} ${start_time} ${end_time} ${event_length} ${start_time_change}"
+msgstr ""
+"${start_day} ${start_time} ${end_time} ${event_length} ${start_time_change}"
 
-#: src/asmmobile/event_templates/eventindex.ptm:54
+#: src/asmmobile/event_templates/eventindex.ptm:58
+msgid "- original start time ${original_day} ${original_time}"
+msgstr "- alkuperäinen alkamisaika ${original_day} ${original_time}"
+
+#: src/asmmobile/event_templates/eventindex.ptm:63
 msgid "Location"
 msgstr "Tapahtumapaikka"
 
@@ -273,7 +287,7 @@ msgstr ""
 "Nokian matkapuhelimet ja monet kalenterisovellukset tukevat tästä "
 "tiedostosta tuotuja tapahtumia."
 
-#: src/asmmobile/location.py:49 src/asmmobile/location_templates/index.ptm:2
+#: src/asmmobile/location.py:56 src/asmmobile/location_templates/index.ptm:2
 msgid "Locations"
 msgstr "Tapahtumapaikat"
 
@@ -293,32 +307,32 @@ msgstr "${location_name} (tapahtumapaikka)"
 msgid "vCal (events)"
 msgstr "vCal (tapahtumat)"
 
-#: src/asmmobile/skin/bw/skin.py:33
+#: src/asmmobile/skin/bw/skin.py:34
 msgid "B/W"
 msgstr "M/V"
 
-#: src/asmmobile/util.py:171
+#: src/asmmobile/util.py:172
 msgid "%d h"
 msgstr "%d h"
 
-#: src/asmmobile/util.py:175
+#: src/asmmobile/util.py:176
 msgid "%d min"
 msgstr "%d min"
 
-#: src/asmmobile/util.py:177
+#: src/asmmobile/util.py:178
 msgid "%(hours)s %(minutes)s"
 msgstr "%(hours)s %(minutes)s"
 
 #. Default: "(%s)"
-#: src/asmmobile/util.py:189
+#: src/asmmobile/util.py:190
 msgid "(interval_parenthesis)"
 msgstr "(%s)"
 
 #. Default: "%H:%M"
-#: src/asmmobile/util.py:200
+#: src/asmmobile/util.py:201
 msgid "(hour_minute)"
 msgstr "%H.%M"
 
-#: src/asmmobile/util.py:223
+#: src/asmmobile/util.py:224
 msgid "EEEE yyyy-MM-dd HH:mm"
 msgstr "EEEE d.M.yyyy HH.mm"
