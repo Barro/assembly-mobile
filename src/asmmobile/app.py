@@ -242,6 +242,11 @@ class AsmMobile(grok.Application, grok.Container):
                 self.LOCATIONS[languageId] = locations
             locations.updateLocations(locationValues)
 
+        # Remove unused languages.
+        for language in self.LOCATIONS.keys():
+            if language not in locationData:
+                del self.LOCATIONS[language]
+
     def _sanitizeEvent(self, locations, values):
         if 'name' not in values:
             raise ImportError("Event has to have a name")
@@ -325,7 +330,7 @@ class AsmMobile(grok.Application, grok.Container):
         # Remove unused languages.
         for language in self.EVENTS.keys():
             if language not in eventData:
-                del(self.EVENTS[language])
+                del self.EVENTS[language]
 
 
     def getEvents(self, request, eventFilter=None):
