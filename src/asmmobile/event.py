@@ -171,11 +171,15 @@ class Event(grok.Model):
         isMajor=False,
         shortName=None,
         lastModified=None,
+        startOriginal=None,
         ):
         self.id = id
         self.name = name
         self.start = start
-        self.startOriginal = start
+        if startOriginal is None:
+            self.startOriginal = start
+        else:
+            self.startOriginal = startOriginal
         self.end = end
         self._location = location
         self.url = url

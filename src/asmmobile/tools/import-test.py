@@ -36,6 +36,11 @@ va ve vi vu vo vy
 cä cö cå""".split()
 parts.extend([" & ", " < "])
 
+MAX_CONCURRENT_STARTS = 6
+TIME_INCREASE_PROBABILITY = 0.4
+CHANGED_START_TIME_PROBABILITY = 0.1
+MAJOR_EVENT_PROBABILITY = 0.1
+
 def generateWords(wordMin, wordMax, partMin, partMax):
     words = []
     for wid in xrange(0, random.randint(wordMin, wordMax)):
@@ -91,22 +96,33 @@ def generateLanguageData(eventAmount, locations, startTime):
         eventName = generateWords(1, 3, 2, 4)
         eventId = "test_%d" % id
         eventStart = eventTime.strftime("%Y-%m-%dT%H:%M:%S") + localOffset
+        eventStartTimeOriginal = eventTime
         eventEndTime = eventTime + lengths[random.randint(0, len(lengths) - 1)]
         eventEnd = eventEndTime.strftime("%Y-%m-%dT%H:%M:%S") + localOffset
+
+        # Event is probably going to be late from the original schedule.
+        if random.random() < CHANGED_START_TIME_PROBABILITY:
+            eventStartTimeOriginal = eventStartTimeOriginal - lengths[
+                random.randint(0, len(lengths) - 1)]
+
+        eventStartOriginal = eventStartTimeOriginal.strftime(
+            "%Y-%m-%dT%H:%M:%S") + localOffset
+
         resultEvents[eventId] = {
             'name': eventName,
             'start': eventStart,
+            'start-original': eventStartOriginal,
             'end': eventEnd,
             'location': locationNames[random.randint(0, len(locationNames) - 1)],
             'categories': [],
-            'is-major': random.random() < 0.1,
+            'is-major': random.random() < MAJOR_EVENT_PROBABILITY,
             'description': cgi.escape(generateWords(20, 50, 2, 5)) + ".",
             }
 
-        if currentEvents >= 6:
+        if currentEvents >= MAX_CONCURRENT_STARTS:
             increaseTime = True
         else:
-            increaseTime = random.random() < 0.4
+            increaseTime = random.random() < TIME_INCREASE_PROBABILITY
 
         if increaseTime:
             eventTime += increases[random.randint(0, len(increases) - 1)]
@@ -127,7 +143,8 @@ def importer(
     eventCount,
     locationCount,
     languages=['en', 'fi'],
-    startTime='now'):
+    startTime='now',
+    ):
     resultLocations = {}
     resultEvents = {}
 

@@ -18,6 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import asmmobile
+import asmmobile.app
 import asmmobile.components
 import asmmobile.interfaces
 import asmmobile.skin.traverser
@@ -38,6 +39,9 @@ class LayoutStyle(grok.Viewlet):
     grok.context(zope.interface.Interface)
     grok.layer(BwSkin)
 
+
+class ScheduleChangedStyle(asmmobile.app.ScheduleChangedStyle):
+    grok.layer(BwSkin)
 
 # XXX: This should be not needed and used alternative skin names should be found
 # automatically.

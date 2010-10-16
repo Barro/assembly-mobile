@@ -11,10 +11,11 @@ locations and events::
    ...         return "@ %s" % self.name
 
    >>> class DummyEvent(object):
-   ...     def __init__(self, start, end, location):
+   ...     def __init__(self, start, end, location, startOriginal):
    ...         self.start = start
    ...         self.end = end
    ...         self.majorLocation = location
+   ...         self.startOriginal = startOriginal
    ...     def __repr__(self):
    ...         return "<%d-%d %s>" % (
    ...             self.start, self.end, self.majorLocation)
@@ -25,11 +26,11 @@ of events::
    >>> cave = DummyLocation("cave", 3)
    >>> home = DummyLocation("home", 3)
    >>> events = [
-   ...     DummyEvent(1, 2, cave),
-   ...     DummyEvent(1, 2, home),
-   ...     DummyEvent(4, 5, cave),
-   ...     DummyEvent(6, 7, cave),
-   ...     DummyEvent(6, 7, home),
+   ...     DummyEvent(1, 2, cave, 1),
+   ...     DummyEvent(1, 2, home, 1),
+   ...     DummyEvent(4, 5, cave, 3),
+   ...     DummyEvent(6, 7, cave, 6),
+   ...     DummyEvent(6, 7, home, 5),
    ...     ]
 
 Helper function to shorten event selection::
@@ -90,3 +91,19 @@ Make sure that events that start at certain time get all selected::
 
    >>> select(selector.MaximumEvents(1), 1, events)
    [<1-2 @ cave>, <1-2 @ home>]
+
+Make sure that events that start at certain time get all selected::
+
+   >>> select(selector.MaximumEvents(1), 1, events)
+   [<1-2 @ cave>, <1-2 @ home>]
+
+Check that events that have their start time changed will be returned correctly::
+
+   >>> select(selector.StartTimeChangedEvents(), 1, events)
+   [<4-5 @ cave>, <6-7 @ home>]
+
+Check that original start time returns correct events even when
+current start time is not selected::
+
+   >>> select(selector.NotHiddenOriginalEvents(), 0, events)
+   [<1-2 @ cave>, <1-2 @ home>, <4-5 @ cave>]

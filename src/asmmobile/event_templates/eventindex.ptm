@@ -48,6 +48,15 @@
 
   <span i18n:name="event_length"
         tal:replace="context/length/@@hourminuteparenthesis" />
+
+  <tal:block tal:condition="python: context.start != context.startOriginal" i18n:name="start_time_change"
+             i18n:translate="">
+    - original start time at
+    <span tal:condition="python: context.start.day != context.startOriginal.day"
+          tal:replace="context/startOriginal/@@dayname"
+          i18n:name="original_day"/>
+    <span i18n:name="original_time" tal:replace="context/startOriginal/@@hourminute" />
+  </tal:block>
 </div>
 
 <tal:block tal:condition="context/location/name">

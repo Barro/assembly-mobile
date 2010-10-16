@@ -246,6 +246,8 @@ class DisplayEvent(object):
         self.location = event.location
 
         self.start = event.start
+        self.startOriginal = event.startOriginal
+        self.startHasChanged = (event.start != event.startOriginal)
         self.end = event.end
         self.length = event.length
 

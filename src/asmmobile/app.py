@@ -388,7 +388,9 @@ util.runDeferred(_initializeSorters)
 class Index(MobileView):
     grok.context(interfaces.IAsmMobile)
 
+
     def _getCurrentNextEvents(self, now):
+        # XXX What is the difference between setNow() and reset()?
         notEndedEvents = self.context.getEvents(self.request,
             selector.NotEndedEvents().setNow(now))
 
@@ -400,11 +402,17 @@ class Index(MobileView):
 
         for nextSelector in nextSelectors:
             nextSelector.reset(now)
-        nextEvents = filter(
-            selector.AndSelector(nextSelectors), notEndedEvents)
+        nextSelector = selector.AndSelector(nextSelectors)
+        nextEvents = filter(nextSelector, notEndedEvents)
         nextEvents.sort(nextSort)
 
         self.nextEvents = getEventList(self, nextEvents)
+
+        changedSelector = selector.AndSelector(
+            [selector.StartTimeChangedEvents(),
+             selector.NotHiddenOriginalEvents().reset(now)])
+        changedEvents = filter(changedSelector, notEndedEvents)
+        self.changedEvents = getEventList(self, changedEvents)
 
 
     def _getPartyStatus(self, now, nextEvents):
@@ -492,6 +500,19 @@ class LayoutStyle(grok.Viewlet):
     grok.viewletmanager(asmmobile.components.StylesheetManager)
     grok.context(zope.interface.Interface)
     grok.order(1)
+
+
+class ScheduleChangedStyle(grok.Viewlet):
+    grok.viewletmanager(asmmobile.components.StylesheetManager)
+    grok.context(AsmMobile)
+    grok.view(Index)
+    grok.order(2)
+
+    displayStyle = False
+
+    def update(self):
+        if len(self.view.changedEvents) > 0:
+            self.displayStyle = True
 
 
 class Favicon(MobileView):

@@ -24,6 +24,7 @@ class EventSelector(object):
 
     def reset(self, now):
         self.now = now
+        return self
 
     def setNow(self, now):
         self.now = now
@@ -57,7 +58,7 @@ class LocationEvents(EventSelector):
 
     def reset(self, now):
         self.locationizedEvents = {}
-        self.now = now
+        return super(LocationEvents, self).reset(now)
 
     def construct(self, arguments):
         return LocationEvents()
@@ -92,6 +93,24 @@ class NotHiddenEvents(EventSelector):
         return True
 
 
+class NotHiddenOriginalEvents(EventSelector):
+    def construct(self, arguments):
+        return NotHiddenOriginalEvents()
+
+    def __call__(self, event):
+        if self.now + event.majorLocation.hideUntil < event.startOriginal:
+            return False
+        return True
+
+
+class StartTimeChangedEvents(EventSelector):
+    def construct(self, arguments):
+        return NotHiddenOriginalEvents()
+
+    def __call__(self, event):
+        return event.start != event.startOriginal
+
+
 class MaximumEvents(EventSelector):
     def __init__(self, maximumEvents):
         self.maximumEvents = maximumEvents
@@ -100,6 +119,7 @@ class MaximumEvents(EventSelector):
     def reset(self, now):
         self.selected = 0
         self.lastSelected = None
+        return super(MaximumEvents, self).reset(now)
 
     def construct(self, arguments):
         return MaximumEvents(int(arguments))
