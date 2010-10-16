@@ -229,35 +229,18 @@ class StylesheetManager(grok.ViewletManager):
     grok.context(Interface)
 
 
-class CssTemplate(grokcore.view.components.BaseTemplate):
+class CssTemplate(grokcore.view.components.PageTemplate):
 
     def __init__(self, string=None, filename=None, _prefix=None, cleaner=None):
+        super(CssTemplate, self).__init__(string=string, filename=filename, _prefix=_prefix)
+
         if cleaner == None:
             self.cleaner = CssNoneCleaner()
         else:
             self.cleaner = cleaner
 
-        self.__grok_module__ = martian.util.caller_module()
-
-        if string:
-            self.setFromString(string)
-        else:
-            if _prefix is None:
-                module = sys.modules[self.__grok_module__]
-                _prefix = os.path.dirname(module.__file__)
-            self.setFromFilename(filename, _prefix)
-
-    def setFromString(self, string):
-        self._templateData = self.cleaner(string)
-
-    def setFromFilename(self, filename, _prefix=None):
-        fp = open(os.path.join(_prefix, filename), "r")
-        data = fp.read()
-        fp.close()
-        self.setFromString(data)
-
     def render(self, view):
-        return self._templateData
+        return self.cleaner(super(CssTemplate, self).render(view))
 
 
 from zope.app.publisher.browser import getDefaultViewName
