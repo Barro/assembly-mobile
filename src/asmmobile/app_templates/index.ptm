@@ -2,20 +2,21 @@
 <metal:block metal:fill-slot='page-title'></metal:block>
 <metal:block metal:fill-slot='page-title-separator'></metal:block>
 <metal:block metal:fill-slot='content-header'></metal:block>
+
+<div metal:fill-slot='before-title' tal:condition="view/changedEvents" tal:attributes="class python:shorten('alert')">
+  <h2 i18n:translate="">Schedule changes</h2>
+  <div tal:repeat="event view/changedEvents" i18n:translate="">
+    <a tal:attributes="href event/shorturl" i18n:name="event_name">
+      <span tal:replace="event/name"  />
+    </a>
+    <!---->-<!---->
+    <span i18n:name="start_time" tal:replace="event/start/@@hourminute" />
+  </div>
+</div>
+
 <div metal:fill-slot='content'>
 
 <tal:block tal:condition="view/partyIsOngoing">
-  <div tal:attributes="class python:shorten('alert')">
-    <h2 i18n:translate="">Schedule changes</h2>
-    <div tal:repeat="event view/changedEvents" i18n:translate="">
-      <a tal:attributes="href event/shorturl; class python:shorten('event_link')" i18n:name="event_name">
-        <span tal:replace="event/name"  />
-      </a>
-      <!---->@<!---->
-      <span i18n:name="start_time" tal:replace="event/start/@@hourminute" />
-    </div>
-  </div>
-
 <h2 i18n:translate="">Now</h2>
 <tal:block tal:repeat="event view/currentEvents">
   <div tal:attributes="class python:event.isMajor and shorten('event major-event') or shorten('event')">

@@ -7,11 +7,12 @@
 <head>
   <title><metal:block define-slot="page-title"></metal:block><metal:block define-slot="page-title-separator"> - </metal:block><span tal:replace="context/@@layout/siteName">Assembly Mobile</span></title>
   <style type='text/css' tal:content="structure provider:stylesheets"></style>
-  <meta name="viewport" content="width=480" />
+  <meta name="viewport" content="width=device-width" />
   <metal:block define-slot="extra-head-data"></metal:block>
 </head>
 
 <body>
+<metal:block define-slot="before-title"></metal:block>
 <h1 tal:attributes="id shorten:title">
   <tal:block tal:condition="python:view.application_url('index')==view.url()"
              tal:replace="context/@@layout/siteName" />
@@ -19,6 +20,7 @@
      tal:attributes="href view/application_urlR"
      tal:content="context/@@layout/siteName">Assembly Mobile</a>
 </h1>
+<metal:block define-slot="after-title"></metal:block>
 <metal:block define-slot="body">
 <div tal:attributes="class shorten:header links">
 

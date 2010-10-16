@@ -35,27 +35,31 @@
   <span i18n:name="start_day" tal:replace="context/start/@@dayname" />
   <span i18n:name="start_time" tal:replace="context/start/@@hourminute" />
 
-  <tal:block i18n:name="end_time"
-             tal:condition="python: context.start != context.end"
-             i18n:translate="">
+  <tal:block i18n:name="end_time">
+    <tal:block tal:condition="python: context.start != context.end"
+               i18n:translate="">
     -
-    <span i18n:name="end_day"
-          tal:condition="python: context.start.day != context.end.day"
-          tal:replace="context/end/@@dayname" />
+    <tal:block i18n:name="end_day">
+      <span tal:condition="python: context.start.day != context.end.day"
+            tal:replace="context/end/@@dayname" />
+    </tal:block>
     <span i18n:name="end_time"
           tal:replace="context/end/@@hourminute" />
+    </tal:block>
   </tal:block>
 
   <span i18n:name="event_length"
         tal:replace="context/length/@@hourminuteparenthesis" />
 
-  <tal:block tal:condition="python: context.start != context.startOriginal" i18n:name="start_time_change"
-             i18n:translate="">
-    - original start time
-    <span tal:condition="python: context.start.day != context.startOriginal.day"
+  <tal:block i18n:name="start_time_change">
+    <tal:block tal:condition="python: context.start != context.startOriginal"
+               i18n:translate="">
+      - original start time
+      <span tal:condition="python: context.start.day != context.startOriginal.day"
           tal:replace="context/startOriginal/@@dayname"
           i18n:name="original_day"/>
-    <span i18n:name="original_time" tal:replace="context/startOriginal/@@hourminute" />
+      <span i18n:name="original_time" tal:replace="context/startOriginal/@@hourminute" />
+    </tal:block>
   </tal:block>
 </div>
 
