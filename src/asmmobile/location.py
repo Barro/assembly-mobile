@@ -118,6 +118,7 @@ class Index(MobileView):
     def update(self):
         content = self.context.get(self.request.locale.id.language, None)
         if content is None:
+            import asmmobile.config as config
             content = self.context[config.defaultLanguage]
         self.locations = content.values()
 
