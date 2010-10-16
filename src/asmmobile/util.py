@@ -48,10 +48,6 @@ def handle(obj):
     for function in _DEFERRED_RUNS:
         function(config)
 
-
-EVENTS = 'event'
-LOCATIONS = 'location'
-
 def _currentTimeClock(timezone):
     dateFactory = datetime.datetime(2009, 1, 1)
     def currentTime(tz=timezone):
@@ -124,16 +120,20 @@ def applicationRelativeUrl(view, path):
 
 
 def locationUrl(view, location):
+    import asmmobile.config as config
+
     return applicationRelativeUrl(
         view,
-        "%s/%s" % (LOCATIONS, location.id)
+        "%s/%s" % (config.locations, location.id)
         )
 
 
 def eventUrl(view, event):
+    import asmmobile.config as config
+
     return applicationRelativeUrl(
         view,
-        "%s/%s" % (EVENTS, event.id)
+        "%s/%s" % (config.events, event.id)
         )
 
 
@@ -236,7 +236,8 @@ class DisplayEvent(object):
         self.name = event.name
         self.shortName = event.shortName
         # This is used by iCalendar views as absolute URL.
-        self.url = "%s/%s" % (view.application_url(EVENTS), self.id)
+        import asmmobile.config as config
+        self.url = "%s/%s" % (view.application_url(config.events), self.id)
         # This is used by browser views as relative URL.
         self.shorturl = eventUrl(view, event)
         self.description = event.description
