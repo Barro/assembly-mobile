@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Sat Oct 16 18:53:16 2010\n"
-"PO-Revision-Date: 2010-10-16 18:48+0300\n"
+"POT-Creation-Date: Sat Oct 16 18:58:07 2010\n"
+"PO-Revision-Date: 2010-10-16 18:58+0300\n"
 "Last-Translator: Jussi Judin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -265,11 +265,11 @@ msgid ""
 msgstr ""
 "${start_day} ${start_time} ${end_time} ${event_length} ${start_time_change}"
 
-#: src/asmmobile/event_templates/eventindex.ptm:61
-msgid "- original start time ${original_day} ${original_time}"
-msgstr "- alkuperäinen alkamisaika ${original_day} ${original_time}"
+#: src/asmmobile/event_templates/eventindex.ptm:63
+msgid "- original start time ${original_day} ${original_time}."
+msgstr "- alkuperäinen alkamisaika ${original_day} ${original_time}."
 
-#: src/asmmobile/event_templates/eventindex.ptm:67
+#: src/asmmobile/event_templates/eventindex.ptm:69
 msgid "Location"
 msgstr "Tapahtumapaikka"
 

@@ -55,10 +55,12 @@
     <tal:block tal:condition="python: context.start != context.startOriginal"
                i18n:translate="">
       - original start time
-      <span tal:condition="python: context.start.day != context.startOriginal.day"
-          tal:replace="context/startOriginal/@@dayname"
-          i18n:name="original_day"/>
-      <span i18n:name="original_time" tal:replace="context/startOriginal/@@hourminute" />
+      <tal:block i18n:name="original_day">
+        <span tal:condition="python: context.start.day != context.startOriginal.day"
+              tal:replace="context/startOriginal/@@dayname"
+              />
+      </tal:block>
+      <span i18n:name="original_time" tal:replace="context/startOriginal/@@hourminute" />.
     </tal:block>
   </tal:block>
 </div>

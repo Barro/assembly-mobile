@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Sat Oct 16 18:53:16 2010\n"
+"POT-Creation-Date: Sat Oct 16 18:58:07 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -221,11 +221,11 @@ msgstr ""
 msgid "${start_day} ${start_time} ${end_time} ${event_length} ${start_time_change}"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:61
-msgid "- original start time ${original_day} ${original_time}"
+#: src/asmmobile/event_templates/eventindex.ptm:63
+msgid "- original start time ${original_day} ${original_time}."
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:67
+#: src/asmmobile/event_templates/eventindex.ptm:69
 msgid "Location"
 msgstr ""
 
