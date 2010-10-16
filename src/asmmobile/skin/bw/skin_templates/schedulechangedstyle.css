@@ -1,0 +1,22 @@
+<tal:block tal:condition="viewlet/displayStyle">
+
+.alert {
+  float: right;
+  background: #fff;
+  padding: 8px 10px;
+  border: 1px solid #000;
+}
+
+.alert h2 {
+  margin: 0px;
+}
+
+.alert a {
+  text-decoration: underline;
+}
+
+.alert a:hover {
+  text-decoration: none;
+}
+
+</tal:block>
