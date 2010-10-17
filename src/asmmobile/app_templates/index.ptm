@@ -52,7 +52,7 @@
 <div tal:condition="python:len(view.nextEvents)==0"
      tal:attributes="class shorten:event"
      i18n:translate="">
-No new scheduled events are starting in next two hours. See <!----> <a i18n:name="link_next_events" tal:attributes="href python:view.urlR('all')+'#now'" i18n:translate="">all events</a> <!----> for further events.</div>
+No new scheduled events are starting in next two hours. See <!----> <a i18n:name="link_all_events" tal:attributes="href python:view.urlR('all')+'#now'" i18n:translate="">all events</a> <!----> for further events.</div>
 <tal:block tal:repeat="event view/nextEvents">
   <div tal:attributes="class python:event.isMajor and shorten('event major-event') or shorten('event')">
     <h3>
@@ -84,10 +84,14 @@ No new scheduled events are starting in next two hours. See <!----> <a i18n:name
 
 </tal:block>
 
-<p metal:define-macro="party-has-not-started" tal:condition="not:view/partyHasStarted"
-   i18n:translate="">
-<span i18n:name="party_name" tal:replace="context/partyName" /> has not started yet. See <!----> <a i18n:name="link_all_events" tal:attributes="href python:view.urlR('all')" i18n:translate="">full party schedule</a> <!----> for the whole program.
+<tal:block metal:define-macro="party-has-not-started"
+           tal:condition="not:view/partyHasStarted">
+<p i18n:translate="">
+  <span i18n:name="party_name" tal:replace="context/partyName" /> has not started yet. See <!----> <a i18n:name="link_all_events" tal:attributes="href python:view.urlR('all')" i18n:translate="">all events</a><!----> page for the whole program.
 </p>
+<p i18n:translate="">This page will display a list of current and upcoming events during the party as well as possible scheduling changes.
+</p>
+</tal:block>
 <p metal:define-macro="party-has-ended" tal:condition="view/partyHasEnded"
    i18n:translate="">
 <span i18n:name="party_name" tal:replace="context/partyName" /> has ended. Welcome again next year!

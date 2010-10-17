@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Sat Oct 16 18:58:07 2010\n"
+"POT-Creation-Date: Sun Oct 17 13:47:09 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -24,40 +24,40 @@ msgstr ""
 "Generated-By: zope/app/locales/extract.py\n"
 
 #: src/asmmobile/app.py:169
-#: src/asmmobile/app.py:493
+#: src/asmmobile/app.py:498
 msgid "Home"
 msgstr ""
 
-#: src/asmmobile/app.py:494
-#: src/asmmobile/app.py:542
+#: src/asmmobile/app.py:499
+#: src/asmmobile/app.py:547
 #: src/asmmobile/event.py:70
 #: src/asmmobile/app_templates/allevents.ptm:2
 msgid "All events"
 msgstr ""
 
-#: src/asmmobile/app.py:495
+#: src/asmmobile/app.py:500
 #: src/asmmobile/app_templates/about.ptm:2
 #: src/asmmobile/app_templates/about.ptm:5
 msgid "About"
 msgstr ""
 
-#: src/asmmobile/app.py:560
+#: src/asmmobile/app.py:565
 msgid "%d day"
 msgstr ""
 
-#: src/asmmobile/app.py:562
+#: src/asmmobile/app.py:567
 msgid "%d days"
 msgstr ""
 
-#: src/asmmobile/app.py:568
+#: src/asmmobile/app.py:573
 msgid "%d hour"
 msgstr ""
 
-#: src/asmmobile/app.py:570
+#: src/asmmobile/app.py:575
 msgid "%d hours"
 msgstr ""
 
-#: src/asmmobile/app.py:593
+#: src/asmmobile/app.py:598
 msgid "QR code link to home page (%s)."
 msgstr ""
 
@@ -144,10 +144,11 @@ msgid "Next"
 msgstr ""
 
 #: src/asmmobile/app_templates/index.ptm:55
-msgid "No new scheduled events are starting in next two hours. See <!----> ${link_next_events} <!----> for further events."
+msgid "No new scheduled events are starting in next two hours. See <!----> ${link_all_events} <!----> for further events."
 msgstr ""
 
 #: src/asmmobile/app_templates/index.ptm:55
+#: src/asmmobile/app_templates/index.ptm:90
 msgid "all events"
 msgstr ""
 
@@ -159,15 +160,15 @@ msgstr ""
 msgid "${major_span_start} in ${time_till_start} ${major_span_end} <!----> ${location_name}"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:89
-msgid "full party schedule"
+#: src/asmmobile/app_templates/index.ptm:90
+msgid "${party_name} has not started yet. See <!----> ${link_all_events}<!----> page for the whole program."
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:89
-msgid "${party_name} has not started yet. See <!----> ${link_all_events} <!----> for the whole program."
+#: src/asmmobile/app_templates/index.ptm:92
+msgid "This page will display a list of current and upcoming events during the party as well as possible scheduling changes."
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:93
+#: src/asmmobile/app_templates/index.ptm:97
 msgid "${party_name} has ended. Welcome again next year!"
 msgstr ""
 
