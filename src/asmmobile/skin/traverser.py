@@ -30,12 +30,16 @@ import asmmobile.interfaces as interfaces
 import asmmobile.util as util
 import asmmobile.components
 
-SKIN_COOKIE = "s"
-SKIN_VARIABLE = "skin"
+COOKIE_SKIN = "s"
 SKINS = {}
+SKIN_DEFAULT = None
 
-def getRequestVariable():
-    return SKIN_VARIABLE
+def _initialize(config):
+    global SKIN_DEFAULT
+    SKIN_DEFAULT = config.skinDefault
+
+util.runDeferred(_initialize)
+
 
 def addSkin(name, displayName, cls):
     SKINS[name] = (displayName, cls)
@@ -43,7 +47,7 @@ def addSkin(name, displayName, cls):
 
 @grok.subscribe(interfaces.IAsmMobile, IBeforeTraverseEvent)
 def handle(obj, event):
-    skin = event.request.cookies.get(SKIN_COOKIE, None)
+    skin = event.request.cookies.get(COOKIE_SKIN, SKIN_DEFAULT)
 
     if skin in SKINS:
         displayName, cls = SKINS[skin]
