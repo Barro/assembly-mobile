@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Sun Oct 17 13:47:09 2010\n"
-"PO-Revision-Date: 2010-10-17 13:49+0300\n"
+"POT-Creation-Date: Sun Oct 17 13:54:33 2010\n"
+"PO-Revision-Date: 2010-10-17 13:54+0300\n"
 "Last-Translator: Jussi Judin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -101,10 +101,6 @@ msgstr ""
 #: src/asmmobile/app_templates/about.ptm:9
 msgid "Calendar data"
 msgstr "Kalenteridata"
-
-#: src/asmmobile/app_templates/allevents.ptm:10
-msgid "Events (vCal)"
-msgstr "Tapahtumat (vCal)"
 
 #: src/asmmobile/app_templates/allevents.ptm:24
 msgid "Party time: ${party_start} - ${party_end}. Length: ${party_length}."
@@ -309,6 +305,7 @@ msgid "${location_name} (location)"
 msgstr "${location_name} (tapahtumapaikka)"
 
 #: src/asmmobile/location_templates/locationindex.ptm:9
+#: src/asmmobile/app_templates/allevents.ptm:10
 msgid "vCal (events)"
 msgstr "vCal (tapahtumat)"
 

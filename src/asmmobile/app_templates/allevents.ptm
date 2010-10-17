@@ -10,7 +10,7 @@
   <a tal:attributes="href python:view.application_urlR(normPartyName) + '.vcs'"
      title="Nokia mobile phones and various desktop calendar software can import events from this file."
      i18n:attributes="title"
-     i18n:translate="">Events (vCal)</a>
+     i18n:translate="">vCal (events)</a>
     <!---->&#8226;<!---->
     <a tal:define="qrData python:view.application_url('all')"
        tal:attributes="href qrData/@@qrcodeurl"

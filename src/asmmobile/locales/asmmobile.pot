@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Sun Oct 17 13:47:09 2010\n"
+"POT-Creation-Date: Sun Oct 17 13:54:33 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -83,10 +83,6 @@ msgstr ""
 
 #: src/asmmobile/app_templates/about.ptm:9
 msgid "Calendar data"
-msgstr ""
-
-#: src/asmmobile/app_templates/allevents.ptm:10
-msgid "Events (vCal)"
 msgstr ""
 
 #: src/asmmobile/app_templates/allevents.ptm:24
@@ -254,6 +250,7 @@ msgid "${location_name} (location)"
 msgstr ""
 
 #: src/asmmobile/location_templates/locationindex.ptm:9
+#: src/asmmobile/app_templates/allevents.ptm:10
 msgid "vCal (events)"
 msgstr ""
 
