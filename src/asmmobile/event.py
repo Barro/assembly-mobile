@@ -106,7 +106,8 @@ class EventContainer(grok.OrderedContainer):
         for key, eventData in values.items():
             eventData['start'] = eventData['start'].astimezone(localTz)
             eventData['end'] = eventData['end'].astimezone(localTz)
-            eventData['start-original'] = eventData['start-original'].astimezone(localTz)
+            if 'start-original' in eventData:
+                eventData['start-original'] = eventData['start-original'].astimezone(localTz)
             if 'short-name' not in eventData:
                 eventData['short-name'] = eventData['name']
 

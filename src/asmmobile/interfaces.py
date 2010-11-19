@@ -77,7 +77,8 @@ class IEvent(INavigationObject):
 
     # Original start time that can be used to create notices about schedule
     # changes.
-    startOriginal = schema.Datetime(title=u"Original start time")
+    startOriginal = schema.Datetime(
+        title=u"Original start time", required=False)
 
     end = schema.Datetime(title=u"End time")
 

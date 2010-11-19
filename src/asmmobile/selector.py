@@ -98,9 +98,12 @@ class NotHiddenOriginalEvents(EventSelector):
         return NotHiddenOriginalEvents()
 
     def __call__(self, event):
-        if self.now + event.majorLocation.hideUntil < event.startOriginal:
+        if event.startOriginal is not None:
+            if self.now + event.majorLocation.hideUntil < event.startOriginal:
+                return False
+            return True
+        else:
             return False
-        return True
 
 
 class StartTimeChangedEvents(EventSelector):

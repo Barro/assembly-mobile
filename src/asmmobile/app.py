@@ -71,7 +71,6 @@ class CatalogBasedI18nUserPreferredLanguages(grok.Adapter):
 
     availableLanguages = None
 
-
     def _initialize(config):
         cls = CatalogBasedI18nUserPreferredLanguages
         cls.enableInternalization = config.enableInternalization
@@ -167,6 +166,7 @@ class AsmMobile(grok.Application, grok.Container):
     zope.interface.implements(interfaces.IAsmMobile, interfaces.IEventOwner)
 
     navigationName = _(u"Home")
+    defaultLanguage = None
 
     def _initialize(config):
         cls = AsmMobile
@@ -200,17 +200,18 @@ class AsmMobile(grok.Application, grok.Container):
     def LOCATIONS(self):
         return self[self.locations]
 
+    def _getLanguagedEvents(self, request):
+        defaultEvents = self.EVENTS[self.defaultLanguage]
+        events = self.EVENTS.get(request.locale.id.language, defaultEvents)
+        return events
+
     def getFirstEvent(self, request):
-        events = self.EVENTS.get(request.locale.id.language, None)
-        if events == None:
-            return asmmobile.event.NoneEvent()
+        events = self._getLanguagedEvents(request)
         return events.firstEvent
 
 
     def getLastEvent(self, request):
-        events = self.EVENTS.get(request.locale.id.language, None)
-        if events == None:
-            return asmmobile.event.NoneEvent()
+        events = self._getLanguagedEvents(request)
         return events.lastEvent
 
 
@@ -264,10 +265,7 @@ class AsmMobile(grok.Application, grok.Container):
         if not DATE_FORMAT_RE.match(values['end']):
             raise ImportError("Invalid end time format: %s" % values['end'])
 
-        if 'start-original' not in values:
-            values['start-original'] = values['start']
-
-        if not DATE_FORMAT_RE.match(values['start-original']):
+        if 'start-original' in values and not DATE_FORMAT_RE.match(values['start-original']):
             raise ImportError(
                 "Invalid original start time time format: %s" % \
                     values['start-original'])
@@ -284,7 +282,8 @@ class AsmMobile(grok.Application, grok.Container):
 
         # Objectify times.
         eventValues['start'] = dateutil.parser.parse(eventValues['start'])
-        eventValues['start-original'] = dateutil.parser.parse(eventValues['start-original'])
+        if 'start-original' in eventValues:
+            eventValues['start-original'] = dateutil.parser.parse(eventValues['start-original'])
         eventValues['end'] = dateutil.parser.parse(eventValues['end'])
 
         return eventValues
@@ -334,17 +333,11 @@ class AsmMobile(grok.Application, grok.Container):
 
 
     def getEvents(self, request, eventFilter=None):
-        events = self.EVENTS.get(request.locale.id.language, None)
-        # Fall back to default language.
-        if events is None:
-            events = self.EVENTS[self.defaultLanguage]
+        events = self._getLanguagedEvents(request)
         return events.getEvents(eventFilter)
 
     def getLastModified(self, request):
-        events = self.EVENTS.get(request.locale.id.language, None)
-        # Fall back to default language.
-        if events is None:
-            events = self.EVENTS[self.defaultLanguage]
+        events = self._getLanguagedEvents(request)
         return events.lastModified
 
 

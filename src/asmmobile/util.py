@@ -394,10 +394,11 @@ def setObjectAttributesFromDict(obj, newValues, attributes):
         else:
             attribute, key = (name, name)
         oldValue = getattr(obj, attribute)
-        newValue = newValues.get(key, oldValue)
-        if oldValue != newValue:
-            modified = True
-            setattr(obj, attribute, newValue)
+        if key in newValues:
+            newValue = newValues.get(key, oldValue)
+            if oldValue != newValue:
+                modified = True
+                setattr(obj, attribute, newValue)
     if modified:
         grok.notify(grok.ObjectModifiedEvent(obj))
     return obj
