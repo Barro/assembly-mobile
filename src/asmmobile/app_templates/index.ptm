@@ -6,11 +6,10 @@
 <div metal:fill-slot='before-title' tal:condition="view/changedEvents" tal:attributes="class shorten:alert">
   <h2 i18n:translate="">Schedule changes</h2>
   <div tal:repeat="event view/changedEvents" i18n:translate="">
+    <span i18n:name="start_time" tal:replace="event/start/@@hourminute" /><!---->
     <a tal:attributes="href event/shorturl" i18n:name="event_name">
       <span tal:replace="event/name"  />
     </a>
-    <!---->-<!---->
-    <span i18n:name="start_time" tal:replace="event/start/@@hourminute" />
   </div>
 </div>
 
