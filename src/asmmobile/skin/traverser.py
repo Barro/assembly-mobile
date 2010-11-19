@@ -49,6 +49,9 @@ def addSkin(name, displayName, cls):
 def handle(obj, event):
     skin = event.request.cookies.get(COOKIE_SKIN, SKIN_DEFAULT)
 
+    if skin not in SKINS:
+        skin = SKIN_DEFAULT
+
     if skin in SKINS:
         displayName, cls = SKINS[skin]
         applySkin(event.request, cls)
