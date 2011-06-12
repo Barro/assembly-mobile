@@ -1,4 +1,5 @@
-<metal:block metal:use-macro="context/@@layout/macros/page">
+<metal:block metal:use-macro="context/@@layout/macros/page"
+             i18n:domain="asmmobile">
 <metal:block metal:fill-slot='page-title'
              i18n:translate="">All events</metal:block>
 <div metal:fill-slot='content'>
@@ -14,8 +15,8 @@
     <!---->&#8226;<!---->
     <a tal:define="qrData python:view.application_url('all')"
        tal:attributes="href qrData/@@qrcodeurl"
-       title="QR code links require a mobile phone with a QR code reader."
        i18n:attributes="title"
+       title="QR code links require a mobile phone with a QR code reader."
        i18n:translate="">Link to this page</a>
 </div>
 <p i18n:translate="">

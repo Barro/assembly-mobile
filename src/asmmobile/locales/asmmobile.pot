@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Nov 19 11:16:50 2010\n"
+"POT-Creation-Date: Sun Jun 12 18:28:05 2011\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -24,40 +24,40 @@ msgstr ""
 "Generated-By: zope/app/locales/extract.py\n"
 
 #: src/asmmobile/app.py:168
-#: src/asmmobile/app.py:491
+#: src/asmmobile/app.py:490
 msgid "Home"
 msgstr ""
 
-#: src/asmmobile/app.py:492
-#: src/asmmobile/app.py:540
+#: src/asmmobile/app.py:491
+#: src/asmmobile/app.py:539
 #: src/asmmobile/event.py:70
-#: src/asmmobile/app_templates/allevents.ptm:2
+#: src/asmmobile/app_templates/allevents.ptm:3
 msgid "All events"
 msgstr ""
 
-#: src/asmmobile/app.py:493
+#: src/asmmobile/app.py:492
 #: src/asmmobile/app_templates/about.ptm:2
 #: src/asmmobile/app_templates/about.ptm:5
 msgid "About"
 msgstr ""
 
-#: src/asmmobile/app.py:558
+#: src/asmmobile/app.py:557
 msgid "%d day"
 msgstr ""
 
-#: src/asmmobile/app.py:560
+#: src/asmmobile/app.py:559
 msgid "%d days"
 msgstr ""
 
-#: src/asmmobile/app.py:566
+#: src/asmmobile/app.py:565
 msgid "%d hour"
 msgstr ""
 
-#: src/asmmobile/app.py:568
+#: src/asmmobile/app.py:567
 msgid "%d hours"
 msgstr ""
 
-#: src/asmmobile/app.py:591
+#: src/asmmobile/app.py:590
 msgid "QR code link to home page (%s)."
 msgstr ""
 
@@ -85,11 +85,11 @@ msgstr ""
 msgid "Calendar data"
 msgstr ""
 
-#: src/asmmobile/app_templates/allevents.ptm:24
+#: src/asmmobile/app_templates/allevents.ptm:25
 msgid "Party time: ${party_start} - ${party_end}. Length: ${party_length}."
 msgstr ""
 
-#: src/asmmobile/app_templates/allevents.ptm:65
+#: src/asmmobile/app_templates/allevents.ptm:66
 msgid "There are no events in this party!"
 msgstr ""
 
@@ -101,18 +101,18 @@ msgstr ""
 msgid "Our monkey king has decided that you are not authorized to view this page."
 msgstr ""
 
+#: src/asmmobile/app_templates/error401unauthorized.ptm:7
+#: src/asmmobile/app_templates/error404notfound.ptm:6
+#: src/asmmobile/app_templates/error500internalservererror.ptm:6
+msgid "Go back to the front page of ${site_name}."
+msgstr ""
+
 #: src/asmmobile/app_templates/error404notfound.ptm:2
 msgid "Page not found"
 msgstr ""
 
 #: src/asmmobile/app_templates/error404notfound.ptm:4
 msgid "The page you requested does not exist."
-msgstr ""
-
-#: src/asmmobile/app_templates/error404notfound.ptm:6
-#: src/asmmobile/app_templates/error500internalservererror.ptm:6
-#: src/asmmobile/app_templates/error401unauthorized.ptm:7
-msgid "Go back to the front page of ${site_name}."
 msgstr ""
 
 #: src/asmmobile/app_templates/error500internalservererror.ptm:2
@@ -127,24 +127,28 @@ msgstr ""
 msgid "${start_time}<!----> ${event_name}"
 msgstr ""
 
+#: src/asmmobile/app_templates/index.ptm:104
+msgid "${party_name} has ended. Welcome again next year!"
+msgstr ""
+
 #: src/asmmobile/app_templates/index.ptm:19
 msgid "Now"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:41
+#: src/asmmobile/app_templates/index.ptm:45
 msgid "${major_span_start} ${time_left} left ${major_span_end} <!----> ${location_name}"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:50
+#: src/asmmobile/app_templates/index.ptm:54
 msgid "Next"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:54
+#: src/asmmobile/app_templates/index.ptm:58
 msgid "No new scheduled events are starting in next two hours. See <!----> ${link_all_events} <!----> for further events."
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:54
-#: src/asmmobile/app_templates/index.ptm:89
+#: src/asmmobile/app_templates/index.ptm:58
+#: src/asmmobile/app_templates/index.ptm:97
 msgid "all events"
 msgstr ""
 
@@ -152,24 +156,16 @@ msgstr ""
 msgid "Schedule changes"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:75
+#: src/asmmobile/app_templates/index.ptm:83
 msgid "${major_span_start} in ${time_till_start} ${major_span_end} <!----> ${location_name}"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:89
+#: src/asmmobile/app_templates/index.ptm:97
 msgid "${party_name} has not started yet. See <!----> ${link_all_events}<!----> page for the whole program."
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:91
+#: src/asmmobile/app_templates/index.ptm:99
 msgid "This page will display a list of current and upcoming events during the party as well as possible scheduling changes."
-msgstr ""
-
-#: src/asmmobile/app_templates/index.ptm:96
-msgid "${party_name} has ended. Welcome again next year!"
-msgstr ""
-
-#: src/asmmobile/app_templates/layout.ptm:41
-msgid "View main site"
 msgstr ""
 
 #: src/asmmobile/event.py:241
@@ -178,14 +174,12 @@ msgstr ""
 
 #: src/asmmobile/event_templates/eventindex.ptm:14
 #: src/asmmobile/location_templates/locationindex.ptm:14
-#: src/asmmobile/app_templates/allevents.ptm:15
-msgid "QR code link"
+msgid "QR code links require a mobile phone with a QR code reader."
 msgstr ""
 
 #: src/asmmobile/event_templates/eventindex.ptm:14
 #: src/asmmobile/location_templates/locationindex.ptm:14
-#: src/asmmobile/app_templates/allevents.ptm:15
-msgid "QR code links require a mobile phone with a QR code reader."
+msgid "Link to this page"
 msgstr ""
 
 #: src/asmmobile/event_templates/eventindex.ptm:21
@@ -232,7 +226,6 @@ msgstr ""
 
 #: src/asmmobile/event_templates/eventindex.ptm:9
 #: src/asmmobile/location_templates/locationindex.ptm:9
-#: src/asmmobile/app_templates/allevents.ptm:10
 msgid "Nokia mobile phones and various desktop calendar software can import events from this file."
 msgstr ""
 
@@ -250,7 +243,6 @@ msgid "${location_name} (location)"
 msgstr ""
 
 #: src/asmmobile/location_templates/locationindex.ptm:9
-#: src/asmmobile/app_templates/allevents.ptm:10
 msgid "vCal (events)"
 msgstr ""
 
