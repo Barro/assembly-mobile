@@ -20,6 +20,13 @@ a:hover, .links a, p a {
   text-decoration: underline;
 }
 
+/* Add some extra height so that links that go on multiple lines are more
+   easily clickable. */
+
+.links {
+  line-height: 140%;
+}
+
 h1 {
   font-size: 100%;
   margin: 0;

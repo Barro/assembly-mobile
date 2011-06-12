@@ -57,6 +57,13 @@ a:hover {
   text-decoration: none;
 }
 
+/* Add some extra height so that links that go on multiple lines are more
+   easily clickable. */
+
+.links {
+  line-height: 140%;
+}
+
 /* Event layout */
 
 .event {
