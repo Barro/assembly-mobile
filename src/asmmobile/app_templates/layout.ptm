@@ -39,17 +39,17 @@
 <tal:block tal:replace="structure context/@@layout/pageAllEvents/@@viewlink" />
 <!---->&#8226;<!---->
 <a tal:attributes="href context/@@layout/mainSiteUrl"
-   i18n:translate="">View main site</a>
+   tal:content="context/@@layout/mainSiteUrl/@@domain">assembly.org</a>
 <!---->&#8226;<!---->
 <tal:block tal:replace="structure context/@@layout/pageAbout/@@viewlink" />
 
 <tal:block tal:replace="structure provider:skin" />
 
-<tal:block tal:condition="view/language">
+<tal:block tal:condition="python: view.language and len(view.availableLanguages) > 1">
   <!---->&#8226;<!---->
-  <a tal:condition="python: view.language != 'fi'"
+  <a tal:condition="python: view.language != 'fi' and 'fi' in view.availableLanguages"
      tal:attributes="href python:view.urlVR('@@l/fi')">FI</a>
-  <a tal:condition="python: view.language != 'en'"
+  <a tal:condition="python: view.language != 'en' and 'en' in view.availableLanguages"
      tal:attributes="href python:view.urlVR('@@l/en')">EN</a>
 </tal:block>
 </div>

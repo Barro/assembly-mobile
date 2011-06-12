@@ -56,6 +56,7 @@ class MobileView(grok.View):
     contentType = "application/xhtml+xml;charset=%s" % charset
 
     language = None
+    availableLanguages = []
 
     skin = None
 
@@ -63,6 +64,7 @@ class MobileView(grok.View):
         cls = MobileView
         cls.enableInternalization = config.enableInternalization
         cls.sendCachingHeaders = config.sendCachingHeaders
+        cls.availableLanguages = util.getAvailableLanguages()
 
     util.runDeferred(_initialize)
 
@@ -323,3 +325,13 @@ class QrCodeLink(grok.View):
 class NavigationManager(grok.ViewletManager):
     grok.name('navigation')
     grok.context(Interface)
+
+
+class Domain(grok.View):
+    grok.context(unicode)
+
+    def render(self):
+        components = urlparse.urlparse(self.context)
+        domain = components.netloc.split(":")[0]
+        secondary_level_domain = ".".join(domain.split(".")[-2:])
+        return secondary_level_domain
