@@ -22,6 +22,7 @@ import asmmobile.util as util
 import icalendar
 import dateutil.tz
 
+# We might need some other solution to this.
 def normalizeLocation(location):
     location = location.lower()
     location = location.replace("ä", "a")
