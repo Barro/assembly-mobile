@@ -35,6 +35,11 @@ h3 {
   font-size: 100%;
 }
 
+/* This is to get the event length in index page not to be bolded. */
+h3 span {
+  font-weight: normal;
+}
+
 h1, h2, h3 {
   padding: 0;
 }
