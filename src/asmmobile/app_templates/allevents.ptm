@@ -16,7 +16,7 @@
        tal:attributes="href qrData/@@qrcodeurl"
        title="QR code links require a mobile phone with a QR code reader."
        i18n:attributes="title"
-       i18n:translate="">QR code link</a>
+       i18n:translate="">Link to this page</a>
 </div>
 <p i18n:translate="">
   Party time: <span i18n:name="party_start" tal:replace="view/startTime/@@fulldate" /> -
