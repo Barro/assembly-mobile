@@ -54,4 +54,4 @@ cd "$ASMMOBILE_ROOT"
 
 # Compile this application:
 cd "$ASMMOBILE_ROOT"
-"$PYTHON_ROOT"/bin/buildout
+"$ASMMOBILE_ROOT"/bin/buildout
