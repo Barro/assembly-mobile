@@ -2,8 +2,10 @@
 
 Initialize standard test environment::
 
-    >>> from asmmobile.testutils import initializeApplicationTestEnv, assertXml
-    >>> root, app, browser = initializeApplicationTestEnv(getRootFolder())
+   >>> import grok, zope.app.wsgi.interfaces
+   >>> grok.notify(zope.app.wsgi.interfaces.WSGIPublisherApplicationCreated(None))
+   >>> from asmmobile.testutils import initializeApplicationTestEnv, assertXml
+   >>> root, app, browser = initializeApplicationTestEnv(getRootFolder())
 
 Open all pages and verify that no errors are emitted::
 

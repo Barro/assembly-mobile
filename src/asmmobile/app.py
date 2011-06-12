@@ -38,7 +38,7 @@ from zope.interface.common.interfaces import IException
 import zope.publisher.interfaces.http
 from zope.publisher.interfaces import INotFound
 from zope.security.interfaces import IUnauthorized
-from zope.i18n.interfaces import INegotiator, IUserPreferredLanguages
+from zope.i18n.interfaces import IUserPreferredLanguages
 from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.publisher.browser import BrowserLanguages
 
@@ -166,7 +166,6 @@ class AsmMobile(grok.Application, grok.Container):
     zope.interface.implements(interfaces.IAsmMobile, interfaces.IEventOwner)
 
     navigationName = _(u"Home")
-    defaultLanguage = None
 
     def _initialize(config):
         cls = AsmMobile

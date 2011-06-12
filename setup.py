@@ -26,7 +26,8 @@ setup(name='asmmobile',
                         # Add extra requirements here
                         'icalendar',
                         'zif.gzipper',
-                        'python-dateutil',
+                        # Dateutil version < 2 works with Python 2.x series.
+                        'python-dateutil==1.5',
                         'repoze.profile',
                         ],
       entry_points = """
