@@ -18,14 +18,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import datetime
-import string
-import re
-
 import grok
 
 from asmmobile import AsmMobileMessageFactory as _
 import asmmobile.util as util
 import asmmobile.interfaces as interfaces
+import asmmobile.components
 from asmmobile.components import MobileView
 from asmmobile.interfaces import ILocalizedContentContainer
 from asmmobile.util import getEventList
@@ -288,3 +286,10 @@ class NoneLink(grok.View):
 
     def render(self):
         return ""
+
+
+class LocationsStyle(grok.Viewlet):
+    grok.viewletmanager(asmmobile.components.StylesheetManager)
+    grok.context(LocalizedLocationContainer)
+    grok.view(Index)
+    grok.order(2)

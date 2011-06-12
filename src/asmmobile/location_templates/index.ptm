@@ -10,7 +10,7 @@
        i18n:attributes="title"
        i18n:translate="">Link to this page</a>
     </div>
-    <ul tal:attributes="class shorten:links" style="padding: 0em 1.3em">
+    <ul tal:attributes="class shorten:links locations">
       <li tal:repeat="location view/locations">
         <a tal:attributes="href location/@@url"
            tal:content="location/name">Location</a>
