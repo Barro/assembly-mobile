@@ -22,6 +22,13 @@ import asmmobile.util as util
 import icalendar
 import dateutil.tz
 
+def normalizeLocation(location):
+    location = location.lower()
+    location = location.replace("ä", "a")
+    location = location.replace("ö", "o")
+    location = location.replace("å", "a")
+    return util.convertNameToKey(location)
+
 def importer(filename, prefix='', locationMap={}, majorCategory=None, language='en'):
     calFp = open(filename, "r")
     cal = icalendar.Calendar.from_string(calFp.read())
@@ -49,7 +56,9 @@ def importer(filename, prefix='', locationMap={}, majorCategory=None, language='
         if location in locationMap:
             location = locationMap[location]
 
-        locations[language][location.lower()] = {'name': location}
+        location_normalized = normalizeLocation(location)
+
+        locations[language][location_normalized] = {'name': location}
 
         isMajor = majorCategory in categories
 
@@ -58,7 +67,7 @@ def importer(filename, prefix='', locationMap={}, majorCategory=None, language='
             'start': start,
             'end': end,
             'url': url,
-            'location': location.lower(),
+            'location': location_normalized,
             'categories': categories,
             'is-major': isMajor,
             'description': description,

@@ -79,7 +79,7 @@ KEY_CHARACTERS = (string.ascii_letters.decode('ascii')
 NORMALIZE_REGEX = re.compile(ur'([^%s]+)' % KEY_CHARACTERS)
 
 def convertNameToKey(name):
-    return NORMALIZE_REGEX.sub(ur'_', name.lower()).strip("_")
+    return NORMALIZE_REGEX.sub(ur'-', name.lower()).strip("-")
 
 class KeyNormalize(grok.View):
     grok.context(unicode)
