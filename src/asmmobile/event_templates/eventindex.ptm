@@ -4,33 +4,30 @@
     i18n:translate=""><tal:block i18n:name="event_name" tal:replace="context/name" /> (event)</metal:block>
 <div tal:attributes="class shorten:event" metal:fill-slot='content'>
 
-<h1 tal:content="view/displayName">Event name</h1>
-<div tal:attributes="class shorten:links">
-  <a tal:attributes="href python:view.urlR('%s.vcs' % context.__name__)"
-     title="Nokia mobile phones and various desktop calendar software can import events from this file."
-     i18n:attributes="title"
-     i18n:translate="">vCal (event)</a>
-    <!---->&#8226;<!---->
-    <a tal:define="qrData python:view.application_url('event') + '/' + context.id"
-       tal:attributes="href qrData/@@qrcodeurl"
-       title="QR code links require a mobile phone with a QR code reader."
-       i18n:attributes="title"
-       i18n:translate="">Link to this page</a>
+<h1><span tal:replace="view/displayName" />
   <tal:block tal:condition="context/url">
-    <!---->&#8226;<!---->
+    <!---->(
     <a tal:attributes="href context/url"
-       title="External event page may provide additional information about this event that is not optimized for mobile devices."
+       title="External location page may provide additional information about this location that is not optimized for mobile devices."
        i18n:attributes="title"
-       i18n:translate="">View on external page</a>
+       i18n:translate="">view on <span i18n:name="external_domain_event"
+                                       tal:replace="context/@@layout/mainSiteUrl/@@domain" /></a>
+    )
   </tal:block>
-</div>
+</h1>
 
 <tal:block tal:condition="context/description">
-  <h2 i18n:translate="">Description</h2>
   <p tal:content="structure context/description">description</p>
 </tal:block>
 
-<h2 i18n:translate="">Time</h2>
+<h2 i18n:translate="">Time
+  <tal:block i18n:name="and_location">
+    <tal:block tal:condition="context/location/name"
+               i18n:translate="">
+      and location
+    </tal:block>
+  </tal:block>
+</h2>
 <div i18n:translate="">
   <span i18n:name="start_day" tal:replace="context/start/@@dayname" />
   <span i18n:name="start_time" tal:replace="context/start/@@hourminute" />
@@ -64,14 +61,26 @@
     </tal:block>
   </tal:block>
 </div>
-
 <tal:block tal:condition="context/location/name">
-  <h2 i18n:translate="">Location</h2>
   <div>
     <a tal:attributes="href context/location/@@url"
        tal:content="context/location/name">Location</a>
   </div>
 </tal:block>
+
+<h2 i18n:translate="">This event in other formats</h2>
+<div tal:attributes="class shorten:links">
+  <a tal:attributes="href python:view.urlR('%s.vcs' % context.__name__)"
+     title="Most mobile phones and desktop calendar software can import events from this file."
+     i18n:attributes="title"
+     i18n:translate="">Import to your calendar</a>
+    <!---->&#8226;<!---->
+    <a tal:define="qrData python:view.application_url('event') + '/' + context.id"
+       tal:attributes="href qrData/@@qrcodeurl"
+       title="This link requires a mobile phone with a QR code reader."
+       i18n:attributes="title"
+       i18n:translate="">Link to this page</a>
+</div>
 
 </div>
 </metal:block >

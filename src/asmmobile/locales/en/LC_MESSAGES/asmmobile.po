@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Sun Jun 12 18:28:05 2011\n"
-"PO-Revision-Date: 2011-06-12 18:29+0300\n"
+"POT-Creation-Date: Mon Jun 13 16:19:35 2011\n"
+"PO-Revision-Date: 2011-06-13 16:20+0300\n"
 "Last-Translator: Jussi Judin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -99,6 +99,18 @@ msgstr ""
 #: src/asmmobile/app_templates/about.ptm:9
 msgid "Calendar data"
 msgstr "Calendar data"
+
+#: src/asmmobile/app_templates/allevents.ptm:11
+msgid "vCal (events)"
+msgstr "vCal (events)"
+
+#: src/asmmobile/app_templates/allevents.ptm:11
+msgid ""
+"Nokia mobile phones and various desktop calendar software can import events "
+"from this file."
+msgstr ""
+"Nokia mobile phones and various desktop calendar software can import events "
+"from this file."
 
 #: src/asmmobile/app_templates/allevents.ptm:25
 msgid "Party time: ${party_start} - ${party_end}. Length: ${party_length}."
@@ -213,92 +225,97 @@ msgstr ""
 msgid "%s (major event)"
 msgstr "%s (major event)"
 
-#: src/asmmobile/event_templates/eventindex.ptm:14
-#: src/asmmobile/location_templates/locationindex.ptm:14
-msgid "QR code links require a mobile phone with a QR code reader."
-msgstr "QR code links require a mobile phone with a QR code reader."
-
-#: src/asmmobile/event_templates/eventindex.ptm:14
-#: src/asmmobile/location_templates/locationindex.ptm:14
-msgid "Link to this page"
-msgstr "Link to this page"
-
-#: src/asmmobile/event_templates/eventindex.ptm:21
+#: src/asmmobile/event_templates/eventindex.ptm:10
+#: src/asmmobile/location_templates/locationindex.ptm:10
 msgid ""
-"External event page may provide additional information about this event that "
-"is not optimized for mobile devices."
+"External location page may provide additional information about this "
+"location that is not optimized for mobile devices."
 msgstr ""
-"External event page may provide additional information about this event that "
-"is not optimized for mobile devices."
+"External location page may provide additional information about this "
+"location that is not optimized for mobile devices."
 
-#: src/asmmobile/event_templates/eventindex.ptm:21
-#: src/asmmobile/location_templates/locationindex.ptm:21
-msgid "View on external page"
-msgstr "View on external page"
+#: src/asmmobile/event_templates/eventindex.ptm:13
+msgid "view on ${external_domain_event}"
+msgstr "view on ${external_domain_event}"
 
-#: src/asmmobile/event_templates/eventindex.ptm:29
-#: src/asmmobile/location_templates/locationindex.ptm:29
-msgid "Description"
-msgstr "Description"
+#: src/asmmobile/event_templates/eventindex.ptm:24
+msgid "Time ${and_location}"
+msgstr "Time ${and_location}"
 
-#: src/asmmobile/event_templates/eventindex.ptm:33
-msgid "Time"
-msgstr "Time"
+#: src/asmmobile/event_templates/eventindex.ptm:25
+msgid "and location"
+msgstr "and location"
 
 #: src/asmmobile/event_templates/eventindex.ptm:4
 msgid "${event_name} (event)"
 msgstr "${event_name} (event)"
 
-#: src/asmmobile/event_templates/eventindex.ptm:46
+#: src/asmmobile/event_templates/eventindex.ptm:43
 msgid "- ${end_day} ${end_time}"
 msgstr "- ${end_day} ${end_time}"
 
-#: src/asmmobile/event_templates/eventindex.ptm:54
+#: src/asmmobile/event_templates/eventindex.ptm:51
 msgid ""
 "${start_day} ${start_time} ${end_time} ${event_length} ${start_time_change}"
 msgstr ""
 "${start_day} ${start_time} ${end_time} ${event_length} ${start_time_change}"
 
-#: src/asmmobile/event_templates/eventindex.ptm:63
+#: src/asmmobile/event_templates/eventindex.ptm:60
 msgid "- original start time ${original_day} ${original_time}."
 msgstr "- original start time ${original_day} ${original_time}."
 
-#: src/asmmobile/event_templates/eventindex.ptm:69
-msgid "Location"
-msgstr "Location"
+#: src/asmmobile/event_templates/eventindex.ptm:71
+msgid "This event in other formats"
+msgstr "This event in other formats"
 
-#: src/asmmobile/event_templates/eventindex.ptm:9
-msgid "vCal (event)"
-msgstr "vCal (event)"
+#: src/asmmobile/event_templates/eventindex.ptm:73
+msgid "Import to your calendar"
+msgstr "Import to your calendar"
 
-#: src/asmmobile/event_templates/eventindex.ptm:9
-#: src/asmmobile/location_templates/locationindex.ptm:9
+#: src/asmmobile/event_templates/eventindex.ptm:73
+#: src/asmmobile/location_templates/locationindex.ptm:45
 msgid ""
-"Nokia mobile phones and various desktop calendar software can import events "
-"from this file."
+"Most mobile phones and desktop calendar software can import events from this "
+"file."
 msgstr ""
-"Nokia mobile phones and various desktop calendar software can import events "
-"from this file."
+"Most mobile phones and desktop calendar software can import events from this "
+"file."
 
-#: src/asmmobile/location.py:56 src/asmmobile/location_templates/index.ptm:2
+#: src/asmmobile/event_templates/eventindex.ptm:78
+#: src/asmmobile/location_templates/index.ptm:7
+#: src/asmmobile/location_templates/locationindex.ptm:50
+msgid "Link to this page"
+msgstr "Link to this page"
+
+#: src/asmmobile/event_templates/eventindex.ptm:78
+#: src/asmmobile/location_templates/locationindex.ptm:50
+msgid "This link requires a mobile phone with a QR code reader."
+msgstr "This link requires a mobile phone with a QR code reader."
+
+#: src/asmmobile/location.py:54 src/asmmobile/location_templates/index.ptm:2
+#: src/asmmobile/location_templates/index.ptm:5
 msgid "Locations"
 msgstr "Locations"
 
-#: src/asmmobile/location_templates/locationindex.ptm:21
-msgid ""
-"External location page may provide additional information about this "
-"location that is not optimized for mobile devices."
-msgstr ""
-"External location page may provide additional information about this "
-"location that is not optimized for mobile devices."
+#: src/asmmobile/location_templates/index.ptm:7
+msgid "QR code links require a mobile phone with a QR code reader."
+msgstr "QR code links require a mobile phone with a QR code reader."
+
+#: src/asmmobile/location_templates/locationindex.ptm:13
+msgid "view on ${external_domain_location}"
+msgstr "view on ${external_domain_location}"
 
 #: src/asmmobile/location_templates/locationindex.ptm:4
 msgid "${location_name} (location)"
 msgstr "${location_name} (location)"
 
-#: src/asmmobile/location_templates/locationindex.ptm:9
-msgid "vCal (events)"
-msgstr "vCal (events)"
+#: src/asmmobile/location_templates/locationindex.ptm:43
+msgid "This location in other formats"
+msgstr "This location in other formats"
+
+#: src/asmmobile/location_templates/locationindex.ptm:45
+msgid "Import events to your calendar"
+msgstr "Import events to your calendar"
 
 #: src/asmmobile/skin/bw/skin.py:34
 msgid "B/W"
@@ -329,3 +346,22 @@ msgstr "%H:%M"
 #: src/asmmobile/util.py:224
 msgid "EEEE yyyy-MM-dd HH:mm"
 msgstr "EEEE yyyy-MM-dd HH:mm"
+
+#~ msgid ""
+#~ "External event page may provide additional information about this event "
+#~ "that is not optimized for mobile devices."
+#~ msgstr ""
+#~ "External event page may provide additional information about this event "
+#~ "that is not optimized for mobile devices."
+
+#~ msgid "View on ${external_domain}"
+#~ msgstr "View on ${external_domain}"
+
+#~ msgid "Description"
+#~ msgstr "Description"
+
+#~ msgid "Time"
+#~ msgstr "Time"
+
+#~ msgid "vCal (event)"
+#~ msgstr "vCal (event)"
