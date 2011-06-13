@@ -11,7 +11,7 @@
        title="External location page may provide additional information about this location that is not optimized for mobile devices."
        i18n:attributes="title"
        i18n:translate="">view on <span i18n:name="external_domain_location"
-                                       tal:replace="context/@@layout/mainSiteUrl/@@domain" /></a>
+                                       tal:replace="context/url/@@domain" /></a>
     )
   </tal:block>
 </h1>
