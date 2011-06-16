@@ -347,3 +347,11 @@ class MainDomain(Domain):
     grok.context(unicode)
 
     startPart = -2
+
+
+class DescriptionEscape(grok.View):
+    grok.context(unicode)
+
+    def render(self):
+        result = re.sub("\n\n+", "</p><p>", self.context)
+        return result

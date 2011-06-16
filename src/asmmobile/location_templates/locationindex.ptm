@@ -16,7 +16,7 @@
 </h1>
 
 <tal:block tal:condition="context/description">
-  <p tal:content="structure context/description">description</p>
+  <p tal:content="structure context/description/@@descriptionescape">description</p>
 </tal:block>
 
 <tal:block tal:repeat="event view/events"
