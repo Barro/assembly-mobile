@@ -1,0 +1,8 @@
+.event .links a {
+  text-decoration: none;
+}
+
+.event .links a:hover {
+  text-decoration: underline;
+  color: #62a60a;
+}

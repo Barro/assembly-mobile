@@ -255,3 +255,10 @@ class Edit(grok.EditForm):
     form_fields['name'].custom_widget = util.LongTextWidget
     form_fields['shortName'].custom_widget = util.LongTextWidget
     form_fields['url'].custom_widget = util.LongTextWidget
+
+
+class EventStyle(grok.Viewlet):
+    grok.viewletmanager(asmmobile.components.StylesheetManager)
+    grok.context(interfaces.IEvent)
+    grok.view(EventIndex)
+    grok.order(2)
