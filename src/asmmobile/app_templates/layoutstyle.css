@@ -18,12 +18,12 @@ body {
   float: right;
 }
 
-a, .links a:hover, .links strong, p a:hover, .header {
+a, .links a:hover, .links strong, p a:hover, .header a:hover {
   text-decoration: none;
   color: #033442;
 }
 
-a:hover, .links a, p a, a.head-navigation {
+a:hover, .links a, p a, .header a {
   text-decoration: underline;
 }
 
@@ -59,12 +59,13 @@ h1, h2, h3 {
 }
 
 .header, .footer {
-  padding: 4px 0;
+  padding: 0 0 4px 0;
   border-bottom: 2px solid #b0cfd8;
   margin-bottom: 5px;
 }
 
 .footer {
+  padding: 4px 0;
   border-top: 2px solid #b0cfd8;
 }
 
