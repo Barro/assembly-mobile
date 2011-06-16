@@ -5,9 +5,6 @@ body {
   color: #333;
   font-family: sans-serif;
   margin: 1%;
-/* Opera mobile seems to be the only browser that has other font size
-   (smaller) than 12pt by default. */
-  font-size: 12pt;
 }
 
 #title, #title a, .links {
