@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Jun 13 16:19:35 2011\n"
+"POT-Creation-Date: Thu Jun 16 03:06:10 2011\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -24,40 +24,47 @@ msgstr ""
 "Generated-By: zope/app/locales/extract.py\n"
 
 #: src/asmmobile/app.py:168
-#: src/asmmobile/app.py:490
+#: src/asmmobile/app.py:491
 msgid "Home"
 msgstr ""
 
-#: src/asmmobile/app.py:491
-#: src/asmmobile/app.py:539
+#: src/asmmobile/app.py:487
+#: src/asmmobile/location.py:54
+#: src/asmmobile/location_templates/index.ptm:2
+#: src/asmmobile/location_templates/index.ptm:5
+msgid "Locations"
+msgstr ""
+
+#: src/asmmobile/app.py:492
+#: src/asmmobile/app.py:540
 #: src/asmmobile/event.py:70
 #: src/asmmobile/app_templates/allevents.ptm:3
 msgid "All events"
 msgstr ""
 
-#: src/asmmobile/app.py:492
+#: src/asmmobile/app.py:493
 #: src/asmmobile/app_templates/about.ptm:2
 #: src/asmmobile/app_templates/about.ptm:5
 msgid "About"
 msgstr ""
 
-#: src/asmmobile/app.py:557
+#: src/asmmobile/app.py:558
 msgid "%d day"
 msgstr ""
 
-#: src/asmmobile/app.py:559
+#: src/asmmobile/app.py:560
 msgid "%d days"
 msgstr ""
 
-#: src/asmmobile/app.py:565
+#: src/asmmobile/app.py:566
 msgid "%d hour"
 msgstr ""
 
-#: src/asmmobile/app.py:567
+#: src/asmmobile/app.py:568
 msgid "%d hours"
 msgstr ""
 
-#: src/asmmobile/app.py:590
+#: src/asmmobile/app.py:591
 msgid "QR code link to home page (%s)."
 msgstr ""
 
@@ -85,19 +92,11 @@ msgstr ""
 msgid "Calendar data"
 msgstr ""
 
-#: src/asmmobile/app_templates/allevents.ptm:11
-msgid "vCal (events)"
-msgstr ""
-
-#: src/asmmobile/app_templates/allevents.ptm:11
-msgid "Nokia mobile phones and various desktop calendar software can import events from this file."
-msgstr ""
-
-#: src/asmmobile/app_templates/allevents.ptm:25
+#: src/asmmobile/app_templates/allevents.ptm:12
 msgid "Party time: ${party_start} - ${party_end}. Length: ${party_length}."
 msgstr ""
 
-#: src/asmmobile/app_templates/allevents.ptm:66
+#: src/asmmobile/app_templates/allevents.ptm:53
 msgid "There are no events in this party!"
 msgstr ""
 
@@ -135,10 +134,6 @@ msgstr ""
 msgid "${start_time}<!----> ${event_name}"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:104
-msgid "${party_name} has ended. Welcome again next year!"
-msgstr ""
-
 #: src/asmmobile/app_templates/index.ptm:19
 msgid "Now"
 msgstr ""
@@ -156,7 +151,6 @@ msgid "No new scheduled events are starting in next two hours. See <!----> ${lin
 msgstr ""
 
 #: src/asmmobile/app_templates/index.ptm:58
-#: src/asmmobile/app_templates/index.ptm:97
 msgid "all events"
 msgstr ""
 
@@ -168,12 +162,8 @@ msgstr ""
 msgid "${major_span_start} in ${time_till_start} ${major_span_end} <!----> ${location_name}"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:97
-msgid "${party_name} has not started yet. See <!----> ${link_all_events}<!----> page for the whole program."
-msgstr ""
-
-#: src/asmmobile/app_templates/index.ptm:99
-msgid "This page will display a list of current and upcoming events during the party as well as possible scheduling changes."
+#: src/asmmobile/app_templates/index.ptm:96
+msgid "${party_name} has ended. Welcome again next year!"
 msgstr ""
 
 #: src/asmmobile/event.py:241
@@ -185,15 +175,11 @@ msgstr ""
 msgid "External location page may provide additional information about this location that is not optimized for mobile devices."
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:13
-msgid "view on ${external_domain_event}"
-msgstr ""
-
-#: src/asmmobile/event_templates/eventindex.ptm:24
+#: src/asmmobile/event_templates/eventindex.ptm:23
 msgid "Time ${and_location}"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:25
+#: src/asmmobile/event_templates/eventindex.ptm:24
 msgid "and location"
 msgstr ""
 
@@ -201,65 +187,53 @@ msgstr ""
 msgid "${event_name} (event)"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:43
+#: src/asmmobile/event_templates/eventindex.ptm:42
 msgid "- ${end_day} ${end_time}"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:51
+#: src/asmmobile/event_templates/eventindex.ptm:50
 msgid "${start_day} ${start_time} ${end_time} ${event_length} ${start_time_change}"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:60
+#: src/asmmobile/event_templates/eventindex.ptm:59
 msgid "- original start time ${original_day} ${original_time}."
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:71
-msgid "This event in other formats"
+#: src/asmmobile/event_templates/eventindex.ptm:70
+#: src/asmmobile/location_templates/index.ptm:12
+#: src/asmmobile/location_templates/locationindex.ptm:42
+msgid "Utilities"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:73
+#: src/asmmobile/event_templates/eventindex.ptm:72
 msgid "Import to your calendar"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:73
-#: src/asmmobile/location_templates/locationindex.ptm:45
+#: src/asmmobile/event_templates/eventindex.ptm:72
+#: src/asmmobile/location_templates/locationindex.ptm:44
 msgid "Most mobile phones and desktop calendar software can import events from this file."
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:78
-#: src/asmmobile/location_templates/index.ptm:7
-#: src/asmmobile/location_templates/locationindex.ptm:50
+#: src/asmmobile/event_templates/eventindex.ptm:77
+#: src/asmmobile/location_templates/index.ptm:14
+#: src/asmmobile/location_templates/locationindex.ptm:49
 msgid "Link to this page"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:78
-#: src/asmmobile/location_templates/locationindex.ptm:50
+#: src/asmmobile/event_templates/eventindex.ptm:77
+#: src/asmmobile/location_templates/locationindex.ptm:49
 msgid "This link requires a mobile phone with a QR code reader."
 msgstr ""
 
-#: src/asmmobile/location.py:54
-#: src/asmmobile/location_templates/index.ptm:2
-#: src/asmmobile/location_templates/index.ptm:5
-msgid "Locations"
-msgstr ""
-
-#: src/asmmobile/location_templates/index.ptm:7
+#: src/asmmobile/location_templates/index.ptm:14
 msgid "QR code links require a mobile phone with a QR code reader."
-msgstr ""
-
-#: src/asmmobile/location_templates/locationindex.ptm:13
-msgid "view on ${external_domain_location}"
 msgstr ""
 
 #: src/asmmobile/location_templates/locationindex.ptm:4
 msgid "${location_name} (location)"
 msgstr ""
 
-#: src/asmmobile/location_templates/locationindex.ptm:43
-msgid "This location in other formats"
-msgstr ""
-
-#: src/asmmobile/location_templates/locationindex.ptm:45
+#: src/asmmobile/location_templates/locationindex.ptm:44
 msgid "Import events to your calendar"
 msgstr ""
 
