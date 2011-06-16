@@ -484,12 +484,13 @@ class Layout(MobileView):
         cls.sourceUrl = config.sourceUrl
         cls.siteName = config.siteName
         cls.mainSiteUrl = config.mainSiteUrl
+        cls.pageLocations = (_(u"Locations"), AsmMobile.locations, None)
 
     util.runDeferred(_initialize)
 
-    pageOverview = (_(u"Home"), '')
-    pageAllEvents = (_(u"All events"), 'all#now')
-    pageAbout = (_(u"About"), 'about')
+    pageOverview = (_(u"Home"), '', None)
+    pageAllEvents = (_(u"All events"), 'all#now', 'head-navigation')
+    pageAbout = (_(u"About"), 'about', None)
 
 
 class LayoutStyle(grok.Viewlet):

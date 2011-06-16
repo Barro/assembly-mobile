@@ -91,14 +91,6 @@ No new scheduled events are starting in next two hours. See <!----> <a i18n:name
 
 </tal:block>
 
-<tal:block metal:define-macro="party-has-not-started"
-           tal:condition="not:view/partyHasStarted">
-<p i18n:translate="">
-  <span i18n:name="party_name" tal:replace="context/partyName" /> has not started yet. See <!----> <a i18n:name="link_all_events" tal:attributes="href python:view.urlR('all')" i18n:translate="">all events</a><!----> page for the whole program.
-</p>
-<p i18n:translate="">This page will display a list of current and upcoming events during the party as well as possible scheduling changes.
-</p>
-</tal:block>
 <p metal:define-macro="party-has-ended" tal:condition="view/partyHasEnded"
    i18n:translate="">
 <span i18n:name="party_name" tal:replace="context/partyName" /> has ended. Welcome again next year!

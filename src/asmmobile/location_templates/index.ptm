@@ -3,6 +3,13 @@
                i18n:translate="">Locations</metal:block>
   <div metal:fill-slot='content'>
     <h1 i18n:translate="">Locations</h1>
+    <ul tal:attributes="class shorten:links locations">
+      <li tal:repeat="location view/locations">
+        <a tal:attributes="href location/@@url"
+           tal:content="location/name">Location</a>
+      </li>
+    </ul>
+    <h2 i18n:translate="">Utilities</h2>
     <div tal:attributes="class shorten:links">
     <a tal:define="qrData python:view.application_url('location')"
        tal:attributes="href qrData/@@qrcodeurl"
@@ -10,11 +17,5 @@
        i18n:attributes="title"
        i18n:translate="">Link to this page</a>
     </div>
-    <ul tal:attributes="class shorten:links locations">
-      <li tal:repeat="location view/locations">
-        <a tal:attributes="href location/@@url"
-           tal:content="location/name">Location</a>
-      </li>
-    </ul>
   </div>
 </metal:block >

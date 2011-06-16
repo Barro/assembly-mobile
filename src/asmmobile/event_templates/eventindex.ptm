@@ -10,8 +10,7 @@
     <a tal:attributes="href context/url"
        title="External location page may provide additional information about this location that is not optimized for mobile devices."
        i18n:attributes="title"
-       i18n:translate="">view on <span i18n:name="external_domain_event"
-                                       tal:replace="context/url/@@domain" /></a>
+       tal:content="context/url/@@domain">www.assembly.org</a>
     )
   </tal:block>
 </h1>
@@ -68,7 +67,7 @@
   </div>
 </tal:block>
 
-<h2 i18n:translate="">This event in other formats</h2>
+<h2 i18n:translate="">Utilities</h2>
 <div tal:attributes="class shorten:links">
   <a tal:attributes="href python:view.urlR('%s.vcs' % context.__name__)"
      title="Most mobile phones and desktop calendar software can import events from this file."

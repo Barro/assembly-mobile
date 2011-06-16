@@ -286,16 +286,21 @@ class ViewLink(grok.View):
     grok.name("viewlink")
 
     def render(self):
-        pageName, pageLocation = self.context
+        pageName, pageLocation, cssStyles = self.context
         nohashPart = pageLocation.split("#", 1)[0]
         cleanedViewUrl = self.request.getURL().replace("@@index", "")
+        styles = ''
+        if cssStyles is not None:
+            shortener = zope.component.getUtility(interfaces.INameShortener)
+            styles = " class='%s'" % " ".join(map(shortener.shorten, cssStyles.split(" ")))
+
         if self.application_url(nohashPart) == cleanedViewUrl:
-            return "<strong>%s</strong>" % translate(
-                pageName, context=self.request)
+            return "<strong%s>%s</strong>" % (styles, translate(
+                pageName, context=self.request))
 
         locationUrl = util.applicationRelativeUrl(self, pageLocation)
-        return '<a href="%s">%s</a>' % (
-            locationUrl, translate(pageName, context=self.request))
+        return '<a href="%s"%s>%s</a>' % (
+            locationUrl, styles, translate(pageName, context=self.request))
 
 
 class QrCodeLink(grok.View):
@@ -330,8 +335,15 @@ class NavigationManager(grok.ViewletManager):
 class Domain(grok.View):
     grok.context(unicode)
 
+    startPart = 0
+
     def render(self):
         components = urlparse.urlparse(self.context)
         domain = components.netloc.split(":")[0]
-        secondary_level_domain = ".".join(domain.split(".")[-2:])
+        secondary_level_domain = ".".join(domain.split(".")[self.startPart:])
         return secondary_level_domain
+
+class MainDomain(Domain):
+    grok.context(unicode)
+
+    startPart = -2

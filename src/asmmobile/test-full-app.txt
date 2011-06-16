@@ -140,15 +140,6 @@ Check that description is visible::
    >>> "SECOND_DESCRIPTION" in browser.contents
    True
 
-Check that location is not visible when there is none::
-
-   >>> browser.open('http://localhost/app/event/none_fourth')
-   >>> assertXml(browser)
-   >>> "Location" in browser.contents
-   False
-   >>> "location" in browser.contents
-   False
-
 Check that locations and events include edit view and need password::
 
    >>> browser.open('http://localhost/app/location/cave/edit') # doctest: +ELLIPSIS

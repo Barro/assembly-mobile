@@ -5,10 +5,17 @@ body {
   color: #333;
   font-family: sans-serif;
   margin: 1%;
+/* Opera mobile seems to be the only browser that has other font size
+   (smaller) than 12pt by default. */
+  font-size: 12pt;
 }
 
 #title, #title a, .links {
   color: #659cab;
+}
+
+.head-navigation {
+  float: right;
 }
 
 a, .links a:hover, .links strong, p a:hover, .header {
@@ -16,7 +23,7 @@ a, .links a:hover, .links strong, p a:hover, .header {
   color: #033442;
 }
 
-a:hover, .links a, p a {
+a:hover, .links a, p a, a.head-navigation {
   text-decoration: underline;
 }
 
@@ -59,9 +66,6 @@ h1, h2, h3 {
 
 .footer {
   border-top: 2px solid #b0cfd8;
-  /* Some smartphones show controls in bottom of the screens. */
-  /* This prevents front page navigation to be obscured by them. */
-  margin-bottom: 6em;
 }
 
 p, .footer {

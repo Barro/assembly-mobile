@@ -6,19 +6,6 @@
 <tal:block tal:condition="view/events">
 
 <h1 tal:content="context/partyName">Assembly</h1>
-<div tal:attributes="class shorten:links"
-     tal:define="normPartyName string:${context/partyName/@@keynormalize}">
-  <a tal:attributes="href python:view.application_urlR(normPartyName) + '.vcs'"
-     title="Nokia mobile phones and various desktop calendar software can import events from this file."
-     i18n:attributes="title"
-     i18n:translate="">vCal (events)</a>
-    <!---->&#8226;<!---->
-    <a tal:define="qrData python:view.application_url('all')"
-       tal:attributes="href qrData/@@qrcodeurl"
-       i18n:attributes="title"
-       title="QR code links require a mobile phone with a QR code reader."
-       i18n:translate="">Link to this page</a>
-</div>
 <p i18n:translate="">
   Party time: <span i18n:name="party_start" tal:replace="view/startTime/@@fulldate" /> -
   <span i18n:name="party_end" tal:replace="view/endTime/@@fulldate" />. Length:
@@ -66,5 +53,22 @@
 <p tal:condition="not: view/events" i18n:translate="">
   There are no events in this party!
 </p>
+
+<h2 i18n:translate="">Utilities</h2>
+<div tal:attributes="class shorten:links"
+     tal:define="normPartyName string:${context/partyName/@@keynormalize}">
+
+  <a tal:attributes="href python:view.application_urlR(normPartyName) + '.vcs'"
+     title="Most mobile phones and desktop calendar software can import events from this file."
+     i18n:attributes="title"
+     i18n:translate="">Import events to your calendar</a>
+    <!---->&#8226;<!---->
+    <a tal:define="qrData python:view.application_url('all')"
+       tal:attributes="href qrData/@@qrcodeurl"
+       i18n:attributes="title"
+       title="This link requires a mobile phone with a QR code reader."
+       i18n:translate="">Link to this page</a>
+</div>
+
 </div>
 </metal:block>
