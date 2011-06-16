@@ -63,6 +63,8 @@ def new_send_header(self, key, value):
         return
     return old_send_header(self, key, value)
 paste.httpserver.WSGIHandler.send_header = new_send_header
+# Make sure that headers and content are not sent in separate packets.
+paste.httpserver.WSGIHandler.wbufsize = -1
 
 
 class CatalogBasedI18nUserPreferredLanguages(grok.Adapter):
