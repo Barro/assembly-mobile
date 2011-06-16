@@ -5,6 +5,13 @@ body {
   color: #000;
   font-family: sans-serif;
   margin: 1%;
+/* Opera mobile seems to be the only browser that has other font size
+   (smaller) than 12pt by default. */
+  font-size: 12pt;
+}
+
+.head-navigation {
+  float: right;
 }
 
 h1 {
