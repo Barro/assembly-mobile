@@ -169,6 +169,8 @@ class AsmMobile(grok.Application, grok.Container):
 
     navigationName = _(u"Home")
 
+    importConfig = u""
+
     def _initialize(config):
         cls = AsmMobile
         cls.partyName = config.partyName
@@ -606,36 +608,34 @@ class ErrorLayout(MobileView):
 
     util.runDeferred(_initialize)
 
+import zope.errorview.browser
 
-# class Error401Unauthorized(MobileView, SystemErrorView):
-#      grok.context(IUnauthorized)
-#      grok.name('index.html')
+class Error401Unauthorized(MobileView, zope.errorview.browser.UnauthorizedView):
+    grok.context(IUnauthorized)
+    grok.name('index.html')
 
-#      def update(self):
-#          self.siteUrl = self.url(grok.getSite())
-#          self.response.setStatus(401)
-#          self.response.setHeader("WWW-Authenticate", 'basic realm="Zope"')
+    def update(self):
+        self.siteUrl = self.url(grok.getSite())
+        zope.errorview.browser.UnauthorizedView.update(self)
 
+class Error404NotFound(MobileView):
+     grok.context(INotFound)
+     grok.name('index.html')
 
-# class Error404NotFound(MobileView, SystemErrorView):
-#      grok.context(INotFound)
-#      grok.name('index.html')
-
-#      def update(self):
-#          self.siteUrl = self.url(grok.getSite())
-#          self.response.setStatus(404)
+     def update(self):
+         self.siteUrl = self.url(grok.getSite())
+         self.response.setStatus(404)
 
 
-# import zope.errorview.http
-# class Error500InternalServerError(MobileView, zope.errorview.http.ExceptionViewBase):
-#      grok.context(IException)
-#      grok.name('index.html')
+class Error500InternalServerError(MobileView):
+     grok.context(IException)
+     grok.name('index.html')
 
-#      def update(self):
-#          print self.context
-#          #import pdb; pdb.set_trace()
-#          self.siteUrl = self.url(grok.getSite())
-#          self.response.setStatus(500)
+     def update(self):
+         print self.context
+         #import pdb; pdb.set_trace()
+         self.siteUrl = self.url(grok.getSite())
+         self.response.setStatus(500)
 
 
 class SetLanguage(MobileView):
@@ -665,3 +665,10 @@ class SetLanguage(MobileView):
 
     def render(self):
         return ''
+
+class Edit(grok.EditForm):
+    grok.require("asmmobile.Edit")
+
+    grok.context(interfaces.IAsmMobile)
+    form_fields = grok.AutoFields(interfaces.IAsmMobile)
+

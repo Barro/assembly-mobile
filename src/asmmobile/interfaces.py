@@ -26,6 +26,8 @@ class INavigationObject(zope.interface.Interface):
 class IAsmMobile(INavigationObject):
     """Marker interface for the application object."""
 
+    importConfig = schema.Text(title=u"Import configuration", required=True)
+
     def updateLocations(locations):
         pass
 
