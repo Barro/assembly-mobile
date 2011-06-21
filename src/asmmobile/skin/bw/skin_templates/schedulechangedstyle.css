@@ -1,7 +1,6 @@
 <tal:block tal:condition="viewlet/displayStyle">
 
 .alert {
-  float: right;
   background: #fff;
   padding: 8px 10px;
   border: 1px solid #000;
