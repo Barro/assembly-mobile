@@ -245,7 +245,7 @@ class CssTemplate(grokcore.view.components.PageTemplate):
         return self.cleaner(super(CssTemplate, self).render(view))
 
 
-from zope.app.publisher.browser import getDefaultViewName
+from zope.publisher.defaultview import getDefaultViewName
 
 class ContentTraverser(grok.Traverser):
     grok.context(interfaces.ILocalizedContentContainer)

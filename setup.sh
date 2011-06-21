@@ -19,10 +19,11 @@ if test ! -f base.cfg; then
     fi
 fi
 
-PYTHON_VERSION="2.5.6"
+PYTHON_VERSION="2.6.7"
 SETUPTOOLS_VERSION="0.6c11"
 
 ASMMOBILE_ROOT="`pwd`"
+mkdir extends-cache
 PACKAGES_ROOT="$ASMMOBILE_ROOT"/packages
 PYTHON_ROOT="$ASMMOBILE_ROOT"/python
 
@@ -35,7 +36,7 @@ cd "$PACKAGES_ROOT"
 curl -s "$PYTHON_PACKAGE" | tar xvj
 cd Python-"${PYTHON_VERSION}"/
 ./configure --prefix="$PYTHON_ROOT"
-make
+make -j 2
 make install
 
 # Install setuptools that provides easy_install

@@ -41,6 +41,8 @@ Add some locations::
 
 Check that locations got added correctly::
 
+   >>> browser.open('http://localhost/app/')
+
    >>> browser.open('http://localhost/app/location/cave')
    >>> assertXml(browser)
    >>> "CAVE" in browser.contents

@@ -30,7 +30,7 @@ import grokcore.component
 import grokcore.view.components
 import grokcore.view.interfaces
 
-from zope.app.exception.systemerror import SystemErrorView
+from zope.browser.interfaces import ISystemErrorView
 import zope.app.wsgi.interfaces
 from zope.i18n import translate
 import zope.interface
@@ -607,34 +607,35 @@ class ErrorLayout(MobileView):
     util.runDeferred(_initialize)
 
 
-class Error401Unauthorized(MobileView, SystemErrorView):
-     grok.context(IUnauthorized)
-     grok.name('index.html')
+# class Error401Unauthorized(MobileView, SystemErrorView):
+#      grok.context(IUnauthorized)
+#      grok.name('index.html')
 
-     def update(self):
-         self.siteUrl = self.url(grok.getSite())
-         self.response.setStatus(401)
-         self.response.setHeader("WWW-Authenticate", 'basic realm="Zope"')
-
-
-class Error404NotFound(MobileView, SystemErrorView):
-     grok.context(INotFound)
-     grok.name('index.html')
-
-     def update(self):
-         self.siteUrl = self.url(grok.getSite())
-         self.response.setStatus(404)
+#      def update(self):
+#          self.siteUrl = self.url(grok.getSite())
+#          self.response.setStatus(401)
+#          self.response.setHeader("WWW-Authenticate", 'basic realm="Zope"')
 
 
-class Error500InternalServerError(MobileView, SystemErrorView):
-     grok.context(IException)
-     grok.name('index.html')
+# class Error404NotFound(MobileView, SystemErrorView):
+#      grok.context(INotFound)
+#      grok.name('index.html')
 
-     def update(self):
-         print self.context
-         #import pdb; pdb.set_trace()
-         self.siteUrl = self.url(grok.getSite())
-         self.response.setStatus(500)
+#      def update(self):
+#          self.siteUrl = self.url(grok.getSite())
+#          self.response.setStatus(404)
+
+
+# import zope.errorview.http
+# class Error500InternalServerError(MobileView, zope.errorview.http.ExceptionViewBase):
+#      grok.context(IException)
+#      grok.name('index.html')
+
+#      def update(self):
+#          print self.context
+#          #import pdb; pdb.set_trace()
+#          self.siteUrl = self.url(grok.getSite())
+#          self.response.setStatus(500)
 
 
 class SetLanguage(MobileView):

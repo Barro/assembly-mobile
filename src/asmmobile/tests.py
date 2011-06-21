@@ -17,15 +17,24 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os.path
-import z3c.testsetup
+import unittest
+import doctest
 import asmmobile
-from zope.app.testing.functional import ZCMLLayer
 
+from zope.fanstatic.testing import ZopeFanstaticBrowserLayer
 
-ftesting_zcml = os.path.join(
-    os.path.dirname(asmmobile.__file__), 'ftesting.zcml')
-FunctionalLayer = ZCMLLayer(ftesting_zcml, __name__, 'FunctionalLayer',
-                            allow_teardown=True)
+browser_layer = ZopeFanstaticBrowserLayer(asmmobile)
 
-test_suite = z3c.testsetup.register_all_tests('asmmobile')
+def test_suite():
+    suite = unittest.TestSuite()
+
+    app_test = doctest.DocFileSuite('test-full-app.txt', # Add more doctest files here.
+        optionflags = (
+            doctest.ELLIPSIS +
+            doctest.NORMALIZE_WHITESPACE +
+            doctest.REPORT_NDIFF),
+        globs={'getRootFolder': browser_layer.getRootFolder})
+    app_test.layer = browser_layer
+
+    suite.addTest(app_test)
+    return suite

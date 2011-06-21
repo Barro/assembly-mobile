@@ -26,7 +26,7 @@ import time
 import urlparse
 
 import grok
-from zope.app.form.browser.textwidgets import TextWidget
+from zope.formlib.textwidgets import TextWidget
 from zope.component import queryUtility
 from zope.i18n import translate
 from zope.i18n.interfaces import ITranslationDomain

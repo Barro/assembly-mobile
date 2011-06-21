@@ -8,7 +8,7 @@ setup(name='asmmobile',
       long_description="""\
 """,
       # Get strings from http://www.python.org/pypi?%3Aaction=list_classifiers
-      classifiers=[], 
+      classifiers=[],
       keywords="",
       author="",
       author_email="",
@@ -21,21 +21,19 @@ setup(name='asmmobile',
       install_requires=['setuptools',
                         'grok',
                         'grokui.admin',
-                        'z3c.testsetup',
+                        'fanstatic',
+                        'zope.fanstatic',
                         'grokcore.startup',
                         # Add extra requirements here
+                        'z3c.testsetup',
                         'icalendar',
                         'zif.gzipper',
                         # Dateutil version < 2 works with Python 2.x series.
                         'python-dateutil==1.5',
                         'repoze.profile',
                         ],
-      entry_points = """
-      [console_scripts]
-      asmmobile-debug = grokcore.startup:interactive_debug_prompt
-      asmmobile-ctl = grokcore.startup:zdaemon_controller
-      [paste.app_factory]
-      main = grokcore.startup:application_factory
-      debug = grokcore.startup:debug_application_factory
-      """,
-      )
+      entry_points={
+          'fanstatic.libraries': [
+              'asdf = asmmobile.resource:library',
+          ]
+      })

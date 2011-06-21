@@ -19,7 +19,7 @@
 
 import re
 import transaction
-import zope.app.component.hooks
+import zope.site.hooks
 import zope.component
 
 def touchDict(obj, name):
@@ -109,7 +109,7 @@ def updateSchedule(app, config):
             addShortName(event)
             escapeDescription(event)
 
-    zope.app.component.hooks.setSite(app)
+    zope.site.hooks.setSite(app)
     app.updateLocations(locations)
     app.updateEvents(events)
     transaction.commit()

@@ -7,6 +7,7 @@
   <includeDependencies package="." />
 
   <grok:grok package="." />
+  <include package="zope.i18n"/>
   <i18n:registerTranslations directory="locales" />
 
   <!-- shortener: tales expression -->

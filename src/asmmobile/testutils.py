@@ -19,10 +19,11 @@
 
 import cgi
 import icalendar
-import unittest
 import xml.etree.ElementTree as etree
 
-from zope.testbrowser.testing import Browser
+#from zope.testbrowser.testing import Browser
+class Browser(object):
+    pass
 
 from asmmobile.app import AsmMobile
 import asmmobile.util as util
