@@ -34,6 +34,6 @@ setup(name='asmmobile',
                         ],
       entry_points={
           'fanstatic.libraries': [
-              'asdf = asmmobile.resource:library',
+              'asmmobile = asmmobile.resource:library',
           ]
       })

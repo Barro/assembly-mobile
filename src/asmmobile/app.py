@@ -30,8 +30,8 @@ import grokcore.component
 import grokcore.view.components
 import grokcore.view.interfaces
 
-from zope.browser.interfaces import ISystemErrorView
 import zope.app.wsgi.interfaces
+import zope.component
 from zope.i18n import translate
 import zope.interface
 from zope.interface.common.interfaces import IException
@@ -527,8 +527,13 @@ class Favicon(MobileView):
 
     util.runDeferred(_initialize)
 
+    def update(self):
+        # XXX a horrible hack to go around Grok 1.3 static resource behaviour
+        # changes.
+        self.redirect(self.static.get("favicon.ico")())
+
     def render(self):
-        return self.static.get("favicon.ico").GET()
+        return ''
 
 
 class ScheduledEvent(grok.View):
