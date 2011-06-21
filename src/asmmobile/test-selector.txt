@@ -3,22 +3,33 @@
 Create some test classes so that we don't need to import real
 locations and events::
 
+   >>> class IntTime(object):
+   ...     def __init__(self, now):
+   ...         self._now = now
+   ...     def utctimetuple(self):
+   ...         return self._now
+   ...     def __add__(self, other):
+   ...         return IntTime(self._now + other._now)
+
    >>> class DummyLocation(object):
    ...     def __init__(self, name, hideUntil):
    ...         self.name = name
-   ...         self.hideUntil = hideUntil
+   ...         self.hideUntil = IntTime(hideUntil)
    ...     def __str__(self):
    ...         return "@ %s" % self.name
 
    >>> class DummyEvent(object):
    ...     def __init__(self, start, end, location, startOriginal):
-   ...         self.start = start
-   ...         self.end = end
+   ...         self.start = IntTime(start)
+   ...         self.utcStart = start
+   ...         self.end = IntTime(end)
+   ...         self.utcEnd = end
    ...         self.majorLocation = location
-   ...         self.startOriginal = startOriginal
+   ...         self.startOriginal = IntTime(startOriginal)
+   ...         self.utcStartOriginal = startOriginal
    ...     def __repr__(self):
    ...         return "<%d-%d %s>" % (
-   ...             self.start, self.end, self.majorLocation)
+   ...             self.start._now, self.end._now, self.majorLocation)
 
 Create test objects where we have some meaningful locations and amount
 of events::
@@ -36,7 +47,7 @@ of events::
 Helper function to shorten event selection::
 
    >>> def select(selector, now, events):
-   ...     selector.now = now
+   ...     selector.setNow(IntTime(now))
    ...     return filter(selector, events)
 
    >>> import asmmobile.selector as selector
@@ -75,10 +86,8 @@ hiding time::
 
 Select events from future that are starting in certain time from now::
 
-   >>> selectFuture = selector.FutureEvents()
-   >>> selectFuture.now = 2
-   >>> selectNotHidden = selector.NotHiddenEvents()
-   >>> selectNotHidden.now = 2
+   >>> selectFuture = selector.FutureEvents().setNow(IntTime(2))
+   >>> selectNotHidden = selector.NotHiddenEvents().setNow(IntTime(2))
    >>> select(selector.AndSelector([selectFuture, selectNotHidden]), 2, events)
    [<4-5 @ cave>]
 

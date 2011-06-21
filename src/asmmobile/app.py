@@ -388,7 +388,6 @@ class Index(MobileView):
 
 
     def _getCurrentNextEvents(self, now):
-        # XXX What is the difference between setNow() and reset()?
         notEndedEvents = self.context.getEvents(self.request,
             selector.NotEndedEvents().setNow(now))
 

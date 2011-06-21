@@ -29,6 +29,7 @@ from asmmobile.components import MobileView
 import asmmobile.util as util
 import asmmobile.location
 
+
 def _sortByStartTime(first, second):
     startCmp = cmp(first.start, second.start)
     if startCmp == 0:
@@ -39,10 +40,22 @@ def _sortByStartTime(first, second):
         return startCmp
 
 
+def getNoneUtcTime(timeObject):
+    if timeObject is None:
+        return None
+    return timeObject.utctimetuple()
+
+
 @grok.subscribe(interfaces.IEvent, grok.IObjectModifiedEvent)
 def notify_eventModified(event, modifiedEvent):
     now = util.clock()
     event.lastModified = now
+
+    event.utcStart = getNoneUtcTime(event.start)
+    event.utcStartOriginal = getNoneUtcTime(event.startOriginal)
+    event.utcEnd = getNoneUtcTime(event.end)
+    event.utcLastModified = getNoneUtcTime(event.lastModified)
+
     container = event.__parent__
     container.lastModified = now
 
@@ -55,8 +68,11 @@ class NoneEvent(grok.Model):
     shortName = u''
     # start > end so that this screws something up.
     start = datetime.datetime(datetime.MAXYEAR,12,30,tzinfo=dateutil.tz.tzlocal())
+    utcStart = start.utctimetuple()
     startOriginal = start
+    utcStartOriginal = startOriginal.utctimetuple()
     end = datetime.datetime(datetime.MINYEAR,1,1,tzinfo=dateutil.tz.tzlocal())
+    utcEnd = end.utctimetuple()
     location = None
     url = None
     description = None
@@ -101,7 +117,6 @@ class EventContainer(grok.OrderedContainer):
         for key in removeKeys:
             del self[key]
 
-        addKeys = newKeys.difference(currentKeys)
         localTz = dateutil.tz.tzlocal()
         for key, eventData in values.items():
             eventData['start'] = eventData['start'].astimezone(localTz)
@@ -177,11 +192,14 @@ class Event(grok.Model):
         self.id = id
         self.name = name
         self.start = start
+        self.utcStart = getNoneUtcTime(self.start)
         if startOriginal is None:
             self.startOriginal = start
         else:
             self.startOriginal = startOriginal
+        self.utcStartOriginal = getNoneUtcTime(self.startOriginal)
         self.end = end
+        self.utcEnd = getNoneUtcTime(self.end)
         self._location = location
         self.url = url
         self.description = description
@@ -192,6 +210,7 @@ class Event(grok.Model):
         else:
             self.shortName = shortName
         self.lastModified = lastModified
+        self.utcLastModified = getNoneUtcTime(self.lastModified)
 
     def getLocation(self):
         if self._location is None:

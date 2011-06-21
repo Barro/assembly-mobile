@@ -17,17 +17,19 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import grok
-
 class EventSelector(object):
-    now = None
+    _now = None
+    utcNow = None
 
     def reset(self, now):
-        self.now = now
-        return self
+        return self.setNow(now)
 
     def setNow(self, now):
-        self.now = now
+        self._now = now
+        if now is not None:
+            self.utcNow = now.utctimetuple()
+        else:
+            self.utcNow = None
         return self
 
 
@@ -44,12 +46,12 @@ class AndSelector(EventSelector):
 
 class CurrentEvents(EventSelector):
     def __call__(self, event):
-        return event.start <= self.now and self.now < event.end
+        return event.utcStart <= self.utcNow and self.utcNow < event.utcEnd
 
 
 class FutureEvents(EventSelector):
     def __call__(self, event):
-        return self.now < event.start
+        return self.utcNow < event.utcStart
 
 
 class LocationEvents(EventSelector):
@@ -65,8 +67,9 @@ class LocationEvents(EventSelector):
 
     def __call__(self, event):
         location = event.majorLocation
+        # XXX WTF?
         if location in self.locationizedEvents:
-            if event.start == self.locationizedEvents[location]:
+            if event == self.locationizedEvents[location]:
                 return True
             else:
                 return False
@@ -80,7 +83,7 @@ class NotEndedEvents(EventSelector):
         return NotEndedEvents()
 
     def __call__(self, event):
-        return self.now < event.end
+        return self.utcNow < event.utcEnd
 
 
 class NotHiddenEvents(EventSelector):
@@ -88,7 +91,8 @@ class NotHiddenEvents(EventSelector):
         return NotHiddenEvents()
 
     def __call__(self, event):
-        if self.now + event.majorLocation.hideUntil < event.start:
+        utcHide = (self._now + event.majorLocation.hideUntil).utctimetuple()
+        if utcHide < event.utcStart:
             return False
         return True
 
@@ -99,7 +103,8 @@ class NotHiddenOriginalEvents(EventSelector):
 
     def __call__(self, event):
         if event.startOriginal is not None:
-            if self.now + event.majorLocation.hideUntil < event.startOriginal:
+            utcHide = (self._now + event.majorLocation.hideUntil).utctimetuple()
+            if utcHide < event.utcStartOriginal:
                 return False
             return True
         else:
@@ -111,7 +116,7 @@ class StartTimeChangedEvents(EventSelector):
         return NotHiddenOriginalEvents()
 
     def __call__(self, event):
-        return event.start != event.startOriginal
+        return event.utcStart != event.utcStartOriginal
 
 
 class MaximumEvents(EventSelector):
@@ -135,7 +140,7 @@ class MaximumEvents(EventSelector):
 
         # Make sure that we select all events that are starting at certain
         # time.
-        if self.lastSelected.start == event.start:
+        if self.lastSelected.utcStart == event.utcStart:
             return True
 
         return False
@@ -143,7 +148,7 @@ class MaximumEvents(EventSelector):
 
 class StartedEvents(EventSelector):
     def __call__(self, event):
-        return event.start <= self.now
+        return event.utcStart <= self.utcNow
 
 
 types = {
