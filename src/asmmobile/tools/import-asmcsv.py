@@ -77,7 +77,7 @@ def importer(filename, prefix):
             locationUrl = "http://www.assembly.org%s" % locationUrl
 
         startTime = parseCsvDate(entry['Start_Date'])
-        eventId = "%s%s_%s" % (prefix, startTime[0:4], entry['ID'])
+        eventId = "%s%s-%s" % (prefix, startTime[0:4], entry['ID'])
         categories = []
         isMajor = False
         if entry['Major'] == 'Yes':
