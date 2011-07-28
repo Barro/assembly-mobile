@@ -78,6 +78,7 @@ class NoneEvent(grok.Model):
     description = None
     categories = []
     isMajor = False
+    canceled = False
 
 
 class LocalizedEventContainer(grok.Container):
@@ -140,6 +141,7 @@ class EventContainer(grok.OrderedContainer):
                  'description',
                  ('shortName', 'short-name'),
                  ('isMajor', 'is-major'),
+                 'canceled',
                  ])
 
         # Order events by start time.
@@ -188,6 +190,7 @@ class Event(grok.Model):
         shortName=None,
         lastModified=None,
         startOriginal=None,
+        canceled=False,
         ):
         self.id = id
         self.name = name
@@ -211,6 +214,7 @@ class Event(grok.Model):
             self.shortName = shortName
         self.lastModified = lastModified
         self.utcLastModified = getNoneUtcTime(self.lastModified)
+        self.canceled = canceled
 
     def getLocation(self):
         if self._location is None:
