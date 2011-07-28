@@ -26,7 +26,7 @@ from asmmobile.components import MobileView
 import asmmobile.interfaces as interfaces
 import asmmobile.util as util
 
-class EventOwnerWrapper(object):
+class EventOwnerWrapper(grok.Model):
     def __init__(self, contentType, context, request):
         self.contentType = contentType
         self.context = context
@@ -52,7 +52,7 @@ class ICalendar(MobileView):
     template = None
 
     grok.context(EventOwnerWrapper)
-    grok.name("index.html")
+    grok.name("index")
 
     def _initialize(config):
         cls = ICalendar
@@ -84,6 +84,7 @@ class EventCalendarTraverser(grok.Traverser):
         elif name.endswith('.ics'):
             return EventOwnerWrapper(
                 "text/calendar", self.context, self.request)
+        return None
 
 
 class ICalTimeView(grok.View):
