@@ -18,10 +18,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+import asmmobile.util as util
 import csv
 import datetime
 import dateutil.tz
-import asmmobile.util as util
+import re
 
 
 def parseCsvDate(dateString):
@@ -37,6 +38,13 @@ def parseCsvDate(dateString):
     return "%04d-%02d-%02dT%02d:%02d:%02d%s" % (
         (2000 + year), month, day, hour, minute, 0, offset)
 
+def escapeDescription(description):
+    escaped = description
+    escaped = escaped.replace("> ", "> <!---->")
+    escaped = escaped.replace(" <", " <!----><")
+    # Common mistake where & is not escaped in descriptions.
+    escaped = re.sub("& ", "&amp; ", escaped)
+    return escaped
 
 def importer(filename, prefix):
     # Schedule is in format:
@@ -103,6 +111,8 @@ def importer(filename, prefix):
             'location': locationKey,
             'categories': categories,
             'is-major': isMajor,
+            'description': escapeDescription(unicode(entry['Description_EN'], 'utf-8')),
+            'canceled': (entry['Cancelled'].lower() == 'yes'),
             }
         events['fi'][eventId] = {
             'name': unicode(entry['Title_FI'], 'utf-8'),
@@ -112,6 +122,8 @@ def importer(filename, prefix):
             'location': locationKey,
             'categories': categories,
             'is-major': isMajor,
+            'description': escapeDescription(unicode(entry['Description_FI'], 'utf-8')),
+            'canceled': (entry['Cancelled'].lower() == 'yes'),
             }
 
     return locations, events
