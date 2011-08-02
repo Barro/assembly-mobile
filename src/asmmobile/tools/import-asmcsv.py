@@ -51,7 +51,9 @@ def importer(filename, prefix):
     # FIELDNAME1;FIELDNAME2;...
     # field_value1;field_value2;...
     fp = open(filename, "r")
-    reader = csv.DictReader(fp, delimiter=';')
+    dialect = csv.Sniffer().sniff(fp.read(), delimiters="\t;")
+    fp.seek(0)
+    reader = csv.DictReader(fp, dialect=dialect)
 
     locations = {}
     events = {}
