@@ -89,7 +89,7 @@ class SkinManager(grok.ViewletManager):
     def render(self):
         result = ""
         for viewlet in self.viewlets:
-            content = viewlet.render()
+            content = translate(viewlet.render(), context=self.request)
             if len(content):
                 skinUrl = self.view.urlVR("@@s/%s" % viewlet.name)
                 result += "<!---->&#8226;<!----> <a href='%s'>%s</a>" % (
