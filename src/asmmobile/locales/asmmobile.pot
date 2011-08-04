@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# Copyright (c) 2003-2004 Zope Corporation and Contributors.
+# Copyright (c) 2003-2004 Zope Foundation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -13,58 +13,58 @@
 ##############################################################################
 msgid ""
 msgstr ""
-"Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu Jun 16 03:06:10 2011\n"
+"Project-Id-Version: Meaningless\n"
+"POT-Creation-Date: Thu Aug  4 15:44:22 2011\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
+"Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
 
-#: src/asmmobile/app.py:168
-#: src/asmmobile/app.py:491
+#: src/asmmobile/app.py:170
+#: src/asmmobile/app.py:494
 msgid "Home"
 msgstr ""
 
-#: src/asmmobile/app.py:487
+#: src/asmmobile/app.py:490
 #: src/asmmobile/location.py:54
 #: src/asmmobile/location_templates/index.ptm:2
 #: src/asmmobile/location_templates/index.ptm:5
 msgid "Locations"
 msgstr ""
 
-#: src/asmmobile/app.py:492
-#: src/asmmobile/app.py:540
-#: src/asmmobile/event.py:70
+#: src/asmmobile/app.py:495
+#: src/asmmobile/app.py:548
+#: src/asmmobile/event.py:87
 #: src/asmmobile/app_templates/allevents.ptm:3
 msgid "All events"
 msgstr ""
 
-#: src/asmmobile/app.py:493
+#: src/asmmobile/app.py:496
 #: src/asmmobile/app_templates/about.ptm:2
 #: src/asmmobile/app_templates/about.ptm:5
 msgid "About"
 msgstr ""
 
-#: src/asmmobile/app.py:558
+#: src/asmmobile/app.py:566
 msgid "%d day"
 msgstr ""
 
-#: src/asmmobile/app.py:560
+#: src/asmmobile/app.py:568
 msgid "%d days"
 msgstr ""
 
-#: src/asmmobile/app.py:566
+#: src/asmmobile/app.py:574
 msgid "%d hour"
 msgstr ""
 
-#: src/asmmobile/app.py:568
+#: src/asmmobile/app.py:576
 msgid "%d hours"
 msgstr ""
 
-#: src/asmmobile/app.py:591
+#: src/asmmobile/app.py:599
 msgid "QR code link to home page (%s)."
 msgstr ""
 
@@ -130,43 +130,43 @@ msgstr ""
 msgid "Internal server error happened. Our highly trained monkeys have been dispatched to investigate this."
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:10
+#: src/asmmobile/app_templates/index.ptm:12
 msgid "${start_time}<!----> ${event_name}"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:19
+#: src/asmmobile/app_templates/index.ptm:20
 msgid "Now"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:45
+#: src/asmmobile/app_templates/index.ptm:46
 msgid "${major_span_start} ${time_left} left ${major_span_end} <!----> ${location_name}"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:54
+#: src/asmmobile/app_templates/index.ptm:55
 msgid "Next"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:58
+#: src/asmmobile/app_templates/index.ptm:59
 msgid "No new scheduled events are starting in next two hours. See <!----> ${link_all_events} <!----> for further events."
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:58
+#: src/asmmobile/app_templates/index.ptm:59
 msgid "all events"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:7
-msgid "Schedule changes"
-msgstr ""
-
-#: src/asmmobile/app_templates/index.ptm:83
+#: src/asmmobile/app_templates/index.ptm:84
 msgid "${major_span_start} in ${time_till_start} ${major_span_end} <!----> ${location_name}"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:96
+#: src/asmmobile/app_templates/index.ptm:9
+msgid "Schedule changes"
+msgstr ""
+
+#: src/asmmobile/app_templates/index.ptm:97
 msgid "${party_name} has ended. Welcome again next year!"
 msgstr ""
 
-#: src/asmmobile/event.py:241
+#: src/asmmobile/event.py:264
 msgid "%s (major event)"
 msgstr ""
 
@@ -239,6 +239,10 @@ msgstr ""
 
 #: src/asmmobile/skin/bw/skin.py:34
 msgid "B/W"
+msgstr ""
+
+#: src/asmmobile/skin/bw/skin.py:56
+msgid "Color"
 msgstr ""
 
 #: src/asmmobile/util.py:172

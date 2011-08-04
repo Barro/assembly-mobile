@@ -53,5 +53,4 @@ class AlternativeSkin(grok.Viewlet):
     name = "none"
 
     def render(self):
-        import asmmobile.config as config
-        return config.skinNameDefault
+        return _(u"Color")
