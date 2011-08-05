@@ -27,6 +27,10 @@
         <!---->
         <span>(<span tal:replace="event/length/@@hourminute" />)</span>
       </tal:block>
+      <tal:block tal:condition="event/canceled">
+        <!---->
+        <span i18n:translate="">[Canceled]</span>
+      </tal:block>
     </h3>
     <span i18n:translate="">
       <tal:block i18n:name="major_span_start">
@@ -58,7 +62,7 @@
      i18n:translate="">
 No new scheduled events are starting in next two hours. See <!----> <a i18n:name="link_all_events" tal:attributes="href python:view.urlR('all')+'#now'" i18n:translate="">all events</a> <!----> for further events.</div>
 <tal:block tal:repeat="event view/nextEvents">
-  <div tal:attributes="class python:event.isMajor and shorten('event major-event') or shorten('event')">
+  <div tal:attributes="class python:shorten('event' + (event.isMajor and ' major-event' or '') + (event.canceled and ' canceled' or ''))">
     <h3>
       <a tal:attributes="href event/shorturl"
          tal:content="event/shortName">Event</a>
@@ -66,6 +70,10 @@ No new scheduled events are starting in next two hours. See <!----> <a i18n:name
           <!---->
           <span>(<span tal:replace="event/length/@@hourminute" />)</span>
         </tal:block>
+      <tal:block tal:condition="event/canceled">
+        <!---->
+        <span i18n:translate="">[Canceled]</span>
+      </tal:block>
     </h3>
     <span i18n:translate="">
       <tal:block i18n:name="major_span_start">

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Thu Aug  4 15:44:22 2011\n"
+"POT-Creation-Date: Fri Aug  5 22:43:16 2011\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -130,6 +130,10 @@ msgstr ""
 msgid "Internal server error happened. Our highly trained monkeys have been dispatched to investigate this."
 msgstr ""
 
+#: src/asmmobile/app_templates/index.ptm:105
+msgid "${party_name} has ended. Welcome again next year!"
+msgstr ""
+
 #: src/asmmobile/app_templates/index.ptm:12
 msgid "${start_time}<!----> ${event_name}"
 msgstr ""
@@ -138,48 +142,49 @@ msgstr ""
 msgid "Now"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:46
+#: src/asmmobile/app_templates/index.ptm:32
+#: src/asmmobile/app_templates/index.ptm:75
+msgid "[Canceled]"
+msgstr ""
+
+#: src/asmmobile/app_templates/index.ptm:50
 msgid "${major_span_start} ${time_left} left ${major_span_end} <!----> ${location_name}"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:55
+#: src/asmmobile/app_templates/index.ptm:59
 msgid "Next"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:59
+#: src/asmmobile/app_templates/index.ptm:63
 msgid "No new scheduled events are starting in next two hours. See <!----> ${link_all_events} <!----> for further events."
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:59
+#: src/asmmobile/app_templates/index.ptm:63
 msgid "all events"
-msgstr ""
-
-#: src/asmmobile/app_templates/index.ptm:84
-msgid "${major_span_start} in ${time_till_start} ${major_span_end} <!----> ${location_name}"
 msgstr ""
 
 #: src/asmmobile/app_templates/index.ptm:9
 msgid "Schedule changes"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:97
-msgid "${party_name} has ended. Welcome again next year!"
+#: src/asmmobile/app_templates/index.ptm:92
+msgid "${major_span_start} in ${time_till_start} ${major_span_end} <!----> ${location_name}"
 msgstr ""
 
 #: src/asmmobile/event.py:264
 msgid "%s (major event)"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:10
+#: src/asmmobile/event_templates/eventindex.ptm:11
 #: src/asmmobile/location_templates/locationindex.ptm:10
 msgid "External location page may provide additional information about this location that is not optimized for mobile devices."
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:23
+#: src/asmmobile/event_templates/eventindex.ptm:24
 msgid "Time ${and_location}"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:24
+#: src/asmmobile/event_templates/eventindex.ptm:25
 msgid "and location"
 msgstr ""
 
@@ -187,40 +192,40 @@ msgstr ""
 msgid "${event_name} (event)"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:42
+#: src/asmmobile/event_templates/eventindex.ptm:43
 msgid "- ${end_day} ${end_time}"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:50
+#: src/asmmobile/event_templates/eventindex.ptm:51
 msgid "${start_day} ${start_time} ${end_time} ${event_length} ${start_time_change}"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:59
+#: src/asmmobile/event_templates/eventindex.ptm:60
 msgid "- original start time ${original_day} ${original_time}."
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:70
+#: src/asmmobile/event_templates/eventindex.ptm:71
 #: src/asmmobile/location_templates/index.ptm:12
 #: src/asmmobile/location_templates/locationindex.ptm:42
 msgid "Utilities"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:72
+#: src/asmmobile/event_templates/eventindex.ptm:73
 msgid "Import to your calendar"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:72
+#: src/asmmobile/event_templates/eventindex.ptm:73
 #: src/asmmobile/location_templates/locationindex.ptm:44
 msgid "Most mobile phones and desktop calendar software can import events from this file."
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:77
+#: src/asmmobile/event_templates/eventindex.ptm:78
 #: src/asmmobile/location_templates/index.ptm:14
 #: src/asmmobile/location_templates/locationindex.ptm:49
 msgid "Link to this page"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:77
+#: src/asmmobile/event_templates/eventindex.ptm:78
 #: src/asmmobile/location_templates/locationindex.ptm:49
 msgid "This link requires a mobile phone with a QR code reader."
 msgstr ""

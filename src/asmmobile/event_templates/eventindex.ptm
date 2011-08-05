@@ -6,6 +6,10 @@
 
 <h1>
   <span tal:replace="view/displayName" />
+  <tal:block tal:condition="context/canceled">
+    <!---->
+    <span i18n:translate="">[Canceled]</span>
+  </tal:block>
   <tal:block tal:condition="context/url">
     <!---->(
     <a tal:attributes="href context/url"
