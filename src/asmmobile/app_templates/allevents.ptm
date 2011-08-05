@@ -24,7 +24,7 @@
 <span tal:replace="structure python:'<div class=\'%s\'>' % shorten('event')"
       tal:condition="python:lastStart!=event.start.day" />
 
-<div tal:attributes="class python:event.end < view.now and shorten('finished') or None">
+<div tal:attributes="class python:shorten('' + (event.end < view.now and 'finished' or '') + (event.canceled and ' canceled' or ''))">
 
   <a id="now"
      tal:condition="python: event == view.anchorEvent"></a>

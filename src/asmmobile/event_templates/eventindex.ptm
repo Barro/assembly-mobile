@@ -2,9 +2,10 @@
 <metal:block
     metal:fill-slot='page-title'
     i18n:translate=""><tal:block i18n:name="event_name" tal:replace="context/name" /> (event)</metal:block>
-<div tal:attributes="class shorten:event" metal:fill-slot='content'>
+<div tal:attributes="class python:shorten('event' + (context.canceled and ' canceled' or ''))" metal:fill-slot='content'>
 
-<h1><span tal:replace="view/displayName" />
+<h1>
+  <span tal:replace="view/displayName" />
   <tal:block tal:condition="context/url">
     <!---->(
     <a tal:attributes="href context/url"

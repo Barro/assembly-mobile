@@ -40,6 +40,7 @@ MAX_CONCURRENT_STARTS = 6
 TIME_INCREASE_PROBABILITY = 0.4
 CHANGED_START_TIME_PROBABILITY = 0.1
 MAJOR_EVENT_PROBABILITY = 0.1
+CANCELATION_PROBABILITY = 0.1
 
 def generateWords(wordMin, wordMax, partMin, partMax):
     words = []
@@ -117,6 +118,7 @@ def generateLanguageData(eventAmount, locations, startTime):
             'categories': [],
             'is-major': random.random() < MAJOR_EVENT_PROBABILITY,
             'description': cgi.escape(generateWords(20, 50, 2, 5)) + ".",
+            'canceled': random.random() < CANCELATION_PROBABILITY,
             }
 
         if currentEvents >= MAX_CONCURRENT_STARTS:

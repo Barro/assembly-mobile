@@ -112,3 +112,7 @@ a.location {
 a:visited.location {
   color: #222;
 }
+
+.canceled {
+  opacity: .6;
+}

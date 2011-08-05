@@ -251,6 +251,7 @@ class DisplayEvent(object):
         self.startHasChanged = (event.start != event.startOriginal)
         self.end = event.end
         self.length = event.length
+        self.canceled = event.canceled
 
 
 class GroupingLocation(object):
