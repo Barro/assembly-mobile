@@ -22,6 +22,9 @@ import grok
 import dateutil.tz
 
 from zope.i18n import translate
+from zope.publisher.interfaces.browser import IBrowserRequest
+from zope.component import getMultiAdapter
+import zope.traversing.browser.interfaces
 
 from asmmobile import AsmMobileMessageFactory as _
 import asmmobile.interfaces as interfaces
@@ -285,3 +288,27 @@ class EventStyle(grok.Viewlet):
     grok.context(interfaces.IEvent)
     grok.view(EventIndex)
     grok.order(2)
+
+
+class EventAbsoluteUrl(grok.MultiAdapter):
+    grok.adapts(interfaces.IEvent, IBrowserRequest)
+    grok.implements(zope.traversing.browser.interfaces.IAbsoluteURL)
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        application = grok.getApplication()
+        application_url = getMultiAdapter(
+            (application, self.request),
+            zope.traversing.browser.interfaces.IAbsoluteURL)()
+
+        stacked_objects = []
+        context = self.context
+        while context != application:
+            if not interfaces.IEventContainer.providedBy(context):
+                stacked_objects.append(context.__name__)
+            context = context.__parent__
+        stacked_objects.append(application_url)
+        return "/".join(reversed(stacked_objects))

@@ -120,17 +120,6 @@ defaultLocationPriority = integerValue("default-location-priority", 0)
 # Default time objects are hidden before they are shown in "next events".
 defaultHideTime = integerValue("default-hide-time", 7200)
 
-# Enable or disable internalization.
-enableInternalization = booleanValue("enable-internalization", True)
-
-# A comma separated list of enabled languages or a star to enable them all.
-# By default enable all languages that there are available.
-enabledLanguages = stringValue("enabled-languages", "*")
-
-# Default language that is used when user with unknown language comes to site
-# or if events or locations are not available with such language.
-defaultLanguage = stringValue("default-language", "en")
-
 ########################################################################
 # Importing options
 
@@ -203,7 +192,7 @@ locations = stringValue("locations", "location")
 events = stringValue("events", "event")
 
 # Name for language including cookie.
-cookieLanguage = stringValue("cookie-language", "l")
+languageCookie = stringValue("language-cookie", "l")
 
 # Default skin.
 skinDefault = stringValue("skin-default", '')

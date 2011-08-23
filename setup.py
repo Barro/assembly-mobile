@@ -31,6 +31,7 @@ setup(name='asmmobile',
                         # Dateutil version < 2 works with Python 2.x series.
                         'python-dateutil==1.5',
                         'repoze.profile',
+                        'zc.sourcefactory',
                         ],
       entry_points={
           'fanstatic.libraries': [

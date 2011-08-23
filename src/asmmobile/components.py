@@ -55,16 +55,22 @@ class MobileView(grok.View):
     charset = "UTF-8"
     contentType = "application/xhtml+xml;charset=%s" % charset
 
-    language = None
-    availableLanguages = []
+    @property
+    def language(self):
+        return self.request.locale.id.language
+
+    @property
+    def availableLanguages(self):
+        application = grok.getApplication()
+        if application.enableInternalization:
+            return application.enabledLanguages
+        return [application.defaultLanguage]
 
     skin = None
 
     def _initialize(config):
         cls = MobileView
-        cls.enableInternalization = config.enableInternalization
         cls.sendCachingHeaders = config.sendCachingHeaders
-        cls.availableLanguages = util.getAvailableLanguages()
 
     util.runDeferred(_initialize)
 
@@ -96,14 +102,8 @@ class MobileView(grok.View):
             "no-cache"
             )
 
-    def _setupLanguages(self):
-        self.language = self.request.locale.id.language
-
     def __call__(self, *args, **kw):
         self.now = util.clock()
-
-        if self.enableInternalization:
-            self._setupLanguages()
 
         self.request.response.setHeader(
             "Content-Type",
@@ -250,12 +250,6 @@ from zope.publisher.defaultview import getDefaultViewName
 class ContentTraverser(grok.Traverser):
     grok.context(interfaces.ILocalizedContentContainer)
 
-    def _initialize(config):
-        cls = ContentTraverser
-        cls.defaultLanguage = config.defaultLanguage
-
-    util.runDeferred(_initialize)
-
     def traverse(self, name):
         content = self.getContent(self.request)
         return content.get(name, None)
@@ -263,7 +257,7 @@ class ContentTraverser(grok.Traverser):
     def getContent(self, request):
         content = self.context.get(request.locale.id.language, None)
         if content is None:
-            content = self.context[self.defaultLanguage]
+            content = self.context[grok.getApplication().defaultLanguage]
         return content
 
     def browserDefault(self, request):

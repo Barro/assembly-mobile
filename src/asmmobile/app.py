@@ -30,6 +30,7 @@ import grokcore.component
 import grokcore.view.components
 import grokcore.view.interfaces
 
+import persistent
 import zope.app.wsgi.interfaces
 import zope.component
 from zope.i18n import translate
@@ -71,33 +72,24 @@ class CatalogBasedI18nUserPreferredLanguages(grok.Adapter):
     grok.context(IBrowserRequest)
     grok.provides(IUserPreferredLanguages)
 
-    availableLanguages = None
-
-    def _initialize(config):
-        cls = CatalogBasedI18nUserPreferredLanguages
-        cls.enableInternalization = config.enableInternalization
-        cls.defaultLanguage = config.defaultLanguage
-        cls.cookieLanguage = config.cookieLanguage
-
-    util.runDeferred(_initialize)
-
     def getPreferredLanguages(self):
+        try:
+            application = grok.getApplication()
+        except ValueError:
+            return []
 
-        if not self.enableInternalization:
-            return [self.defaultLanguage]
+        if not application.enableInternalization:
+            return [application.defaultLanguage]
 
         request = self.context
 
         if hasattr(request, 'locale'):
-            return [request.locale.id.language]
-
-        if self.availableLanguages is None:
-            CatalogBasedI18nUserPreferredLanguages.availableLanguages = \
-                util.getAvailableLanguages()
+            if request.locale.id.language is not None:
+                return [request.locale.id.language]
 
         browserLanguages = []
-        if self.cookieLanguage in request.cookies:
-            browserLanguages.append(request.cookies[self.cookieLanguage])
+        if application.languageCookie in request.cookies:
+            browserLanguages.append(request.cookies[application.languageCookie])
 
         langs = BrowserLanguages(request).getPreferredLanguages()
         for httplang in langs:
@@ -107,10 +99,10 @@ class CatalogBasedI18nUserPreferredLanguages(grok.Adapter):
 
         existingLanguages = []
         for language in browserLanguages:
-            if language in self.availableLanguages:
+            if language in application.enabledLanguages:
                 existingLanguages.append(language)
 
-        existingLanguages.append(self.defaultLanguage)
+        existingLanguages.append(application.defaultLanguage)
 
         uniqueLanguages = util.uniqify(existingLanguages)
 
@@ -171,10 +163,19 @@ class AsmMobile(grok.Application, grok.Container):
 
     importConfig = u""
 
+    notices = 'notices'
+
+    enabledLanguages = []
+
+    enableInternalization = True
+
+    defaultLanguage = 'test'
+
+    languageCookie = 'l'
+
     def _initialize(config):
         cls = AsmMobile
         cls.partyName = config.partyName
-        cls.defaultLanguage = config.defaultLanguage
         cls.locations = config.locations
         cls.events = config.events
 
@@ -360,6 +361,7 @@ def _initializeSelectors(config):
 
 util.runDeferred(_initializeSelectors)
 
+
 def getSorter(sorterString):
     sorters = sorterString.split("&")
     sorter = orderby.types[sorters[0]]
@@ -384,6 +386,7 @@ def _initializeSorters(config):
     nextSort = getSorter(config.sortNextEvents)
 
 util.runDeferred(_initializeSorters)
+
 
 class Index(MobileView):
     grok.context(interfaces.IAsmMobile)
@@ -649,12 +652,6 @@ class SetLanguage(MobileView):
 
     cacheTime = util.AddTime(datetime.timedelta(seconds=0))
 
-    def _initialize(config):
-        cls = SetLanguage
-        cls.cookieLanguage = config.cookieLanguage
-
-    util.runDeferred(_initialize)
-
     def publishTraverse(self, request, name):
         self.newLanguage = name
         request.setTraversalStack([])
@@ -662,14 +659,16 @@ class SetLanguage(MobileView):
 
     def update(self):
         language = getattr(self, 'newLanguage', None)
+        application = grok.getApplication()
         if language is not None:
             self.request.response.setCookie(
-                self.cookieLanguage, language, path='/')
+                application.languageCookie, language, path='/')
 
         self.redirect(util.findReturnTo(self))
 
     def render(self):
         return ''
+
 
 class Edit(grok.EditForm):
     grok.require("asmmobile.Edit")
@@ -677,3 +676,28 @@ class Edit(grok.EditForm):
     grok.context(interfaces.IAsmMobile)
     form_fields = grok.AutoFields(interfaces.IAsmMobile)
 
+    @grok.action("Save changes")
+    def saveChanges(self, **kw):
+        # import pdb; pdb.set_trace()
+        # if self.context.locations != kw['locations']
+        oldEvents = self.context.events
+        oldLocations = self.context.locations
+        self.applyData(self.context, **kw)
+        if kw['events'] != oldEvents:
+            self.context[kw['events']] = self.context[oldEvents]
+            del self.context[oldEvents]
+        if kw['locations'] != oldLocations:
+            self.context[kw['locations']] = self.context[oldLocations]
+            del self.context[oldLocations]
+
+        self.redirect(self.url(self.context, 'edit'))
+
+
+def setupObjectInputWidget(field, request):
+    factory = zope.component.getUtility(zope.component.interfaces.IFactory,
+                                        name=field.schema.__name__)
+    return zope.formlib.objectwidget.ObjectWidget(field, request, factory)
+
+class LanguageChoice(persistent.Persistent):
+
+    zope.interface.implements(interfaces.ILanguageChoice)

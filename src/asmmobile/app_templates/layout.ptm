@@ -44,6 +44,9 @@
 
 <tal:block tal:replace="structure provider:skin" />
 
+<span tal:replace="view/language" />
+<span tal:replace="view/availableLanguages" />
+
 <tal:block tal:condition="python: view.language and len(view.availableLanguages) > 1">
   <!---->&#8226;<!---->
   <a tal:condition="python: view.language != 'fi' and 'fi' in view.availableLanguages"

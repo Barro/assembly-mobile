@@ -17,16 +17,73 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from zope.component import queryUtility
+from zope.i18n.interfaces import ITranslationDomain
 import zope.interface
+import zope.schema
 from zope import schema
+import zc.sourcefactory.contextual
+
+from asmmobile import AsmMobileMessageFactory as _
 
 class INavigationObject(zope.interface.Interface):
     navigationName = schema.TextLine(title=u"Name")
 
+
+class LanguageSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
+
+    def getValues(self, context):
+        translationDomain = queryUtility(ITranslationDomain, _._domain)
+        languages = translationDomain.getCatalogsInfo().keys()
+        return map(str, languages)
+
+
+class ILanguageChoice(zope.interface.Interface):
+    languageName = zope.schema.Set(
+        title=u'Language name',
+        )
+
+    id = zope.schema.TextLine(
+        title=u'Language code',
+        description=u'Language code.')
+
+
 class IAsmMobile(INavigationObject):
     """Marker interface for the application object."""
 
-    importConfig = schema.Text(title=u"Import configuration", required=True)
+    importConfig = schema.Text(title=u"Import configuration", required=False)
+
+    locations = schema.TextLine(title=u"Locations path name", required=True)
+
+    events = schema.TextLine(title=u"Events path name", required=True)
+
+    notices = schema.TextLine(
+        title=u"Notice path name",
+        description=u"Notices are short messages that are shown to user at certain time.",
+        required=True,
+        )
+
+    languageCookie = schema.TextLine(
+        title=u"Language cookie name",
+        description=u"Cookie that is used to determine user's language.",
+        required=True)
+
+    defaultLanguage = schema.Choice(
+        title=u"Default Language",
+        required=True,
+        source=LanguageSource())
+
+    enableInternalization = schema.Bool(title=u"Enable internalization")
+
+    enabledLanguages = zope.schema.List(
+        title=u"Enabled languages",
+        value_type=schema.Choice(source=LanguageSource())
+        )
+
+    # enabledLanguages = schema.TextLine(
+    #     title=u"Enabled languages",
+    #     description=u"List of enabled languages.",
+    #     required=False)
 
     def updateLocations(locations):
         pass
