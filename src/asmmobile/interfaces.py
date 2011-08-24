@@ -63,6 +63,11 @@ class IAsmMobile(INavigationObject):
         required=True,
         )
 
+    sendCachingHeaders = schema.Bool(
+        title=u"Send caching headers",
+        description=u"Enable sending caching headers in mobile views.",
+        )
+
     languageCookie = schema.TextLine(
         title=u"Language cookie name",
         description=u"Cookie that is used to determine user's language.",

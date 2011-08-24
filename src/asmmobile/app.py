@@ -30,7 +30,6 @@ import grokcore.component
 import grokcore.view.components
 import grokcore.view.interfaces
 
-import persistent
 import zope.app.wsgi.interfaces
 import zope.component
 from zope.i18n import translate
@@ -163,7 +162,9 @@ class AsmMobile(grok.Application, grok.Container):
 
     importConfig = u""
 
-    notices = 'notices'
+    locations = 'location'
+    events = 'event'
+    notices = 'notice'
 
     enabledLanguages = []
 
@@ -173,11 +174,11 @@ class AsmMobile(grok.Application, grok.Container):
 
     languageCookie = 'l'
 
+    sendCachingHeaders = False
+
     def _initialize(config):
         cls = AsmMobile
         cls.partyName = config.partyName
-        cls.locations = config.locations
-        cls.events = config.events
 
     util.runDeferred(_initialize)
 
@@ -691,13 +692,3 @@ class Edit(grok.EditForm):
             del self.context[oldLocations]
 
         self.redirect(self.url(self.context, 'edit'))
-
-
-def setupObjectInputWidget(field, request):
-    factory = zope.component.getUtility(zope.component.interfaces.IFactory,
-                                        name=field.schema.__name__)
-    return zope.formlib.objectwidget.ObjectWidget(field, request, factory)
-
-class LanguageChoice(persistent.Persistent):
-
-    zope.interface.implements(interfaces.ILanguageChoice)

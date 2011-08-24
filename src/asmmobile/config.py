@@ -154,7 +154,7 @@ shortNameCutPostfix = stringValue("short-name-cut-postfix", "...")
 # By default caching is disabled, as Android based browsers do not like that
 # and the page that is the most used one is going to be changing once per
 # minute anyway.
-sendCachingHeaders = booleanValue("send-caching-headers", False)
+#sendCachingHeaders = booleanValue("send-caching-headers", False)
 
 # Time in minutes that how long one event is considered to be valid.
 #
@@ -182,17 +182,17 @@ time = stringValue("time", "now")
 #
 # This affects the URLs for locations and by default this results in
 # addresses like: http://example.com/appname/location/location_name
-locations = stringValue("locations", "location")
+#locations = stringValue("locations", "location")
 
 # Container name for Event objects.
 #
 # This affects the URLs for events.
 # This affects the URLs for events and by default this results in
 # addresses like: http://example.com/appname/event/event_name
-events = stringValue("events", "event")
+#events = stringValue("events", "event")
 
 # Name for language including cookie.
-languageCookie = stringValue("language-cookie", "l")
+#languageCookie = stringValue("language-cookie", "l")
 
 # Default skin.
 skinDefault = stringValue("skin-default", '')

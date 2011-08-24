@@ -246,15 +246,8 @@ class ViewUrl(grok.View):
     grok.name("url")
     grok.context(Location)
 
-    def _initialize(config):
-        cls = ViewUrl
-        cls.LOCATIONS = config.locations
-
-    util.runDeferred(_initialize)
-
     def render(self):
-        return "%s/%s" % (util.applicationRelativeUrl(self, self.LOCATIONS),
-                          self.context.id)
+        return util.locationUrl(self, self.context)
 
 class NoneUrl(grok.View):
     grok.name("url")
@@ -268,15 +261,8 @@ class ViewLink(grok.View):
     grok.name("link")
     grok.context(Location)
 
-    def _initialize(config):
-        cls = ViewLink
-        cls.LOCATIONS = config.locations
-
-    util.runDeferred(_initialize)
-
     def relativeUrl(self):
-        return "%s/%s" % (util.applicationRelativeUrl(self, self.LOCATIONS),
-                          self.context.id)
+        return util.locationUrl(self, self.context)
 
 
 class NoneLink(grok.View):

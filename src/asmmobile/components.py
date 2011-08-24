@@ -68,12 +68,6 @@ class MobileView(grok.View):
 
     skin = None
 
-    def _initialize(config):
-        cls = MobileView
-        cls.sendCachingHeaders = config.sendCachingHeaders
-
-    util.runDeferred(_initialize)
-
     def _sendCachingHeaders(self):
         utcnow = self.now.astimezone(dateutil.tz.tzutc())
         cacheTime = self.cacheTime(utcnow)
@@ -105,12 +99,17 @@ class MobileView(grok.View):
     def __call__(self, *args, **kw):
         self.now = util.clock()
 
+        # We are calling this here because the first setupLocale() call in
+        # zope.publisher.http.HTTPRequest does not include application and
+        # therefore we can't actually determine what locales are available.
+        self.request.setupLocale()
+
         self.request.response.setHeader(
             "Content-Type",
             self.contentType
             )
 
-        if self.sendCachingHeaders:
+        if grok.getApplication().sendCachingHeaders:
             self._sendCachingHeaders()
         else:
             self._sendDisableCachingHeaders()
