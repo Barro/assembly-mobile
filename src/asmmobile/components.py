@@ -109,7 +109,12 @@ class MobileView(grok.View):
             self.contentType
             )
 
-        if grok.getApplication().sendCachingHeaders:
+        try:
+            application = grok.getApplication()
+        except:
+            application = None
+
+        if application is not None and application.sendCachingHeaders:
             self._sendCachingHeaders()
         else:
             self._sendDisableCachingHeaders()
