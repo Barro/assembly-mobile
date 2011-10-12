@@ -18,8 +18,3 @@ site-zcml =
              password_manager="SHA1"
              password="b32cb717d033e22ae348aeb5660fc2140aec35850c4da997"
              />
-  <role id="zope.Manager" title="Site Manager" />
-  <role id="zope.Member" title="Site Member" />
-  <grantAll role="zope.Manager" />
-  <grant role="zope.Manager"
-         principal="zope.manager" />
