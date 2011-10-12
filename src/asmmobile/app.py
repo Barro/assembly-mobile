@@ -170,7 +170,7 @@ class AsmMobile(grok.Application, grok.Container):
 
     enableInternalization = True
 
-    defaultLanguage = 'test'
+    defaultLanguage = 'default'
 
     languageCookie = 'l'
 
@@ -185,15 +185,17 @@ class AsmMobile(grok.Application, grok.Container):
     def __init__(self, **vars):
         super(AsmMobile, self).__init__(**vars)
 
-        defaultLanguage = self.defaultLanguage
-
         locations = asmmobile.location.LocalizedLocationContainer()
         self[self.locations] = locations
-        locations[defaultLanguage] = asmmobile.location.LocationContainer()
 
         events = asmmobile.event.LocalizedEventContainer()
         self[self.events] = events
-        events[defaultLanguage] = asmmobile.event.EventContainer()
+        self.createLanguageContainers(self.defaultLanguage)
+
+
+    def createLanguageContainers(self, language):
+        self.LOCATIONS[language] = asmmobile.location.LocationContainer()
+        self.EVENTS[language] = asmmobile.event.EventContainer()
 
 
     @property
