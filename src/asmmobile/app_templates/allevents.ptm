@@ -54,21 +54,12 @@
   There are no events in this party!
 </p>
 
-<h2 i18n:translate="">Utilities</h2>
-<div tal:attributes="class shorten:links"
-     tal:define="normPartyName string:${context/partyName/@@keynormalize}">
-
-  <a tal:attributes="href python:view.application_urlR(normPartyName) + '.vcs'"
-     title="Most mobile phones and desktop calendar software can import events from this file."
-     i18n:attributes="title"
-     i18n:translate="">Import events to your calendar</a>
-    <!---->&#8226;<!---->
-    <a tal:define="qrData python:view.application_url('all')"
-       tal:attributes="href qrData/@@qrcodeurl"
-       i18n:attributes="title"
-       title="This link requires a mobile phone with a QR code reader."
-       i18n:translate="">Link to this page</a>
-</div>
+<tal:block tal:define="normPartyName string:${context/partyName/@@keynormalize};
+                       calendarLinkBase python:view.application_urlR(normPartyName);
+                       pageUrl python:view.application_url('all')">
+  <metal:block metal:use-macro="context/@@layout/macros/event-container-utilities">
+  </metal:block>
+</tal:block>
 
 </div>
 </metal:block>

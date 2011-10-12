@@ -9,13 +9,11 @@
            tal:content="location/name">Location</a>
       </li>
     </ul>
-    <h2 i18n:translate="">Utilities</h2>
-    <div tal:attributes="class shorten:links">
-    <a tal:define="qrData python:view.application_url('location')"
-       tal:attributes="href qrData/@@qrcodeurl"
-       title="QR code links require a mobile phone with a QR code reader."
-       i18n:attributes="title"
-       i18n:translate="">Link to this page</a>
-    </div>
+
+    <tal:block tal:define="pageUrl python:view.application_url('location')">
+      <metal:block metal:use-macro="context/@@layout/macros/event-container-utilities">
+      </metal:block>
+    </tal:block>
+
   </div>
 </metal:block >

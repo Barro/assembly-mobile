@@ -56,3 +56,23 @@
 </body>
 </html>
 </metal:block>
+
+<tal:block tal:condition="nothing">
+  <div metal:define-macro="event-container-utilities">
+    <h2 i18n:translate="">Utilities</h2>
+    <ul tal:attributes="class shorten:links">
+      <tal:block tal:condition="exists:calendarLinkBase">
+        <li><a tal:attributes="href python: calendarLinkBase + '.vcs'"
+           title="Most mobile phones and desktop calendar software can import events from this file."
+           i18n:attributes="title"
+           i18n:translate="">Import to your calendar</a></li>
+      </tal:block>
+      <tal:block tal:condition="exists:pageUrl">
+        <li><a tal:attributes="href pageUrl/@@qrcodeurl"
+           title="This link requires a mobile phone with a QR code reader."
+           i18n:attributes="title"
+           i18n:translate="">Link to this page</a></li>
+      </tal:block>
+    </ul>
+  </div>
+</tal:block>

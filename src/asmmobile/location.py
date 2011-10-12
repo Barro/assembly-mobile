@@ -273,8 +273,15 @@ class NoneLink(grok.View):
         return ""
 
 
-class LocationsStyle(grok.Viewlet):
+class LocalizedLocationContainerStyle(grok.Viewlet):
     grok.viewletmanager(asmmobile.components.StylesheetManager)
     grok.context(LocalizedLocationContainer)
     grok.view(Index)
+    grok.order(2)
+
+
+class LocationStyle(grok.Viewlet):
+    grok.viewletmanager(asmmobile.components.StylesheetManager)
+    grok.context(Location)
+    grok.view(LocationIndex)
     grok.order(2)
