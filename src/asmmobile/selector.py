@@ -44,6 +44,17 @@ class AndSelector(EventSelector):
         return True
 
 
+class OrSelector(EventSelector):
+    def __init__(self, subSelectors):
+        self.subSelectors = subSelectors
+
+    def __call__(self, event):
+        for selector in self.subSelectors:
+            if selector(event):
+                return True
+        return False
+
+
 class CurrentEvents(EventSelector):
     def __call__(self, event):
         return event.utcStart <= self.utcNow and self.utcNow < event.utcEnd
@@ -113,10 +124,18 @@ class NotHiddenOriginalEvents(EventSelector):
 
 class StartTimeChangedEvents(EventSelector):
     def construct(self, arguments):
-        return NotHiddenOriginalEvents()
+        return StartTimeChangedEvents()
 
     def __call__(self, event):
         return event.utcStart != event.utcStartOriginal
+
+
+class CanceledEvents(EventSelector):
+    def construct(self, arguments):
+        return CanceledEvents()
+
+    def __call__(self, event):
+        return event.canceled
 
 
 class MaximumEvents(EventSelector):

@@ -49,8 +49,15 @@
     </tal:block>
   </tal:block>
 
-  <span i18n:name="event_length"
-        tal:replace="context/length/@@hourminuteparenthesis" />
+  <tal:block tal:condition="not: context/canceled">
+    <span i18n:name="event_length"
+          tal:replace="context/length/@@hourminuteparenthesis" />
+  </tal:block>
+
+  <tal:block tal:condition="context/canceled">
+    <!---->
+    <span i18n:translate="">[Canceled]</span>
+  </tal:block>
 
   <tal:block i18n:name="start_time_change">
     <tal:block tal:condition="python: context.startOriginal is not None and context.start != context.startOriginal"
@@ -64,6 +71,7 @@
       <span i18n:name="original_time" tal:replace="context/startOriginal/@@hourminute" />.
     </tal:block>
   </tal:block>
+
 </div>
 <tal:block tal:condition="context/location/name">
   <div>

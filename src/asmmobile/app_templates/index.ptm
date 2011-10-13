@@ -7,11 +7,17 @@
 
 <div tal:condition="view/changedEvents" tal:attributes="class shorten:alert">
   <h2 i18n:translate="">Schedule changes</h2>
-  <div tal:repeat="event view/changedEvents" i18n:translate="">
+  <div tal:repeat="event view/changedEvents" i18n:translate=""
+       tal:attributes="class python:shorten(event.canceled and 'canceled' or '') or None">
     <span i18n:name="start_time" tal:replace="event/start/@@hourminute" /><!---->
-    <a tal:attributes="href event/shorturl" i18n:name="event_name">
+    <a tal:attributes="href event/shorturl"
+       i18n:name="event_name">
       <span tal:replace="event/name"  />
     </a>
+    <tal:block tal:condition="event/canceled">
+      <!---->
+      <span i18n:translate="">[Canceled]</span>
+    </tal:block>
   </div>
 </div>
 
@@ -23,9 +29,9 @@
     <h3>
       <a tal:attributes="href event/shorturl"
          tal:content="event/shortName">Event</a>
-      <tal:block tal:condition="event/length">
+      <tal:block tal:condition="not: event/canceled">
         <!---->
-        <span>(<span tal:replace="event/length/@@hourminute" />)</span>
+        <span tal:replace="event/length/@@hourminuteparenthesis" />
       </tal:block>
       <tal:block tal:condition="event/canceled">
         <!---->
