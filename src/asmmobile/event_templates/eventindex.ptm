@@ -62,6 +62,7 @@
   <tal:block i18n:name="start_time_change">
     <tal:block tal:condition="python: context.startOriginal is not None and context.start != context.startOriginal"
                i18n:translate="">
+      <!---->
       - original start time
       <tal:block i18n:name="original_day">
         <span tal:condition="python: context.start.day != context.startOriginal.day"
