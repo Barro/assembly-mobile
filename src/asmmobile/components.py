@@ -286,7 +286,7 @@ class ViewLink(grok.View):
     def render(self):
         pageName, pageLocation, cssStyles = self.context
         nohashPart = pageLocation.split("#", 1)[0]
-        cleanedViewUrl = self.request.getURL().replace("@@index", "")
+        cleanedViewUrl = self.request.getURL().replace("/@@index", "")
         styles = ''
         if cssStyles is not None:
             shortener = zope.component.getUtility(interfaces.INameShortener)
