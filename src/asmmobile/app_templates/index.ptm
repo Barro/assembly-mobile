@@ -31,7 +31,7 @@
          tal:content="event/shortName">Event</a>
       <tal:block tal:condition="not: event/canceled">
         <!---->
-        <span tal:replace="event/length/@@hourminuteparenthesis" />
+        <span><span tal:replace="event/length/@@hourminuteparenthesis" /></span>
       </tal:block>
       <tal:block tal:condition="event/canceled">
         <!---->
@@ -74,7 +74,7 @@ No new scheduled events are starting in next two hours. See <!----> <a i18n:name
          tal:content="event/shortName">Event</a>
         <tal:block tal:condition="event/length">
           <!---->
-          <span>(<span tal:replace="event/length/@@hourminute" />)</span>
+          <span><span tal:replace="event/length/@@hourminuteparenthesis" /></span>
         </tal:block>
       <tal:block tal:condition="event/canceled">
         <!---->
