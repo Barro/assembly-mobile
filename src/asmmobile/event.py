@@ -281,6 +281,7 @@ class EventIndex(MobileView):
             return self.context.name
 
     def update(self):
+        self.displayData = util.DisplayEvent(self, self.context)
         self.request.response.setHeader(
             'Last-Modified', util.httpTime(self.context.lastModified))
 

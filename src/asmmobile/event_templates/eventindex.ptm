@@ -2,14 +2,25 @@
 <metal:block
     metal:fill-slot='page-title'
     i18n:translate=""><tal:block i18n:name="event_name" tal:replace="context/name" /> (event)</metal:block>
-<div tal:attributes="class python:shorten('event' + (context.canceled and ' canceled' or ''))" metal:fill-slot='content'>
+
+<metal:block metal:fill-slot="extra-head-data">
+  <tal:block tal:condition="context/canceled">
+    <style type='text/css' tal:content="structure provider:alert-stylesheet"></style>
+</tal:block>
+</metal:block>
+
+<tal:block metal:fill-slot="content">
+
+<div tal:condition="context/canceled"
+     tal:attributes="class shorten:alert"
+     i18n:translate="">
+This event has been canceled!
+</div>
+
+<div tal:attributes="class python:shorten('event')">
 
 <h1>
   <span tal:replace="view/displayName" />
-  <tal:block tal:condition="context/canceled">
-    <!---->
-    <span i18n:translate="">[Canceled]</span>
-  </tal:block>
   <tal:block tal:condition="context/url">
     <!---->(
     <a tal:attributes="href context/url"
@@ -48,16 +59,9 @@
           tal:replace="context/end/@@hourminute" />
     </tal:block>
   </tal:block>
-
-  <tal:block tal:condition="not: context/canceled">
-    <span i18n:name="event_length"
-          tal:replace="context/length/@@hourminuteparenthesis" />
-  </tal:block>
-
-  <tal:block tal:condition="context/canceled">
-    <!---->
-    <span i18n:translate="">[Canceled]</span>
-  </tal:block>
+  <!---->
+  <span i18n:name="event_length"
+        tal:replace="view/displayData/@@eventlength" />
 
   <tal:block i18n:name="start_time_change">
     <tal:block tal:condition="python: context.startOriginal is not None and context.start != context.startOriginal"
@@ -88,4 +92,7 @@
 </tal:block>
 
 </div>
+
+</tal:block>
+
 </metal:block >

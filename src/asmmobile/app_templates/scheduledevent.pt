@@ -7,12 +7,7 @@
 <a tal:content="context/shortName"
    tal:attributes="href context/url">Event name</a>
 <!---->
-<tal:block tal:condition="not: context/canceled">
-  <span tal:replace="context/length/@@hourminuteparenthesis" />
-</tal:block>
-<tal:block tal:condition="context/canceled">
-  <span i18n:translate="">[Canceled]</span>
-</tal:block>
+<span tal:replace="context/@@eventlength" />
 
 <span tal:condition="context/isMajor"
           tal:replace="structure string:</strong>" />

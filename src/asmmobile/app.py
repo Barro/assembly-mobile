@@ -510,19 +510,6 @@ class LayoutStyle(grok.Viewlet):
     grok.order(1)
 
 
-class ScheduleChangedStyle(grok.Viewlet):
-    grok.viewletmanager(asmmobile.components.StylesheetManager)
-    grok.context(AsmMobile)
-    grok.view(Index)
-    grok.order(2)
-
-    displayStyle = False
-
-    def update(self):
-        if len(self.view.changedEvents) > 0:
-            self.displayStyle = True
-
-
 class Favicon(MobileView):
     grok.context(zope.interface.Interface)
 

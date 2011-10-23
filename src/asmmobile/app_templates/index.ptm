@@ -3,6 +3,12 @@
 <metal:block metal:fill-slot='page-title-separator'></metal:block>
 <metal:block metal:fill-slot='content-header'></metal:block>
 
+<metal:block metal:fill-slot="extra-head-data">
+  <tal:block tal:condition="view/changedEvents">
+    <style type='text/css' tal:content="structure provider:alert-stylesheet"></style>
+</tal:block>
+</metal:block>
+
 <div metal:fill-slot='content'>
 
 <div tal:condition="view/changedEvents" tal:attributes="class shorten:alert">
@@ -29,14 +35,8 @@
     <h3>
       <a tal:attributes="href event/shorturl"
          tal:content="event/shortName">Event</a>
-      <tal:block tal:condition="not: event/canceled">
-        <!---->
-        <span><span tal:replace="event/length/@@hourminuteparenthesis" /></span>
-      </tal:block>
-      <tal:block tal:condition="event/canceled">
-        <!---->
-        <span i18n:translate="">[Canceled]</span>
-      </tal:block>
+      <!---->
+      <span><span tal:replace="event/@@eventlength" /></span>
     </h3>
     <span i18n:translate="">
       <tal:block i18n:name="major_span_start">
@@ -72,14 +72,8 @@ No new scheduled events are starting in next two hours. See <!----> <a i18n:name
     <h3>
       <a tal:attributes="href event/shorturl"
          tal:content="event/shortName">Event</a>
-        <tal:block tal:condition="event/length">
-          <!---->
-          <span><span tal:replace="event/length/@@hourminuteparenthesis" /></span>
-        </tal:block>
-      <tal:block tal:condition="event/canceled">
-        <!---->
-        <span i18n:translate="">[Canceled]</span>
-      </tal:block>
+      <!---->
+      <span><span tal:replace="event/@@eventlength" /></span>
     </h3>
     <span i18n:translate="">
       <tal:block i18n:name="major_span_start">

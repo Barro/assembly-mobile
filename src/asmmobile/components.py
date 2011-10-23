@@ -235,6 +235,16 @@ class StylesheetManager(grok.ViewletManager):
     grok.context(Interface)
 
 
+class AlertStylesheetManager(grok.ViewletManager):
+    grok.name('alert-stylesheet')
+    grok.context(Interface)
+
+
+class AlertStylesheet(grok.Viewlet):
+    grok.viewletmanager(AlertStylesheetManager)
+    grok.context(Interface)
+
+
 class CssTemplate(grokcore.view.components.PageTemplate):
 
     def __init__(self, string=None, filename=None, _prefix=None, cleaner=None):

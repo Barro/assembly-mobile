@@ -177,19 +177,6 @@ class IntervalHourMinute(grok.View):
         return result.strip()
 
 
-class IntervalHourMinuteParenthesis(IntervalHourMinute):
-    grok.name("hourminuteparenthesis")
-
-    def render(self):
-        interval = super(IntervalHourMinuteParenthesis, self).render()
-        if len(interval):
-            return translate(
-                _(u"(interval_parenthesis)", u"(%s)"),
-                context=self.request) % interval
-        else:
-            return interval
-
-
 class TimeHourMinute(grok.View):
     grok.context(datetime.datetime)
     grok.name("hourminute")
@@ -505,3 +492,24 @@ def httpTime(timeValue):
             },
         utcTime
         )
+
+
+class EventLength(grok.View):
+    grok.context(DisplayEvent)
+    grok.name("eventlength")
+
+    def render(self):
+        if self.context.canceled:
+            return translate(
+                _(u"[Canceled]"),
+                context=self.request)
+
+        interval_view = IntervalHourMinute(self.context.length, self.request)
+        interval = interval_view.render()
+        if len(interval):
+            return translate(
+                _(u"(interval_parenthesis)", u"(%s)"),
+                context=self.request) % interval
+        else:
+            return interval
+

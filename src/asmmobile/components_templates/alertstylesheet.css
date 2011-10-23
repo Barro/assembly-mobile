@@ -1,5 +1,3 @@
-<tal:block tal:condition="viewlet/displayStyle">
-
 .alert {
   background: #fdd;
   color: #000;
@@ -23,5 +21,3 @@
 .alert a:hover {
   text-decoration: none;
 }
-
-</tal:block>

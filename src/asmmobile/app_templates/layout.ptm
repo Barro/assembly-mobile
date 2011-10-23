@@ -7,10 +7,12 @@
 <head>
   <title><metal:block define-slot="page-title"></metal:block><metal:block define-slot="page-title-separator"> - </metal:block><span tal:replace="context/@@layout/siteName">Assembly Mobile</span></title>
   <style type='text/css' tal:content="structure provider:stylesheets"></style>
+
   <!-- user-scalable=no prevents those zoom buttons in the lower right corner
        of the screen and that way we don't need to add extra padding to footer.
     -->
   <meta name="viewport" content="width=device-width,user-scalable=no" />
+
   <metal:block define-slot="extra-head-data"></metal:block>
 </head>
 

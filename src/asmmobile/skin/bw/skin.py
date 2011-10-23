@@ -40,7 +40,7 @@ class LayoutStyle(grok.Viewlet):
     grok.layer(BwSkin)
 
 
-class ScheduleChangedStyle(asmmobile.app.ScheduleChangedStyle):
+class ScheduleChangedStyle(asmmobile.components.AlertStylesheet):
     grok.layer(BwSkin)
 
 # XXX: This should be not needed and used alternative skin names should be found
