@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Thu Oct 13 16:39:17 2011\n"
+"POT-Creation-Date: Sun Oct 23 17:28:03 2011\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -24,47 +24,47 @@ msgstr ""
 "Generated-By: zope/app/locales/extract.py\n"
 
 #: src/asmmobile/app.py:161
-#: src/asmmobile/app.py:500
+#: src/asmmobile/app.py:502
 msgid "Home"
 msgstr ""
 
-#: src/asmmobile/app.py:496
+#: src/asmmobile/app.py:498
 #: src/asmmobile/location.py:54
 #: src/asmmobile/location_templates/index.ptm:2
 #: src/asmmobile/location_templates/index.ptm:5
 msgid "Locations"
 msgstr ""
 
-#: src/asmmobile/app.py:501
-#: src/asmmobile/app.py:554
+#: src/asmmobile/app.py:503
+#: src/asmmobile/app.py:543
 #: src/asmmobile/event.py:90
 #: src/asmmobile/app_templates/allevents.ptm:3
 msgid "All events"
 msgstr ""
 
-#: src/asmmobile/app.py:502
+#: src/asmmobile/app.py:504
 #: src/asmmobile/app_templates/about.ptm:2
 #: src/asmmobile/app_templates/about.ptm:5
 msgid "About"
 msgstr ""
 
-#: src/asmmobile/app.py:572
+#: src/asmmobile/app.py:561
 msgid "%d day"
 msgstr ""
 
-#: src/asmmobile/app.py:574
+#: src/asmmobile/app.py:563
 msgid "%d days"
 msgstr ""
 
-#: src/asmmobile/app.py:580
+#: src/asmmobile/app.py:569
 msgid "%d hour"
 msgstr ""
 
-#: src/asmmobile/app.py:582
+#: src/asmmobile/app.py:571
 msgid "%d hours"
 msgstr ""
 
-#: src/asmmobile/app.py:605
+#: src/asmmobile/app.py:594
 msgid "QR code link to home page (%s)."
 msgstr ""
 
@@ -134,95 +134,93 @@ msgstr ""
 msgid "${party_name} has ended. Welcome again next year!"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:12
-msgid "${start_time}<!----> ${event_name}"
+#: src/asmmobile/app_templates/index.ptm:15
+msgid "Schedule changes"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:20
+#: src/asmmobile/app_templates/index.ptm:23
+msgid "${start_time}<!----> ${event_name} ${canceled}"
+msgstr ""
+
+#: src/asmmobile/app_templates/index.ptm:32
 msgid "Now"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:50
+#: src/asmmobile/app_templates/index.ptm:56
 msgid "${major_span_start} ${time_left} left ${major_span_end} <!----> ${location_name}"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:59
+#: src/asmmobile/app_templates/index.ptm:65
 msgid "Next"
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:63
+#: src/asmmobile/app_templates/index.ptm:69
 msgid "No new scheduled events are starting in next two hours. See <!----> ${link_all_events} <!----> for further events."
 msgstr ""
 
-#: src/asmmobile/app_templates/index.ptm:63
+#: src/asmmobile/app_templates/index.ptm:69
 msgid "all events"
-msgstr ""
-
-#: src/asmmobile/app_templates/index.ptm:9
-msgid "Schedule changes"
 msgstr ""
 
 #: src/asmmobile/app_templates/index.ptm:92
 msgid "${major_span_start} in ${time_till_start} ${major_span_end} <!----> ${location_name}"
 msgstr ""
 
-#: src/asmmobile/app_templates/layout.ptm:62
+#: src/asmmobile/app_templates/layout.ptm:64
 msgid "Utilities"
 msgstr ""
 
-#: src/asmmobile/app_templates/layout.ptm:65
+#: src/asmmobile/app_templates/layout.ptm:67
 msgid "Most mobile phones and desktop calendar software can import events from this file."
 msgstr ""
 
-#: src/asmmobile/app_templates/layout.ptm:65
+#: src/asmmobile/app_templates/layout.ptm:67
 msgid "Import to your calendar"
 msgstr ""
 
-#: src/asmmobile/app_templates/layout.ptm:71
+#: src/asmmobile/app_templates/layout.ptm:73
 msgid "This link requires a mobile phone with a QR code reader."
 msgstr ""
 
-#: src/asmmobile/app_templates/layout.ptm:71
+#: src/asmmobile/app_templates/layout.ptm:73
 msgid "Link to this page"
 msgstr ""
 
-#: src/asmmobile/event.py:267
+#: src/asmmobile/event.py:279
 msgid "%s (major event)"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:11
-#: src/asmmobile/app_templates/index.ptm:32
-#: src/asmmobile/app_templates/index.ptm:75
-msgid "[Canceled]"
+#: src/asmmobile/event_templates/eventindex.ptm:14
+msgid "This event has been canceled!"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:15
+#: src/asmmobile/event_templates/eventindex.ptm:26
 #: src/asmmobile/location_templates/locationindex.ptm:10
 msgid "External location page may provide additional information about this location that is not optimized for mobile devices."
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:28
+#: src/asmmobile/event_templates/eventindex.ptm:39
 msgid "Time ${and_location}"
-msgstr ""
-
-#: src/asmmobile/event_templates/eventindex.ptm:29
-msgid "and location"
 msgstr ""
 
 #: src/asmmobile/event_templates/eventindex.ptm:4
 msgid "${event_name} (event)"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:47
+#: src/asmmobile/event_templates/eventindex.ptm:40
+msgid "and location"
+msgstr ""
+
+#: src/asmmobile/event_templates/eventindex.ptm:58
 msgid "- ${end_day} ${end_time}"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:55
-msgid "${start_day} ${start_time} ${end_time} ${event_length} ${start_time_change}"
+#: src/asmmobile/event_templates/eventindex.ptm:66
+msgid "${start_day} ${start_time} ${end_time} <!----> ${event_length} ${start_time_change}"
 msgstr ""
 
-#: src/asmmobile/event_templates/eventindex.ptm:64
-msgid "- original start time ${original_day} ${original_time}."
+#: src/asmmobile/event_templates/eventindex.ptm:76
+msgid "<!----> - original start time ${original_day} ${original_time}."
 msgstr ""
 
 #: src/asmmobile/location_templates/locationindex.ptm:4
@@ -249,17 +247,22 @@ msgstr ""
 msgid "%(hours)s %(minutes)s"
 msgstr ""
 
-#: src/asmmobile/util.py:187
-#. Default: "(%s)"
-msgid "(interval_parenthesis)"
-msgstr ""
-
-#: src/asmmobile/util.py:198
+#: src/asmmobile/util.py:185
 #. Default: "%H:%M"
 msgid "(hour_minute)"
 msgstr ""
 
-#: src/asmmobile/util.py:221
+#: src/asmmobile/util.py:208
 msgid "EEEE yyyy-MM-dd HH:mm"
+msgstr ""
+
+#: src/asmmobile/util.py:504
+#: src/asmmobile/app_templates/index.ptm:25
+msgid "[Canceled]"
+msgstr ""
+
+#: src/asmmobile/util.py:511
+#. Default: "(%s)"
+msgid "(interval_parenthesis)"
 msgstr ""
 

@@ -20,7 +20,7 @@
        i18n:name="event_name">
       <span tal:replace="event/name"  />
     </a>
-    <tal:block tal:condition="event/canceled">
+    <tal:block i18n:name="canceled" tal:condition="event/canceled">
       <!---->
       <span i18n:translate="">[Canceled]</span>
     </tal:block>
