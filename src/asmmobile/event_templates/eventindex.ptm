@@ -24,7 +24,7 @@ This event has been canceled!
   <tal:block tal:condition="context/url">
     <!---->(
     <a tal:attributes="href context/url"
-       title="External location page may provide additional information about this location that is not optimized for mobile devices."
+       title="External location page may provide additional information about this event that is not optimized for mobile devices."
        i18n:attributes="title"
        tal:content="context/url/@@domain">www.assembly.org</a>
     )

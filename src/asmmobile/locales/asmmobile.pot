@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Sun Oct 23 17:28:03 2011\n"
+"POT-Creation-Date: Sun Oct 23 17:37:30 2011\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -195,8 +195,7 @@ msgid "This event has been canceled!"
 msgstr ""
 
 #: src/asmmobile/event_templates/eventindex.ptm:26
-#: src/asmmobile/location_templates/locationindex.ptm:10
-msgid "External location page may provide additional information about this location that is not optimized for mobile devices."
+msgid "External location page may provide additional information about this event that is not optimized for mobile devices."
 msgstr ""
 
 #: src/asmmobile/event_templates/eventindex.ptm:39
@@ -221,6 +220,10 @@ msgstr ""
 
 #: src/asmmobile/event_templates/eventindex.ptm:76
 msgid "<!----> - original start time ${original_day} ${original_time}."
+msgstr ""
+
+#: src/asmmobile/location_templates/locationindex.ptm:10
+msgid "External location page may provide additional information about this location that is not optimized for mobile devices."
 msgstr ""
 
 #: src/asmmobile/location_templates/locationindex.ptm:4
