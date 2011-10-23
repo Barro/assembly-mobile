@@ -263,7 +263,6 @@ class AsmMobile(grok.Application, grok.Container):
             raise ImportError("Event has to have a start time")
 
         if not DATE_FORMAT_RE.match(values['start']):
-            print values['start']
             raise ImportError("Invalid start time format: %s" % values['start'])
 
         if 'end' not in values:
@@ -696,4 +695,20 @@ class Edit(grok.EditForm):
             self.context[kw['locations']] = self.context[oldLocations]
             del self.context[oldLocations]
 
+        self.redirect(self.url(self.context, 'edit'))
+
+    @grok.action("Zero start times")
+    def zeroOriginalStartTimes(self, **kw):
+        """Makes original event start times same as the current start times.
+
+        This can be useful in situation where mobile schedule is published
+        before the full schedule is complete and start times are in flux.
+        """
+
+        for languaged_events in self.context.EVENTS.values():
+            for event in languaged_events.values():
+                event.startOriginal = event.start
+                grok.notify(grok.ObjectModifiedEvent(event))
+
+        self.flash(u"Original start times have been set to match the current start times.")
         self.redirect(self.url(self.context, 'edit'))
