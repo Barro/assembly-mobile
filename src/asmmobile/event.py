@@ -179,6 +179,8 @@ class EventContainerIndex(grok.View):
 class Event(grok.Model):
     grok.implements(interfaces.IEvent, interfaces.IEventOwner)
 
+    _start = None
+
     def __init__(
         self,
         id,
@@ -248,6 +250,16 @@ class Event(grok.Model):
 
     def getLastModified(self, request):
         return self.lastModified
+
+    def setStart(self, start):
+        self._start = start
+        if self.startOriginal is None:
+            self.startOriginal = start
+
+    def getStart(self):
+        return self._start
+
+    start = property(getStart, setStart)
 
 
 class EventIndex(MobileView):
