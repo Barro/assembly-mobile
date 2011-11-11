@@ -21,7 +21,6 @@ import dateutil.tz
 import cgi
 import os
 import re
-import sys
 import urllib
 import urlparse
 
@@ -29,9 +28,9 @@ import urlparse
 import grok
 import grokcore.view.components
 import grokcore.view.interfaces
-import martian.util
 import zope.component
 from zope.i18n import translate
+from zope.i18n.interfaces import IUserPreferredLanguages
 from zope.interface import Interface
 import zope.tales.expressions
 from zope.tales.interfaces import ITALESExpression
@@ -269,9 +268,19 @@ class ContentTraverser(grok.Traverser):
         return content.get(name, None)
 
     def getContent(self, request):
-        content = self.context.get(request.locale.id.language, None)
+        # Somehow we don't have application when the request (traversing) starts
+        # but we need the current language here and behold! We have the
+        # application here.
+        languages = zope.component.getAdapter(request, IUserPreferredLanguages)
+        content = None
+        for language in languages.getPreferredLanguages():
+            if language in self.context:
+                content = self.context[language]
+                break
+
         if content is None:
             content = self.context[grok.getApplication().defaultLanguage]
+
         return content
 
     def browserDefault(self, request):
