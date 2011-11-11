@@ -15,13 +15,23 @@ body {
   float: right;
 }
 
-a, .links a:hover, .links strong, p a:hover, .header a:hover {
+a, .links a:hover, .links strong, p a:hover, .header a:hover, .links button:hover {
   text-decoration: none;
   color: #033442;
 }
 
-a:hover, .links a, p a, .header a {
+a:hover, .links a, p a, .header a, .links button {
   text-decoration: underline;
+  cursor: pointer;
+}
+
+.links form {
+  display: inline;
+}
+
+.links button {
+  background: transparent;
+  border: 0px;
 }
 
 /* Add some extra height so that links that go on multiple lines are more
@@ -31,7 +41,7 @@ a:hover, .links a, p a, .header a {
   line-height: 140%;
 }
 
-h1 {
+h1, button {
   font-size: 100%;
   margin: 0;
 }
@@ -51,7 +61,7 @@ h3 span {
   font-weight: normal;
 }
 
-h1, h2, h3 {
+h1, h2, h3, button {
   padding: 0;
 }
 
