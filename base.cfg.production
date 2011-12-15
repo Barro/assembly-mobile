@@ -19,7 +19,7 @@ paste-deploy-ini =
 
   [filter:strip_whitespace_filter]
   paste.filter_factory = asmmobile.filters:strip_whitespace_filter_factory
-  strip_types = text/html application/xhtml+xml
+  strip_types = application/xhtml+xml
   filter-with = gzipper
 
   [filter:gzipper]
