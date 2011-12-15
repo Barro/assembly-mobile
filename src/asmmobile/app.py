@@ -208,7 +208,10 @@ class AsmMobile(grok.Application, grok.Container):
         return self[self.locations]
 
     def _getLanguagedEvents(self, request):
-        defaultEvents = self.EVENTS[self.defaultLanguage]
+        defaultEvents = self.EVENTS.get(self.defaultLanguage, None)
+        if defaultEvents is None:
+            defaultEvents = asmmobile.event.EventContainer()
+            self.EVENTS[self.defaultLanguage] = defaultEvents
         events = self.EVENTS.get(request.locale.id.language, defaultEvents)
         return events
 

@@ -116,7 +116,10 @@ class Index(MobileView):
     def update(self):
         content = self.context.get(self.request.locale.id.language, None)
         if content is None:
-            content = self.context[grok.getApplication().defaultLanguage]
+            language = grok.getApplication().defaultLanguage
+            if language not in self.context:
+                self.context[language] = LocationContainer()
+            content = self.context[language]
         self.locations = content.values()
 
 
