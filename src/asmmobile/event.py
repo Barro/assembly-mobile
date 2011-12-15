@@ -180,6 +180,7 @@ class Event(grok.Model):
     grok.implements(interfaces.IEvent, interfaces.IEventOwner)
 
     _start = None
+    startOriginal = None
 
     def __init__(
         self,
