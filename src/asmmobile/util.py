@@ -90,27 +90,29 @@ class KeyNormalize(grok.View):
 
 
 def shortenName(name, maximumLength, shortenTo, nonWordCharacters, cutPostfix):
+    if len(name) <= maximumLength:
+        return name
+
+    # Name is too long. Cut it so that the three dots cutPostfix comes directly
+    # after the last full word.
     shortName = name
-    # Name is too long. Cut it so that the three dots (...) come directly after
-    # the last full word.
-    if len(shortName) > maximumLength:
-        # Cut to maximum length of a name.
-        newShortName = shortName[:shortenTo]
-        # Reverse name to cut to last full word.
-        reversedName = newShortName[::-1]
-        firstNonAlpha = 0
-        # Find the beginning of last partial word.
-        while reversedName[firstNonAlpha] not in nonWordCharacters:
-            firstNonAlpha += 1
-        # Find the end of last full word
-        while reversedName[firstNonAlpha] in nonWordCharacters:
-            firstNonAlpha += 1
-        # Cut the not wanted characters from the end of the name.
-        reversedName = reversedName[firstNonAlpha:]
-        # Reverse the name
-        newShortName = reversedName[::-1]
-        # Add dots to cut name to indicate cutting.
-        shortName = newShortName + cutPostfix
+    # Cut to maximum length of a name.
+    newShortName = shortName[:shortenTo]
+    # Reverse name to cut to last full word.
+    reversedName = newShortName[::-1]
+    firstNonAlpha = 0
+    # Find the beginning of last partial word.
+    while reversedName[firstNonAlpha] not in nonWordCharacters:
+        firstNonAlpha += 1
+    # Find the end of last full word
+    while reversedName[firstNonAlpha] in nonWordCharacters:
+        firstNonAlpha += 1
+    # Cut the not wanted characters from the end of the name.
+    reversedName = reversedName[firstNonAlpha:]
+    # Reverse the name
+    newShortName = reversedName[::-1]
+    # Add postfix to cut name to indicate cutting.
+    shortName = newShortName + cutPostfix
     return shortName
 
 
