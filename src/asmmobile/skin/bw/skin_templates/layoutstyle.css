@@ -57,11 +57,11 @@ a:visited {
   font-style: italic;
 }
 
-a, .links a:hover, .links strong, p a:hover, .header a:hover, .links button:hover {
+a:hover, .links button:hover {
   text-decoration: none;
 }
 
-a:hover, .links a, p a, .header a, .links button {
+a, .links button {
   text-decoration: underline;
   cursor: pointer;
 }
