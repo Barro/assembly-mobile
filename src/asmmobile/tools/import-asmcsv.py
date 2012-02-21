@@ -64,6 +64,7 @@ def importer(filename, prefix):
         if lang not in events:
             events[lang] = {}
 
+    order_id = 0
     for entry in reader:
         if entry['Public'] == 'No':
             continue
@@ -115,6 +116,7 @@ def importer(filename, prefix):
             'is-major': isMajor,
             'description': escapeDescription(unicode(entry['Description_EN'], 'utf-8')),
             'canceled': (entry['Cancelled'].lower() == 'yes'),
+            'order': order_id,
             }
         events['fi'][eventId] = {
             'name': unicode(entry['Title_FI'], 'utf-8'),
@@ -126,6 +128,8 @@ def importer(filename, prefix):
             'is-major': isMajor,
             'description': escapeDescription(unicode(entry['Description_FI'], 'utf-8')),
             'canceled': (entry['Cancelled'].lower() == 'yes'),
+            'order': order_id,
             }
+        order_id += 1
 
     return locations, events

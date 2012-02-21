@@ -24,6 +24,10 @@ def name(first, second):
     return cmp(first.id, second.id)
 
 
+def order(first, second):
+    return cmp(first.order, second.order)
+
+
 def startTime(first, second):
     result = cmp(first.start, second.start)
     return result
@@ -68,6 +72,7 @@ decorators.update({
 
 types.update({
     'name': name,
+    'order': order,
     'start-time': startTime,
     'location-priority': locationPriority,
     'major': major,

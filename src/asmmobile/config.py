@@ -70,6 +70,7 @@ sourceUrl = stringValue("source-url", "http://bitbucket.org/barro/assembly-mobil
 # Sort types:
 #
 # name
+# order
 # start-time
 # location-priority
 # major
@@ -80,7 +81,7 @@ sourceUrl = stringValue("source-url", "http://bitbucket.org/barro/assembly-mobil
 #
 # If start times match, then display major events first and then events in
 # more important locations are shown first.
-sortCurrentEvents = stringValue("sort-current-events", "start-time&reverse&if-equals:major&if-equals:location-priority&if-equals:name")
+sortCurrentEvents = stringValue("sort-current-events", "start-time&reverse&if-equals:major&if-equals:location-priority&if-equals:order&if-equals:name")
 
 # Shows what kind of sort order events that begin in a while have.
 #
@@ -89,7 +90,7 @@ sortCurrentEvents = stringValue("sort-current-events", "start-time&reverse&if-eq
 #
 # If start times match, then display major events first and then events in
 # more important locations are shown first.
-sortNextEvents = stringValue("sort-next-events", "start-time&if-equals:major&if-equals:location-priority&if-equals:name")
+sortNextEvents = stringValue("sort-next-events", "start-time&if-equals:major&if-equals:location-priority&if-equals:order&if-equals:name")
 
 # Selector types for future events:
 #

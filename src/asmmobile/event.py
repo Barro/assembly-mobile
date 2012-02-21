@@ -35,12 +35,12 @@ import asmmobile.location
 
 def _sortByStartTime(first, second):
     startCmp = cmp(first.start, second.start)
-    if startCmp == 0:
-        # In case we have same start time, compare by ID to always get correct
-        # sort order.
-        return cmp(first.id, second.id)
-    else:
+    if startCmp != 0:
         return startCmp
+    if first.order != second.order:
+        return cmp(first.order, second.order)
+    return cmp(first.id, second.id)
+
 
 
 def getNoneUtcTime(timeObject):
@@ -82,6 +82,7 @@ class NoneEvent(grok.Model):
     categories = []
     isMajor = False
     canceled = False
+    order = 0
 
 
 class LocalizedEventContainer(grok.Container):
@@ -145,6 +146,7 @@ class EventContainer(grok.OrderedContainer):
                  ('shortName', 'short-name'),
                  ('isMajor', 'is-major'),
                  'canceled',
+                 'order',
                  ])
 
         # Order events by start time.
@@ -181,6 +183,7 @@ class Event(grok.Model):
 
     _start = None
     startOriginal = None
+    order = 0
 
     def __init__(
         self,
@@ -197,6 +200,7 @@ class Event(grok.Model):
         lastModified=None,
         startOriginal=None,
         canceled=False,
+        order=0,
         ):
         self.id = id
         self.name = name
@@ -221,6 +225,7 @@ class Event(grok.Model):
         self.lastModified = lastModified
         self.utcLastModified = getNoneUtcTime(self.lastModified)
         self.canceled = canceled
+        self.order = order
 
     def getLocation(self):
         if self._location is None:
