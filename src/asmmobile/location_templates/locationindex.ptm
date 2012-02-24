@@ -28,7 +28,7 @@
       tal:content="event/start/@@dayname">Dayname</h2>
   <span tal:replace="structure python:'<div class=\'%s\'>' % shorten('event')"
         tal:condition="python:lastStart!=event.start.day" />
-  <div tal:attributes="class python:event.canceled and shorten('canceled') or None">
+  <div tal:attributes="class python:shorten('' + (event.end < view.now and 'finished' or '') + (event.canceled and ' canceled' or ''))">
     <span tal:replace="structure event/@@scheduledevent" />
   </div>
 
