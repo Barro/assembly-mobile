@@ -98,6 +98,9 @@ class NotEndedEvents(EventSelector):
 
 
 class NotHiddenEvents(EventSelector):
+    """Shows events that according to current start time are supposed start
+    in a short while."""
+
     def construct(self, arguments):
         return NotHiddenEvents()
 
@@ -109,6 +112,9 @@ class NotHiddenEvents(EventSelector):
 
 
 class NotHiddenOriginalEvents(EventSelector):
+    """Shows events that according to original start time are supposed start
+    in a short while."""
+
     def construct(self, arguments):
         return NotHiddenOriginalEvents()
 
