@@ -420,7 +420,10 @@ class Index(MobileView):
                         selector.StartTimeChangedEvents(),
                         selector.CanceledEvents()
                         ]),
-             selector.NotHiddenOriginalEvents().reset(now)])
+             selector.OrSelector([
+                        selector.NotHiddenEvents().reset(now),
+                        selector.NotHiddenOriginalEvents().reset(now)])
+             ])
         changedEvents = filter(changedSelector, notEndedEvents)
         self.changedEvents = getEventList(self, changedEvents)
 
