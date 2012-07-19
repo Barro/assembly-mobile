@@ -401,17 +401,19 @@ class Index(MobileView):
         notEndedEvents = self.context.getEvents(self.request,
             selector.NotEndedEvents().setNow(now))
 
-        currentEvents = filter(
-            selector.CurrentEvents().setNow(now), notEndedEvents)
-        currentEvents.sort(currentSort)
+        currentEvents = sorted(
+            filter(
+                selector.CurrentEvents().setNow(now), notEndedEvents),
+            currentSort)
 
         self.currentEvents = getEventList(self, currentEvents)
 
         for nextSelector in nextSelectors:
             nextSelector.reset(now)
         nextSelector = selector.AndSelector(nextSelectors)
-        nextEvents = filter(nextSelector, notEndedEvents)
-        nextEvents.sort(nextSort)
+        nextEvents = sorted(
+            filter(nextSelector, notEndedEvents),
+            nextSort)
 
         self.nextEvents = getEventList(self, nextEvents)
 
