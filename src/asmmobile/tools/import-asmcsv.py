@@ -25,11 +25,11 @@ import dateutil.tz
 import re
 
 def normalizeShortNameEn(name):
-    result = name.replace("ARTtech seminars - ", "Seminar:")
+    result = name.replace("ARTtech seminars - ", "Seminar, ")
     return result
 
 def normalizeShortNameFi(name):
-    result = name.replace("ARTtech seminars - ", "Seminaari:")
+    result = name.replace("ARTtech seminars - ", "Seminaari, ")
     return result
 
 def parseCsvDate(dateString):
