@@ -24,6 +24,13 @@ import datetime
 import dateutil.tz
 import re
 
+def normalizeShortNameEn(name):
+    result = name.replace("ARTtech seminars - ", "Seminar:")
+    return result
+
+def normalizeShortNameFi(name):
+    result = name.replace("ARTtech seminars - ", "Seminaari:")
+    return result
 
 def parseCsvDate(dateString):
     # Date is in format:
@@ -117,6 +124,7 @@ def importer(filename, prefix):
             'description': escapeDescription(unicode(entry['Description_EN'], 'utf-8')),
             'canceled': (entry['Cancelled'].lower() == 'yes'),
             'order': order_id,
+            'short-name': normalizeShortNameEn(unicode(entry['Title_EN'], 'utf-8')),
             }
         events['fi'][eventId] = {
             'name': unicode(entry['Title_FI'], 'utf-8'),
@@ -129,6 +137,7 @@ def importer(filename, prefix):
             'description': escapeDescription(unicode(entry['Description_FI'], 'utf-8')),
             'canceled': (entry['Cancelled'].lower() == 'yes'),
             'order': order_id,
+            'short-name': normalizeShortNameFi(unicode(entry['Title_FI'], 'utf-8')),
             }
         order_id += 1
 
