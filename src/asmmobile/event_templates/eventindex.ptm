@@ -85,13 +85,13 @@ This event has been canceled!
   </div>
 </tal:block>
 
+</div>
+
 <tal:block tal:define="calendarLinkBase python:view.urlR(context.__name__);
                        pageUrl python:view.application_url('event') + '/' + context.id">
   <metal:block metal:use-macro="context/@@layout/macros/event-container-utilities">
   </metal:block>
 </tal:block>
-
-</div>
 
 </tal:block>
 

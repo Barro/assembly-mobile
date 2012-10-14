@@ -2,13 +2,15 @@
   <metal:block metal:fill-slot='page-title'
                i18n:translate="">Locations</metal:block>
   <div metal:fill-slot='content'>
-    <h1 i18n:translate="">Locations</h1>
-    <ul tal:attributes="class shorten:links locations">
-      <li tal:repeat="location view/locations">
-        <a tal:attributes="href location/@@url"
-           tal:content="location/name">Location</a>
-      </li>
-    </ul>
+    <div class="locations">
+      <h1 i18n:translate="">Locations</h1>
+        <ul tal:attributes="class shorten:links locations">
+          <li tal:repeat="location view/locations">
+            <a tal:attributes="href location/@@url"
+               tal:content="location/name">Location</a>
+          </li>
+        </ul>
+    </div>
 
     <tal:block tal:define="pageUrl python:view.application_url('location')">
       <metal:block metal:use-macro="context/@@layout/macros/event-container-utilities">
