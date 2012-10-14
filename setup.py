@@ -32,6 +32,7 @@ setup(name='asmmobile',
                         'python-dateutil==1.5',
                         'repoze.profile',
                         'zc.sourcefactory',
+                        "unidecode",
                         ],
       entry_points={
           'fanstatic.libraries': [

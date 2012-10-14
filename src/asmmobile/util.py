@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Assembly mobile - mobile content for visitors of Assembly computer festival.
-# Copyright (C) 2009  Assembly Organizing
+# Copyright (C) 2009,2010,2011,2012  Assembly Organizing
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -23,6 +23,7 @@ import re
 import string
 import StringIO
 import time
+import unidecode
 import urlparse
 
 import grok
@@ -79,7 +80,10 @@ KEY_CHARACTERS = (string.ascii_letters.decode('ascii')
 NORMALIZE_REGEX = re.compile(ur'([^%s]+)' % KEY_CHARACTERS)
 
 def convertNameToKey(name):
-    return NORMALIZE_REGEX.sub(ur'-', name.lower()).strip("-")
+    ascii_normalized = unidecode.unidecode(name)
+    special_character_normalized = NORMALIZE_REGEX.sub(
+        ur'-', ascii_normalized.lower())
+    return special_character_normalized.strip("-")
 
 class KeyNormalize(grok.View):
     grok.context(unicode)
