@@ -503,7 +503,7 @@ class Layout(MobileView):
         cls.sourceUrl = config.sourceUrl
         cls.siteName = config.siteName
         cls.mainSiteUrl = config.mainSiteUrl
-        cls.pageLocations = (_(u"Locations"), AsmMobile.locations, None)
+        cls.pageLocations = (_(u"Locations"), lambda context: grok.getApplication().LOCATIONS.__name__, None)
 
     util.runDeferred(_initialize)
 

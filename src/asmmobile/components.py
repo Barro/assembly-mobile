@@ -304,7 +304,11 @@ class ViewLink(grok.View):
 
     def render(self):
         pageName, pageLocation, cssStyles = self.context
-        nohashPart = pageLocation.split("#", 1)[0]
+        location = pageLocation
+        if hasattr(pageLocation, "__call__"):
+            location = pageLocation(self.context)
+
+        nohashPart = location.split("#", 1)[0]
         cleanedViewUrl = self.request.getURL().replace("/@@index", "")
         styles = ''
         if cssStyles is not None:
@@ -315,7 +319,7 @@ class ViewLink(grok.View):
             return "<strong%s>%s</strong>" % (styles, translate(
                 pageName, context=self.request))
 
-        locationUrl = util.applicationRelativeUrl(self, pageLocation)
+        locationUrl = util.applicationRelativeUrl(self, location)
         return '<a href="%s"%s>%s</a>' % (
             locationUrl, styles, translate(pageName, context=self.request))
 
