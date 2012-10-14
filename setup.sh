@@ -19,7 +19,7 @@ if test ! -f base.cfg; then
     fi
 fi
 
-PYTHON_VERSION="2.6.7"
+PYTHON_VERSION="2.7.3"
 SETUPTOOLS_VERSION="0.6c11"
 
 ASMMOBILE_ROOT="`pwd`"
