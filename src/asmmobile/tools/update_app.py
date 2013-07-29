@@ -2,12 +2,16 @@ import grok
 
 from asmmobile.tools.update_schedule import updateSchedule
 
+
 class UpdateScheduleApp(grok.Application):
-    pass
+    enableInternalization = False
+    defaultLanguage = "en"
+    sendCachingHeaders = False
 
 
 class UpdateSchedule(grok.Model):
     pass
+
 
 class Index(grok.View):
     grok.context(UpdateSchedule)
@@ -19,6 +23,7 @@ class Index(grok.View):
 
     def render(self):
         return "OK"
+
 
 class BaseTraverser(grok.Traverser):
     grok.context(UpdateScheduleApp)

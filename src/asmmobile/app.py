@@ -155,6 +155,7 @@ class ImportError(RuntimeError):
 
 DATE_FORMAT_RE = re.compile(ur"^\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d[+-]\d\d\d\d$")
 
+
 class AsmMobile(grok.Application, grok.Container):
     zope.interface.implements(interfaces.IAsmMobile, interfaces.IEventOwner)
 

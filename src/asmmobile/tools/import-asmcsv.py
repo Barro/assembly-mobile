@@ -53,14 +53,19 @@ def escapeDescription(description):
     escaped = re.sub("& ", "&amp; ", escaped)
     return escaped
 
+
 def importer(filename, prefix):
     # Schedule is in format:
     # FIELDNAME1;FIELDNAME2;...
     # field_value1;field_value2;...
+    fields = "ID;Outline_Number;Name;Duration;Start_Date;Finish_Date;AsmTV;BigScreen;Major;Public;SumTask;Class;URL;Title_EN;Title_FI;Location_EN;Location_FI;Location_URL;Outline_Level;Description_EN;Description_FI;Cancelled".split(";")
     fp = open(filename, "r")
     dialect = csv.Sniffer().sniff(fp.read(), delimiters="\t;")
     fp.seek(0)
-    reader = csv.DictReader(fp, dialect=dialect)
+    reader = csv.DictReader(fp, fieldnames=fields, dialect=dialect)
+
+    # Skip over header line.
+    reader.next()
 
     locations = {}
     events = {}
@@ -73,7 +78,7 @@ def importer(filename, prefix):
 
     order_id = 0
     for entry in reader:
-        if entry['Public'] == 'No':
+        if entry['Public'].lower() == 'no':
             continue
         # Ignore empty entries:
         if entry['Title_EN'] == "" or entry['Title_FI'] == "":
@@ -90,7 +95,7 @@ def importer(filename, prefix):
         eventId = "%s%s-%s" % (prefix, startTime[0:4], entry['ID'])
         categories = []
         isMajor = False
-        if entry['Major'] == 'Yes':
+        if entry['Major'].lower() == 'yes':
             isMajor = True
             categories.append("Major_event")
         if len(entry['Class']) > 0:
