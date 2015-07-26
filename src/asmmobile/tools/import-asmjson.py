@@ -43,7 +43,7 @@ def escapeDescription(description):
     return escaped
 
 
-def importer(filename, prefix):
+def importer(filename):
     fp = open(filename, "r")
     data = json.load(fp)
 
