@@ -90,11 +90,8 @@ def importer(filename):
         description_en = event.get('description', u"")
         description_fi = event.get("description_fi", description_en)
         url = event.get("url")
-        start_time = dateutil.parser.parse(event.get("start_time"))
-        end_time_str = event.get("end_time")
-        end_time = None
-        if end_time_str:
-            end_time = dateutil.parser.parse(end_time_str)
+        start_time = event.get("start_time")
+        end_time = event.get("end_time")
         start_original = event.get("original_start_time")
         is_major = 'major' in event.get('flags', [])
         is_canceled = 'canceled' in event.get('flags', [])
