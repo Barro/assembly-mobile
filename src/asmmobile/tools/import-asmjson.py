@@ -57,6 +57,26 @@ def importer(filename, prefix):
             events[lang] = {}
 
     order_id = 0
+    for location_key, location in data['locations'].items():
+        location_name_en = location.get('name')
+        location_name_fi = location.get('name_fi', location_name_en)
+
+        location_description_en = location.get("description")
+        location_description_fi = location.get(
+            "description_fi", location_description_en)
+
+        location_url = location.get("url")
+        locations['en'][location_key] = {
+            'name': location_name_en,
+            'url': location_url,
+            'description': location_description_en
+        }
+        locations['fi'][location_key] = {
+            'name': location_name_fi,
+            'url': location_url,
+            'description': location_description_fi
+        }
+
     for event in data['events']:
         # Ignore empty entries:
         if event['name'] == "" or event.get('name_fi', "") == "":
