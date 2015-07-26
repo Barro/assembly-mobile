@@ -21,6 +21,7 @@ import json
 import dateutil.parser
 import re
 
+DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S%z"
 
 def normalizeShortNameEn(name):
     result = name.replace("ARTtech seminars - ", "Seminar, ")
@@ -90,9 +91,17 @@ def importer(filename):
         description_en = event.get('description', u"")
         description_fi = event.get("description_fi", description_en)
         url = event.get("url")
-        start_time = event.get("start_time")
-        end_time = event.get("end_time")
-        start_original = event.get("original_start_time")
+        start_time_obj = dateutil.parser.parse(event.get("start_time"))
+        start_time = start_time_obj.strftime(DATETIME_FORMAT)
+        end_time_str = event.get("end_time")
+        end_time = None
+        if end_time_str:
+            end_time_obj = dateutil.parser.parse(end_time_str)
+            end_time = end_time_obj.strftime(DATETIME_FORMAT)
+
+        start_original_obj = dateutil.parser.parse(
+            event.get("original_start_time"))
+        start_original = start_original_obj.strftime(DATETIME_FORMAT)
         is_major = 'major' in event.get('flags', [])
         is_canceled = 'canceled' in event.get('flags', [])
         categories = []
