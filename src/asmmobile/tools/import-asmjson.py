@@ -24,11 +24,13 @@ import re
 
 def normalizeShortNameEn(name):
     result = name.replace("ARTtech seminars - ", "Seminar, ")
+    result = result.replace("ARTtech seminars: ", "Seminar: ")
     return result
 
 
 def normalizeShortNameFi(name):
     result = name.replace("ARTtech seminars - ", "Seminaari, ")
+    result = result.replace("ARTtech seminars: ", "Seminaari: ")
     return result
 
 
