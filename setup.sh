@@ -1,7 +1,9 @@
 #!/bin/sh
 
+set -eu
+
 for prog in curl gcc make tar gzip bzip2; do
-    if test -z "`which $prog`"; then
+    if test -z "$(which $prog)"; then
         echo "$prog is needed!"
         exit 1
     fi
@@ -19,31 +21,25 @@ if test ! -f base.cfg; then
     fi
 fi
 
-PYTHON_VERSION="2.7.3"
-SETUPTOOLS_VERSION="0.6c11"
+PYTHON_VERSION=2.7.12
 
-ASMMOBILE_ROOT="`pwd`"
-mkdir extends-cache
+ASMMOBILE_ROOT=$(pwd)
+mkdir -p extends-cache
 PACKAGES_ROOT="$ASMMOBILE_ROOT"/packages
 PYTHON_ROOT="$ASMMOBILE_ROOT"/python
 
-PYTHON_PACKAGE="http://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tar.bz2"
-SETUPTOOLS_PACKAGE="http://pypi.python.org/packages/source/s/setuptools/setuptools-${SETUPTOOLS_VERSION}.tar.gz"
+PYTHON_PACKAGE="https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tar.xz"
 
 # Install Python
 mkdir -p "$PACKAGES_ROOT"
 cd "$PACKAGES_ROOT"
-curl -s "$PYTHON_PACKAGE" | tar xvj
+echo "Downloading $PYTHON_PACKAGE"
+curl -ko "Python-${PYTHON_VERSION}.tar.xz" "$PYTHON_PACKAGE"
+tar xvf "Python-${PYTHON_VERSION}.tar.xz"
 cd Python-"${PYTHON_VERSION}"/
 ./configure --prefix="$PYTHON_ROOT"
-make -j 2
+make -j "$(nproc)"
 make install
-
-# Install setuptools that provides easy_install
-cd "$PACKAGES_ROOT"
-curl "$SETUPTOOLS_PACKAGE" | tar xvz
-cd setuptools-"$SETUPTOOLS_VERSION"
-"$PYTHON_ROOT"/bin/python setup.py install
 
 # Clean up installation packages:
 cd "$ASMMOBILE_ROOT"

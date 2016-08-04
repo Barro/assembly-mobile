@@ -1,4 +1,3 @@
-syntax: glob
 bin
 develop-eggs
 parts
@@ -13,3 +12,4 @@ src/asmmobile/static/favicon.ico
 python
 var
 base.cfg
+extends-cache

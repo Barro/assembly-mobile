@@ -25,7 +25,7 @@ import random
 
 import asmmobile.util as util
 
-parts = """a e i u o y
+parts = u"""a e i u o y
 ca ce ci cu co cy
 na ne ni nu no ny
 za ze zi zu zo zy
